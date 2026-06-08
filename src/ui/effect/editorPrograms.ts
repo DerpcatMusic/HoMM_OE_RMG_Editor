@@ -16,7 +16,7 @@ import {
 } from "./fileService.js";
 import { rememberCoreArchiveFile } from "../state/browserFiles.js";
 
-export function loadTemplateProgram(): Effect.Effect<EditorSession | undefined, UiEffectError, never> {
+export function loadTemplateProgram(currentSession?: EditorSession): Effect.Effect<EditorSession | undefined, UiEffectError, never> {
   return Effect.gen(function* () {
     const file = yield* pickTemplateFileEffect;
     if (!file) {
@@ -24,7 +24,14 @@ export function loadTemplateProgram(): Effect.Effect<EditorSession | undefined, 
     }
     const text = yield* readFileTextEffect(file);
     return yield* Effect.try({
-      try: () => createSessionFromTemplateText(text, file.name),
+      try: () => {
+        const session = createSessionFromTemplateText(text, file.name);
+        // Preserve core archive from previous session
+        if (currentSession?.coreArchive) {
+          return { ...session, coreArchive: currentSession.coreArchive };
+        }
+        return session;
+      },
       catch: (cause) => new TemplateParseError({ message: parseTemplateErrorMessage(cause), cause }),
     });
   });

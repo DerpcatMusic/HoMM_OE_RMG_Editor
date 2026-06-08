@@ -378,7 +378,11 @@ export function mountAppShell(root: HTMLElement): void {
     if (session.dirty && !window.confirm("Discard unsaved changes and create a new template?")) {
       return;
     }
-    session = createInitialEditorSession();
+    const newSession = createInitialEditorSession();
+    session = {
+      ...newSession,
+      coreArchive: session.coreArchive,
+    };
     activeContentPoolName = "";
     workspaceTab = "canvas";
     inspectorTab = "zone";
@@ -390,7 +394,7 @@ export function mountAppShell(root: HTMLElement): void {
     if (session.dirty && !window.confirm("Discard unsaved changes and load another template?")) {
       return;
     }
-    await runUiEffect(loadTemplateProgram())
+    await runUiEffect(loadTemplateProgram(session))
       .then((nextSession) => {
         if (!nextSession) {
           return;
