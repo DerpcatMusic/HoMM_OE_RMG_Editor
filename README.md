@@ -41,7 +41,7 @@
 - SingleHero global mode normalization in core/session/UI: one hero, hero hiring banned, encounter holes disabled, and lost-start-hero enabled.
 - Undo/redo controls backed by transaction history.
 - Effect service layer for browser file I/O, Core.zip parsing/catalog generation, layout persistence, command programs, and typed UI errors.
-- Core.zip load modal appears on every page load until Core.zip is loaded; supports drag-and-drop and click-to-browse.
+- Core.zip is cached in IndexedDB and auto-loaded on page refresh; load modal appears only when no cached Core.zip is found.
 
 ## Still Missing
 

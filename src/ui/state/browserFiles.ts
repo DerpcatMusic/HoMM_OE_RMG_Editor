@@ -1,4 +1,7 @@
 const REMEMBERED_CORE_ARCHIVE_KEY = "olden-era-rmg-editor:last-core-archive";
+const CORE_ARCHIVE_IDB_DB = "olden-era-rmg-editor";
+const CORE_ARCHIVE_IDB_STORE = "core-archives";
+const CORE_ARCHIVE_IDB_KEY = "current";
 
 let coreDirectoryHandle: FileSystemDirectoryHandle | undefined;
 
@@ -7,6 +10,44 @@ export interface RememberedCoreArchive {
   size: number;
   lastModified: number;
   rememberedAt: string;
+}
+
+function openCoreArchiveDB(): Promise<IDBDatabase> {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(CORE_ARCHIVE_IDB_DB, 1);
+    request.onupgradeneeded = () => {
+      request.result.createObjectStore(CORE_ARCHIVE_IDB_STORE);
+    };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+export async function cacheCoreArchiveFile(file: File): Promise<void> {
+  const db = await openCoreArchiveDB();
+  const tx = db.transaction(CORE_ARCHIVE_IDB_STORE, "readwrite");
+  const store = tx.objectStore(CORE_ARCHIVE_IDB_STORE);
+  store.put(file, CORE_ARCHIVE_IDB_KEY);
+  rememberCoreArchiveFile(file);
+  return new Promise((resolve, reject) => {
+    tx.oncomplete = () => { db.close(); resolve(); };
+    tx.onerror = () => { db.close(); reject(tx.error); };
+  });
+}
+
+export async function loadCachedCoreArchiveFile(): Promise<File | undefined> {
+  try {
+    const db = await openCoreArchiveDB();
+    const tx = db.transaction(CORE_ARCHIVE_IDB_STORE, "readonly");
+    const store = tx.objectStore(CORE_ARCHIVE_IDB_STORE);
+    const request = store.get(CORE_ARCHIVE_IDB_KEY);
+    return new Promise((resolve, reject) => {
+      request.onsuccess = () => { db.close(); resolve(request.result as File | undefined); };
+      request.onerror = () => { db.close(); reject(request.error); };
+    });
+  } catch {
+    return undefined;
+  }
 }
 
 export async function pickTemplateFile(): Promise<File | undefined> {

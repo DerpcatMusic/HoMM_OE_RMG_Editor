@@ -47,7 +47,7 @@
 - `done`: undo/redo controls are wired to transaction history.
 - `done`: Effect services wrap browser file I/O, Core.zip parsing, catalog generation, layout persistence, and command programs.
 - `done`: instant-apply pattern with per-field reset buttons for all form controls.
-- `done`: Core.zip load modal appears on every page load until Core.zip is loaded; supports drag-and-drop and click-to-browse; dismissed when Core.zip is successfully parsed.
+- `done`: Core.zip is cached in IndexedDB and auto-loaded on page refresh; load modal appears only when no cached Core.zip is found.
 - `missing`: real content/artifact/hero catalog picker controls, full content-pool authoring surfaces, deep mandatory-content placement-rule editing, and deep road row management.
 
 ## Source Files

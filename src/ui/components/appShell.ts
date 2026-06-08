@@ -8,9 +8,13 @@ import { projectTemplateToShellData } from "../data/templateProjection.js";
 import type { PlayerRef } from "../../core/rmg/enums.js";
 import type { ShellCatalogOptions, ShellZoneItem } from "../data/shellData.js";
 import {
-  formatFileSize,
+  cacheCoreArchiveFile,
+  loadCachedCoreArchiveFile,
   loadRememberedCoreArchive,
   pickCoreArchiveFile,
+  pickTemplateFile,
+  rememberCoreArchiveFile,
+  saveTextFile,
   type RememberedCoreArchive,
 } from "../state/browserFiles.js";
 import { attachCoreArchiveProgram, loadTemplateProgram, saveTemplateProgram } from "../effect/editorPrograms.js";
@@ -418,9 +422,10 @@ export function mountAppShell(root: HTMLElement): void {
     session = setSessionStatusMessage(session, `Parsing ${file.name}...`);
     render();
     await runUiEffect(attachCoreArchiveProgram(session, file))
-      .then((nextSession) => {
+      .then(async (nextSession) => {
         if (nextSession) {
           session = nextSession;
+          await cacheCoreArchiveFile(file);
           rememberedCoreArchive = loadRememberedCoreArchive();
           if (coreArchiveModalOverlay) {
             coreArchiveModalOverlay.remove();
@@ -446,6 +451,15 @@ export function mountAppShell(root: HTMLElement): void {
     coreArchiveModalOverlay = showCoreArchiveModal(root, addCoreArchive, loadCoreArchiveFile);
   }
   render();
+
+  // Auto-load Core.zip from IndexedDB cache if available
+  loadCachedCoreArchiveFile().then((cachedFile) => {
+    if (cachedFile && !session.coreArchive) {
+      void loadCoreArchiveFile(cachedFile);
+    }
+  }).catch(() => {
+    // Ignore cache load errors
+  });
 }
 
 function getCatalogOptions(session: {
