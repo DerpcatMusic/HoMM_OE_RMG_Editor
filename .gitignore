@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.cache/
+
+# Local game installs / extracted data
+external/
+extracted/
+*.zip
+
+# Impeccable runtime sessions
+.impeccable/live/sessions/
+
+# OS/editor noise
+.DS_Store
+*.swp

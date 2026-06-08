@@ -1,0 +1,33 @@
+{
+  "name": "olden-era-rmg-editor",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "test": "npm run test:mutations && npm run test:editor-schema && npm run test:editor-actions && npm run test:ui-session",
+    "test:mutations": "bun run src/cli/mutation-invariants.ts",
+    "test:editor-schema": "bun run src/cli/editor-schema-invariants.ts",
+    "test:editor-actions": "bun run src/cli/editor-action-invariants.ts",
+    "test:ui-session": "bun run src/cli/ui-session-invariants.ts",
+    "game-data:refresh": "bun run src/cli/game-data-refresh.ts",
+    "asset-visual:refresh": "bun run src/cli/asset-visual-refresh.ts",
+    "core:scan": "bun run src/cli/core-scan.ts",
+    "editor:scan": "bun run src/cli/editor-scan.ts",
+    "graph:scan": "bun run src/cli/graph-scan.ts",
+    "artifact:scan": "bun run src/cli/artifact-scan.ts",
+    "mutation:scan": "bun run src/cli/mutation-scan.ts",
+    "ui:build": "mkdir -p dist/ui/assets dist/ui/styles dist/ui/fonts && bun build src/ui/main.ts --target browser --outfile dist/ui/assets/main.js && cp src/ui/index.html dist/ui/index.html && cp src/ui/styles/*.css dist/ui/styles/ && cp -r src/ui/fonts/* dist/ui/fonts/",
+    "ui:preview": "python3 -m http.server 4173 -d dist/ui",
+    "legacy:scan": "python3 tools/rmg_scan.py --format markdown"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "css-tree": "^3.2.1",
+    "playwright-core": "^1.60.0",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "effect": "^3.21.3"
+  }
+}

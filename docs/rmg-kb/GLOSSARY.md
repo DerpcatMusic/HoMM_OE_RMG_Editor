@@ -1,0 +1,25 @@
+# Glossary
+
+- `Template`: one `.rmg.json` file represented by `RandomMapTemplate`.
+- `Variant`: one member of `template.variants[]`; the generator samples one variant per generation attempt.
+- `Authoring Model`: raw JSON-facing model described by `RandomMapTemplate` and nested types.
+- `Resolved Template`: runtime `MapDescription` after references, enums, pools, rules, factions, and biomes are resolved.
+- `Zone`: graph node and macro-area of a template. Zones own budgets, content pools, main objects, roads, and local constraints.
+- `Main Object`: top-level authored object anchor in a zone, such as `Spawn`, `City`, or `AbandonedOutpost`.
+- `Spawn`: both a main-object type and a player-side anchor. In runtime terms it is a starting city/spawner object with a side owner.
+- `Player`: a game side such as `Player1` or `Player2`, represented in templates through `spawn`/`owner` fields and game rules.
+- `Owner`: side ownership of cities or content objects. `spawn` and `owner` are related but not interchangeable.
+- `Connection`: graph edge between zones. A connection may resolve to direct gate access, portal behavior, gladiator-arena behavior, or proximity-only adjacency.
+- `Road`: authored instruction connecting road targets inside a zone; separate from connection `road` flags.
+- `Road Target`: one endpoint of an authored road. Can target a crossroads, main object, connection, or mandatory content.
+- `Crossroads`: a special anchor point in a zone used as a road hub.
+- `Mandatory Content`: required content preset entries for a zone. Some entries are fixed, some weighted, some rule-positioned.
+- `Content Pool`: weighted set of random content sources used for guarded, unguarded, or resource placement.
+- `Content List`: reusable list of weighted content entries consumed by pools and limits.
+- `Content Count Limit`: limit set that caps appearances of specific content or include-list expansions.
+- `Zone Layout`: reusable layout config controlling obstacle fill, elevation modes, lakes, resource fractions, and ambient pickups.
+- `Placement Rule`: mini rule language used by mandatory content and portal placement.
+- `Biome Rule`: rule that chooses a zone/content/meta biome from a list or by matching other authored entities.
+- `Faction Rule`: rule that chooses a faction from a list or by matching another main object.
+- `Template Context`: overlay layer that merges template-local definitions with global generator config.
+- `Debug Surface`: data returned by layout/content generation for preview, diagnostics, and editor visualization.

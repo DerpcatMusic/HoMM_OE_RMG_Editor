@@ -1,0 +1,59 @@
+:root {
+  color-scheme: light;
+
+  --font-sans: "IBM Plex Sans", "Aptos", "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "Berkeley Mono", "SFMono-Regular", monospace;
+  --font-icon: "Material Symbols Outlined", var(--font-mono);
+
+  --color-bg: oklch(0.985 0 0);
+  --color-panel: oklch(1 0 0);
+  --color-panel-2: oklch(0.955 0 0);
+  --color-ink: oklch(0.16 0 0);
+  --color-muted: oklch(0.42 0 0);
+  --color-line: oklch(0.70 0 0);
+  --color-line-strong: oklch(0.20 0 0);
+  --color-active: oklch(0.90 0 0);
+  --color-focus: oklch(0.52 0.12 245);
+
+  /* connection types */
+  --color-connection-portal: oklch(0.55 0.22 305);
+  --color-connection-direct: oklch(0.50 0.16 150);
+  --color-connection-default: oklch(0.50 0.06 250);
+  --color-connection-arena: oklch(0.62 0.20 55);
+  --color-connection-proximity: oklch(0.68 0.06 220);
+
+  /* zone roles */
+  --color-role-spawn: oklch(0.55 0.14 250);
+  --color-role-center: oklch(0.68 0.14 85);
+  --color-role-treasure: oklch(0.58 0.13 155);
+  --color-role-connector: oklch(0.55 0.18 300);
+
+  /* object types */
+  --color-object-city: oklch(0.55 0.14 250);
+  --color-object-spawn: oklch(0.52 0.13 155);
+  --color-object-outpost: oklch(0.62 0.12 75);
+  --color-object-arena: oklch(0.58 0.18 25);
+
+  /* road types */
+  --color-road-dirt: oklch(0.52 0.08 60);
+  --color-road-stone: oklch(0.50 0 0);
+
+  /* conditional states */
+  --color-state-inactive: oklch(0.72 0 0);
+  --color-state-uncertain: oklch(0.65 0.14 75);
+  --color-state-invalid: oklch(0.55 0.20 25);
+
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+
+  --line: 1px;
+  --line-strong: 2px;
+  --topbar-height: 2.5rem;
+  --rail-width: 2.75rem;
+  --sidebar-width: 14rem;
+  --inspector-width: 22rem;
+  --resize-handle-width: 0.375rem;
+}
