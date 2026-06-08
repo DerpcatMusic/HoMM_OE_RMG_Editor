@@ -1,15 +1,12 @@
-import type { EditorFieldMetadata } from "../../core/editor-schema/index.js";
-import { BIOME_RULE_TYPES, FACTION_RULE_TYPES, MAIN_OBJECT_PLACEMENTS, MAIN_OBJECT_TYPES, PLAYER_REFS } from "../../core/rmg/enums.js";
+import { CONNECTION_TYPES, FACTION_RULE_TYPES, MAIN_OBJECT_TYPES, PLAYER_REFS } from "../../core/rmg/enums.js";
 import { el, svgEl } from "../dom.js";
-import { PLAYER_COLORS, type ShellCatalogOptions, type ShellConnectionItem, type ShellSectionSummary, type ShellZoneItem, type ShellZoneObjectItem } from "../data/shellData.js";
-import type { CanvasPosition, ZoneUpdateDraft } from "../state/editorSession.js";
-import { createButton, createTabButton, createValueRow } from "./primitives.js";
+import { PLAYER_COLORS, type ShellCatalogOptions, type ShellConnectionItem, type ShellZoneItem, type ShellZoneObjectItem } from "../data/shellData.js";
+import type { CanvasPosition } from "../state/editorSession.js";
+import { createButton, createTabButton } from "./primitives.js";
 
-export type WorkspaceTab = "canvas" | "selection" | "zoneEdit";
+export type WorkspaceTab = "canvas" | "zoneEdit";
 
 export interface WorkspaceProps {
-  section: ShellSectionSummary;
-  fields: readonly EditorFieldMetadata[];
   zones: readonly ShellZoneItem[];
   connections: readonly ShellConnectionItem[];
   catalogOptions: ShellCatalogOptions;
@@ -24,18 +21,19 @@ export interface WorkspaceProps {
   onMoveZoneObject: (zone: ShellZoneItem, object: ShellZoneObjectItem, position: CanvasPosition) => void;
   onConnectZones: (fromZoneName: string, toZoneName: string) => void;
   onAddZone: () => void;
-  onRemoveSelectedZone: () => void;
   onAddConnection: () => void;
   onAddMainObject: () => void;
   onAddRoad: () => void;
-  onApplyZoneChanges: (draft: ZoneUpdateDraft) => void;
+  onDeleteZone: (zone: ShellZoneItem) => void;
+  onDeleteConnection: (connection: ShellConnectionItem) => void;
+  onReassignZoneOwner: (zone: ShellZoneItem, owner: string) => void;
+  onChangeConnectionType: (connection: ShellConnectionItem, connectionType: string) => void;
 }
 
 export function createWorkspace(props: WorkspaceProps): HTMLElement {
   return el("main", { className: "workspace", attrs: { tabindex: "-1" } }, [
     el("div", { className: "workspace-tabs", attrs: { role: "tablist", "aria-label": "Workspace mode" } }, [
       createTabButton("Canvas", "canvas", props.activeTab, props.onTabChange, { icon: "globe", iconOnly: true }),
-      createTabButton("Selected zone", "selection", props.activeTab, props.onTabChange, { icon: "target", iconOnly: true }),
       createTabButton("Zone edit", "zoneEdit", props.activeTab, props.onTabChange, { icon: "edit_square", iconOnly: true }),
     ]),
     createActiveWorkspace(props),
@@ -43,13 +41,10 @@ export function createWorkspace(props: WorkspaceProps): HTMLElement {
 }
 
 function createActiveWorkspace(props: WorkspaceProps): HTMLElement {
-  if (props.activeTab === "canvas") {
-    return createCanvasWorkspace(props);
-  }
   if (props.activeTab === "zoneEdit") {
     return createZoneEditWorkspace(props);
   }
-  return createSelectionWorkspace(props);
+  return createCanvasWorkspace(props);
 }
 
 function createCanvasWorkspace(props: WorkspaceProps): HTMLElement {
@@ -65,119 +60,6 @@ function createCanvasWorkspace(props: WorkspaceProps): HTMLElement {
       ]),
     ]),
     createMapStage(props),
-  ]);
-}
-
-function createSelectionWorkspace(props: WorkspaceProps): HTMLElement {
-  const editableFields = props.fields.filter((field) => field.editLevel === "firstClass").slice(0, 10);
-  const nameInput = createInput("text", props.selectedZone.label);
-  const sizeInput = createInput("number", String(props.selectedZone.size), "0.1");
-  const layoutInput = createInput("text", props.selectedZone.layout);
-  const zoneBiomeTypeInput = createSelect(props.selectedZone.zoneBiome.type, ["", ...BIOME_RULE_TYPES]);
-  const zoneBiomeArgsInput = createBiomeRuleArgsControl(zoneBiomeTypeInput, props.selectedZone.zoneBiome.args, props, "zoneBiome");
-  const contentBiomeTypeInput = createSelect(props.selectedZone.contentBiome.type, ["", ...BIOME_RULE_TYPES]);
-  const contentBiomeArgsInput = createBiomeRuleArgsControl(contentBiomeTypeInput, props.selectedZone.contentBiome.args, props, "contentBiome");
-  const metaObjectsBiomeTypeInput = createSelect(props.selectedZone.metaObjectsBiome.type, ["", ...BIOME_RULE_TYPES]);
-  const metaObjectsBiomeArgsInput = createBiomeRuleArgsControl(metaObjectsBiomeTypeInput, props.selectedZone.metaObjectsBiome.args, props, "metaObjectsBiome");
-  const crossroadsInput = createOptionalNumberInput(props.selectedZone.crossroadsPosition, "0.01");
-  const diplomacyInput = createOptionalNumberInput(props.selectedZone.diplomacyModifier, "0.01");
-  const guardCutoffInput = createOptionalNumberInput(props.selectedZone.guardCutoffValue, "1");
-  const guardMultiplierInput = createOptionalNumberInput(props.selectedZone.guardMultiplier, "0.01");
-  const guardRandomizationInput = createOptionalNumberInput(props.selectedZone.guardRandomization, "0.01");
-  const guardWeeklyIncrementInput = createOptionalNumberInput(props.selectedZone.guardWeeklyIncrement, "0.01");
-  const guardReactionDistributionInput = createTextarea(props.selectedZone.guardReactionDistribution.join("\n"));
-  const guardedValueInput = createOptionalNumberInput(props.selectedZone.guardedContentValue, "1");
-  const guardedPerAreaInput = createOptionalNumberInput(props.selectedZone.guardedContentValuePerArea, "1");
-  const unguardedValueInput = createOptionalNumberInput(props.selectedZone.unguardedContentValue, "1");
-  const unguardedPerAreaInput = createOptionalNumberInput(props.selectedZone.unguardedContentValuePerArea, "1");
-  const resourcesValueInput = createOptionalNumberInput(props.selectedZone.resourcesValue, "1");
-  const resourcesPerAreaInput = createOptionalNumberInput(props.selectedZone.resourcesValuePerArea, "1");
-  const guardedInput = createPoolMultiPicker(props.selectedZone.guardedPools, props.catalogOptions.guardedContentPools);
-  const unguardedInput = createPoolMultiPicker(props.selectedZone.unguardedPools, props.catalogOptions.unguardedContentPools);
-  const resourcesInput = createPoolMultiPicker(props.selectedZone.resourcesPools, props.catalogOptions.resourceContentPools);
-  const mandatoryInput = createTextarea(props.selectedZone.mandatoryContent.join("\n"));
-  const countLimitsInput = createTextarea(props.selectedZone.contentCountLimits.join("\n"));
-  return el("section", { className: "workspace-panel selection-panel" }, [
-    el("div", { className: "workspace-bar" }, [
-      el("div", {}, [
-        el("h2", { text: props.selectedZone.label }),
-        el("span", { text: `${props.selectedZone.owner} / ${props.selectedZone.role}` }),
-      ]),
-      el("div", { className: "bar-actions" }, [
-        createButton("Remove zone", { variant: "secondary", icon: "delete", onClick: props.onRemoveSelectedZone }),
-        createButton("Apply changes", { variant: "primary", icon: "check", onClick: () => props.onApplyZoneChanges({
-          name: nameInput.value,
-          size: Number(sizeInput.value),
-          layout: layoutInput.value,
-          zoneBiomeType: zoneBiomeTypeInput.value,
-          zoneBiomeArgs: zoneBiomeArgsInput.getArgs(),
-          contentBiomeType: contentBiomeTypeInput.value,
-          contentBiomeArgs: contentBiomeArgsInput.getArgs(),
-          metaObjectsBiomeType: metaObjectsBiomeTypeInput.value,
-          metaObjectsBiomeArgs: metaObjectsBiomeArgsInput.getArgs(),
-          crossroadsPosition: optionalNumber(crossroadsInput),
-          diplomacyModifier: optionalNumber(diplomacyInput),
-          guardCutoffValue: optionalNumber(guardCutoffInput),
-          guardMultiplier: optionalNumber(guardMultiplierInput),
-          guardRandomization: optionalNumber(guardRandomizationInput),
-          guardWeeklyIncrement: optionalNumber(guardWeeklyIncrementInput),
-          guardReactionDistribution: parseOptionalNumberList(guardReactionDistributionInput.value),
-          guardedContentValue: optionalNumber(guardedValueInput),
-          guardedContentValuePerArea: optionalNumber(guardedPerAreaInput),
-          unguardedContentValue: optionalNumber(unguardedValueInput),
-          unguardedContentValuePerArea: optionalNumber(unguardedPerAreaInput),
-          resourcesValue: optionalNumber(resourcesValueInput),
-          resourcesValuePerArea: optionalNumber(resourcesPerAreaInput),
-          guardedPools: guardedInput.getValues(),
-          unguardedPools: unguardedInput.getValues(),
-          resourcesPools: resourcesInput.getValues(),
-          mandatoryContent: parseStringList(mandatoryInput.value),
-          contentCountLimits: parseStringList(countLimitsInput.value),
-        })}),
-      ]),
-    ]),
-    el("div", { className: "edit-form" }, [
-      el("h3", { text: "Identity and layout" }),
-      createControlRow("Name", nameInput),
-      createControlRow("Size", sizeInput),
-      createControlRow("Layout", layoutInput),
-      createControlRow("Crossroads pos", crossroadsInput),
-      createControlRow("Diplomacy mod", diplomacyInput),
-      el("h3", { text: "Biome rules" }),
-      createControlRow("Zone biome type", zoneBiomeTypeInput),
-      createControlRow("Zone biome args", zoneBiomeArgsInput.element),
-      createControlRow("Content biome type", contentBiomeTypeInput),
-      createControlRow("Content biome args", contentBiomeArgsInput.element),
-      createControlRow("Meta biome type", metaObjectsBiomeTypeInput),
-      createControlRow("Meta biome args", metaObjectsBiomeArgsInput.element),
-      el("h3", { text: "Guard settings" }),
-      createControlRow("Guard cutoff", guardCutoffInput),
-      createControlRow("Guard multiplier", guardMultiplierInput),
-      createControlRow("Guard random", guardRandomizationInput),
-      createControlRow("Guard weekly", guardWeeklyIncrementInput),
-      createControlRow("Reaction weights", guardReactionDistributionInput),
-      el("h3", { text: "Content budgets" }),
-      createControlRow("Guarded value", guardedValueInput),
-      createControlRow("Guarded per area", guardedPerAreaInput),
-      createControlRow("Unguarded value", unguardedValueInput),
-      createControlRow("Unguarded per area", unguardedPerAreaInput),
-      createControlRow("Resources value", resourcesValueInput),
-      createControlRow("Resources per area", resourcesPerAreaInput),
-      el("h3", { text: "Pool and preset alternatives" }),
-      createControlRow("Guarded pools", guardedInput.element),
-      createControlRow("Unguarded pools", unguardedInput.element),
-      createControlRow("Resource pools", resourcesInput.element),
-      createControlRow("Mandatory presets", mandatoryInput),
-      createControlRow("Count limits", countLimitsInput),
-    ]),
-    el("div", { className: "bare-table" }, [
-      createValueRow("Owner", props.selectedZone.owner),
-      createValueRow("Role", props.selectedZone.role),
-      createValueRow("Main objects", String(props.selectedZone.mainObjectCount)),
-      createValueRow("Roads", String(props.selectedZone.roadCount)),
-    ]),
-    el("h3", { text: `${props.section.label} fields` }),
-    el("div", { className: "field-list" }, editableFields.map((field) => createFieldLine(field))),
   ]);
 }
 
@@ -235,10 +117,8 @@ function createMapStage(props: WorkspaceProps): HTMLElement {
 function createZoneNode(zone: ShellZoneItem, props: WorkspaceProps, stage: HTMLElement): HTMLElement {
   const selected = zone.id === props.selectedZone.id;
   const isFocusedOwner = props.focusedPlayer !== undefined && zone.owner === props.focusedPlayer;
-  const ownerColor = isFocusedOwner ? (PLAYER_COLORS[zone.owner] ?? "#888") : undefined;
-  const style = ownerColor
-    ? `left:${zone.x}%;top:${zone.y}%;--player-color:${ownerColor}`
-    : `left:${zone.x}%;top:${zone.y}%;`;
+  const ownerColor = zone.owner === "Neutral" ? "#666" : (PLAYER_COLORS[zone.owner] ?? "#888");
+  const style = `left:${zone.x}%;top:${zone.y}%;--zone-color:${ownerColor}`;
   const node = el("button", {
     className: selected ? "stage-node is-selected" : "stage-node",
     attrs: { type: "button", style },
@@ -256,6 +136,10 @@ function createZoneNode(zone: ShellZoneItem, props: WorkspaceProps, stage: HTMLE
     }
     startZoneDrag(event, stage, node, zone, props);
   });
+  node.addEventListener("contextmenu", (event) => {
+    event.preventDefault();
+    showZoneContextMenu(event, zone, props, node);
+  });
   return node;
 }
 
@@ -271,6 +155,10 @@ function createConnectionPath(connection: ShellConnectionItem, props: WorkspaceP
     attrs: { d },
     dataset: { connectionId: connection.id, fromZone: connection.from, toZone: connection.to },
     onClick: () => props.onSelectConnection(connection),
+  });
+  hitPath.addEventListener("contextmenu", (event) => {
+    event.preventDefault();
+    showConnectionContextMenu(event, connection, props);
   });
   const visiblePath = svgEl("path", {
     className: isSelected ? "stage-link-path is-selected" : "stage-link-path",
@@ -486,13 +374,6 @@ function startZoneObjectDrag(
   stage.addEventListener("pointerup", onPointerUp);
 }
 
-function createFieldLine(field: EditorFieldMetadata): HTMLElement {
-  return el("button", { className: "field-line", attrs: { type: "button" } }, [
-    el("span", { text: field.label }),
-    el("code", { text: field.id }),
-  ]);
-}
-
 function pointerToStagePercent(event: PointerEvent, stage: HTMLElement): CanvasPosition {
   const rect = stage.getBoundingClientRect();
   return clampCanvasPosition({
@@ -587,550 +468,63 @@ function clampCanvasPosition(position: CanvasPosition): CanvasPosition {
   };
 }
 
-function createInput(type: "text" | "number", value: string, step?: string): HTMLInputElement {
-  const attrs: Record<string, string> = { type, value };
-  if (step) {
-    attrs.step = step;
-  }
-  return el("input", { className: "text-input", attrs });
+function removeActiveContextMenu(): void {
+  document.querySelector(".context-menu")?.remove();
 }
 
-function createOptionalNumberInput(value: number | undefined, step = "1"): HTMLInputElement {
-  return createInput("number", value === undefined ? "" : String(value), step);
-}
-
-interface RuleArgsControl {
-  element: HTMLElement;
-  getArgs: () => string[];
-}
-
-interface MutableRuleArgsControl extends RuleArgsControl {
-  setArgs: (args: readonly string[]) => void;
-}
-
-type BiomeRuleRole = "zoneBiome" | "contentBiome" | "metaObjectsBiome";
-
-function createBiomeRuleArgsControl(
-  typeInput: HTMLSelectElement,
-  initialArgs: readonly string[],
-  props: WorkspaceProps,
-  role: BiomeRuleRole,
-): RuleArgsControl {
-  const container = el("div", { className: "rule-args-control" });
-  let currentGetArgs = () => [...initialArgs];
-
-  const render = (args: readonly string[]) => {
-    container.replaceChildren();
-    if (typeInput.value === "FromList") {
-      renderBiomeFromListControl(container, args, props, (getArgs) => {
-        currentGetArgs = getArgs;
-      });
-      container.append(createRulePreview("FromList", getBiomeFromListPreview(role)));
-      return;
-    }
-    if (typeInput.value === "MatchZone") {
-      const zoneSelect = createOptionSelect(args[0] ?? "", [
-        { value: "", label: matchZoneBlankLabel(role, props.selectedZone.label) },
-        ...props.zones.map((zone) => ({ value: zone.label, label: zone.label })),
+function createContextMenu(x: number, y: number, items: Array<{ label: string; icon?: string; onClick: () => void }>): HTMLElement {
+  removeActiveContextMenu();
+  const menu = el("div", { className: "context-menu", attrs: { style: `left:${x}px;top:${y}px` } },
+    items.map((item) => {
+      const row = el("button", { className: "context-menu-item", attrs: { type: "button" } }, [
+        ...(item.icon ? [el("span", { className: "material-symbols-outlined", text: item.icon, attrs: { "aria-hidden": "true" } })] : []),
+        el("span", { text: item.label }),
       ]);
-      currentGetArgs = () => zoneSelect.value ? [zoneSelect.value] : [];
-      container.append(zoneSelect, createRulePreview("MatchZone", matchZonePreview(role, zoneSelect.value, props.selectedZone.label)));
-      zoneSelect.addEventListener("change", () => {
-        const preview = container.querySelector<HTMLElement>(".rule-preview");
-        if (preview) {
-          preview.textContent = matchZonePreview(role, zoneSelect.value, props.selectedZone.label);
-        }
-      });
-      return;
-    }
-    if (typeInput.value === "MatchMainObject") {
-      renderMatchMainObjectControl(container, args, props, (getArgs) => {
-        currentGetArgs = getArgs;
-      });
-      return;
-    }
-    const textarea = createTextarea(args.join("\n"));
-    currentGetArgs = () => parseStringList(textarea.value);
-    container.append(textarea);
-  };
-
-  typeInput.addEventListener("change", () => render(currentGetArgs()));
-  render(initialArgs);
-  return {
-    element: container,
-    getArgs: () => currentGetArgs(),
-  };
-}
-
-function createFactionRuleArgsControl(
-  typeInput: HTMLSelectElement,
-  initialArgs: readonly string[],
-  props: WorkspaceProps,
-): MutableRuleArgsControl {
-  const container = el("div", { className: "rule-args-control" });
-  let currentArgs = [...initialArgs];
-  let currentGetArgs = () => [...currentArgs];
-
-  const render = () => {
-    container.replaceChildren();
-    if (typeInput.value === "FromList") {
-      renderFactionFromListControl(container, currentArgs, props, (getArgs) => {
-        currentGetArgs = getArgs;
-      });
-      container.append(createRulePreview("FromList", "Rolls a faction from selected candidates, excluding any differentFrom main-object references. Empty candidates mean any faction."));
-      return;
-    }
-    if (typeInput.value === "Match") {
-      renderFactionMatchControl(container, currentArgs, props, (getArgs) => {
-        currentGetArgs = getArgs;
-      });
-      return;
-    }
-    const textarea = createTextarea(currentArgs.join("\n"));
-    currentGetArgs = () => parseStringList(textarea.value);
-    container.append(textarea);
-  };
-
-  typeInput.addEventListener("change", () => {
-    currentArgs = currentGetArgs();
-    render();
-  });
-  render();
-  return {
-    element: container,
-    getArgs: () => currentGetArgs(),
-    setArgs: (args) => {
-      currentArgs = [...args];
-      render();
-    },
-  };
-}
-
-function renderFactionFromListControl(
-  container: HTMLElement,
-  args: readonly string[],
-  props: WorkspaceProps,
-  setGetter: (getArgs: () => string[]) => void,
-): void {
-  const { factionArgs, exclusionArgs } = splitFactionFromListArgs(args);
-  if (props.catalogOptions.factions.length > 0) {
-    const select = createMultiSelect(factionArgs, props.catalogOptions.factions);
-    const exclusions = createTextarea(exclusionArgs.join("\n"));
-    exclusions.rows = 2;
-    setGetter(() => [
-      ...Array.from(select.selectedOptions).map((option) => option.value),
-      ...parseStringList(exclusions.value),
-    ]);
-    container.append(
-      createControlStack("Faction candidates", select),
-      createControlStack("differentFrom exclusions", exclusions),
-    );
-    return;
-  }
-  const textarea = createTextarea(args.join("\n"));
-  setGetter(() => parseStringList(textarea.value));
-  container.append(textarea, el("p", { className: "control-note", text: "Add Core.zip to populate faction choices. Use differentFrom: <mainObjectIndex> [zoneName]." }));
-}
-
-function renderFactionMatchControl(
-  container: HTMLElement,
-  args: readonly string[],
-  props: WorkspaceProps,
-  setGetter: (getArgs: () => string[]) => void,
-): void {
-  const initialZone = args[1] ?? "";
-  const zoneSelect = createOptionSelect(initialZone, [
-    { value: "", label: `current zone (${props.selectedZone.label})` },
-    ...props.zones.map((zone) => ({ value: zone.label, label: zone.label })),
-  ]);
-  const objectSlot = el("div");
-  const preview = createRulePreview("Match", "");
-  let objectSelect = createOptionSelect(args[0] ?? "", []);
-
-  const renderObjectSelect = () => {
-    const zone = zoneSelect.value ? props.zones.find((item) => item.label === zoneSelect.value) : props.selectedZone;
-    const currentIndex = objectSelect.value || args[0] || "";
-    objectSelect = createOptionSelect(currentIndex, mainObjectOptionsForZone(zone));
-    objectSelect.addEventListener("change", () => {
-      preview.textContent = factionMatchPreview(objectSelect.value, zoneSelect.value, props.selectedZone.label);
-    });
-    objectSlot.replaceChildren(objectSelect);
-    preview.textContent = factionMatchPreview(objectSelect.value, zoneSelect.value, props.selectedZone.label);
-  };
-
-  zoneSelect.addEventListener("change", renderObjectSelect);
-  renderObjectSelect();
-  setGetter(() => {
-    const index = objectSelect.value.trim();
-    if (!index) {
-      return [];
-    }
-    return zoneSelect.value ? [index, zoneSelect.value] : [index];
-  });
-  container.append(
-    createControlStack("Main object index", objectSlot),
-    createControlStack("Optional zone", zoneSelect),
-    preview,
+      row.addEventListener("click", () => { removeActiveContextMenu(); item.onClick(); });
+      return row;
+    }),
   );
-}
-
-function createMainObjectPlacementArgsControl(
-  placementInput: HTMLSelectElement,
-  initialArgs: readonly string[],
-  props: WorkspaceProps,
-): MutableRuleArgsControl {
-  const container = el("div", { className: "rule-args-control" });
-  let currentArgs = [...initialArgs];
-  let currentGetArgs = () => [...currentArgs];
-
-  const render = () => {
-    container.replaceChildren();
-    if (placementInput.value === "Uniform" || placementInput.value === "Center") {
-      currentGetArgs = () => [];
-      container.append(el("span", { className: "control-note", text: "No args" }));
-      return;
+  document.body.append(menu);
+  const close = (event: Event) => {
+    if (!menu.contains(event.target as Node)) {
+      removeActiveContextMenu();
+      document.removeEventListener("pointerdown", close);
+      document.removeEventListener("keydown", onKey);
     }
-    if (placementInput.value === "Connection") {
-      const connections = props.connections
-        .filter((connection) => connection.type !== "Proximity" && (connection.from === props.selectedZone.label || connection.to === props.selectedZone.label))
-        .map((connection) => ({ value: connection.label, label: `${connection.label} (${connection.type})` }));
-      const select = createOptionSelect(currentArgs[0] ?? "", [{ value: "", label: "" }, ...connections]);
-      currentGetArgs = () => select.value.trim().length > 0 ? [select.value] : [];
-      container.append(select, el("p", { className: "control-note", text: "Connection placement uses an incident non-proximity connection name." }));
-      return;
-    }
-    if (placementInput.value === "NearZone") {
-      const select = createOptionSelect(currentArgs[0] ?? "", [{ value: "", label: "" }, ...props.zones.map((zone) => ({ value: zone.label, label: zone.label }))]);
-      currentGetArgs = () => select.value.trim().length > 0 ? [select.value] : [];
-      container.append(select, el("p", { className: "control-note", text: "NearZone uses a zone name." }));
-      return;
-    }
-    const textarea = createTextarea(currentArgs.join("\n"));
-    currentGetArgs = () => parseStringList(textarea.value);
-    container.append(textarea);
   };
-
-  placementInput.addEventListener("change", () => {
-    currentArgs = currentGetArgs();
-    render();
+  const onKey = (event: KeyboardEvent) => {
+    if (event.key === "Escape") { removeActiveContextMenu(); document.removeEventListener("pointerdown", close); document.removeEventListener("keydown", onKey); }
+  };
+  requestAnimationFrame(() => {
+    document.addEventListener("pointerdown", close);
+    document.addEventListener("keydown", onKey);
   });
-  render();
-  return {
-    element: container,
-    getArgs: () => currentGetArgs(),
-    setArgs: (args) => {
-      currentArgs = [...args];
-      render();
-    },
-  };
+  return menu;
 }
 
-function renderBiomeFromListControl(
-  container: HTMLElement,
-  args: readonly string[],
-  props: WorkspaceProps,
-  setGetter: (getArgs: () => string[]) => void,
-): void {
-  const { biomeArgs, exclusionArgs } = splitBiomeFromListArgs(args);
-  if (props.catalogOptions.biomes.length > 0) {
-    const select = createMultiSelect(biomeArgs, props.catalogOptions.biomes);
-    const exclusions = createTextarea(exclusionArgs.join("\n"));
-    exclusions.rows = 2;
-    setGetter(() => [
-      ...Array.from(select.selectedOptions).map((option) => option.value),
-      ...parseStringList(exclusions.value),
-    ]);
-    container.append(
-      createControlStack("Biome candidates", select),
-      createControlStack("differentFrom exclusions", exclusions),
-    );
-    return;
-  }
-  const textarea = createTextarea(args.join("\n"));
-  setGetter(() => parseStringList(textarea.value));
-  container.append(textarea, el("p", { className: "control-note", text: "Add Core.zip to populate biome choices. Use differentFrom: entries one per line." }));
-}
-
-function renderMatchMainObjectControl(
-  container: HTMLElement,
-  args: readonly string[],
-  props: WorkspaceProps,
-  setGetter: (getArgs: () => string[]) => void,
-): void {
-  const initialZone = args[1] ?? "";
-  const zoneSelect = createOptionSelect(initialZone, [
-    { value: "", label: `current zone (${props.selectedZone.label})` },
-    ...props.zones.map((zone) => ({ value: zone.label, label: zone.label })),
-  ]);
-  const objectSlot = el("div");
-  const preview = createRulePreview("MatchMainObject", "");
-  let objectSelect = createOptionSelect(args[0] ?? "", []);
-
-  const renderObjectSelect = () => {
-    const zone = zoneSelect.value ? props.zones.find((item) => item.label === zoneSelect.value) : props.selectedZone;
-    const currentIndex = objectSelect.value || args[0] || "";
-    objectSelect = createOptionSelect(currentIndex, mainObjectOptionsForZone(zone));
-    objectSelect.addEventListener("change", () => {
-      preview.textContent = matchMainObjectPreview(objectSelect.value, zoneSelect.value, props.selectedZone.label);
-    });
-    objectSlot.replaceChildren(objectSelect);
-    preview.textContent = matchMainObjectPreview(objectSelect.value, zoneSelect.value, props.selectedZone.label);
-  };
-
-  zoneSelect.addEventListener("change", renderObjectSelect);
-  renderObjectSelect();
-  setGetter(() => {
-    const index = objectSelect.value.trim();
-    if (!index) {
-      return [];
-    }
-    return zoneSelect.value ? [index, zoneSelect.value] : [index];
-  });
-  container.append(
-    createControlStack("Main object index", objectSlot),
-    createControlStack("Optional zone", zoneSelect),
-    preview,
-  );
-}
-
-function splitBiomeFromListArgs(args: readonly string[]): { biomeArgs: string[]; exclusionArgs: string[] } {
-  const biomeArgs: string[] = [];
-  const exclusionArgs: string[] = [];
-  for (const arg of args) {
-    if (arg.trim().startsWith("differentFrom:")) {
-      exclusionArgs.push(arg);
-    } else {
-      biomeArgs.push(arg);
-    }
-  }
-  return { biomeArgs, exclusionArgs };
-}
-
-function splitFactionFromListArgs(args: readonly string[]): { factionArgs: string[]; exclusionArgs: string[] } {
-  const factionArgs: string[] = [];
-  const exclusionArgs: string[] = [];
-  for (const arg of args) {
-    if (arg.trim().startsWith("differentFrom:")) {
-      exclusionArgs.push(arg);
-    } else {
-      factionArgs.push(arg);
-    }
-  }
-  return { factionArgs, exclusionArgs };
-}
-
-function mainObjectOptionsForZone(zone: ShellZoneItem | undefined): Array<{ value: string; label: string }> {
-  if (!zone || zone.mainObjectCount <= 0) {
-    return [];
-  }
-  return Array.from({ length: zone.mainObjectCount }, (_, index) => {
-    const object = zone.zoneObjects.find((item) => item.id === `main:${index}`);
-    return {
-      value: String(index),
-      label: object ? `${index}: ${object.label}` : String(index),
-    };
-  });
-}
-
-function getBiomeFromListPreview(role: BiomeRuleRole): string {
-  if (role === "zoneBiome") {
-    return "Rolls terrain biome from selected candidates, excluding any differentFrom references. Empty candidates mean any biome.";
-  }
-  return "Rolls content/meta biome from selected candidates, excluding any differentFrom references. Empty candidates mean any biome.";
-}
-
-function matchZoneBlankLabel(role: BiomeRuleRole, selectedZoneName: string): string {
-  return role === "zoneBiome" ? "no arg: roll random biome" : `no arg: match current zone (${selectedZoneName})`;
-}
-
-function matchZonePreview(role: BiomeRuleRole, zoneName: string, selectedZoneName: string): string {
-  if (zoneName) {
-    return `Copies biome from zone '${zoneName}'.`;
-  }
-  return role === "zoneBiome"
-    ? "No args on zoneBiome MatchZone rolls a random biome in the generator."
-    : `No args on ${role} MatchZone copies '${selectedZoneName}' terrain biome.`;
-}
-
-function matchMainObjectPreview(mainObjectIndex: string, zoneName: string, selectedZoneName: string): string {
-  const zoneLabel = zoneName || selectedZoneName;
-  return mainObjectIndex
-    ? `Uses the faction-derived biome of main object ${mainObjectIndex} in '${zoneLabel}'.`
-    : "Requires a main-object index. Optional zone defaults to the current zone.";
-}
-
-function factionMatchPreview(mainObjectIndex: string, zoneName: string, selectedZoneName: string): string {
-  const zoneLabel = zoneName || selectedZoneName;
-  return mainObjectIndex
-    ? `Copies faction from main object ${mainObjectIndex} in '${zoneLabel}'.`
-    : "Requires a main-object index. Optional zone defaults to the current zone.";
-}
-
-function createRulePreview(_type: string, text: string): HTMLElement {
-  return el("p", { className: "control-note rule-preview", text });
-}
-
-function createControlStack(label: string, control: HTMLElement): HTMLElement {
-  return el("div", { className: "control-stack" }, [
-    el("span", { className: "control-stack-label", text: label }),
-    control,
-  ]);
-}
-
-interface LabeledOption {
-  value: string;
-  label: string;
-}
-
-interface MultiPickerControl {
-  element: HTMLElement;
-  getValues: () => string[];
-}
-
-let pickerId = 0;
-
-function createPoolMultiPicker(
-  initialValues: readonly string[],
-  options: readonly { id: string; label: string }[],
-): MultiPickerControl {
-  const values = [...initialValues];
-  const listId = `pool-picker-${pickerId++}`;
-  const input = el("input", {
-    className: "text-input",
-    attrs: {
-      type: "search",
-      list: listId,
-      placeholder: options.length > 0 ? "Search pool ID" : "Attach Core.zip or type pool ID",
-      autocomplete: "off",
-    },
-  });
-  const datalist = el("datalist", { attrs: { id: listId } }, options.map((option) =>
-    el("option", { attrs: { value: option.id, label: option.label } })
-  ));
-  const list = el("div", { className: "picker-token-list" });
-
-  const renderValues = () => {
-    list.replaceChildren(...values.map((value, index) => el("button", {
-      className: "picker-token",
-      attrs: {
-        type: "button",
-        title: `Remove ${value}`,
-        "aria-label": `Remove ${value}`,
-      },
-      onClick: () => {
-        values.splice(index, 1);
-        renderValues();
-      },
-    }, [
-      el("strong", { text: value }),
-      el("span", { className: "material-symbols-outlined picker-token-remove", text: "close", attrs: { "aria-hidden": "true" } }),
-    ])));
-  };
-  const addCurrentValue = () => {
-    const value = input.value.trim();
-    if (!value || values.includes(value)) {
-      input.value = "";
-      return;
-    }
-    values.push(value);
-    input.value = "";
-    renderValues();
-  };
-  input.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      addCurrentValue();
-    }
-  });
-  const addButton = createButton("Add pool", { variant: "secondary", icon: "add", onClick: addCurrentValue });
-  renderValues();
-  return {
-    element: el("div", { className: "multi-picker" }, [
-      datalist,
-      el("div", { className: "multi-picker-entry" }, [input, addButton]),
-      list,
-    ]),
-    getValues: () => [...values],
-  };
-}
-
-function createOptionSelect(value: string, options: readonly LabeledOption[]): HTMLSelectElement {
-  const select = el("select", { className: "text-input" });
-  const hasValue = value.trim().length > 0;
-  const hasKnownValue = options.some((option) => option.value === value);
-  const mergedOptions = hasValue && !hasKnownValue
-    ? [{ value, label: `${value} (not in current context)` }, ...options]
-    : options;
-  for (const optionValue of mergedOptions) {
-    select.append(el("option", { text: optionValue.label, attrs: { value: optionValue.value } }));
-  }
-  select.value = value;
-  return select;
-}
-
-function createSelect(value: string, options: readonly string[]): HTMLSelectElement {
-  const select = el("select", { className: "text-input" });
-  for (const optionValue of options) {
-    select.append(el("option", { text: optionValue, attrs: { value: optionValue } }));
-  }
-  select.value = value;
-  return select;
-}
-
-function createMultiSelect(
-  selectedValues: readonly string[],
-  options: readonly { id: string; label: string }[],
-): HTMLSelectElement {
-  const selected = new Set(selectedValues);
-  const select = el("select", { className: "text-input multi-input", attrs: { multiple: true, size: Math.min(7, Math.max(3, options.length)) } });
-  const mergedOptions = [
-    ...options,
-    ...selectedValues
-      .filter((id) => !options.some((option) => option.id === id))
-      .map((id) => ({ id, label: `${id} (not in catalog)` })),
+function showZoneContextMenu(event: MouseEvent, zone: ShellZoneItem, props: WorkspaceProps, _node: HTMLElement): void {
+  const items = [
+    { label: "Select", icon: "target", onClick: () => props.onSelectZone(zone) },
+    ...PLAYER_REFS.map((playerRef) => ({
+      label: `Assign ${playerRef}`,
+      icon: "person",
+      onClick: () => props.onReassignZoneOwner(zone, playerRef),
+    })),
+    { label: "Assign Neutral", icon: "remove_circle_outline", onClick: () => props.onReassignZoneOwner(zone, "Neutral") },
+    { label: "Delete zone", icon: "delete", onClick: () => props.onDeleteZone(zone) },
   ];
-  for (const optionValue of mergedOptions) {
-    const option = el("option", { text: optionValue.label, attrs: { value: optionValue.id } });
-    option.selected = selected.has(optionValue.id);
-    select.append(option);
-  }
-  return select;
+  createContextMenu(event.clientX, event.clientY, items);
 }
 
-function createCheckbox(checked: boolean): HTMLInputElement {
-  const checkbox = el("input", { className: "check-input", attrs: { type: "checkbox" } });
-  checkbox.checked = checked;
-  return checkbox;
-}
-
-function createTextarea(value: string): HTMLTextAreaElement {
-  const textarea = el("textarea", { className: "text-input", attrs: { rows: 3 } });
-  textarea.value = value;
-  return textarea;
-}
-
-function createControlRow(label: string, control: HTMLElement): HTMLElement {
-  return el("label", { className: "control-row" }, [
-    el("span", { text: label }),
-    control,
-  ]);
-}
-
-function parseStringList(value: string): string[] {
-  return value
-    .split(/[\n,]+/)
-    .map((item) => item.trim())
-    .filter(Boolean);
-}
-
-function parseOptionalNumberList(value: string): number[] | undefined {
-  const rawItems = parseStringList(value);
-  if (rawItems.length === 0) {
-    return undefined;
-  }
-  return rawItems.map((item) => Number(item));
-}
-
-function optionalNumber(input: HTMLInputElement): number | undefined {
-  return input.value.trim().length === 0 ? undefined : Number(input.value);
+function showConnectionContextMenu(event: MouseEvent, connection: ShellConnectionItem, props: WorkspaceProps): void {
+  const items = [
+    { label: "Select", icon: "target", onClick: () => props.onSelectConnection(connection) },
+    ...Array.from(CONNECTION_TYPES).map((type) => ({
+      label: `Type: ${type}`,
+      icon: "swap_horiz",
+      onClick: () => props.onChangeConnectionType(connection, type),
+    })),
+    { label: "Delete connection", icon: "delete", onClick: () => props.onDeleteConnection(connection) },
+  ];
+  createContextMenu(event.clientX, event.clientY, items);
 }

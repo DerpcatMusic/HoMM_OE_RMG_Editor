@@ -2,10 +2,9 @@ import { GAME_MODES } from "../../../core/rmg/enums.js";
 import type { RmgTemplate } from "../../../core/rmg/rmgTypes.js";
 import type { GlobalSettingsDraft } from "../../state/editorSession.js";
 import { el } from "../../dom.js";
-import { createButton } from "../primitives.js";
 import {
   createCheckbox,
-  createControlRow,
+  createInstantField,
   createNumberInput,
   createOptionalNumberInput,
   createSelect,
@@ -16,6 +15,7 @@ import {
 export function createGlobalSettingsForm(props: { template: RmgTemplate; onApplyGlobalSettings: (draft: GlobalSettingsDraft) => void }): HTMLElement {
   const gameRules = props.template.gameRules ?? {};
   const winConditions = gameRules.winConditions ?? {};
+
   const gameModeInput = createSelect(props.template.gameMode ?? "Classic", GAME_MODES);
   const heroCountMinInput = createNumberInput(gameRules.heroCountMin ?? 5);
   const heroCountMaxInput = createNumberInput(gameRules.heroCountMax ?? 10);
@@ -45,6 +45,41 @@ export function createGlobalSettingsForm(props: { template: RmgTemplate; onApply
   const cityHoldDaysInput = createOptionalNumberInput(winConditions.cityHoldDays);
   const tournamentInput = createCheckbox(winConditions.tournament ?? false);
   const tournamentPointsInput = createOptionalNumberInput(winConditions.tournamentPointsToWin);
+
+  const collectDraft = (): GlobalSettingsDraft => ({
+    gameMode: gameModeInput.value,
+    heroCountMin: Number(heroCountMinInput.value),
+    heroCountMax: Number(heroCountMaxInput.value),
+    heroCountIncrement: Number(heroCountIncrementInput.value),
+    heroHireBan: heroHireBanInput.checked,
+    encounterHoles: encounterHolesInput.checked,
+    disableFactionLaws: disableFactionLawsInput.checked,
+    disableMagicGuild: disableMagicGuildInput.checked,
+    disableMagicCustomLearning: disableMagicCustomLearningInput.checked,
+    tournamentRules: tournamentRulesInput.checked,
+    factionLawsExpModifier: optionalNumber(factionLawsExpModifierInput),
+    astrologyExpModifier: optionalNumber(astrologyExpModifierInput),
+    classic: classicInput.checked,
+    desertion: desertionInput.checked,
+    desertionDay: optionalNumber(desertionDayInput),
+    desertionValue: optionalNumber(desertionValueInput),
+    heroLighting: heroLightingInput.checked,
+    heroLightingDay: optionalNumber(heroLightingDayInput),
+    lostStartCity: lostStartCityInput.checked,
+    lostStartCityDay: optionalNumber(lostStartCityDayInput),
+    lostStartHero: lostStartHeroInput.checked,
+    gladiatorArena: gladiatorArenaInput.checked,
+    gladiatorArenaDaysDelayStart: optionalNumber(gladiatorDelayInput),
+    gladiatorArenaCountDay: optionalNumber(gladiatorCountInput),
+    championSelectRule: championRuleInput.value,
+    cityHold: cityHoldInput.checked,
+    cityHoldDays: optionalNumber(cityHoldDaysInput),
+    tournament: tournamentInput.checked,
+    tournamentPointsToWin: optionalNumber(tournamentPointsInput),
+  });
+
+  const commit = () => props.onApplyGlobalSettings(collectDraft());
+
   const syncGameModeDefaults = () => {
     const isSingleHero = gameModeInput.value === "SingleHero";
     if (isSingleHero) {
@@ -62,71 +97,41 @@ export function createGlobalSettingsForm(props: { template: RmgTemplate; onApply
   gameModeInput.addEventListener("change", syncGameModeDefaults);
   syncGameModeDefaults();
 
+  const num = (input: HTMLInputElement) => String(optionalNumber(input) ?? "");
+  const str = (input: HTMLInputElement) => input.value;
+
   return el("div", { className: "inspector-body" }, [
     el("h3", { text: "Game" }),
-    createControlRow("Mode", gameModeInput),
-    el("p", { className: "conditional-note", text: "SingleHero mode forces one hero, bans hero hiring, disables encounter holes, and enables lost-start-hero." }),
-    createControlRow("Hero min", heroCountMinInput),
-    createControlRow("Hero max", heroCountMaxInput),
-    createControlRow("Hero step", heroCountIncrementInput),
-    createControlRow("Hero hire ban", heroHireBanInput),
-    createControlRow("Encounter holes", encounterHolesInput),
-    createControlRow("Disable faction laws", disableFactionLawsInput),
-    createControlRow("Disable magic guild", disableMagicGuildInput),
-    createControlRow("Disable magic learning", disableMagicCustomLearningInput),
-    createControlRow("Tournament rules", tournamentRulesInput),
-    createControlRow("Faction exp mod", factionLawsExpModifierInput),
-    createControlRow("Astrology exp mod", astrologyExpModifierInput),
+    createInstantField("Mode", gameModeInput, { initialValue: props.template.gameMode ?? "Classic", onCommit: () => commit(), onReset: () => { gameModeInput.value = props.template.gameMode ?? "Classic"; syncGameModeDefaults(); commit(); } }),
+    el("p", { className: "conditional-note", text: "SingleHero forces one hero, bans hiring, disables encounter holes." }),
+    createInstantField("Hero min", heroCountMinInput, { initialValue: String(gameRules.heroCountMin ?? 5), onCommit: () => commit(), onReset: () => { heroCountMinInput.value = String(gameRules.heroCountMin ?? 5); commit(); } }),
+    createInstantField("Hero max", heroCountMaxInput, { initialValue: String(gameRules.heroCountMax ?? 10), onCommit: () => commit(), onReset: () => { heroCountMaxInput.value = String(gameRules.heroCountMax ?? 10); commit(); } }),
+    createInstantField("Hero step", heroCountIncrementInput, { initialValue: String(gameRules.heroCountIncrement ?? 1), onCommit: () => commit(), onReset: () => { heroCountIncrementInput.value = String(gameRules.heroCountIncrement ?? 1); commit(); } }),
+    createInstantField("Hero hire ban", heroHireBanInput, { initialValue: String(gameRules.heroHireBan ?? false), onCommit: () => commit(), onReset: () => { heroHireBanInput.checked = gameRules.heroHireBan ?? false; commit(); } }),
+    createInstantField("Encounter holes", encounterHolesInput, { initialValue: String(gameRules.encounterHoles ?? true), onCommit: () => commit(), onReset: () => { encounterHolesInput.checked = gameRules.encounterHoles ?? true; commit(); } }),
+    createInstantField("Disable faction laws", disableFactionLawsInput, { initialValue: String(gameRules.disableFactionLaws ?? false), onCommit: () => commit(), onReset: () => { disableFactionLawsInput.checked = gameRules.disableFactionLaws ?? false; commit(); } }),
+    createInstantField("Disable magic guild", disableMagicGuildInput, { initialValue: String(gameRules.disableMagicGuild ?? false), onCommit: () => commit(), onReset: () => { disableMagicGuildInput.checked = gameRules.disableMagicGuild ?? false; commit(); } }),
+    createInstantField("Disable magic learning", disableMagicCustomLearningInput, { initialValue: String(gameRules.disableMagicCustomLearning ?? false), onCommit: () => commit(), onReset: () => { disableMagicCustomLearningInput.checked = gameRules.disableMagicCustomLearning ?? false; commit(); } }),
+    createInstantField("Tournament rules", tournamentRulesInput, { initialValue: String(gameRules.tournamentRules ?? false), onCommit: () => commit(), onReset: () => { tournamentRulesInput.checked = gameRules.tournamentRules ?? false; commit(); } }),
+    createInstantField("Faction exp mod", factionLawsExpModifierInput, { initialValue: num(factionLawsExpModifierInput), onCommit: () => commit(), onReset: () => { factionLawsExpModifierInput.value = num(factionLawsExpModifierInput); commit(); } }),
+    createInstantField("Astrology exp mod", astrologyExpModifierInput, { initialValue: num(astrologyExpModifierInput), onCommit: () => commit(), onReset: () => { astrologyExpModifierInput.value = num(astrologyExpModifierInput); commit(); } }),
     el("h3", { text: "Win conditions" }),
-    createControlRow("Classic", classicInput),
-    createControlRow("Desertion", desertionInput),
-    createControlRow("Desertion day", desertionDayInput),
-    createControlRow("Desertion value", desertionValueInput),
-    createControlRow("Hero lighting", heroLightingInput),
-    createControlRow("Hero lighting day", heroLightingDayInput),
-    createControlRow("Lost start city", lostStartCityInput),
-    createControlRow("Lost city day", lostStartCityDayInput),
-    createControlRow("Lost start hero", lostStartHeroInput),
-    createControlRow("Gladiator arena", gladiatorArenaInput),
-    createControlRow("Gladiator delay", gladiatorDelayInput),
-    createControlRow("Gladiator days", gladiatorCountInput),
-    createControlRow("Champion rule", championRuleInput),
-    createControlRow("City hold", cityHoldInput),
-    createControlRow("City hold days", cityHoldDaysInput),
-    createControlRow("Tournament", tournamentInput),
-    createControlRow("Tournament points", tournamentPointsInput),
-    el("div", { className: "inspector-actions" }, [
-      createButton("Apply global settings", { variant: "primary", icon: "check", onClick: () => props.onApplyGlobalSettings({
-        gameMode: gameModeInput.value,
-        heroCountMin: Number(heroCountMinInput.value),
-        heroCountMax: Number(heroCountMaxInput.value),
-        heroCountIncrement: Number(heroCountIncrementInput.value),
-        heroHireBan: heroHireBanInput.checked,
-        encounterHoles: encounterHolesInput.checked,
-        disableFactionLaws: disableFactionLawsInput.checked,
-        disableMagicGuild: disableMagicGuildInput.checked,
-        disableMagicCustomLearning: disableMagicCustomLearningInput.checked,
-        tournamentRules: tournamentRulesInput.checked,
-        factionLawsExpModifier: optionalNumber(factionLawsExpModifierInput),
-        astrologyExpModifier: optionalNumber(astrologyExpModifierInput),
-        classic: classicInput.checked,
-        desertion: desertionInput.checked,
-        desertionDay: optionalNumber(desertionDayInput),
-        desertionValue: optionalNumber(desertionValueInput),
-        heroLighting: heroLightingInput.checked,
-        heroLightingDay: optionalNumber(heroLightingDayInput),
-        lostStartCity: lostStartCityInput.checked,
-        lostStartCityDay: optionalNumber(lostStartCityDayInput),
-        lostStartHero: lostStartHeroInput.checked,
-        gladiatorArena: gladiatorArenaInput.checked,
-        gladiatorArenaDaysDelayStart: optionalNumber(gladiatorDelayInput),
-        gladiatorArenaCountDay: optionalNumber(gladiatorCountInput),
-        championSelectRule: championRuleInput.value,
-        cityHold: cityHoldInput.checked,
-        cityHoldDays: optionalNumber(cityHoldDaysInput),
-        tournament: tournamentInput.checked,
-        tournamentPointsToWin: optionalNumber(tournamentPointsInput),
-      })}),
-    ]),
+    createInstantField("Classic", classicInput, { initialValue: String(winConditions.classic ?? true), onCommit: () => commit(), onReset: () => { classicInput.checked = winConditions.classic ?? true; commit(); } }),
+    createInstantField("Desertion", desertionInput, { initialValue: String(winConditions.desertion ?? false), onCommit: () => commit(), onReset: () => { desertionInput.checked = winConditions.desertion ?? false; commit(); } }),
+    createInstantField("Desertion day", desertionDayInput, { initialValue: num(desertionDayInput), onCommit: () => commit(), onReset: () => { desertionDayInput.value = num(desertionDayInput); commit(); } }),
+    createInstantField("Desertion value", desertionValueInput, { initialValue: num(desertionValueInput), onCommit: () => commit(), onReset: () => { desertionValueInput.value = num(desertionValueInput); commit(); } }),
+    createInstantField("Hero lighting", heroLightingInput, { initialValue: String(winConditions.heroLighting ?? false), onCommit: () => commit(), onReset: () => { heroLightingInput.checked = winConditions.heroLighting ?? false; commit(); } }),
+    createInstantField("Hero lighting day", heroLightingDayInput, { initialValue: num(heroLightingDayInput), onCommit: () => commit(), onReset: () => { heroLightingDayInput.value = num(heroLightingDayInput); commit(); } }),
+    createInstantField("Lost start city", lostStartCityInput, { initialValue: String(winConditions.lostStartCity ?? false), onCommit: () => commit(), onReset: () => { lostStartCityInput.checked = winConditions.lostStartCity ?? false; commit(); } }),
+    createInstantField("Lost city day", lostStartCityDayInput, { initialValue: num(lostStartCityDayInput), onCommit: () => commit(), onReset: () => { lostStartCityDayInput.value = num(lostStartCityDayInput); commit(); } }),
+    createInstantField("Lost start hero", lostStartHeroInput, { initialValue: String(winConditions.lostStartHero ?? false), onCommit: () => commit(), onReset: () => { lostStartHeroInput.checked = winConditions.lostStartHero ?? false; commit(); } }),
+    createInstantField("Gladiator arena", gladiatorArenaInput, { initialValue: String(winConditions.gladiatorArena ?? false), onCommit: () => commit(), onReset: () => { gladiatorArenaInput.checked = winConditions.gladiatorArena ?? false; commit(); } }),
+    createInstantField("Gladiator delay", gladiatorDelayInput, { initialValue: num(gladiatorDelayInput), onCommit: () => commit(), onReset: () => { gladiatorDelayInput.value = num(gladiatorDelayInput); commit(); } }),
+    createInstantField("Gladiator days", gladiatorCountInput, { initialValue: num(gladiatorCountInput), onCommit: () => commit(), onReset: () => { gladiatorCountInput.value = num(gladiatorCountInput); commit(); } }),
+    createInstantField("Champion rule", championRuleInput, { initialValue: str(championRuleInput), onCommit: () => commit(), onReset: () => { championRuleInput.value = str(championRuleInput); commit(); } }),
+    createInstantField("City hold", cityHoldInput, { initialValue: String(winConditions.cityHold ?? false), onCommit: () => commit(), onReset: () => { cityHoldInput.checked = winConditions.cityHold ?? false; commit(); } }),
+    createInstantField("City hold days", cityHoldDaysInput, { initialValue: num(cityHoldDaysInput), onCommit: () => commit(), onReset: () => { cityHoldDaysInput.value = num(cityHoldDaysInput); commit(); } }),
+    createInstantField("Tournament", tournamentInput, { initialValue: String(winConditions.tournament ?? false), onCommit: () => commit(), onReset: () => { tournamentInput.checked = winConditions.tournament ?? false; commit(); } }),
+    createInstantField("Tournament points", tournamentPointsInput, { initialValue: num(tournamentPointsInput), onCommit: () => commit(), onReset: () => { tournamentPointsInput.value = num(tournamentPointsInput); commit(); } }),
   ]);
 }

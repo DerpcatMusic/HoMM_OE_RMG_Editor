@@ -1,27 +1,28 @@
-import { el } from "../dom.js";
 import type { RmgTemplate } from "../../core/rmg/rmgTypes.js";
-import type { GeneralNavItem, ShellPlayerItem, ShellZoneItem } from "../data/shellData.js";
+import { el } from "../dom.js";
+import type { ShellPlayerItem, ShellZoneItem } from "../data/shellData.js";
 import type { GlobalSettingsDraft } from "../state/editorSession.js";
-import { formatFileSize, type RememberedCoreArchive } from "../state/browserFiles.js";
 import { createButton } from "./primitives.js";
-import { createGlobalSettingsForm } from "./inspector.js";
+import { createGlobalSettingsForm } from "./inspector/globalSettingsPanel.js";
+
+export interface SidebarSectionFlex {
+  settings: number;
+  zones: number;
+  players: number;
+}
 
 export interface SidebarProps {
   template: RmgTemplate;
-  generalItems: readonly GeneralNavItem[];
   zones: readonly ShellZoneItem[];
   players: readonly ShellPlayerItem[];
   focusedPlayer: string | undefined;
   validationErrors: readonly string[];
-  activeGeneralId: string;
   selectedZoneId: string;
   statusMessage: string;
-  coreArchiveAttached: boolean;
-  rememberedCoreArchive: RememberedCoreArchive | undefined;
+  sectionFlex: SidebarSectionFlex;
+  onSectionResize: (section: keyof SidebarSectionFlex, flex: number) => void;
   onAddZone: () => void;
-  onAddCoreArchive: () => void;
   onApplyGlobalSettings: (draft: GlobalSettingsDraft) => void;
-  onSelectGeneral: (item: GeneralNavItem) => void;
   onSelectZone: (zone: ShellZoneItem) => void;
   onAddPlayer: () => void;
   onRemovePlayer: (playerId: string) => void;
@@ -30,92 +31,78 @@ export interface SidebarProps {
 
 export function createSidebar(props: SidebarProps): HTMLElement {
   return el("aside", { className: "shell-sidebar", attrs: { "aria-label": "Template navigation" } }, [
-    el("div", { className: "sidebar-title" }, [
-      el("strong", { text: "Template" }),
-      el("span", { text: `${props.zones.length} zones / ${props.template.gameMode ?? "classic"}` }),
+    el("div", { className: "sidebar-section sidebar-section--settings", attrs: { style: `flex:${props.sectionFlex.settings}` } }, [
+      createGlobalSettingsForm({
+        template: props.template,
+        onApplyGlobalSettings: props.onApplyGlobalSettings,
+      }),
     ]),
-    el("div", { className: "sidebar-split" }, [
-      el("section", { className: "nav-block" }, [
-        el("div", { className: "nav-list", attrs: { "aria-label": "Template sections" } }, props.generalItems.map((item) => createGeneralItem(item, props))),
-        createGameDataPanel(props),
+    createSidebarDivider("settings-zones", props),
+    el("div", { className: "sidebar-section sidebar-section--zones", attrs: { style: `flex:${props.sectionFlex.zones}` } }, [
+      el("div", { className: "nav-heading-row" }, [
+        el("h2", { text: "Zones" }),
+        createButton("Add zone", { variant: "secondary", icon: "add", iconOnly: true, onClick: props.onAddZone }),
       ]),
-      el("section", { className: "nav-block" }, [
-        el("div", { className: "nav-heading-row" }, [
-          el("h2", { text: "Players" }),
-          createButton("Add", { variant: "secondary", icon: "person_add", iconOnly: true, onClick: props.onAddPlayer }),
-        ]),
-        el("div", { className: "nav-list", attrs: { "aria-label": "Players" } }, props.players.map((player) => createPlayerItem(player, props))),
-        createPlayerStatus(props),
+      el("div", { className: "nav-list", attrs: { "aria-label": "Zones" } }, props.zones.map((zone) => createZoneItem(zone, props))),
+      el("p", { className: "sidebar-status", text: props.statusMessage }),
+    ]),
+    createSidebarDivider("zones-players", props),
+    el("div", { className: "sidebar-section sidebar-section--players", attrs: { style: `flex:${props.sectionFlex.players}` } }, [
+      el("div", { className: "nav-heading-row" }, [
+        el("h2", { text: "Players" }),
+        createButton("Add", { variant: "secondary", icon: "person_add", iconOnly: true, onClick: props.onAddPlayer }),
       ]),
-      el("section", { className: "nav-block" }, [
-        el("div", { className: "nav-heading-row" }, [
-          el("h2", { text: "Zones" }),
-          createButton("Add zone", { variant: "secondary", icon: "add", iconOnly: true, onClick: props.onAddZone }),
-        ]),
-        el("div", { className: "nav-list", attrs: { "aria-label": "Zones" } }, props.zones.map((zone) => createZoneItem(zone, props))),
-        el("p", { className: "sidebar-status", text: props.statusMessage }),
-      ]),
+      el("div", { className: "nav-list", attrs: { "aria-label": "Players" } }, props.players.map((player) => createPlayerItem(player, props))),
+      createPlayerStatus(props),
     ]),
     createValidationMarquee(props),
   ]);
 }
 
-function createGameDataPanel(props: SidebarProps): HTMLElement {
-  if (props.activeGeneralId === "game" || props.activeGeneralId === "win") {
-    return el("div", { className: "sidebar-global-body" }, [
-      createCoreArchiveReminder(props),
-      createGlobalSettingsForm({
-        template: props.template,
-        onApplyGlobalSettings: props.onApplyGlobalSettings,
-      }),
-    ]);
-  }
-  if (props.activeGeneralId === "pools") {
-    return el("div", { className: "sidebar-global-body" }, [
-      createCoreArchiveReminder(props),
-      el("p", { className: "conditional-note", text: "Content pool editor is in the right inspector Pools tab. Zone pool pickers use Core.zip pool IDs here after loading Core.zip." }),
-    ]);
-  }
-  return el("div", { className: "sidebar-global-body" }, [
-    createCoreArchiveReminder(props),
-    el("p", { className: "conditional-note", text: "Template-level data lives here. Pick Game settings or Win conditions to edit game mode, hero rules, and win conditions." }),
-  ]);
+function createSidebarDivider(id: string, props: SidebarProps): HTMLElement {
+  const handle = el("div", { className: "sidebar-divider", attrs: { role: "separator", "aria-label": "Resize section" } });
+  handle.dataset.dividerId = id;
+  handle.addEventListener("pointerdown", (event) => startSidebarResize(event, handle, id, props));
+  return handle;
 }
 
-function createCoreArchiveReminder(props: SidebarProps): HTMLElement {
-  if (props.coreArchiveAttached) {
-    return el("p", { className: "conditional-note", text: "Core.zip loaded for searchable catalogs." });
-  }
-  const remembered = props.rememberedCoreArchive;
-  if (!remembered) {
-    return el("div", { className: "sidebar-core-reminder" }, [
-      el("p", { className: "conditional-note", text: "Core.zip not loaded. Catalog-backed dropdowns need it." }),
-      createButton("Add Core.zip", { variant: "secondary", icon: "package_2", onClick: props.onAddCoreArchive }),
-    ]);
-  }
-  return el("div", { className: "sidebar-core-reminder" }, [
-    el("p", { className: "conditional-note", text: `Last Core.zip: ${remembered.name} (${formatFileSize(remembered.size)}). Select it again after reload.` }),
-    createButton("Load last Core.zip", { variant: "secondary", icon: "package_2", onClick: props.onAddCoreArchive }),
-  ]);
-}
+const DIVIDER_SECTIONS: Record<string, [keyof SidebarSectionFlex, keyof SidebarSectionFlex]> = {
+  "settings-zones": ["settings", "zones"],
+  "zones-players": ["zones", "players"],
+};
 
-function createGeneralItem(item: GeneralNavItem, props: SidebarProps): HTMLElement {
-  const isActive = item.id === props.activeGeneralId;
-  return el("button", {
-    className: isActive ? "nav-item is-active" : "nav-item",
-    attrs: {
-      type: "button",
-      "aria-current": isActive ? "page" : undefined,
-      title: item.detail,
-    },
-    onClick: () => props.onSelectGeneral(item),
-  }, [
-    el("span", { className: "material-symbols-outlined nav-item-icon", text: item.icon, attrs: { "aria-hidden": "true" } }),
-    el("span", { className: "nav-item-text" }, [
-      el("strong", { text: item.label }),
-      el("span", { text: item.detail }),
-    ]),
-  ]);
+function startSidebarResize(event: PointerEvent, handle: HTMLElement, dividerId: string, props: SidebarProps): void {
+  event.preventDefault();
+  const prev = handle.previousElementSibling as HTMLElement | null;
+  const next = handle.nextElementSibling as HTMLElement | null;
+  if (!prev || !next) return;
+  const sections = DIVIDER_SECTIONS[dividerId];
+  if (!sections) return;
+  const startY = event.clientY;
+  const prevStart = prev.getBoundingClientRect().height;
+  const nextStart = next.getBoundingClientRect().height;
+  const prevFlex = props.sectionFlex[sections[0]];
+  const nextFlex = props.sectionFlex[sections[1]];
+  const totalFlex = prevFlex + nextFlex;
+  const totalHeight = prevStart + nextStart;
+
+  const onMove = (moveEvent: PointerEvent) => {
+    const delta = moveEvent.clientY - startY;
+    const newPrevHeight = Math.max(40, prevStart + delta);
+    const newNextHeight = Math.max(40, nextStart - delta);
+    const newPrevFlex = (newPrevHeight / totalHeight) * totalFlex;
+    const newNextFlex = (newNextHeight / totalHeight) * totalFlex;
+    prev.style.flex = String(newPrevFlex);
+    next.style.flex = String(newNextFlex);
+    props.onSectionResize(sections[0], newPrevFlex);
+    props.onSectionResize(sections[1], newNextFlex);
+  };
+  const onUp = () => {
+    window.removeEventListener("pointermove", onMove);
+    window.removeEventListener("pointerup", onUp);
+  };
+  window.addEventListener("pointermove", onMove);
+  window.addEventListener("pointerup", onUp);
 }
 
 function createZoneItem(zone: ShellZoneItem, props: SidebarProps): HTMLElement {
@@ -141,18 +128,19 @@ function createZoneItem(zone: ShellZoneItem, props: SidebarProps): HTMLElement {
 function createPlayerItem(player: ShellPlayerItem, props: SidebarProps): HTMLElement {
   const isFocused = props.focusedPlayer === player.id;
   return el("button", {
-    className: isFocused ? "nav-item is-active" : "nav-item",
+    className: isFocused ? "nav-item is-active player-nav-item" : "nav-item player-nav-item",
     attrs: {
       type: "button",
       "aria-current": isFocused ? "page" : undefined,
       title: `${player.label} owns ${player.zoneCount} zone${player.zoneCount === 1 ? "" : "s"}`,
+      style: `--player-color:${player.color}`,
     },
     onClick: () => props.onFocusPlayer(isFocused ? undefined : player.id),
   }, [
-    el("span", { className: "player-color-dot", attrs: { "aria-hidden": "true", style: `background:${player.color}` } }),
+    el("span", { className: "player-color-strip", attrs: { "aria-hidden": "true" } }),
     el("span", { className: "nav-item-text" }, [
       el("strong", { text: player.label }),
-      el("span", { text: `${player.zoneCount} zone${player.zoneCount === 1 ? "" : "s"}` }),
+      el("span", { text: `${player.zoneCount}z` }),
     ]),
     createButton("Remove", { variant: "secondary", icon: "person_remove", iconOnly: true, onClick: (event) => {
       event.stopPropagation();

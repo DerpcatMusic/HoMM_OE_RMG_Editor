@@ -30,8 +30,8 @@
   min-height: 0;
   grid-column: 1;
   grid-row: 1;
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  display: flex;
+  flex-direction: column;
   border-right: var(--line-strong) solid var(--color-line-strong);
   overflow: hidden;
   container-type: inline-size;

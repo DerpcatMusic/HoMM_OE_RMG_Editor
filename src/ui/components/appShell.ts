@@ -1,16 +1,16 @@
 import { el } from "../dom.js";
 import {
-  getGeneralNavItems,
   getSectionFields,
   getShellMetrics,
   getShellSections,
 } from "../data/shellData.js";
 import { projectTemplateToShellData } from "../data/templateProjection.js";
 import type { PlayerRef } from "../../core/rmg/enums.js";
-import type { GeneralNavItem, ShellCatalogOptions, ShellZoneItem } from "../data/shellData.js";
+import type { ShellCatalogOptions, ShellZoneItem } from "../data/shellData.js";
 import {
   formatFileSize,
   loadRememberedCoreArchive,
+  pickCoreArchiveFile,
   type RememberedCoreArchive,
 } from "../state/browserFiles.js";
 import { attachCoreArchiveProgram, loadTemplateProgram, saveTemplateProgram } from "../effect/editorPrograms.js";
@@ -28,10 +28,13 @@ import {
   canRedoSession,
   canUndoSession,
   computePlayerValidationErrors,
+  deleteConnectionByName,
+  deleteZoneByName,
   moveZoneInSession,
   moveZoneObjectInSession,
   createInitialEditorSession,
   focusPlayer,
+  reassignZoneOwner,
   redoSession,
   removePlayerFromSession,
   removeSelectedZoneFromSession,
@@ -40,8 +43,10 @@ import {
   setSessionMessage,
   setSessionStatusMessage,
   undoSession,
+  updateConnectionTypeByName,
   updateGlobalSettingsInSession,
   updateContentPoolGroupInSession,
+  updateSelectedConnectionInSession,
   updateSelectedZoneMainObjectInSession,
   updateSelectedZoneRoadInSession,
   updateSelectedZoneInSession,
@@ -92,19 +97,14 @@ const DEFAULT_SHELL_PANEL_LAYOUT: ShellPanelLayout = {
 
 export function mountAppShell(root: HTMLElement): void {
   const sections = getShellSections();
-  const generalItems = getGeneralNavItems();
-  const initialGeneralItem = generalItems[0];
-  if (!initialGeneralItem) {
-    throw new Error("Shell data did not provide default navigation items.");
-  }
   let session = createInitialEditorSession();
-  let activeGeneralItem: GeneralNavItem = initialGeneralItem;
   let workspaceTab: WorkspaceTab = "canvas";
-  let inspectorTab: InspectorTab = "objects";
+  let inspectorTab: InspectorTab = "zone";
   let rightDockTab: RightDockTab = "inspector";
   let activeContentPoolName = "";
   let rememberedCoreArchive: RememberedCoreArchive | undefined = loadRememberedCoreArchive();
   let shellPanelLayout = loadShellPanelLayout();
+  let sidebarSections = { settings: 6, zones: 2.5, players: 1.5 };
 
   const render = () => {
     const projection = projectTemplateToShellData(
@@ -118,7 +118,7 @@ export function mountAppShell(root: HTMLElement): void {
     const selectedZone = projection.selectedZone ?? EMPTY_ZONE;
     const selectedConnection = projection.selectedConnection;
     const catalogOptions = getCatalogOptions(session);
-    const activeSection = sections.find((section) => section.id === activeGeneralItem.sectionId) ?? sections[0];
+    const activeSection = sections[0];
     if (!activeSection) {
       throw new Error("Editor schema did not provide sections.");
     }
@@ -131,39 +131,28 @@ export function mountAppShell(root: HTMLElement): void {
     const shellBody = el("div", { className: "shell-body" }, [
       createSidebar({
         template: session.template,
-        generalItems,
         zones: projection.zones,
         players: projection.players,
         focusedPlayer: session.focusedPlayer,
         validationErrors,
-        activeGeneralId: activeGeneralItem.id,
         selectedZoneId: selectedZone.id,
         statusMessage: session.lastMessage,
-        coreArchiveAttached: session.coreArchive?.catalogSummary !== undefined,
-        rememberedCoreArchive,
+        sectionFlex: sidebarSections,
+        onSectionResize: (section, flex) => {
+          sidebarSections = { ...sidebarSections, [section]: flex };
+        },
         onAddZone: () => {
           session = addZoneToSession(session);
-          workspaceTab = "selection";
-          inspectorTab = "objects";
+          inspectorTab = "zone";
           render();
-        },
-        onAddCoreArchive: () => {
-          void addCoreArchive();
         },
         onApplyGlobalSettings: (draft) => {
           session = updateGlobalSettingsInSession(session, draft);
-          render();
-        },
-        onSelectGeneral: (item: GeneralNavItem) => {
-          activeGeneralItem = item;
-          inspectorTab = item.id === "pools" ? "pools" : "objects";
-          rightDockTab = "inspector";
-          render();
+          requestAnimationFrame(render);
         },
         onSelectZone: (zone: ShellZoneItem) => {
           session = selectZone(session, zone.label);
-          workspaceTab = "selection";
-          inspectorTab = "objects";
+          inspectorTab = "zone";
           rightDockTab = "inspector";
           render();
         },
@@ -187,8 +176,6 @@ export function mountAppShell(root: HTMLElement): void {
         shellPanelLayout = nextLayout;
       }),
       createWorkspace({
-        section: activeSection,
-        fields,
         zones: projection.zones,
         connections: projection.connections,
         catalogOptions,
@@ -202,17 +189,19 @@ export function mountAppShell(root: HTMLElement): void {
         },
         onSelectZone: (zone) => {
           session = selectZone(session, zone.label);
-          inspectorTab = "objects";
+          inspectorTab = "zone";
           rightDockTab = "inspector";
           render();
         },
         onSelectConnection: (connection) => {
           session = selectConnection(session, connection.id);
+          inspectorTab = "connection";
+          rightDockTab = "inspector";
           render();
         },
         onMoveZone: (zone, position) => {
           session = moveZoneInSession(selectZone(session, zone.label), zone.label, position);
-          inspectorTab = "objects";
+          inspectorTab = "zone";
           rightDockTab = "inspector";
           render();
         },
@@ -227,14 +216,7 @@ export function mountAppShell(root: HTMLElement): void {
         },
         onAddZone: () => {
           session = addZoneToSession(session);
-          workspaceTab = "selection";
-          inspectorTab = "objects";
-          render();
-        },
-        onRemoveSelectedZone: () => {
-          session = removeSelectedZoneFromSession(session);
-          workspaceTab = "canvas";
-          inspectorTab = "objects";
+          inspectorTab = "zone";
           render();
         },
         onAddConnection: () => {
@@ -253,8 +235,20 @@ export function mountAppShell(root: HTMLElement): void {
           workspaceTab = "zoneEdit";
           render();
         },
-        onApplyZoneChanges: (draft) => {
-          session = updateSelectedZoneInSession(session, draft);
+        onDeleteZone: (zone) => {
+          session = deleteZoneByName(session, zone.label);
+          render();
+        },
+        onDeleteConnection: (connection) => {
+          session = deleteConnectionByName(session, connection.id);
+          render();
+        },
+        onReassignZoneOwner: (zone, owner) => {
+          session = reassignZoneOwner(session, zone.label, owner);
+          render();
+        },
+        onChangeConnectionType: (connection, connectionType) => {
+          session = updateConnectionTypeByName(session, connection.id, connectionType);
           render();
         },
       }),
@@ -269,11 +263,14 @@ export function mountAppShell(root: HTMLElement): void {
         },
         inspector: createInspector({
           template: session.template,
+          section: activeSection,
           fields,
           selectedZone,
+          selectedConnection,
           zones: projection.zones,
           connections: projection.connections,
           catalogOptions,
+          validationErrors,
           activeContentPoolName,
           activeTab: inspectorTab,
           onTabChange: (tab) => {
@@ -285,10 +282,6 @@ export function mountAppShell(root: HTMLElement): void {
             activeContentPoolName = poolName;
             inspectorTab = "pools";
             rightDockTab = "inspector";
-            render();
-          },
-          onApplyGlobalSettings: (draft) => {
-            session = updateGlobalSettingsInSession(session, draft);
             render();
           },
           onAddContentPool: (draft) => {
@@ -310,18 +303,26 @@ export function mountAppShell(root: HTMLElement): void {
             rightDockTab = "inspector";
             render();
           },
+          onApplyConnectionSettings: (draft) => {
+            session = updateSelectedConnectionInSession(session, draft);
+            requestAnimationFrame(render);
+          },
           onApplyMainObjectSettings: (draft) => {
             session = updateSelectedZoneMainObjectInSession(session, draft);
-            inspectorTab = "objects";
-            rightDockTab = "inspector";
-            workspaceTab = "zoneEdit";
-            render();
+            requestAnimationFrame(render);
           },
           onApplyRoadSettings: (draft) => {
             session = updateSelectedZoneRoadInSession(session, draft);
-            inspectorTab = "roads";
-            rightDockTab = "inspector";
-            workspaceTab = "zoneEdit";
+            requestAnimationFrame(render);
+          },
+          onApplyZoneChanges: (draft) => {
+            session = updateSelectedZoneInSession(session, draft);
+            requestAnimationFrame(render);
+          },
+          onRemoveSelectedZone: () => {
+            session = removeSelectedZoneFromSession(session);
+            workspaceTab = "canvas";
+            inspectorTab = "zone";
             render();
           },
         }),
@@ -376,7 +377,7 @@ export function mountAppShell(root: HTMLElement): void {
     session = createInitialEditorSession();
     activeContentPoolName = "";
     workspaceTab = "canvas";
-    inspectorTab = "objects";
+    inspectorTab = "zone";
     rightDockTab = "inspector";
     render();
   };
@@ -393,7 +394,7 @@ export function mountAppShell(root: HTMLElement): void {
         session = nextSession;
         activeContentPoolName = "";
         workspaceTab = "canvas";
-        inspectorTab = "objects";
+        inspectorTab = "zone";
         rightDockTab = "inspector";
       })
       .catch((error: unknown) => {
@@ -413,11 +414,10 @@ export function mountAppShell(root: HTMLElement): void {
         render();
       });
   };
-
-  const addCoreArchive = async () => {
-    session = setSessionStatusMessage(session, "Parsing Core.zip catalogs.");
+  const loadCoreArchiveFile = async (file: File) => {
+    session = setSessionStatusMessage(session, `Parsing ${file.name}...`);
     render();
-    await runUiEffect(attachCoreArchiveProgram(session))
+    await runUiEffect(attachCoreArchiveProgram(session, file))
       .then((nextSession) => {
         if (nextSession) {
           session = nextSession;
@@ -429,6 +429,15 @@ export function mountAppShell(root: HTMLElement): void {
       });
     render();
   };
+
+  const addCoreArchive = async () => {
+    const file = await pickCoreArchiveFile();
+    if (file) {
+      await loadCoreArchiveFile(file);
+    }
+  };
+
+  showCoreArchiveModal(root, addCoreArchive, loadCoreArchiveFile);
 
   render();
 }
@@ -614,4 +623,65 @@ function formatCoreArchiveLabel(session: { coreArchive: { name: string; size: nu
   return summary
     ? `${session.coreArchive.name} (${summary.contentPools}p / ${summary.rmgContent}c)`
     : session.coreArchive.name;
+}
+
+function showCoreArchiveModal(
+  root: HTMLElement,
+  onPickFile: () => void,
+  onDropFile: (file: File) => void,
+): void {
+  const overlay = el("div", { className: "modal-overlay" });
+  const dropZone = el("div", { className: "modal-dropzone" }, [
+    el("span", { className: "material-symbols-outlined modal-icon", text: "folder_zip", attrs: { "aria-hidden": "true" } }),
+    el("h2", { text: "Load Core.zip" }),
+    el("p", { text: "Drag and drop your Core.zip file here, or click to browse." }),
+    el("p", { className: "modal-hint", text: "The core archive contains game data needed to edit templates." }),
+  ]);
+  const modal = el("div", { className: "modal-dialog" }, [dropZone]);
+  overlay.append(modal);
+
+  let dragCounter = 0;
+
+  const handleFile = (file: File) => {
+    if (file.name.endsWith(".zip") || file.type === "application/zip" || file.type === "application/x-zip-compressed") {
+      overlay.remove();
+      onDropFile(file);
+    }
+  };
+
+  dropZone.addEventListener("click", async () => {
+    const file = await pickCoreArchiveFile();
+    if (file) {
+      overlay.remove();
+      onDropFile(file);
+    }
+  });
+
+  overlay.addEventListener("dragenter", (event) => {
+    event.preventDefault();
+    dragCounter++;
+    dropZone.classList.add("is-dragover");
+  });
+  overlay.addEventListener("dragleave", (event) => {
+    event.preventDefault();
+    dragCounter--;
+    if (dragCounter <= 0) {
+      dragCounter = 0;
+      dropZone.classList.remove("is-dragover");
+    }
+  });
+  overlay.addEventListener("dragover", (event) => {
+    event.preventDefault();
+  });
+  overlay.addEventListener("drop", (event) => {
+    event.preventDefault();
+    dragCounter = 0;
+    dropZone.classList.remove("is-dragover");
+    const file = event.dataTransfer?.files[0];
+    if (file) {
+      handleFile(file);
+    }
+  });
+
+  root.append(overlay);
 }

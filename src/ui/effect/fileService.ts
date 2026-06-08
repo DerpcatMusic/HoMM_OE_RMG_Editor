@@ -1,5 +1,5 @@
 import { Effect } from "effect";
-import { downloadTextFile, pickCoreArchiveFile, pickTemplateFile } from "../state/browserFiles.js";
+import { pickCoreArchiveFile, pickTemplateFile, saveTextFile } from "../state/browserFiles.js";
 import type { EditorSession } from "../state/editorSession.js";
 import { getSessionSaveFileName, serializeSessionTemplate } from "../state/editorSession.js";
 import { TemplateFileError } from "./errors.js";
@@ -22,8 +22,8 @@ export function readFileTextEffect(file: File): Effect.Effect<string, TemplateFi
 }
 
 export function downloadSessionTemplateEffect(session: EditorSession): Effect.Effect<void, TemplateFileError, never> {
-  return Effect.try({
-    try: () => downloadTextFile(getSessionSaveFileName(session), serializeSessionTemplate(session), "application/json"),
-    catch: (cause) => new TemplateFileError({ message: "Template download failed.", cause }),
+  return Effect.tryPromise({
+    try: () => saveTextFile(getSessionSaveFileName(session), serializeSessionTemplate(session), "application/json"),
+    catch: (cause) => new TemplateFileError({ message: "Template save failed.", cause }),
   });
 }

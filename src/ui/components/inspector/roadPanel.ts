@@ -2,7 +2,7 @@ import { ROAD_TARGET_TYPES, ROAD_TYPES } from "../../../core/rmg/enums.js";
 import { getRoadTargetConditionalState } from "../../conditionals/roadConditionals.js";
 import type { ShellRoadTargetItem } from "../../data/shellData.js";
 import { el } from "../../dom.js";
-import { createButton, createValueRow } from "../primitives.js";
+import { createValueRow } from "../primitives.js";
 import { applyConditionalState, createControlRow, createSelect, createSelectWithLabels, createTextInput, type LabeledOption } from "./controls.js";
 import type { InspectorProps } from "./types.js";
 
@@ -56,6 +56,20 @@ export function createRoadSettingsForm(props: InspectorProps): HTMLElement {
   toTypeInput.addEventListener("change", renderConditionalState);
   renderConditionalState();
 
+  const commitRoad = () => {
+    const selectedRoad = roads.find((item) => item.id === roadSelect.value) ?? roads[0];
+    if (!selectedRoad) return;
+    props.onApplyRoadSettings({
+      roadIndex: selectedRoad.index,
+      type: typeInput.value,
+      from: { type: fromTypeInput.value, args: fromArgsInput.getArgs() },
+      to: { type: toTypeInput.value, args: toArgsInput.getArgs() },
+    });
+  };
+  for (const input of [typeInput, fromTypeInput, toTypeInput]) {
+    input.addEventListener("change", commitRoad);
+  }
+
   return el("div", { className: "inspector-body" }, [
     el("h3", { text: "Road editor" }),
     createControlRow("Road", roadSelect),
@@ -69,26 +83,6 @@ export function createRoadSettingsForm(props: InspectorProps): HTMLElement {
     toSummary,
     toArgsRow,
     el("p", { className: "conditional-note", text: "Target args are derived from selected-zone context. Crossroads uses no args." }),
-    el("div", { className: "inspector-actions" }, [
-      createButton("Apply road settings", { variant: "primary", icon: "check", onClick: () => {
-        const selectedRoad = roads.find((item) => item.id === roadSelect.value) ?? roads[0];
-        if (!selectedRoad) {
-          return;
-        }
-        props.onApplyRoadSettings({
-          roadIndex: selectedRoad.index,
-          type: typeInput.value,
-          from: {
-            type: fromTypeInput.value,
-            args: fromArgsInput.getArgs(),
-          },
-          to: {
-            type: toTypeInput.value,
-            args: toArgsInput.getArgs(),
-          },
-        });
-      }}),
-    ]),
     el("h3", { text: "Current roads" }),
     ...roads.map((road, index) =>
       createValueRow(`Road ${index + 1}`, `${road.type}: ${road.fromId} -> ${road.toId}`)

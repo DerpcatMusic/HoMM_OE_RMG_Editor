@@ -1046,6 +1046,65 @@ export function removePlayerFromSession(session: EditorSession, playerRef: Playe
   });
 }
 
+export function deleteZoneByName(session: EditorSession, zoneName: string): EditorSession {
+  return applyAction(session, {
+    action: {
+      type: "zone.remove",
+      input: { variantIndex: session.selectedVariantIndex, zone: { zoneName } },
+    },
+    label: `Delete ${zoneName}`,
+  });
+}
+
+export function deleteConnectionByName(session: EditorSession, connectionName: string): EditorSession {
+  return applyAction(session, {
+    action: {
+      type: "connection.remove",
+      input: { variantIndex: session.selectedVariantIndex, connection: { connectionName } },
+    },
+    label: `Delete ${connectionName}`,
+  });
+}
+
+export function updateConnectionTypeByName(session: EditorSession, connectionName: string, connectionType: string): EditorSession {
+  return applyAction(session, {
+    action: {
+      type: "connection.updateType",
+      input: { variantIndex: session.selectedVariantIndex, connection: { connectionName }, connectionType: connectionType as ConnectionType },
+    },
+    label: `Change ${connectionName} to ${connectionType}`,
+  });
+}
+
+export function reassignZoneOwner(session: EditorSession, zoneName: string, newOwner: string): EditorSession {
+  const variant = session.template.variants?.[session.selectedVariantIndex];
+  if (!variant) return session;
+  let nextSession = session;
+  for (const zone of variant.zones ?? []) {
+    if (zone.name !== zoneName) continue;
+    const mainObjects = zone.mainObjects ?? [];
+    for (let i = 0; i < mainObjects.length; i++) {
+      const mo = mainObjects[i];
+      if (!mo || (!mo.spawn && !mo.owner)) continue;
+      const ownerValue = newOwner === "Neutral" ? null : (newOwner as PlayerRef);
+      const spawnValue = mo.spawn ? ownerValue : null;
+      nextSession = applyAction(nextSession, {
+        action: {
+          type: "mainObject.update",
+          input: {
+            variantIndex: session.selectedVariantIndex,
+            zone: { zoneName },
+            mainObject: { mainObjectIndex: i },
+            settings: { owner: ownerValue, spawn: spawnValue },
+          },
+        },
+        label: `Reassign ${zoneName} to ${newOwner}`,
+      });
+    }
+  }
+  return nextSession;
+}
+
 export function computePlayerValidationErrors(template: RmgTemplate, variantIndex: number): string[] {
   const variant = template.variants?.[variantIndex];
   if (!variant) {

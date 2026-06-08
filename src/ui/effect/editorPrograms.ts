@@ -39,9 +39,10 @@ export function saveTemplateProgram(session: EditorSession): Effect.Effect<Edito
 
 export function attachCoreArchiveProgram(
   session: EditorSession,
+  providedFile?: File,
 ): Effect.Effect<EditorSession | undefined, UiEffectError, never> {
   return Effect.gen(function* () {
-    const file = yield* pickCoreArchiveFileEffect;
+    const file = providedFile ?? (yield* pickCoreArchiveFileEffect);
     if (!file) {
       return undefined;
     }

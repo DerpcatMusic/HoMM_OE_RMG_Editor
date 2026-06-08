@@ -2,7 +2,7 @@ import { FACTION_RULE_TYPES, MAIN_OBJECT_PLACEMENTS, MAIN_OBJECT_TYPES, PLAYER_R
 import { getMainObjectConditionalState } from "../../conditionals/mainObjectConditionals.js";
 import type { ShellZoneItem } from "../../data/shellData.js";
 import { el } from "../../dom.js";
-import { createButton, createValueRow } from "../primitives.js";
+import { createValueRow } from "../primitives.js";
 import {
   applyConditionalState,
   createCheckbox,
@@ -140,6 +140,32 @@ export function createMainObjectSettingsForm(props: InspectorProps): HTMLElement
   factionTypeInput.addEventListener("change", renderConditionalState);
   renderConditionalState();
 
+  const collectDraft = () => ({
+    objectIndex: Number(objectSelect.value),
+    type: typeInput.value,
+    spawn: spawnInput.value,
+    owner: ownerInput.value,
+    isKeyObject: keyObjectInput.checked,
+    holdCityWinCon: holdCityInput.checked,
+    placement: placementInput.value,
+    placementArgs: parseStringList(placementArgsInput.value),
+    factionType: factionTypeInput.value,
+    factionArgs: factionArgsInput.getArgs(),
+    enableWeeklyUnitIncrement: weeklyIncrementInput.checked,
+    initialUnitIncrement: optionalNumber(initialIncrementInput),
+    guardChance: optionalNumber(guardChanceInput),
+    guardValue: optionalNumber(guardValueInput),
+    guardWeeklyIncrement: optionalNumber(guardWeeklyInput),
+    guardRandomization: optionalNumber(guardRandomInput),
+    removeGuardIfHasOwner: removeGuardInput.checked,
+    buildingsConstructionSid: constructionSidInput.value,
+    buildingsBanSid: banSidInput.value,
+  });
+  const commit = () => props.onApplyMainObjectSettings(collectDraft());
+  for (const input of [objectSelect, typeInput, spawnInput, ownerInput, keyObjectInput, holdCityInput, placementInput, placementArgsInput, weeklyIncrementInput, initialIncrementInput, guardChanceInput, guardValueInput, guardWeeklyInput, guardRandomInput, removeGuardInput, constructionSidInput, banSidInput]) {
+    input.addEventListener("change", commit);
+  }
+
   return el("div", { className: "inspector-body" }, [
     el("h3", { text: "Main object" }),
     createControlRow("Object", objectSelect),
@@ -157,29 +183,6 @@ export function createMainObjectSettingsForm(props: InspectorProps): HTMLElement
     growthSection,
     guardSection,
     cityBuildingsSection,
-    el("div", { className: "inspector-actions" }, [
-      createButton("Apply main object", { variant: "primary", icon: "check", onClick: () => props.onApplyMainObjectSettings({
-        objectIndex: Number(objectSelect.value),
-        type: typeInput.value,
-        spawn: spawnInput.value,
-        owner: ownerInput.value,
-        isKeyObject: keyObjectInput.checked,
-        holdCityWinCon: holdCityInput.checked,
-        placement: placementInput.value,
-        placementArgs: parseStringList(placementArgsInput.value),
-        factionType: factionTypeInput.value,
-        factionArgs: factionArgsInput.getArgs(),
-        enableWeeklyUnitIncrement: weeklyIncrementInput.checked,
-        initialUnitIncrement: optionalNumber(initialIncrementInput),
-        guardChance: optionalNumber(guardChanceInput),
-        guardValue: optionalNumber(guardValueInput),
-        guardWeeklyIncrement: optionalNumber(guardWeeklyInput),
-        guardRandomization: optionalNumber(guardRandomInput),
-        removeGuardIfHasOwner: removeGuardInput.checked,
-        buildingsConstructionSid: constructionSidInput.value,
-        buildingsBanSid: banSidInput.value,
-      })}),
-    ]),
   ]);
 }
 

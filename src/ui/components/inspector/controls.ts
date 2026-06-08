@@ -14,6 +14,47 @@ export function createControlRow(label: string, control: HTMLElement): HTMLEleme
   ]);
 }
 
+export function createInstantField(
+  label: string,
+  input: HTMLElement,
+  opts: { initialValue: string; onCommit: (value: string) => void; onReset: () => void },
+): HTMLElement {
+  const resetBtn = el("button", {
+    className: "field-reset",
+    attrs: { type: "button", title: "Reset", "aria-label": `Reset ${label}`, style: "display:none" },
+  }, [el("span", { className: "material-symbols-outlined", text: "undo", attrs: { "aria-hidden": "true" } })]);
+
+  const getValue = () => {
+    if (input instanceof HTMLInputElement && input.type === "checkbox") return String(input.checked);
+    if (input instanceof HTMLSelectElement || input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement) return input.value;
+    return "";
+  };
+
+  const checkDirty = () => {
+    const dirty = getValue() !== opts.initialValue;
+    resetBtn.style.display = dirty ? "" : "none";
+    row.classList.toggle("is-dirty", dirty);
+  };
+
+  const commit = () => opts.onCommit(getValue());
+
+  const row = el("label", { className: "control-row" }, [
+    el("span", { text: label }),
+    input,
+    resetBtn,
+  ]);
+
+  input.addEventListener("change", () => { commit(); checkDirty(); });
+  input.addEventListener("input", checkDirty);
+  resetBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    opts.onReset();
+  });
+
+  return row;
+}
+
 export function createSelect(value: string, options: readonly string[]): HTMLSelectElement {
   const select = el("select", { className: "text-input" });
   for (const optionValue of options) {
