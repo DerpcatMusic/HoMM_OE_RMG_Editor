@@ -81,9 +81,9 @@ Guarded encounter strength is derived from placed content guard values and zone 
 - `guardWeeklyIncrement`
 - `guardReactionDistribution`
 
-Encounter guards are placed only when encounter guard strength reaches the zone cutoff. Sources: `GameEngineMapGenerator/MapGenerator/RandomMapTemplate.cs:76`, `GameEngineMapGenerator/MapGenerator/ContentPlacer.cs:1156`, `GameEngineMapGenerator/MapGenerator/ContentPlacer.cs:1178`.
+Encounter guards are placed only when encounter guard strength reaches the zone cutoff. Their reaction is rolled from `guardReactionDistribution` using six weighted slots in enum order: `Aggressive`, `Negative`, `Common`, `Friendly`, `Peaceful`, `Docile`. If the zone array is not length 6, the engine logs a config error and uses the runtime default `[1, 1, 1, 1, 1, 0]`. Sources: `GameEngineMapGenerator/MapGenerator/RandomMapTemplate.cs:76`, `GameEngineMapGenerator/MapGenerator/MapDescription.cs:247`, `GameEngineMapGenerator/MapGenerator/ContentPlacer.cs:1156`, `GameEngineMapGenerator/MapGenerator/ContentPlacer.cs:1160`, `GameEngineMapGenerator/MapGenerator/ContentPlacer.cs:1266`.
 
-Connection guards use the connection's `guardValue`, `guardWeeklyIncrement`, `guardReaction`, `guardEscape`, and optional `guardMatchGroup`. Source: `GameEngineMapGenerator/MapGenerator/ContentPlacer.cs:1212`.
+Connection guards do not use the zone distribution. They use the connection's fixed `guardValue`, `guardWeeklyIncrement`, `guardReaction`, `guardEscape`, and optional `guardMatchGroup`. Source: `GameEngineMapGenerator/MapGenerator/ContentPlacer.cs:1212`.
 
 ## Content Count Limits
 

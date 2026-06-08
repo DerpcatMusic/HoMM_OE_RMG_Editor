@@ -13,7 +13,6 @@ export function createControlRow(label: string, control: HTMLElement): HTMLEleme
     control,
   ]);
 }
-
 export function createInstantField(
   label: string,
   input: HTMLElement,
@@ -53,6 +52,34 @@ export function createInstantField(
   });
 
   return row;
+}
+
+type BoundControl = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+
+export function createBoundInstantField(
+  label: string,
+  input: BoundControl,
+  initialValue: string,
+  onCommit: () => void,
+  options: { afterReset?: () => void } = {},
+): HTMLElement {
+  return createInstantField(label, input, {
+    initialValue,
+    onCommit: () => onCommit(),
+    onReset: () => {
+      setControlValue(input, initialValue);
+      options.afterReset?.();
+      onCommit();
+    },
+  });
+}
+
+function setControlValue(input: BoundControl, value: string): void {
+  if (input instanceof HTMLInputElement && input.type === "checkbox") {
+    input.checked = value === "true";
+    return;
+  }
+  input.value = value;
 }
 
 export function createSelect(value: string, options: readonly string[]): HTMLSelectElement {

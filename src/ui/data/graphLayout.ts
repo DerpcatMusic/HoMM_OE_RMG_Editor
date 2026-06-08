@@ -266,6 +266,10 @@ function layoutHub(names: readonly string[], graph: GraphModel): Map<string, Raw
 }
 
 function layoutMixed(names: readonly string[], graph: GraphModel, maxRowLength: number): Map<string, RawPosition> {
+  const backboneLayout = layoutBackboneBranches(names, graph);
+  if (backboneLayout) {
+    return backboneLayout;
+  }
   const nameSet = new Set(names);
   const root = chooseMixedRoot(names, graph);
   const depths = new Map<string, number>([[root, 0]]);
@@ -316,6 +320,132 @@ function layoutMixed(names: readonly string[], graph: GraphModel, maxRowLength: 
   }
 
   return positions;
+}
+
+function layoutBackboneBranches(names: readonly string[], graph: GraphModel): Map<string, RawPosition> | undefined {
+  const componentNames = new Set(names);
+  const spawns = names
+    .filter((name) => graph.zoneByName.get(name)?.role === "spawn")
+    .sort((a, b) => compareZoneNames(a, b, graph));
+  if (spawns.length < 2) {
+    return undefined;
+  }
+
+  const start = spawns[0];
+  const end = spawns[spawns.length - 1];
+  if (!start || !end) {
+    return undefined;
+  }
+  const backbone = shortestPathWithin(start, end, componentNames, graph);
+  if (!backbone || backbone.length < 3) {
+    return undefined;
+  }
+
+  const backboneNames = new Set(backbone);
+  const positions = new Map<string, RawPosition>();
+  const branchAssignments = new Map<string, { side: number; attachmentIndex: number; lane: number }>();
+  const verticalGap = 18;
+  const horizontalGap = 28;
+
+  for (let index = 0; index < backbone.length; index += 1) {
+    const name = backbone[index];
+    if (name) {
+      positions.set(name, { x: 0, y: index * verticalGap });
+    }
+  }
+
+  for (let attachmentIndex = 0; attachmentIndex < backbone.length; attachmentIndex += 1) {
+    const trunkName = backbone[attachmentIndex];
+    if (!trunkName) {
+      continue;
+    }
+    const branchNeighbors = sortedNeighbors(trunkName, graph)
+      .filter((neighbor) => componentNames.has(neighbor) && !backboneNames.has(neighbor) && !branchAssignments.has(neighbor));
+    for (let branchIndex = 0; branchIndex < branchNeighbors.length; branchIndex += 1) {
+      const branchName = branchNeighbors[branchIndex];
+      if (!branchName) {
+        continue;
+      }
+      const side = branchIndex % 2 === 0 ? -1 : 1;
+      const lane = Math.floor(branchIndex / 2) + 1;
+      branchAssignments.set(branchName, { side, attachmentIndex, lane });
+    }
+  }
+
+  const queue = [...branchAssignments.keys()].sort((a, b) => compareZoneNames(a, b, graph));
+  for (let cursor = 0; cursor < queue.length; cursor += 1) {
+    const current = queue[cursor];
+    if (!current) {
+      continue;
+    }
+    const assignment = branchAssignments.get(current);
+    if (!assignment) {
+      continue;
+    }
+    for (const neighbor of sortedNeighbors(current, graph)) {
+      if (!componentNames.has(neighbor) || backboneNames.has(neighbor) || branchAssignments.has(neighbor)) {
+        continue;
+      }
+      branchAssignments.set(neighbor, {
+        side: assignment.side,
+        attachmentIndex: assignment.attachmentIndex + 1,
+        lane: assignment.lane,
+      });
+      queue.push(neighbor);
+    }
+  }
+
+  for (const name of names) {
+    if (backboneNames.has(name)) {
+      continue;
+    }
+    const assignment = branchAssignments.get(name);
+    if (!assignment) {
+      return undefined;
+    }
+    const yIndex = Math.min(backbone.length - 1, assignment.attachmentIndex + 1);
+    positions.set(name, {
+      x: assignment.side * horizontalGap * assignment.lane,
+      y: yIndex * verticalGap,
+    });
+  }
+
+  return positions;
+}
+
+function shortestPathWithin(start: string, end: string, allowedNames: ReadonlySet<string>, graph: GraphModel): string[] | undefined {
+  const queue = [start];
+  const previous = new Map<string, string | undefined>([[start, undefined]]);
+
+  for (let cursor = 0; cursor < queue.length; cursor += 1) {
+    const current = queue[cursor];
+    if (!current) {
+      continue;
+    }
+    if (current === end) {
+      break;
+    }
+    for (const neighbor of sortedNeighbors(current, graph)) {
+      if (!allowedNames.has(neighbor) || previous.has(neighbor)) {
+        continue;
+      }
+      previous.set(neighbor, current);
+      queue.push(neighbor);
+    }
+  }
+
+  if (!previous.has(end)) {
+    return undefined;
+  }
+
+  const path: string[] = [];
+  let current: string | undefined = end;
+  while (current) {
+    path.push(current);
+    current = previous.get(current);
+  }
+  path.reverse();
+  return path;
 }
 
 function chooseMixedRoot(names: readonly string[], graph: GraphModel): string {

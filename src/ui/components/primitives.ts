@@ -50,6 +50,16 @@ export function createButton(
   return button;
 }
 
+export function createAccordionSection(title: string, children: HTMLElement[], open = true): HTMLDetailsElement {
+  return el("details", { className: "accordion-section", attrs: open ? { open: "true" } : {} }, [
+    el("summary", { className: "accordion-summary" }, [
+      el("span", { className: "material-symbols-outlined accordion-icon", text: "expand_more", attrs: { "aria-hidden": "true" } }),
+      el("span", { text: title }),
+    ]),
+    el("div", { className: "accordion-body" }, children),
+  ]);
+}
+
 export interface TabButtonOptions<T extends string> {
   active: boolean;
   onSelect: (value: T) => void;

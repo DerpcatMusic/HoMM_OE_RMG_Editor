@@ -110,15 +110,186 @@ export function mountAppShell(root: HTMLElement): void {
   let shellPanelLayout = loadShellPanelLayout();
   let sidebarSections = { settings: 6, zones: 2.5, players: 1.5 };
 
-  const render = () => {
-    const projection = projectTemplateToShellData(
-      session.template,
-      session.selectedVariantIndex,
-      session.selectedZoneName,
-      session.selectedConnectionName,
-      session.canvasPositions,
-      session.zoneObjectPositions,
-    );
+  const getProjection = () => projectTemplateToShellData(
+    session.template,
+    session.selectedVariantIndex,
+    session.selectedZoneName,
+    session.selectedConnectionName,
+    session.canvasPositions,
+    session.zoneObjectPositions,
+  );
+
+  // --- Build shell skeleton once ---
+  const shellElement = el("div", {
+    className: "app-shell",
+    attrs: { style: shellPanelLayoutStyle(shellPanelLayout) },
+  });
+  const sidebarContainer = el("div", { className: "shell-sidebar-slot" });
+  const workspaceContainer = el("div", { className: "shell-workspace-slot" });
+  const inspectorContainer = el("div", { className: "shell-inspector-slot" });
+  const headerContainer = el("div", { className: "shell-header-slot" });
+
+  const shellBody = el("div", { className: "shell-body" }, [
+    sidebarContainer,
+    createShellResizeHandle("sidebar", shellElement, () => shellPanelLayout, (nextLayout) => {
+      shellPanelLayout = nextLayout;
+    }),
+    workspaceContainer,
+    createShellResizeHandle("inspector", shellElement, () => shellPanelLayout, (nextLayout) => {
+      shellPanelLayout = nextLayout;
+    }),
+    inspectorContainer,
+  ]);
+  shellElement.append(headerContainer, shellBody);
+  root.append(shellElement);
+
+  // --- Per-panel renderers ---
+  function renderSidebar() {
+    const projection = getProjection();
+    const selectedZone = projection.selectedZone ?? EMPTY_ZONE;
+    const validationErrors = computePlayerValidationErrors(session.template, session.selectedVariantIndex);
+    sidebarContainer.replaceChildren(createSidebar({
+      template: session.template,
+      zones: projection.zones,
+      players: projection.players,
+      focusedPlayer: session.focusedPlayer,
+      validationErrors,
+      selectedZoneId: selectedZone.id,
+      statusMessage: session.lastMessage,
+      sectionFlex: sidebarSections,
+      onSectionResize: (section, flex) => {
+        sidebarSections = { ...sidebarSections, [section]: flex };
+      },
+      onAddZone: () => {
+        session = addZoneToSession(session);
+        inspectorTab = "zone";
+        renderAll();
+      },
+      onApplyGlobalSettings: (draft) => {
+        session = updateGlobalSettingsInSession(session, draft);
+      },
+      onSelectZone: (zone: ShellZoneItem) => {
+        session = selectZone(session, zone.label);
+        inspectorTab = "zone";
+        rightDockTab = "inspector";
+        renderAll();
+      },
+      onAddPlayer: () => {
+        session = addPlayerToSession(session);
+        renderSidebar();
+        renderWorkspace();
+      },
+      onRemovePlayer: (playerId) => {
+        session = removePlayerFromSession(session, playerId as PlayerRef);
+        if (session.focusedPlayer === playerId) {
+          session = focusPlayer(session, undefined);
+        }
+        renderSidebar();
+        renderWorkspace();
+      },
+      onFocusPlayer: (playerId) => {
+        session = focusPlayer(session, playerId);
+        renderSidebar();
+        renderWorkspace();
+      },
+    }));
+  }
+
+  function renderWorkspace() {
+    const projection = getProjection();
+    const selectedZone = projection.selectedZone ?? EMPTY_ZONE;
+    const selectedConnection = projection.selectedConnection;
+    const catalogOptions = getCatalogOptions(session);
+    workspaceContainer.replaceChildren(createWorkspace({
+      zones: projection.zones,
+      connections: projection.connections,
+      gladiatorArenaEnabled: session.template.gameRules?.winConditions?.gladiatorArena === true,
+      catalogOptions,
+      selectedZone,
+      selectedConnection,
+      focusedPlayer: session.focusedPlayer,
+      activeTab: workspaceTab,
+      onTabChange: (tab) => {
+        workspaceTab = tab;
+        renderWorkspace();
+      },
+      onSelectZone: (zone) => {
+        session = selectZone(session, zone.label);
+        inspectorTab = "zone";
+        rightDockTab = "inspector";
+        renderInspector();
+      },
+      onSelectConnection: (connection) => {
+        session = selectConnection(session, connection.id);
+        inspectorTab = "connection";
+        rightDockTab = "inspector";
+        renderInspector();
+      },
+      onMoveZone: (zone, position) => {
+        session = moveZoneInSession(selectZone(session, zone.label), zone.label, position);
+        inspectorTab = "zone";
+        rightDockTab = "inspector";
+        renderSidebar();
+        renderInspector();
+      },
+      onMoveZoneObject: (zone, object, position) => {
+        session = moveZoneObjectInSession(session, zone.label, object.id, position);
+        workspaceTab = "zoneEdit";
+        renderWorkspace();
+      },
+      onConnectZones: (fromZoneName, toZoneName) => {
+        session = addConnectionBetweenZones(session, fromZoneName, toZoneName);
+        renderSidebar();
+        renderWorkspace();
+        renderInspector();
+      },
+      onAddZone: () => {
+        session = addZoneToSession(session);
+        inspectorTab = "zone";
+        renderAll();
+      },
+      onAddConnection: () => {
+        session = addConnectionFromSelectedZone(session);
+        renderSidebar();
+        renderWorkspace();
+        renderInspector();
+      },
+      onAddMainObject: () => {
+        session = addMainObjectToSelectedZone(session);
+        workspaceTab = "zoneEdit";
+        inspectorTab = "objects";
+        rightDockTab = "inspector";
+        renderAll();
+      },
+      onAddRoad: () => {
+        session = addDefaultRoadToSelectedZone(session);
+        workspaceTab = "zoneEdit";
+        renderWorkspace();
+        renderInspector();
+      },
+      onDeleteZone: (zone) => {
+        session = deleteZoneByName(session, zone.label);
+        renderAll();
+      },
+      onDeleteConnection: (connection) => {
+        session = deleteConnectionByName(session, connection.id);
+        renderAll();
+      },
+      onReassignZoneOwner: (zone, owner) => {
+        session = reassignZoneOwner(session, zone.label, owner);
+        renderSidebar();
+        renderWorkspace();
+        renderInspector();
+      },
+      onChangeConnectionType: (connection, connectionType) => {
+        session = updateConnectionTypeByName(session, connection.id, connectionType);
+        renderInspector();
+      },
+    }));
+  }
+
+  function renderInspector() {
+    const projection = getProjection();
     const selectedZone = projection.selectedZone ?? EMPTY_ZONE;
     const selectedConnection = projection.selectedConnection;
     const catalogOptions = getCatalogOptions(session);
@@ -127,254 +298,127 @@ export function mountAppShell(root: HTMLElement): void {
       throw new Error("Editor schema did not provide sections.");
     }
     const fields = getSectionFields(activeSection.id);
-    const shellElement = el("div", {
-      className: "app-shell",
-      attrs: { style: shellPanelLayoutStyle(shellPanelLayout) },
-    });
     const validationErrors = computePlayerValidationErrors(session.template, session.selectedVariantIndex);
-    const shellBody = el("div", { className: "shell-body" }, [
-      createSidebar({
+    inspectorContainer.replaceChildren(createRightDock({
+      activeTab: rightDockTab,
+      onTabChange: (tab) => {
+        rightDockTab = tab;
+        renderInspector();
+      },
+      inspector: createInspector({
         template: session.template,
-        zones: projection.zones,
-        players: projection.players,
-        focusedPlayer: session.focusedPlayer,
-        validationErrors,
-        selectedZoneId: selectedZone.id,
-        statusMessage: session.lastMessage,
-        sectionFlex: sidebarSections,
-        onSectionResize: (section, flex) => {
-          sidebarSections = { ...sidebarSections, [section]: flex };
-        },
-        onAddZone: () => {
-          session = addZoneToSession(session);
-          inspectorTab = "zone";
-          render();
-        },
-        onApplyGlobalSettings: (draft) => {
-          session = updateGlobalSettingsInSession(session, draft);
-          requestAnimationFrame(render);
-        },
-        onSelectZone: (zone: ShellZoneItem) => {
-          session = selectZone(session, zone.label);
-          inspectorTab = "zone";
-          rightDockTab = "inspector";
-          render();
-        },
-        onAddPlayer: () => {
-          session = addPlayerToSession(session);
-          render();
-        },
-        onRemovePlayer: (playerId) => {
-          session = removePlayerFromSession(session, playerId as PlayerRef);
-          if (session.focusedPlayer === playerId) {
-            session = focusPlayer(session, undefined);
-          }
-          render();
-        },
-        onFocusPlayer: (playerId) => {
-          session = focusPlayer(session, playerId);
-          render();
-        },
-      }),
-      createShellResizeHandle("sidebar", shellElement, () => shellPanelLayout, (nextLayout) => {
-        shellPanelLayout = nextLayout;
-      }),
-      createWorkspace({
+        section: activeSection,
+        fields,
+        selectedZone,
+        selectedConnection,
         zones: projection.zones,
         connections: projection.connections,
         catalogOptions,
-        selectedZone,
-        selectedConnection,
-        focusedPlayer: session.focusedPlayer,
-        activeTab: workspaceTab,
+        validationErrors,
+        activeContentPoolName,
+        activeTab: inspectorTab,
         onTabChange: (tab) => {
-          workspaceTab = tab;
-          render();
+          inspectorTab = tab;
+          rightDockTab = "inspector";
+          renderInspector();
         },
-        onSelectZone: (zone) => {
-          session = selectZone(session, zone.label);
+        onActiveContentPoolChange: (poolName) => {
+          activeContentPoolName = poolName;
+          inspectorTab = "pools";
+          rightDockTab = "inspector";
+          renderInspector();
+        },
+        onAddContentPool: (draft) => {
+          session = addLocalContentPoolToSession(session, draft);
+          activeContentPoolName = draft.name.trim();
+          inspectorTab = "pools";
+          rightDockTab = "inspector";
+          renderInspector();
+        },
+        onAddContentPoolGroup: (draft) => {
+          session = addContentPoolGroupToSession(session, draft);
+          inspectorTab = "pools";
+          rightDockTab = "inspector";
+          renderInspector();
+        },
+        onApplyContentPoolGroup: (draft) => {
+          session = updateContentPoolGroupInSession(session, draft);
+          inspectorTab = "pools";
+          rightDockTab = "inspector";
+          renderInspector();
+        },
+        onApplyConnectionSettings: (draft) => {
+          session = updateSelectedConnectionInSession(session, draft);
+        },
+        onApplyMainObjectSettings: (draft) => {
+          session = updateSelectedZoneMainObjectInSession(session, draft);
+        },
+        onApplyRoadSettings: (draft) => {
+          session = updateSelectedZoneRoadInSession(session, draft);
+        },
+        onApplyZoneChanges: (draft) => {
+          session = updateSelectedZoneInSession(session, draft);
+        },
+        onRemoveSelectedZone: () => {
+          session = removeSelectedZoneFromSession(session);
+          workspaceTab = "canvas";
           inspectorTab = "zone";
-          rightDockTab = "inspector";
-          render();
-        },
-        onSelectConnection: (connection) => {
-          session = selectConnection(session, connection.id);
-          inspectorTab = "connection";
-          rightDockTab = "inspector";
-          render();
-        },
-        onMoveZone: (zone, position) => {
-          session = moveZoneInSession(selectZone(session, zone.label), zone.label, position);
-          inspectorTab = "zone";
-          rightDockTab = "inspector";
-          render();
-        },
-        onMoveZoneObject: (zone, object, position) => {
-          session = moveZoneObjectInSession(session, zone.label, object.id, position);
-          workspaceTab = "zoneEdit";
-          render();
-        },
-        onConnectZones: (fromZoneName, toZoneName) => {
-          session = addConnectionBetweenZones(session, fromZoneName, toZoneName);
-          render();
-        },
-        onAddZone: () => {
-          session = addZoneToSession(session);
-          inspectorTab = "zone";
-          render();
-        },
-        onAddConnection: () => {
-          session = addConnectionFromSelectedZone(session);
-          render();
-        },
-        onAddMainObject: () => {
-          session = addMainObjectToSelectedZone(session);
-          workspaceTab = "zoneEdit";
-          inspectorTab = "objects";
-          rightDockTab = "inspector";
-          render();
-        },
-        onAddRoad: () => {
-          session = addDefaultRoadToSelectedZone(session);
-          workspaceTab = "zoneEdit";
-          render();
-        },
-        onDeleteZone: (zone) => {
-          session = deleteZoneByName(session, zone.label);
-          render();
-        },
-        onDeleteConnection: (connection) => {
-          session = deleteConnectionByName(session, connection.id);
-          render();
-        },
-        onReassignZoneOwner: (zone, owner) => {
-          session = reassignZoneOwner(session, zone.label, owner);
-          render();
-        },
-        onChangeConnectionType: (connection, connectionType) => {
-          session = updateConnectionTypeByName(session, connection.id, connectionType);
-          render();
+          renderAll();
         },
       }),
-      createShellResizeHandle("inspector", shellElement, () => shellPanelLayout, (nextLayout) => {
-        shellPanelLayout = nextLayout;
-      }),
-      createRightDock({
-        activeTab: rightDockTab,
-        onTabChange: (tab) => {
-          rightDockTab = tab;
-          render();
-        },
-        inspector: createInspector({
-          template: session.template,
-          section: activeSection,
-          fields,
-          selectedZone,
-          selectedConnection,
-          zones: projection.zones,
-          connections: projection.connections,
-          catalogOptions,
-          validationErrors,
-          activeContentPoolName,
-          activeTab: inspectorTab,
-          onTabChange: (tab) => {
-            inspectorTab = tab;
-            rightDockTab = "inspector";
-            render();
-          },
-          onActiveContentPoolChange: (poolName) => {
-            activeContentPoolName = poolName;
-            inspectorTab = "pools";
-            rightDockTab = "inspector";
-            render();
-          },
-          onAddContentPool: (draft) => {
-            session = addLocalContentPoolToSession(session, draft);
-            activeContentPoolName = draft.name.trim();
-            inspectorTab = "pools";
-            rightDockTab = "inspector";
-            render();
-          },
-          onAddContentPoolGroup: (draft) => {
-            session = addContentPoolGroupToSession(session, draft);
-            inspectorTab = "pools";
-            rightDockTab = "inspector";
-            render();
-          },
-          onApplyContentPoolGroup: (draft) => {
-            session = updateContentPoolGroupInSession(session, draft);
-            inspectorTab = "pools";
-            rightDockTab = "inspector";
-            render();
-          },
-          onApplyConnectionSettings: (draft) => {
-            session = updateSelectedConnectionInSession(session, draft);
-            requestAnimationFrame(render);
-          },
-          onApplyMainObjectSettings: (draft) => {
-            session = updateSelectedZoneMainObjectInSession(session, draft);
-            requestAnimationFrame(render);
-          },
-          onApplyRoadSettings: (draft) => {
-            session = updateSelectedZoneRoadInSession(session, draft);
-            requestAnimationFrame(render);
-          },
-          onApplyZoneChanges: (draft) => {
-            session = updateSelectedZoneInSession(session, draft);
-            requestAnimationFrame(render);
-          },
-          onRemoveSelectedZone: () => {
-            session = removeSelectedZoneFromSession(session);
-            workspaceTab = "canvas";
-            inspectorTab = "zone";
-            render();
-          },
-        }),
-        browser: createContentBrowserPanel({ catalogOptions }),
-      }),
-    ]);
-    shellElement.append(
-        createShellHeader({
-          metrics: getShellMetrics(),
-          templateName: projection.templateName,
-          sourceFileName: session.sourceFileName,
-          coreArchiveLabel: formatCoreArchiveLabel(session),
-          coreArchiveLoaded: Boolean(session.coreArchive),
-          dirty: session.dirty,
-          canUndo: canUndoSession(session),
-          canRedo: canRedoSession(session),
-          canSave: validationErrors.length === 0,
-          onLoadTemplate: () => {
-            void loadTemplate();
-          },
-          onNewTemplate: () => {
-            createNewTemplate();
-          },
-          onSaveTemplate: () => {
-            if (validationErrors.length > 0) {
-              session = setSessionMessage(session, `Cannot save: ${validationErrors.join(" ")}`);
-              render();
-              return;
-            }
-            saveTemplate();
-          },
-          onAddCoreArchive: () => {
-            void addCoreArchive();
-          },
-          onUndo: () => {
-            session = undoSession(session);
-            render();
-          },
-          onRedo: () => {
-            session = redoSession(session);
-            render();
-          },
-        }),
-      shellBody,
-    );
-    root.replaceChildren(shellElement);
-  };
+      browser: createContentBrowserPanel({ catalogOptions }),
+    }));
+  }
 
+  function renderHeader() {
+    const projection = getProjection();
+    const validationErrors = computePlayerValidationErrors(session.template, session.selectedVariantIndex);
+    headerContainer.replaceChildren(createShellHeader({
+      metrics: getShellMetrics(),
+      templateName: projection.templateName,
+      sourceFileName: session.sourceFileName,
+      coreArchiveLabel: formatCoreArchiveLabel(session),
+      coreArchiveLoaded: Boolean(session.coreArchive),
+      dirty: session.dirty,
+      canUndo: canUndoSession(session),
+      canRedo: canRedoSession(session),
+      canSave: validationErrors.length === 0,
+      onLoadTemplate: () => {
+        void loadTemplate();
+      },
+      onNewTemplate: () => {
+        createNewTemplate();
+      },
+      onSaveTemplate: () => {
+        if (validationErrors.length > 0) {
+          session = setSessionMessage(session, `Cannot save: ${validationErrors.join(" ")}`);
+          renderSidebar();
+          return;
+        }
+        saveTemplate();
+      },
+      onAddCoreArchive: () => {
+        void addCoreArchive();
+      },
+      onUndo: () => {
+        session = undoSession(session);
+        renderAll();
+      },
+      onRedo: () => {
+        session = redoSession(session);
+        renderAll();
+      },
+    }));
+  }
+
+  function renderAll() {
+    renderSidebar();
+    renderWorkspace();
+    renderInspector();
+    renderHeader();
+  }
+
+  // --- Actions ---
   const createNewTemplate = () => {
     if (session.dirty && !window.confirm("Discard unsaved changes and create a new template?")) {
       return;
@@ -388,7 +432,7 @@ export function mountAppShell(root: HTMLElement): void {
     workspaceTab = "canvas";
     inspectorTab = "zone";
     rightDockTab = "inspector";
-    render();
+    renderAll();
   };
 
   const loadTemplate = async () => {
@@ -409,23 +453,23 @@ export function mountAppShell(root: HTMLElement): void {
       .catch((error: unknown) => {
         session = setSessionMessage(session, formatUiEffectError(error));
       });
-    render();
+    renderAll();
   };
 
   const saveTemplate = () => {
     void runUiEffect(saveTemplateProgram(session))
       .then((nextSession) => {
         session = nextSession;
-        render();
+        renderHeader();
       })
       .catch((error: unknown) => {
         session = setSessionMessage(session, formatUiEffectError(error));
-        render();
+        renderSidebar();
       });
   };
   const loadCoreArchiveFile = async (file: File) => {
     session = setSessionStatusMessage(session, `Parsing ${file.name}...`);
-    render();
+    renderHeader();
     await runUiEffect(attachCoreArchiveProgram(session, file))
       .then(async (nextSession) => {
         if (nextSession) {
@@ -441,7 +485,7 @@ export function mountAppShell(root: HTMLElement): void {
       .catch((error: unknown) => {
         session = setSessionMessage(session, formatUiEffectError(error));
       });
-    render();
+    renderAll();
   };
 
   const addCoreArchive = async () => {
@@ -458,7 +502,8 @@ export function mountAppShell(root: HTMLElement): void {
     }
   };
 
-  render();
+  // Initial render
+  renderAll();
 
   // Auto-load Core.zip from IndexedDB cache if available; prompt only when cache is absent or unusable.
   void loadCachedCoreArchiveFile()

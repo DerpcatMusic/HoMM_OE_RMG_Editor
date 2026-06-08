@@ -12,17 +12,18 @@
 - `done`: Core.zip attachment parses browser-side catalogs through Effect-backed services and reports pool/content counts.
 - `done`: center workspace shows the `Canvas` tab; zone editing moved to the inspector `Zone` tab.
 - `done`: canvas shows live zones/connections projected from the current template.
-- `done`: unpinned canvas zones use connection-aware topology-packed auto-layout: serial chains become lines, long chains wrap/snake inside the canvas, cycles become polygon-like clusters, hubs become spokes, and parallel connections collapse for placement.
+- `done`: unpinned canvas zones use connection-aware topology-packed auto-layout: serial chains become lines, long chains wrap/snake inside the canvas, cycles become polygon-like clusters, hubs become spokes, spawn-to-spawn maps keep a central backbone with side branches, and parallel connections collapse for placement.
 - `done`: canvas zones can be dragged to editor-only positions.
 - `done`: manual canvas zone positions persist in browser local storage by template identity and override auto-layout.
 - `done`: canvas connections are real SVG splines connected to rectangle centers and redraw live during zone drag.
+- `done`: double-clicking empty canvas space creates a new zone.
 - `done`: `Ctrl` + drag from one zone to another creates a default `Direct` connection.
 - `done`: canvas connection lines are selectable.
 - `done`: canvas zones show a 5px color strip on the left border using `--zone-color` (player color or gray for neutral).
 - `done`: canvas zones glow when their owner player is focused in the sidebar.
 - `done`: canvas right-click context menus for zones (select, assign player, delete) and connections (select, change type, delete).
 - `done`: left sidebar has three resizable sections: global settings, zone list, and players.
-- `done`: sidebar global settings form is directly visible at the top, no nav buttons required.
+- `done`: sidebar global settings form is directly visible at the top, with map size and localized victory-condition dropdown before game mode.
 - `done`: sidebar zones section lists zones with click-to-select.
 - `done`: sidebar players section shows player color strips, zone counts, add/remove buttons, and click-to-focus.
 - `done`: player management derives players from spawn main objects; supports up to 8 players with official colors.
@@ -37,6 +38,7 @@
 - `done`: zone edit form includes a main-object editor for type, spawn, owner, key/city-hold flags, placement, faction, weekly-unit, guard, and building-SID fields.
 - `done`: zone-internal object node positions are draggable and persist in browser local storage.
 - `done`: zone-internal roads are parsed from authored `zone.roads[]`, rendered as SVG splines connected to object rectangle centers, labeled by road type, and redrawn live during object drag.
+- `done`: inspector forms use collapsible accordion sections for dense settings groups.
 - `done`: inspector `Roads` tab edits road type plus structured `from` and `to` targets.
 - `done`: road target args are populated from selected-zone main objects, incident non-proximity connections, and mandatory-content entries referenced by the zone.
 - `done`: biome rule args use a source-backed builder for `FromList`, `MatchZone`, and `MatchMainObject`; unknown existing args remain visible.

@@ -3,6 +3,14 @@
 RMG templates expose win conditions through two layers:
 
 - `displayWinCondition`: UI text SID shown to the player.
+  - `win_condition_0`: Story-Based
+  - `win_condition_1`: Classic
+  - `win_condition_2`: Capital Capture
+  - `win_condition_3`: Capital Hold
+  - `win_condition_4`: Final Battle
+  - `win_condition_5`: City Hold
+  - `win_condition_6`: Tournament
+  - `win_condition_7`: Battle for Capital
 - `gameRules.winConditions`: engine flags and parameters consumed by the map generator.
 
 ## Status

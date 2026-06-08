@@ -17,6 +17,7 @@ export interface WorkspaceProps {
   onTabChange: (tab: WorkspaceTab) => void;
   onSelectZone: (zone: ShellZoneItem) => void;
   onSelectConnection: (connection: ShellConnectionItem) => void;
+  gladiatorArenaEnabled: boolean;
   onMoveZone: (zone: ShellZoneItem, position: CanvasPosition) => void;
   onMoveZoneObject: (zone: ShellZoneItem, object: ShellZoneObjectItem, position: CanvasPosition) => void;
   onConnectZones: (fromZoneName: string, toZoneName: string) => void;
@@ -107,6 +108,12 @@ function createMapStage(props: WorkspaceProps): HTMLElement {
     el("div", { className: "stage-grid" }),
     linkLayer,
   ]);
+  stage.addEventListener("dblclick", (event) => {
+    if ((event.target as HTMLElement | SVGElement).closest(".stage-node, .stage-link-hit, .stage-link-path")) {
+      return;
+    }
+    props.onAddZone();
+  });
   for (const zone of props.zones) {
     stage.append(createZoneNode(zone, props, stage));
   }
@@ -519,7 +526,9 @@ function showZoneContextMenu(event: MouseEvent, zone: ShellZoneItem, props: Work
 function showConnectionContextMenu(event: MouseEvent, connection: ShellConnectionItem, props: WorkspaceProps): void {
   const items = [
     { label: "Select", icon: "target", onClick: () => props.onSelectConnection(connection) },
-    ...Array.from(CONNECTION_TYPES).map((type) => ({
+    ...Array.from(CONNECTION_TYPES)
+      .filter((type) => type !== "GladiatorArena" || props.gladiatorArenaEnabled || connection.type === "GladiatorArena")
+      .map((type) => ({
       label: `Type: ${type}`,
       icon: "swap_horiz",
       onClick: () => props.onChangeConnectionType(connection, type),

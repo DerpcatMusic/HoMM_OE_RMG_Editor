@@ -28,6 +28,7 @@ Zones are the main authored regions in an `.rmg.json` variant. They carry layout
 - `guardedContentValue`, `guardedContentValuePerArea`, `unguardedContentValue`, `unguardedContentValuePerArea`, `resourcesValue`, `resourcesValuePerArea`: content budgets.
 - `randomHireEnableWeeklyUnitIncrement`, `randomHireInitialUnitIncrement`: random hire tuning.
 - `diplomacyModifier`, `guardCutoffValue`, `guardMultiplier`, `guardRandomization`, `guardWeeklyIncrement`, `guardReactionDistribution`: guard tuning.
+  - `guardReactionDistribution` is exactly six weights in runtime enum order: `Aggressive`, `Negative`, `Common`, `Friendly`, `Peaceful`, `Docile`. The default runtime distribution is `[1, 1, 1, 1, 1, 0]`, so `Docile` is not selected by default.
 - `encounterHolesSettings`: encounter-hole tuning.
 - `roads`: local road configs.
 - `mandatoryContent`: array of mandatory-content preset IDs; one ID is sampled if non-empty.

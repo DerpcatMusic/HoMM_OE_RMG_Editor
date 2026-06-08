@@ -8,7 +8,7 @@
 - Template creation from scratch through `createMinimalPlayableTemplate`.
 - Zone CRUD through safe editor actions: add, remove with cleanup, rename with reference rewrites, resize, clone, and pool-field edits.
 - Connection CRUD and deep settings mutations: add, remove, rename, endpoint edits, type changes, portal defaults, guard fields, gate placement, road flag, sim squad flag, and guard randomization.
-- Template-level game settings and win-condition editing through `template.update`.
+- Template-level map size, victory-condition display SID, game settings, and win-condition editing through `template.update`.
 - Main-object and road basics: add a default city main object and a default stone road to the first incident non-proximity connection.
 - Root content structures in core mutations: local content pools, content pool groups, bans, value distributions, content lists, mandatory content presets, content count limit presets, global bans, value overrides, and zone layouts.
 - Core.zip generated catalogs from game data: content pools, content lists, factions, biomes, heroes, magics, units, RMG-placeable content, and artifacts.
@@ -22,19 +22,19 @@
 - Resizable left sidebar and right inspector panel with persisted panel widths.
 - Browser load/new/save for `.rmg.json`; save writes to Core.zip directory via File System Access API when available.
 - Canvas zone dragging with persisted editor-only layout and live SVG connection redraw.
-- `Ctrl` + drag from a zone to another zone creates a default direct connection.
+- Double-click empty canvas space to create a new zone; `Ctrl` + drag from a zone to another zone creates a default direct connection.
 - Selectable canvas connection lines and a connection inspector tab for deep connection settings.
 - Canvas zones show a 5px color strip on the left border using player color or gray for neutral.
 - Canvas zones glow when their owner player is focused in the sidebar.
 - Canvas right-click context menus for zones (select, assign player, delete) and connections (select, change type, delete).
-- Inspector `Zone` tab edits zone name, size, layout, biome rules, guard tuning, content budgets, pool alternatives, mandatory-content presets, and content-count-limit presets with instant-apply and per-field reset.
-- Inspector `Connection` tab edits endpoints, connection type, length, portal flags, guard fields, gate placement, road flag, sim squad flag, and guard randomization with instant-apply.
+- Inspector `Zone` tab edits zone name, size, layout, biome rules, guard tuning, content budgets, pool alternatives, mandatory-content presets, and content-count-limit presets with instant-apply, per-field reset, and accordion sections.
+- Inspector `Connection` tab edits endpoints, connection type, length, portal flags, guard fields, gate placement, road flag, sim squad flag, and guard randomization with instant-apply, per-field reset, and accordion sections.
 - Inspector `Objects` tab edits main-object type, spawn, owner, key/city-hold flags, placement mode/args, faction rule args, guard fields, weekly unit increment, and city building SIDs.
 - Road inspector edits authored road type and structured `from`/`to` targets using selected-zone context.
 - Searchable content-pool selectors for zone guarded, unguarded, and resource pool alternatives, filtered by Core.zip pool naming/source conventions.
 - Right-side tool dock with vertical Inspector/Browser tabs. Inspector owns selected entity editing; Browser owns searchable Core.zip lookup/copy/drag rows.
 - Browser panel inspired by the older Python/TS editor layout: scope filter, category filter, dense capped result list, click-to-copy IDs, draggable content SIDs, and a details pane for the selected entry.
-- Connection-aware canvas auto-layout: serial chains become lines, long chains wrap/snake inside the canvas, cycles become polygon-like clusters, hubs become spokes, and dragged manual positions stay pinned.
+- Connection-aware canvas auto-layout: serial chains become lines, long chains wrap/snake inside the canvas, cycles become polygon-like clusters, hubs become spokes, spawn-to-spawn maps keep a central backbone with side branches, and dragged manual positions stay pinned.
 - Inspector content-pool tab for creating template-local pools, adding groups, and editing group weights/include-lists/content rows.
 - Catalog-backed biome `FromList` controls in the zone editor after Core.zip is attached, with unknown existing args preserved.
 - Source-backed biome rule builder for `FromList`, `MatchZone`, and `MatchMainObject`, including context-derived zone/main-object args and previews.

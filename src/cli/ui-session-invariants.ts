@@ -104,6 +104,53 @@ for (const [name, position] of Object.entries(disconnectedLayout)) {
   assertInSafeBounds(position.y, `${name} disconnected y`);
 }
 
+const christmasTreeLayout = computeTopologyPackedLayout(
+  [
+    graphZone("Spawn-A", 0, "spawn"),
+    graphZone("Spawn-B", 1, "spawn"),
+    graphZone("Trunk-1", 2, "connector"),
+    graphZone("Trunk-2", 3, "connector"),
+    graphZone("Trunk-3", 4, "connector"),
+    graphZone("Branch-1", 5),
+    graphZone("Branch-2", 6),
+    graphZone("Branch-3", 7),
+    graphZone("Branch-4", 8),
+    graphZone("Branch-5", 9),
+    graphZone("Branch-6", 10),
+  ],
+  [
+    { from: "Spawn-A", to: "Trunk-1" },
+    { from: "Trunk-1", to: "Trunk-2" },
+    { from: "Trunk-1", to: "Branch-1" },
+    { from: "Trunk-1", to: "Branch-2" },
+    { from: "Branch-1", to: "Branch-3" },
+    { from: "Branch-2", to: "Branch-4" },
+    { from: "Trunk-2", to: "Branch-3" },
+    { from: "Trunk-2", to: "Branch-4" },
+    { from: "Trunk-2", to: "Trunk-3" },
+    { from: "Branch-3", to: "Branch-5" },
+    { from: "Branch-4", to: "Branch-6" },
+    { from: "Trunk-3", to: "Branch-5" },
+    { from: "Trunk-3", to: "Branch-6" },
+    { from: "Trunk-3", to: "Spawn-B" },
+    { from: "Branch-5", to: "Spawn-B" },
+    { from: "Branch-6", to: "Spawn-B" },
+  ],
+);
+const christmasTrunk1 = requireLayoutPosition(christmasTreeLayout, "Trunk-1");
+const christmasTrunk2 = requireLayoutPosition(christmasTreeLayout, "Trunk-2");
+const christmasTrunk3 = requireLayoutPosition(christmasTreeLayout, "Trunk-3");
+const christmasLeft1 = requireLayoutPosition(christmasTreeLayout, "Branch-1");
+const christmasLeft3 = requireLayoutPosition(christmasTreeLayout, "Branch-3");
+const christmasLeft5 = requireLayoutPosition(christmasTreeLayout, "Branch-5");
+const christmasRight2 = requireLayoutPosition(christmasTreeLayout, "Branch-2");
+const christmasRight4 = requireLayoutPosition(christmasTreeLayout, "Branch-4");
+const christmasRight6 = requireLayoutPosition(christmasTreeLayout, "Branch-6");
+assert.ok(christmasTrunk1.y < christmasTrunk2.y && christmasTrunk2.y < christmasTrunk3.y, "Christmas Tree trunk descends vertically");
+assert.ok(christmasLeft1.x < christmasTrunk1.x && christmasLeft3.x < christmasTrunk2.x && christmasLeft5.x < christmasTrunk3.x, "Christmas Tree left branches stay left of trunk");
+assert.ok(christmasRight2.x > christmasTrunk1.x && christmasRight4.x > christmasTrunk2.x && christmasRight6.x > christmasTrunk3.x, "Christmas Tree right branches stay right of trunk");
+assert.ok(Math.abs(christmasTrunk1.x - christmasTrunk2.x) < 8 && Math.abs(christmasTrunk2.x - christmasTrunk3.x) < 8, "Christmas Tree trunk remains a central column");
+
 const roadProjection = projectTemplateToShellData(
   {
     name: "Road Projection Probe",
@@ -138,6 +185,9 @@ const initialConnectionCount = session.template.variants?.[0]?.connections?.leng
 
 session = updateGlobalSettingsInSession(session, {
   gameMode: "Classic",
+  sizeX: 144,
+  sizeZ: 136,
+  displayWinCondition: "win_condition_5",
   heroCountMin: 3,
   heroCountMax: 7,
   heroCountIncrement: 1,
@@ -171,9 +221,15 @@ assert.equal(session.template.gameRules?.heroCountMin, 3);
 assert.equal(session.template.gameRules?.heroCountMax, 7);
 assert.equal(session.template.gameRules?.winConditions?.desertion, true);
 assert.equal(session.template.gameRules?.winConditions?.desertionDay, 21);
+assert.equal(session.template.sizeX, 144);
+assert.equal(session.template.sizeZ, 136);
+assert.equal(session.template.displayWinCondition, "win_condition_5");
 
 session = updateGlobalSettingsInSession(session, {
   gameMode: "SingleHero",
+  sizeX: 144,
+  sizeZ: 136,
+  displayWinCondition: "win_condition_5",
   heroCountMin: 4,
   heroCountMax: 9,
   heroCountIncrement: 2,

@@ -3,7 +3,7 @@ import { BIOME_RULE_TYPES } from "../../core/rmg/enums.js";
 import { el } from "../dom.js";
 import type { ShellCatalogOptions, ShellConnectionItem, ShellSectionSummary, ShellZoneItem } from "../data/shellData.js";
 import type { ZoneUpdateDraft } from "../state/editorSession.js";
-import { createButton, createValueRow } from "./primitives.js";
+import { createAccordionSection, createButton, createValueRow } from "./primitives.js";
 
 export interface ZoneFormProps {
   section: ShellSectionSummary;
@@ -17,7 +17,6 @@ export interface ZoneFormProps {
 }
 
 export function createZoneEditForm(props: ZoneFormProps): HTMLElement {
-  const editableFields = props.fields.filter((field) => field.editLevel === "firstClass").slice(0, 10);
   const nameInput = createInput("text", props.selectedZone.label);
   const sizeInput = createInput("number", String(props.selectedZone.size), "0.1");
   const layoutInput = createInput("text", props.selectedZone.layout);
@@ -84,10 +83,10 @@ export function createZoneEditForm(props: ZoneFormProps): HTMLElement {
     unguardedValueInput, unguardedPerAreaInput, resourcesValueInput, resourcesPerAreaInput,
     mandatoryInput, countLimitsInput];
   for (const input of simpleInputs) {
-    input.addEventListener("change", commit);
+    input.addEventListener("change", () => commit());
   }
   for (const select of [zoneBiomeTypeInput, contentBiomeTypeInput, metaObjectsBiomeTypeInput]) {
-    select.addEventListener("change", commit);
+    select.addEventListener("change", () => commit());
   }
 
   return el("div", { className: "inspector-body" }, [
@@ -95,38 +94,44 @@ export function createZoneEditForm(props: ZoneFormProps): HTMLElement {
       createButton("Remove zone", { variant: "secondary", icon: "delete", onClick: props.onRemoveSelectedZone }),
     ]),
     el("div", { className: "edit-form" }, [
-      el("h3", { text: "Identity and layout" }),
-      createControlRow("Name", nameInput),
-      createControlRow("Size", sizeInput),
-      createControlRow("Layout", layoutInput),
-      createControlRow("Crossroads pos", crossroadsInput),
-      createControlRow("Diplomacy mod", diplomacyInput),
-      el("h3", { text: "Biome rules" }),
-      createControlRow("Zone biome type", zoneBiomeTypeInput),
-      createControlRow("Zone biome args", zoneBiomeArgsInput.element),
-      createControlRow("Content biome type", contentBiomeTypeInput),
-      createControlRow("Content biome args", contentBiomeArgsInput.element),
-      createControlRow("Meta biome type", metaObjectsBiomeTypeInput),
-      createControlRow("Meta biome args", metaObjectsBiomeArgsInput.element),
-      el("h3", { text: "Guard settings" }),
-      createControlRow("Guard cutoff", guardCutoffInput),
-      createControlRow("Guard multiplier", guardMultiplierInput),
-      createControlRow("Guard random", guardRandomizationInput),
-      createControlRow("Guard weekly", guardWeeklyIncrementInput),
-      createControlRow("Reaction weights", guardReactionDistributionInput),
-      el("h3", { text: "Content budgets" }),
-      createControlRow("Guarded value", guardedValueInput),
-      createControlRow("Guarded per area", guardedPerAreaInput),
-      createControlRow("Unguarded value", unguardedValueInput),
-      createControlRow("Unguarded per area", unguardedPerAreaInput),
-      createControlRow("Resources value", resourcesValueInput),
-      createControlRow("Resources per area", resourcesPerAreaInput),
-      el("h3", { text: "Pool and preset alternatives" }),
-      createControlRow("Guarded pools", guardedInput.element),
-      createControlRow("Unguarded pools", unguardedInput.element),
-      createControlRow("Resource pools", resourcesInput.element),
-      createControlRow("Mandatory presets", mandatoryInput),
-      createControlRow("Count limits", countLimitsInput),
+      createAccordionSection("Identity and layout", [
+        createControlRow("Name", nameInput),
+        createControlRow("Size", sizeInput),
+        createControlRow("Layout", layoutInput),
+        createControlRow("Crossroads pos", crossroadsInput),
+        createControlRow("Diplomacy mod", diplomacyInput),
+      ]),
+      createAccordionSection("Biome rules", [
+        createControlRow("Zone biome type", zoneBiomeTypeInput),
+        createControlRow("Zone biome args", zoneBiomeArgsInput.element),
+        createControlRow("Content biome type", contentBiomeTypeInput),
+        createControlRow("Content biome args", contentBiomeArgsInput.element),
+        createControlRow("Meta biome type", metaObjectsBiomeTypeInput),
+        createControlRow("Meta biome args", metaObjectsBiomeArgsInput.element),
+      ], false),
+      createAccordionSection("Guard settings", [
+        createControlRow("Guard cutoff", guardCutoffInput),
+        createControlRow("Guard multiplier", guardMultiplierInput),
+        createControlRow("Guard random", guardRandomizationInput),
+        createControlRow("Guard weekly", guardWeeklyIncrementInput),
+        createControlRow("Reaction weights", guardReactionDistributionInput),
+        el("p", { className: "control-note", text: "Encounter guard reaction weights, one per line in order: Aggressive, Negative, Common, Friendly, Peaceful, Docile. The engine rolls weighted random; default is 1, 1, 1, 1, 1, 0." }),
+      ]),
+      createAccordionSection("Content budgets", [
+        createControlRow("Guarded value", guardedValueInput),
+        createControlRow("Guarded per area", guardedPerAreaInput),
+        createControlRow("Unguarded value", unguardedValueInput),
+        createControlRow("Unguarded per area", unguardedPerAreaInput),
+        createControlRow("Resources value", resourcesValueInput),
+        createControlRow("Resources per area", resourcesPerAreaInput),
+      ], false),
+      createAccordionSection("Pool and preset alternatives", [
+        createControlRow("Guarded pools", guardedInput.element),
+        createControlRow("Unguarded pools", unguardedInput.element),
+        createControlRow("Resource pools", resourcesInput.element),
+        createControlRow("Mandatory presets", mandatoryInput),
+        createControlRow("Count limits", countLimitsInput),
+      ], false),
     ]),
     el("div", { className: "bare-table" }, [
       createValueRow("Owner", props.selectedZone.owner),
@@ -134,17 +139,9 @@ export function createZoneEditForm(props: ZoneFormProps): HTMLElement {
       createValueRow("Main objects", String(props.selectedZone.mainObjectCount)),
       createValueRow("Roads", String(props.selectedZone.roadCount)),
     ]),
-    el("h3", { text: `${props.section.label} fields` }),
-    el("div", { className: "field-list" }, editableFields.map((field) => createFieldLine(field))),
   ]);
 }
 
-function createFieldLine(field: EditorFieldMetadata): HTMLElement {
-  return el("button", { className: "field-line", attrs: { type: "button" } }, [
-    el("span", { text: field.label }),
-    el("code", { text: field.id }),
-  ]);
-}
 
 function createInput(type: "text" | "number", value: string, step?: string): HTMLInputElement {
   const attrs: Record<string, string> = { type, value };

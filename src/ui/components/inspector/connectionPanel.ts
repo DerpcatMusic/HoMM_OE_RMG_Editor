@@ -1,11 +1,10 @@
-import { CONNECTION_TYPES, GUARD_REACTIONS, GATE_PLACEMENTS } from "../../../core/rmg/enums.js";
+import { CONNECTION_TYPES, GATE_PLACEMENTS, GUARD_REACTIONS } from "../../../core/rmg/enums.js";
 import { el } from "../../dom.js";
 import type { ConnectionUpdateDraft } from "../../state/editorSession.js";
+import { createAccordionSection } from "../primitives.js";
 import {
+  createBoundInstantField,
   createCheckbox,
-  createControlRow,
-  createInstantField,
-  createNumberInput,
   createOptionalNumberInput,
   createSelect,
   createTextInput,
@@ -24,7 +23,9 @@ export function createConnectionPanel(props: InspectorProps): HTMLElement {
   const nameInput = createTextInput(conn.label);
   const fromInput = createTextInput(conn.from);
   const toInput = createTextInput(conn.to);
-  const typeInput = createSelect(conn.type, [...CONNECTION_TYPES]);
+  const gladiatorEnabled = props.template.gameRules?.winConditions?.gladiatorArena === true;
+  const connectionTypes = CONNECTION_TYPES.filter((type) => type !== "GladiatorArena" || gladiatorEnabled || conn.type === "GladiatorArena");
+  const typeInput = createSelect(conn.type, connectionTypes);
   const lengthInput = createOptionalNumberInput(conn.length);
   const portalFromInput = createCheckbox(conn.portalFromEnabled ?? true);
   const portalToInput = createCheckbox(conn.portalToEnabled ?? true);
@@ -33,8 +34,8 @@ export function createConnectionPanel(props: InspectorProps): HTMLElement {
   const guardWeeklyInput = createOptionalNumberInput(conn.guardWeeklyIncrement);
   const guardReactionInput = createSelect(conn.guardReaction ?? "Common", [...GUARD_REACTIONS]);
   const guardEscapeInput = createCheckbox(conn.guardEscape ?? true);
-  const gatePlacementInput = createSelect(conn.gatePlacement ?? "Random", [...GATE_PLACEMENTS]);
   const guardRandomizationInput = createOptionalNumberInput(conn.guardRandomization);
+  const gatePlacementInput = createSelect(conn.gatePlacement ?? "Random", [...GATE_PLACEMENTS]);
 
   const collectDraft = (): ConnectionUpdateDraft => ({
     originalName: conn.id,
@@ -58,31 +59,39 @@ export function createConnectionPanel(props: InspectorProps): HTMLElement {
 
   const commit = () => props.onApplyConnectionSettings(collectDraft());
 
-  for (const input of [nameInput, fromInput, toInput, typeInput, lengthInput, portalFromInput, portalToInput, guardZoneInput, guardValueInput, guardWeeklyInput, guardReactionInput, guardEscapeInput, gatePlacementInput, guardRandomizationInput]) {
-    input.addEventListener("change", commit);
-  }
-
   const num = (input: HTMLInputElement) => String(optionalNumber(input) ?? "");
+  const bool = (input: HTMLInputElement) => String(input.checked);
+  const field = (label: string, input: HTMLInputElement | HTMLSelectElement, initialValue: string) =>
+    createBoundInstantField(label, input, initialValue, commit);
 
   return el("div", { className: "inspector-body" }, [
-    el("h3", { text: "Identity" }),
-    createInstantField("Name", nameInput, { initialValue: conn.label, onCommit: () => commit(), onReset: () => { nameInput.value = conn.label; commit(); } }),
-    createInstantField("From", fromInput, { initialValue: conn.from, onCommit: () => commit(), onReset: () => { fromInput.value = conn.from; commit(); } }),
-    createInstantField("To", toInput, { initialValue: conn.to, onCommit: () => commit(), onReset: () => { toInput.value = conn.to; commit(); } }),
-    el("h3", { text: "Type and layout" }),
-    createInstantField("Type", typeInput, { initialValue: conn.type, onCommit: () => commit(), onReset: () => { typeInput.value = conn.type; commit(); } }),
-    createInstantField("Length", lengthInput, { initialValue: num(lengthInput), onCommit: () => commit(), onReset: () => { lengthInput.value = num(lengthInput); commit(); } }),
-    el("h3", { text: "Portals" }),
-    createInstantField("Portal from", portalFromInput, { initialValue: String(conn.portalFromEnabled ?? true), onCommit: () => commit(), onReset: () => { portalFromInput.checked = conn.portalFromEnabled ?? true; commit(); } }),
-    createInstantField("Portal to", portalToInput, { initialValue: String(conn.portalToEnabled ?? true), onCommit: () => commit(), onReset: () => { portalToInput.checked = conn.portalToEnabled ?? true; commit(); } }),
-    el("h3", { text: "Guards" }),
-    createInstantField("Guard zone", guardZoneInput, { initialValue: conn.guardZone ?? "", onCommit: () => commit(), onReset: () => { guardZoneInput.value = conn.guardZone ?? ""; commit(); } }),
-    createInstantField("Guard value", guardValueInput, { initialValue: num(guardValueInput), onCommit: () => commit(), onReset: () => { guardValueInput.value = num(guardValueInput); commit(); } }),
-    createInstantField("Guard weekly", guardWeeklyInput, { initialValue: num(guardWeeklyInput), onCommit: () => commit(), onReset: () => { guardWeeklyInput.value = num(guardWeeklyInput); commit(); } }),
-    createInstantField("Reaction", guardReactionInput, { initialValue: conn.guardReaction ?? "Common", onCommit: () => commit(), onReset: () => { guardReactionInput.value = conn.guardReaction ?? "Common"; commit(); } }),
-    createInstantField("Guard escape", guardEscapeInput, { initialValue: String(conn.guardEscape ?? true), onCommit: () => commit(), onReset: () => { guardEscapeInput.checked = conn.guardEscape ?? true; commit(); } }),
-    createInstantField("Guard random", guardRandomizationInput, { initialValue: num(guardRandomizationInput), onCommit: () => commit(), onReset: () => { guardRandomizationInput.value = num(guardRandomizationInput); commit(); } }),
-    el("h3", { text: "Gate" }),
-    createInstantField("Placement", gatePlacementInput, { initialValue: conn.gatePlacement ?? "Random", onCommit: () => commit(), onReset: () => { gatePlacementInput.value = conn.gatePlacement ?? "Random"; commit(); } }),
+    createAccordionSection("Identity", [
+      field("Name", nameInput, conn.label),
+      field("From", fromInput, conn.from),
+      field("To", toInput, conn.to),
+      ...(!gladiatorEnabled && conn.type !== "GladiatorArena" ? [
+        el("p", { className: "conditional-note", text: "GladiatorArena connections are available when Win conditions > Gladiator arena is enabled." }),
+      ] : []),
+    ]),
+    createAccordionSection("Type and layout", [
+      field("Type", typeInput, conn.type),
+      field("Length", lengthInput, num(lengthInput)),
+    ]),
+    createAccordionSection("Portals", [
+      field("Portal from", portalFromInput, bool(portalFromInput)),
+      field("Portal to", portalToInput, bool(portalToInput)),
+    ], conn.type === "Portal"),
+    createAccordionSection("Guards", [
+      field("Guard zone", guardZoneInput, conn.guardZone ?? ""),
+      field("Guard value", guardValueInput, num(guardValueInput)),
+      field("Guard weekly", guardWeeklyInput, num(guardWeeklyInput)),
+      field("Reaction", guardReactionInput, conn.guardReaction ?? "Common"),
+      el("p", { className: "control-note", text: "Connection guard reaction is fixed for this connection guard. Zone reaction weights only affect encounter guards inside zones." }),
+      field("Guard escape", guardEscapeInput, bool(guardEscapeInput)),
+      field("Guard random", guardRandomizationInput, num(guardRandomizationInput)),
+    ]),
+    createAccordionSection("Gate", [
+      field("Placement", gatePlacementInput, conn.gatePlacement ?? "Random"),
+    ], false),
   ]);
 }

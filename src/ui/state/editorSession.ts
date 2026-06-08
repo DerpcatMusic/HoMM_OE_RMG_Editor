@@ -91,6 +91,9 @@ export interface ZoneUpdateDraft {
 
 export interface GlobalSettingsDraft {
   gameMode: string;
+  sizeX: number;
+  displayWinCondition: string;
+  sizeZ: number;
   heroCountMin: number;
   heroCountMax: number;
   heroCountIncrement: number;
@@ -880,6 +883,9 @@ export function updateGlobalSettingsInSession(session: EditorSession, draft: Glo
       input: {
         gameMode: effectiveDraft.gameMode as GameMode,
         applyGameModeDefaults: true,
+        sizeX: effectiveDraft.sizeX,
+        displayWinCondition: effectiveDraft.displayWinCondition.trim().length > 0 ? effectiveDraft.displayWinCondition : null,
+        sizeZ: effectiveDraft.sizeZ,
         gameRules: {
           heroCountMin: effectiveDraft.heroCountMin,
           heroCountMax: effectiveDraft.heroCountMax,
