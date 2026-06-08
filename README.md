@@ -1,6 +1,6 @@
 # Olden Era RMG Editor
 
-Browser-first editor core and shell for Heroes of Might and Magic: Olden Era `.rmg.json` random-map templates.
+**[🎮 Use the Editor Here](https://derpcatmusic.github.io/HoMM_OE_RMG_Editor/)** — Browser-first editor core and shell for Heroes of Might and Magic: Olden Era `.rmg.json` random-map templates.
 
 ## What Works Now
 
@@ -13,18 +13,24 @@ Browser-first editor core and shell for Heroes of Might and Magic: Olden Era `.r
 - Root content structures in core mutations: local content pools, content pool groups, bans, value distributions, content lists, mandatory content presets, content count limit presets, global bans, value overrides, and zone layouts.
 - Core.zip generated catalogs from game data: content pools, content lists, factions, biomes, heroes, magics, units, RMG-placeable content, and artifacts.
 - AssetRipper Texture2D visual catalog generation for source-backed image candidates, with confidence scoring and documented limits for portraits.
-- Browser UI shell with top bar, left rail, canvas workspace, selected-zone workspace, zone-internal workspace, and right inspector.
-- Left rail is split into top game-data/global settings editing and bottom zone navigation so template-level controls do not compete with zone rows.
+- Browser UI shell with top bar, left sidebar, canvas workspace, and right inspector.
+- Left sidebar has three resizable sections: global settings, zone list, and players.
+- Global settings form is directly visible in sidebar; zone editor moved to inspector `Zone` tab.
+- Player management derives players from spawn main objects; supports up to 8 players with official colors.
+- Validation marquee at sidebar bottom shows player coverage errors or all-clear.
+- Save is blocked when validation errors exist.
 - Resizable left sidebar and right inspector panel with persisted panel widths.
-- Browser load/new/save for `.rmg.json`.
-- Browser Core.zip parsing via Effect-backed ZIP/CoreDataSource services. The header reports parsed pool and RMG-content counts, and the app remembers the last selected Core.zip metadata so it can ask to load it again after reload.
+- Browser load/new/save for `.rmg.json`; save writes to Core.zip directory via File System Access API when available.
 - Canvas zone dragging with persisted editor-only layout and live SVG connection redraw.
 - `Ctrl` + drag from a zone to another zone creates a default direct connection.
 - Selectable canvas connection lines and a connection inspector tab for deep connection settings.
-- Zone edit workspace shows main objects, connection anchors, authored `zone.roads[]`, draggable internal object layout, SVG road splines connected to object centers with road-type labels, and a compact object/road summary.
+- Canvas zones show a 5px color strip on the left border using player color or gray for neutral.
+- Canvas zones glow when their owner player is focused in the sidebar.
+- Canvas right-click context menus for zones (select, assign player, delete) and connections (select, change type, delete).
+- Inspector `Zone` tab edits zone name, size, layout, biome rules, guard tuning, content budgets, pool alternatives, mandatory-content presets, and content-count-limit presets with instant-apply and per-field reset.
+- Inspector `Connection` tab edits endpoints, connection type, length, portal flags, guard fields, gate placement, road flag, sim squad flag, and guard randomization with instant-apply.
 - Inspector `Objects` tab edits main-object type, spawn, owner, key/city-hold flags, placement mode/args, faction rule args, guard fields, weekly unit increment, and city building SIDs.
 - Road inspector edits authored road type and structured `from`/`to` targets using selected-zone context.
-- Expanded zone settings editor for layout, biome rules, guard tuning, content budgets, pool alternatives, mandatory-content alternatives, and count-limit alternatives.
 - Searchable content-pool selectors for zone guarded, unguarded, and resource pool alternatives, filtered by Core.zip pool naming/source conventions.
 - Right-side tool dock with vertical Inspector/Browser tabs. Inspector owns selected entity editing; Browser owns searchable Core.zip lookup/copy/drag rows.
 - Browser panel inspired by the older Python/TS editor layout: scope filter, category filter, dense capped result list, click-to-copy IDs, draggable content SIDs, and a details pane for the selected entry.
@@ -35,17 +41,15 @@ Browser-first editor core and shell for Heroes of Might and Magic: Olden Era `.r
 - SingleHero global mode normalization in core/session/UI: one hero, hero hiring banned, encounter holes disabled, and lost-start-hero enabled.
 - Undo/redo controls backed by transaction history.
 - Effect service layer for browser file I/O, Core.zip parsing/catalog generation, layout persistence, command programs, and typed UI errors.
+- Core.zip load modal appears on every page load until Core.zip is loaded; supports drag-and-drop and click-to-browse.
 
 ## Still Missing
 
-- Persistent Core.zip file handles with permission restore where the browser supports the File System Access API. Current browser-safe behavior remembers the archive metadata and asks the user to select it again.
 - Full content-pool authoring polish: rename/remove pools, clone official Core pools from full source configs in-browser, structured per-row content editing, bans, value distributions, reorder controls, and validation messages.
 - Visual catalog UI integration, including safe placeholders for unresolved artifact, hero, and unit portraits.
 - Full mandatory-content and content-count-limit editors.
 - Road editing still needs add/remove/reorder controls per road row and richer inline validation display.
 - Conditional editors beyond current biome/faction rules and SingleHero rules, especially placement rules, weighted content biome filters, and content-pool weight rows.
-- Visual validation panel with actionable diagnostics.
-- File-system save/open beyond browser download and file picker.
 - Persisted editor layout is local UI state only; it is not part of the `.rmg.json` template.
 - Browser Core.zip parser does not support ZIP64 archives yet.
 

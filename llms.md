@@ -11,8 +11,8 @@ Use this file as the first stop for future agents. It delegates the investigatio
 - Extracted content pools: `extracted/Core/generator/content_pools`
 - Extracted content lists: `extracted/Core/generator/content_lists`
 - Extracted zone layouts: `extracted/Core/generator/zone_layouts`
-- RMG C# model and generator logic: `GameEngineMapGenerator/MapGenerator/*.cs`
-- Fixed-map editor/decompiled UI source: `GameEngineMapGenerator/MapEditor/*.cs`
+- RMG C# model and generator logic: `GameEngineMapGenerator/MapGenerator/*.cs` (proprietary, not in repo — see `docs/rmg/schema-source-references.md` for extracted notes)
+- Fixed-map editor/decompiled UI source: `GameEngineMapGenerator/MapEditor/*.cs` (proprietary, not in repo)
 - Reproducible local scanner: `tools/rmg_scan.py`
 - Headless editor core: `src/core`
 - Headless graph adapter: `src/core/graph`

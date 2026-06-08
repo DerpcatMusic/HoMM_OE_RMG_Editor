@@ -36,7 +36,7 @@ Legend:
 | Global bans | done | Set or clear global bans for magics, items, skills, heroes, and units. | Object browser and impact preview. |
 | Bulk mutations | done | Apply zone, connection, or main-object edits across predicate-matched objects. | UI command builder and dry-run preview. |
 | Undo / redo | done | Transaction history supports push, undo, redo, current-template lookup, and clear. | Multi-command grouping semantics in the UI layer. |
-| UI shell | partial | Tokenized responsive browser shell with reusable vanilla TypeScript components, schema-driven section navigation, workspace placeholder, and inspector. | Real template loading, graph editor, controls wired to editor actions, game-data pickers, and file workflow. |
+| UI shell | done | Tokenized responsive browser shell with canvas, sidebar (global settings, zones, players), inspector (Zone, Connection, Objects, Content, Pools, Roads, Raw, Validation), instant-apply forms, player management, validation marquee, context menus, and File System Access API save. | Real content/artifact/hero catalog pickers and deep road row management. |
 
 ## Current Capability
 
@@ -55,7 +55,7 @@ The core can already author a complete basic RMG template from scratch:
 - refresh generated picker catalogs directly from `external/Core.zip`
 - render future forms from a source-backed editor schema registry instead of hard-coded field lists
 - run UI edits through a schema/action command layer instead of directly calling low-level mutations
-- build and preview a tokenized browser shell under `src/ui`
+- build and preview a fully functional browser shell under `src/ui` with canvas, sidebar, inspector, player management, validation, and File System Access API save
 - distinguish the 6 playable factions in `DB/data.json.availableFractions` from the full 8 faction IDs including `neutral` and `mix`
 - run bulk mutations and maintain undo/redo transaction history
 - preserve and round-trip observed official connection compatibility fields
@@ -76,7 +76,6 @@ The main remaining gaps are no longer basic JSON mutation coverage. They are edi
 - add focused tests for rename/delete reference rewrites beyond the smoke scan
 - reorder or bulk-rewrite index-sensitive references like main objects and roads
 - add UI-level multi-command grouping for undo/redo
-- build the UI layer on top of the core model
 
 ## Core Files
 
@@ -91,8 +90,7 @@ The main remaining gaps are no longer basic JSON mutation coverage. They are edi
 - `editor-model.md`: UI-ready facade over templates, resolved variants, graphs, and diagnostics. Status: `done`.
 - `editor-schema.md`: UI field metadata, edit levels, source status, picker hints, and compatibility handling. Status: `done`.
 - `editor-actions.md`: schema-driven command routing, entity actions, picker resolution, and transaction integration. Status: `done`.
-- `ui-shell.md`: tokenized browser shell, responsive layout, reusable components, and build/preview commands. Status: `partial`.
-- `mutations.md`: safe immutable template edits for zone/connection/pool operations. Status: `done`.
+- `ui-shell.md`: tokenized browser shell, responsive layout, reusable components, canvas, sidebar, inspector, players, validation, and build/preview commands. Status: `done`.
 - `zones.md`: zone schema, roles, budgets, main objects, roads, and editor implications. Status: `done`.
 - `connections.md`: graph links, gates, portals, guards, and connection validation. Status: `done`.
 - `roads.md`: zone road schema, target resolution, generation phases, official usage, and road mutations. Status: `done`.

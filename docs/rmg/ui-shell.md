@@ -8,31 +8,36 @@
 - `done`: top command bar exists with load, new, save, and Core.zip actions.
 - `done`: left/sidebar and right/inspector panels are horizontally resizable and persist panel widths locally.
 - `done`: load reads `.rmg.json` with the browser File API.
-- `done`: save downloads the current template as formatted `.rmg.json`.
-- `done`: new creates a minimal playable template through the core factory.
+- `done`: save writes `.rmg.json` to the same directory as the loaded Core.zip when the browser supports the File System Access API; falls back to download otherwise.
 - `done`: Core.zip attachment parses browser-side catalogs through Effect-backed services and reports pool/content counts.
-- `done`: center workspace has `Canvas` and `Selected zone` tabs.
+- `done`: center workspace shows the `Canvas` tab; zone editing moved to the inspector `Zone` tab.
 - `done`: canvas shows live zones/connections projected from the current template.
 - `done`: canvas zones can be dragged to editor-only positions.
 - `done`: canvas zone positions persist in browser local storage by template identity.
 - `done`: canvas connections are real SVG splines connected to rectangle centers and redraw live during zone drag.
 - `done`: `Ctrl` + drag from one zone to another creates a default `Direct` connection.
 - `done`: canvas connection lines are selectable.
-- `done`: left rail separates general template areas from the zone list.
-- `done`: right inspector has tabs for global settings, zone props, connection settings, content pools, roads, and raw schema fields.
-- `done`: global inspector edits game mode, hero counts, game-rule booleans/modifiers, and common win-condition settings.
-- `done`: connection inspector edits endpoints, connection type, length, portal flags, guard fields, gate placement, road flag, sim squad flag, and guard randomization.
+- `done`: canvas zones show a 5px color strip on the left border using `--zone-color` (player color or gray for neutral).
+- `done`: canvas zones glow when their owner player is focused in the sidebar.
+- `done`: canvas right-click context menus for zones (select, assign player, delete) and connections (select, change type, delete).
+- `done`: left sidebar has three resizable sections: global settings, zone list, and players.
+- `done`: sidebar global settings form is directly visible at the top, no nav buttons required.
+- `done`: sidebar zones section lists zones with click-to-select.
+- `done`: sidebar players section shows player color strips, zone counts, add/remove buttons, and click-to-focus.
+- `done`: player management derives players from spawn main objects; supports up to 8 players with official colors.
+- `done`: validation marquee at sidebar bottom shows player coverage errors (red pulse) or all-clear (green).
+- `done`: save is blocked when validation errors exist.
+- `done`: right inspector has tabs for Zone, Connection, Objects, Content, Pools, Roads, Raw, and Validation.
+- `done`: inspector `Zone` tab edits zone name, size, layout, biome rules, guard tuning, content budgets, pool alternatives, mandatory-content presets, and content-count-limit presets with instant-apply and per-field reset.
+- `done`: inspector `Connection` tab edits endpoints, connection type, length, portal flags, guard fields, gate placement, road flag, sim squad flag, and guard randomization with instant-apply.
 - `done`: inspector tabs scroll horizontally when there are too many tabs for the panel width.
 - `done`: shell reads real editor-schema metadata for field routing.
 - `done`: add zone, remove zone, add connection, rename zone, resize zone, and edit zone content-pool alternatives call `applyEditorAction`.
-- `done`: `Zone edit` workspace tab visualizes selected-zone main objects, connection anchors, and roads.
-- `done`: `Zone edit` can add a default city main object and a default road from main object `0` to the first incident non-proximity connection.
-- `done`: `Zone edit` includes a main-object editor for type, spawn, owner, key/city-hold flags, placement, faction, weekly-unit, guard, and building-SID fields.
+- `done`: zone edit form includes a main-object editor for type, spawn, owner, key/city-hold flags, placement, faction, weekly-unit, guard, and building-SID fields.
 - `done`: zone-internal object node positions are draggable and persist in browser local storage.
 - `done`: zone-internal roads are parsed from authored `zone.roads[]`, rendered as SVG splines connected to object rectangle centers, labeled by road type, and redrawn live during object drag.
 - `done`: inspector `Roads` tab edits road type plus structured `from` and `to` targets.
 - `done`: road target args are populated from selected-zone main objects, incident non-proximity connections, and mandatory-content entries referenced by the zone.
-- `done`: selected-zone editor now exposes layout, biome rules, crossroads/diplomacy, guard tuning, content budgets, pool alternatives, mandatory-content presets, and content-count-limit presets.
 - `done`: biome rule args use a source-backed builder for `FromList`, `MatchZone`, and `MatchMainObject`; unknown existing args remain visible.
 - `done`: `FromList` preserves `differentFrom:` exclusions separately from biome candidates.
 - `done`: `MatchZone` exposes blank/current-zone behavior with role-specific preview text.
@@ -41,23 +46,28 @@
 - `done`: SingleHero mode forces the dependent game-rule/win-condition defaults in the UI and session action path.
 - `done`: undo/redo controls are wired to transaction history.
 - `done`: Effect services wrap browser file I/O, Core.zip parsing, catalog generation, layout persistence, and command programs.
-- `missing`: real content/artifact/hero catalog picker controls, full content-pool authoring surfaces, deep mandatory-content placement-rule editing, deep road row management, and validation panels.
+- `done`: instant-apply pattern with per-field reset buttons for all form controls.
+- `done`: Core.zip load modal appears on every page load until Core.zip is loaded; supports drag-and-drop and click-to-browse; dismissed when Core.zip is successfully parsed.
+- `missing`: real content/artifact/hero catalog picker controls, full content-pool authoring surfaces, deep mandatory-content placement-rule editing, and deep road row management.
 
 ## Source Files
 
 - `src/ui/index.html`: source HTML template copied into `dist/ui`.
 - `src/ui/main.ts`: browser entry.
 - `src/ui/dom.ts`: DOM helper.
-- `src/ui/data/shellData.ts`: temporary shell data plus schema summaries.
-- `src/ui/components/appShell.ts`: app mount and shell state.
+- `src/ui/data/shellData.ts`: shell data types including `ShellPlayerItem` and `ShellConnectionItem`.
+- `src/ui/components/appShell.ts`: app mount, render loop, and shell state wiring.
 - `src/ui/components/header.ts`: top command bar.
-- `src/ui/components/sidebar.ts`: project and zone navigation.
-- `src/ui/components/workspace.ts`: canvas and selected-zone workspaces.
-- `src/ui/components/inspector.ts`: selected-zone inspector tabs.
+- `src/ui/components/sidebar.ts`: resizable sidebar with global settings, zone list, and players sections.
+- `src/ui/components/workspace.ts`: canvas with zone/connection rendering and context menus.
+- `src/ui/components/inspector.ts`: inspector tab routing and body creation.
+- `src/ui/components/inspector/connectionPanel.ts`: connection settings form with instant-apply.
+- `src/ui/components/inspector/controls.ts`: form control factories including `createInstantField`.
+- `src/ui/components/zoneFormHelpers.ts`: zone editor form extracted from workspace.
 - `src/ui/components/primitives.ts`: reusable buttons, tabs, and value rows.
-- `src/ui/data/templateProjection.ts`: template-to-shell zone/connection projection.
-- `src/ui/state/editorSession.ts`: browser editor session and core action adapter.
-- `src/ui/state/browserFiles.ts`: file picker and download helpers.
+- `src/ui/data/templateProjection.ts`: template-to-shell zone/connection/player projection.
+- `src/ui/state/editorSession.ts`: browser editor session, player management, and core action adapter.
+- `src/ui/state/browserFiles.ts`: file picker, File System Access API, and download helpers.
 - `src/ui/state/editorLayoutPersistence.ts`: Effect-backed persisted editor layout.
 - `src/ui/effect/*.ts`: Effect programs and services for file I/O, Core.zip parsing, catalog summaries, and typed UI errors.
 - `src/ui/styles/tokens.css`: bare editor tokens.
@@ -130,22 +140,26 @@ Do not wire controls by directly mutating `.rmg.json` objects.
 
 - Top bar loads, creates, saves, parses Core.zip, and exposes undo/redo.
 - The app shell owns `100dvh`; long regions scroll internally instead of expanding the document.
-- Left rail lists general template areas and live zones.
-- Left rail and inspector width can be resized with hard separator handles.
-- Canvas tab shows live zones and connections.
+- Sidebar has three resizable sections: global settings (top), zone list (middle), and players (bottom), separated by drag dividers.
+- Global settings form is directly visible in the sidebar; no nav buttons required.
+- Sidebar and inspector width can be resized with hard separator handles.
+- Canvas is the only center workspace tab; zone editing moved to the inspector.
 - Canvas zone clicks update the inspector while staying on canvas.
 - Dragging a canvas zone moves it in the editor canvas only, while SVG connection splines redraw live from rectangle centers.
 - `Ctrl` + drag from a canvas zone draws a dotted draft line; releasing over another zone creates a default `Direct` connection.
 - Clicking a canvas connection selects it and opens the inspector `Connection` tab.
-- Left-zone clicks switch to the selected-zone tab.
-- Selected-zone tab can edit zone name, size, layout, biome rules, guard tuning, content budgets, guarded/unguarded/resource pool alternatives, mandatory-content presets, and content-count-limit presets.
+- Canvas zones show a 5px color strip on the left border using `--zone-color` (player color or gray for neutral).
+- Canvas zones glow when their owner player is focused in the sidebar.
+- Right-click context menus on canvas: zones (select, assign player, delete), connections (select, change type, delete).
+- Left-zone clicks select the zone and open the inspector `Zone` tab.
+- Inspector `Zone` tab edits zone name, size, layout, biome rules, guard tuning, content budgets, pool alternatives, mandatory-content presets, and content-count-limit presets with instant-apply and per-field reset.
+- Inspector `Connection` tab edits endpoints, connection type, length, portal flags, guard fields, gate placement, road flag, sim squad flag, and guard randomization with instant-apply.
 - Biome controls use the generated Core.zip biome catalog after Core.zip is attached; without Core.zip, `FromList` stays editable as raw args.
-- Inspector `Global` tab edits top-level game settings and win-condition fields.
-- Inspector `Global` disables the SingleHero-dependent fields while showing their forced values.
-- Inspector `Connection` tab edits the first deep set of connection settings.
-- Inspector zone tabs summarize selected-zone props, biome rules, guard settings, content budgets, content pools, road count, and schema fields.
-- Zone edit tab shows selected-zone internals, including main objects, incident connection anchors, and roads.
-- Zone edit object nodes can be dragged as persisted editor-only layout; authored road splines redraw live and carry road-type labels.
+- Sidebar players section shows player color strips, zone counts, add/remove buttons, and click-to-focus.
+- Player management derives players from spawn main objects; supports up to 8 players with official colors.
+- Validation marquee at sidebar bottom shows player coverage errors (red pulse) or all-clear (green).
+- Save is blocked when validation errors exist.
+
 - Zone edit main-object editor updates authored main objects through `mainObject.update`, not direct JSON assignment.
 - Faction `FromList` separates catalog faction candidates from `differentFrom:` exclusions; absent `mainObject.faction` remains absent unless the user chooses a rule type.
 - Faction `Match` uses a main-object index and optional zone selector. These are positional references and remain reorder-sensitive.
@@ -155,9 +169,13 @@ Do not wire controls by directly mutating `.rmg.json` objects.
 
 - `zone.add`: add a default zone to the active variant.
 - `zone.remove`: remove selected zone with incident connection/reference cleanup.
+- `zone.deleteByName`: delete a zone by name from canvas context menu with connection/reference cleanup.
 - `connection.add`: connect the selected zone to the first other named zone.
 - `connection.add`: connect two canvas zones through `Ctrl` + drag snap.
+- `connection.deleteByName`: delete a connection by name from canvas context menu.
 - `connection.updateSettings`: edit connection name, endpoints, type, length, portals, guards, gate placement, road flag, sim squad flag, and guard randomization.
+- `connection.updateTypeByName`: change connection type from canvas context menu.
+- `zone.reassignOwner`: reassign zone owner from canvas context menu.
 - `field.update / zone.name`: rename selected zone and update references.
 - `zone.updateSettings`: update size, layout, biome rules, crossroads position, diplomacy modifier, guard parameters, and reaction weights.
 - `zone.setContentBudgets`: update guarded, unguarded, and resource content budgets.
@@ -181,7 +199,7 @@ Do not wire controls by directly mutating `.rmg.json` objects.
 - Catalogs are parsed, but the UI only exposes biome and main-object faction pickers so far. Searchable content, hero, magic, unit, and artifact pickers are still missing.
 - Zone edit object placement is draggable editor-only layout; road target data is editable from the inspector but not yet add/remove/reorder row managed.
 - Conditional editors are incomplete beyond biome/faction rules and SingleHero dependencies. Placement-rule conditions, weighted content biome filters, and content-pool rows still need dedicated controls.
-- Save downloads a file; it does not write directly to disk because this shell is browser-only.
+- Save falls back to download when the browser does not support the File System Access API.
 
 ## Verification
 

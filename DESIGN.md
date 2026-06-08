@@ -9,9 +9,9 @@ The UI is a bare-bones editor shell for `.rmg.json` templates. It should feel cl
 The shell has four fixed regions:
 
 - Top bar: `Load template`, `New template`, `Save template`, `Add Core.zip`, `Undo`, `Redo`.
-- Left rail: project-level entries, zone list, add-zone affordance.
-- Center workspace: `Canvas`, `Selected zone`, and `Zone edit` tabs.
-- Right inspector: global settings plus selected-zone/connection tabs for props, connection settings, content, roads, and raw schema fields.
+- Left sidebar: global settings, zone list, and players sections with resizable dividers.
+- Center workspace: `Canvas` tab.
+- Right inspector: Zone, Connection, Objects, Content, Pools, Roads, Raw, and Validation tabs.
 - The left rail and right inspector have hard separator resize handles.
 
 Desktop uses a three-column editor grid. Medium screens move the inspector below the workspace. Small screens collapse to one column while preserving the same region order.

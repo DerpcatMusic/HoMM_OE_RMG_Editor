@@ -7,6 +7,9 @@ external/
 extracted/
 *.zip
 
+# Proprietary game source code — do not commit
+GameEngineMapGenerator/
+
 # Impeccable runtime sessions
 .impeccable/live/sessions/
 

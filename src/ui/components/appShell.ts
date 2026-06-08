@@ -422,6 +422,10 @@ export function mountAppShell(root: HTMLElement): void {
         if (nextSession) {
           session = nextSession;
           rememberedCoreArchive = loadRememberedCoreArchive();
+          if (coreArchiveModalOverlay) {
+            coreArchiveModalOverlay.remove();
+            coreArchiveModalOverlay = undefined;
+          }
         }
       })
       .catch((error: unknown) => {
@@ -437,8 +441,10 @@ export function mountAppShell(root: HTMLElement): void {
     }
   };
 
-  showCoreArchiveModal(root, addCoreArchive, loadCoreArchiveFile);
-
+  let coreArchiveModalOverlay: HTMLElement | undefined;
+  if (!session.coreArchive) {
+    coreArchiveModalOverlay = showCoreArchiveModal(root, addCoreArchive, loadCoreArchiveFile);
+  }
   render();
 }
 
@@ -624,12 +630,11 @@ function formatCoreArchiveLabel(session: { coreArchive: { name: string; size: nu
     ? `${session.coreArchive.name} (${summary.contentPools}p / ${summary.rmgContent}c)`
     : session.coreArchive.name;
 }
-
 function showCoreArchiveModal(
   root: HTMLElement,
   onPickFile: () => void,
   onDropFile: (file: File) => void,
-): void {
+): HTMLElement {
   const overlay = el("div", { className: "modal-overlay" });
   const dropZone = el("div", { className: "modal-dropzone" }, [
     el("span", { className: "material-symbols-outlined modal-icon", text: "folder_zip", attrs: { "aria-hidden": "true" } }),
@@ -684,4 +689,5 @@ function showCoreArchiveModal(
   });
 
   root.append(overlay);
+  return overlay;
 }
