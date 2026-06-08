@@ -1,4 +1,5 @@
 import type { Connection, MainObject, RmgTemplate, RoadConfig, RoadTargetConfig, Variant, Zone } from "../../core/rmg/rmgTypes.js";
+import { computeTopologyPackedLayout } from "./graphLayout.js";
 import { PLAYER_COLORS, type ShellConnectionItem, type ShellPlayerItem, type ShellRuleItem, type ShellZoneItem, type ShellZoneObjectItem, type ShellZoneRoadItem } from "./shellData.js";
 
 export interface TemplateProjection {
@@ -20,8 +21,17 @@ export function projectTemplateToShellData(
   zoneObjectPositions: Readonly<Record<string, Readonly<Record<string, { x: number; y: number }>>>> = {},
 ): TemplateProjection {
   const variant = getVariant(template, variantIndex);
-  const zones = (variant?.zones ?? []).map((zone, index, allZones) =>
-    projectZone(zone, index, allZones.length, variant, canvasPositions, zoneObjectPositions)
+  const variantZones = variant?.zones ?? [];
+  const autoPositions = computeTopologyPackedLayout(
+    variantZones.map((zone, index) => {
+      const label = zone.name ?? `Zone ${index + 1}`;
+      return { name: label, index, role: inferZoneRole(zone, label), size: zone.size ?? 1 };
+    }),
+    variant?.connections ?? [],
+    canvasPositions,
+  );
+  const zones = variantZones.map((zone, index, allZones) =>
+    projectZone(zone, index, allZones.length, variant, canvasPositions, autoPositions, zoneObjectPositions)
   );
   const selectedZone = zones.find((zone) => zone.label === selectedZoneName) ?? zones[0];
   const connections = (variant?.connections ?? []).map((connection, index) => ({
@@ -89,13 +99,14 @@ function projectZone(
   zoneCount: number,
   variant: Variant | undefined,
   canvasPositions: Readonly<Record<string, { x: number; y: number }>>,
+  autoPositions: Readonly<Record<string, { x: number; y: number }>>,
   zoneObjectPositions: Readonly<Record<string, Readonly<Record<string, { x: number; y: number }>>>>,
 ): ShellZoneItem {
   const label = zone.name ?? `Zone ${index + 1}`;
   const guardedPools = [...(zone.guardedContentPool ?? [])];
   const unguardedPools = [...(zone.unguardedContentPool ?? [])];
   const resourcesPools = [...(zone.resourcesContentPool ?? [])];
-  const position = canvasPositions[label] ?? zonePosition(index, zoneCount, inferZoneRole(zone, label));
+  const position = canvasPositions[label] ?? autoPositions[label] ?? zonePosition(index, zoneCount, inferZoneRole(zone, label));
   const zoneObjects = applyZoneObjectPositions(projectZoneObjects(zone, label, variant), zoneObjectPositions[label] ?? {});
   const zoneRoads = projectZoneRoads(zone, zoneObjects);
   return {

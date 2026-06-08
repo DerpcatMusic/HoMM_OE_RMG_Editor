@@ -12,8 +12,9 @@
 - `done`: Core.zip attachment parses browser-side catalogs through Effect-backed services and reports pool/content counts.
 - `done`: center workspace shows the `Canvas` tab; zone editing moved to the inspector `Zone` tab.
 - `done`: canvas shows live zones/connections projected from the current template.
+- `done`: unpinned canvas zones use connection-aware topology-packed auto-layout: serial chains become lines, long chains wrap/snake inside the canvas, cycles become polygon-like clusters, hubs become spokes, and parallel connections collapse for placement.
 - `done`: canvas zones can be dragged to editor-only positions.
-- `done`: canvas zone positions persist in browser local storage by template identity.
+- `done`: manual canvas zone positions persist in browser local storage by template identity and override auto-layout.
 - `done`: canvas connections are real SVG splines connected to rectangle centers and redraw live during zone drag.
 - `done`: `Ctrl` + drag from one zone to another creates a default `Direct` connection.
 - `done`: canvas connection lines are selectable.
@@ -47,7 +48,7 @@
 - `done`: undo/redo controls are wired to transaction history.
 - `done`: Effect services wrap browser file I/O, Core.zip parsing, catalog generation, layout persistence, and command programs.
 - `done`: instant-apply pattern with per-field reset buttons for all form controls.
-- `done`: Core.zip is cached in IndexedDB and auto-loaded on page refresh; load modal appears only when no cached Core.zip is found.
+- `done`: Core.zip is cached in IndexedDB and auto-loaded on page refresh; when no usable cached Core.zip exists, a drag/drop + file-picker modal prompts for it, and the header shows loaded/missing Core status.
 - `missing`: real content/artifact/hero catalog picker controls, full content-pool authoring surfaces, deep mandatory-content placement-rule editing, and deep road row management.
 
 ## Source Files

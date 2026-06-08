@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { computeTopologyPackedLayout, type GraphLayoutZoneInput } from "../ui/data/graphLayout.js";
 import { projectTemplateToShellData } from "../ui/data/templateProjection.js";
 import {
   addConnectionBetweenZones,
@@ -20,6 +21,88 @@ import {
   updateSelectedZoneRoadInSession,
   updateSelectedZoneInSession,
 } from "../ui/state/editorSession.js";
+
+function graphZone(name: string, index: number, role: GraphLayoutZoneInput["role"] = "neutral"): GraphLayoutZoneInput {
+  return { name, index, role, size: 1 };
+}
+
+function assertAlmostEqual(actual: number, expected: number, message: string): void {
+  assert.ok(Math.abs(actual - expected) <= 0.01, `${message}: expected ${actual} ~= ${expected}`);
+}
+
+function assertInSafeBounds(value: number, message: string): void {
+  assert.ok(value >= 6 && value <= 82, `${message}: expected ${value} within 6..82`);
+}
+
+function requireLayoutPosition(layout: Readonly<Record<string, { x: number; y: number }>>, name: string): { x: number; y: number } {
+  const position = layout[name];
+  assert.ok(position, `layout position exists for ${name}`);
+  return position;
+}
+
+const serialLayout = computeTopologyPackedLayout(
+  [graphZone("A", 0), graphZone("B", 1), graphZone("C", 2)],
+  [{ from: "A", to: "B" }, { from: "B", to: "C" }],
+);
+const serialA = requireLayoutPosition(serialLayout, "A");
+const serialB = requireLayoutPosition(serialLayout, "B");
+const serialC = requireLayoutPosition(serialLayout, "C");
+assertAlmostEqual(serialA.y, serialB.y, "serial line A/B y");
+assertAlmostEqual(serialB.y, serialC.y, "serial line B/C y");
+assert.ok(serialA.x < serialB.x && serialB.x < serialC.x, "serial line x order");
+
+const longSerialZones = Array.from({ length: 9 }, (_, index) => graphZone(`L${index}`, index));
+const longSerialConnections = Array.from({ length: longSerialZones.length - 1 }, (_, index) => ({
+  from: `L${index}`,
+  to: `L${index + 1}`,
+}));
+const longSerialLayout = computeTopologyPackedLayout(longSerialZones, longSerialConnections);
+const longSerialRows = new Set(Object.values(longSerialLayout).map((position) => position.y));
+assert.ok(longSerialRows.size >= 2, "long serial chain wraps to multiple rows");
+for (const [name, position] of Object.entries(longSerialLayout)) {
+  assertInSafeBounds(position.x, `${name} x`);
+  assertInSafeBounds(position.y, `${name} y`);
+}
+
+const triangleLayout = computeTopologyPackedLayout(
+  [graphZone("A", 0), graphZone("B", 1), graphZone("C", 2)],
+  [{ from: "A", to: "B" }, { from: "B", to: "C" }, { from: "A", to: "C", connectionType: "Portal" }],
+);
+const triangleA = requireLayoutPosition(triangleLayout, "A");
+const triangleB = requireLayoutPosition(triangleLayout, "B");
+const triangleC = requireLayoutPosition(triangleLayout, "C");
+const doubledArea = Math.abs(
+  triangleA.x * (triangleB.y - triangleC.y)
+    + triangleB.x * (triangleC.y - triangleA.y)
+    + triangleC.x * (triangleA.y - triangleB.y),
+);
+assert.ok(doubledArea > 1, "triangle layout is not collinear");
+
+const singleEdgeLayout = computeTopologyPackedLayout(
+  [graphZone("A", 0), graphZone("B", 1)],
+  [{ from: "A", to: "B" }],
+);
+const parallelEdgeLayout = computeTopologyPackedLayout(
+  [graphZone("A", 0), graphZone("B", 1)],
+  [{ from: "A", to: "B" }, { from: "B", to: "A" }, { from: "A", to: "B" }],
+);
+assert.deepEqual(parallelEdgeLayout, singleEdgeLayout);
+
+const manualLayout = computeTopologyPackedLayout(
+  [graphZone("A", 0), graphZone("B", 1)],
+  [{ from: "A", to: "B" }],
+  { A: { x: 2.5, y: 88.5 } },
+);
+assert.deepEqual(manualLayout.A, { x: 2.5, y: 88.5 });
+
+const disconnectedLayout = computeTopologyPackedLayout(
+  [graphZone("A", 0), graphZone("B", 1), graphZone("C", 2), graphZone("D", 3)],
+  [{ from: "A", to: "B" }, { from: "C", to: "D" }],
+);
+for (const [name, position] of Object.entries(disconnectedLayout)) {
+  assertInSafeBounds(position.x, `${name} disconnected x`);
+  assertInSafeBounds(position.y, `${name} disconnected y`);
+}
 
 const roadProjection = projectTemplateToShellData(
   {

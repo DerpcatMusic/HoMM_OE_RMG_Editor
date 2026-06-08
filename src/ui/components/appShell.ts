@@ -339,6 +339,7 @@ export function mountAppShell(root: HTMLElement): void {
           templateName: projection.templateName,
           sourceFileName: session.sourceFileName,
           coreArchiveLabel: formatCoreArchiveLabel(session),
+          coreArchiveLoaded: Boolean(session.coreArchive),
           dirty: session.dirty,
           canUndo: canUndoSession(session),
           canRedo: canRedoSession(session),
@@ -451,19 +452,25 @@ export function mountAppShell(root: HTMLElement): void {
   };
 
   let coreArchiveModalOverlay: HTMLElement | undefined;
-  if (!session.coreArchive) {
-    coreArchiveModalOverlay = showCoreArchiveModal(root, addCoreArchive, loadCoreArchiveFile);
-  }
+  const showCoreArchivePrompt = () => {
+    if (!session.coreArchive && !coreArchiveModalOverlay) {
+      coreArchiveModalOverlay = showCoreArchiveModal(root, addCoreArchive, loadCoreArchiveFile);
+    }
+  };
+
   render();
 
-  // Auto-load Core.zip from IndexedDB cache if available
-  loadCachedCoreArchiveFile().then((cachedFile) => {
-    if (cachedFile && !session.coreArchive) {
-      void loadCoreArchiveFile(cachedFile);
-    }
-  }).catch(() => {
-    // Ignore cache load errors
-  });
+  // Auto-load Core.zip from IndexedDB cache if available; prompt only when cache is absent or unusable.
+  void loadCachedCoreArchiveFile()
+    .then(async (cachedFile) => {
+      if (cachedFile && !session.coreArchive) {
+        await loadCoreArchiveFile(cachedFile);
+      }
+      showCoreArchivePrompt();
+    })
+    .catch(() => {
+      showCoreArchivePrompt();
+    });
 }
 
 function getCatalogOptions(session: {
@@ -641,12 +648,13 @@ function clampNumber(value: number, min: number, max: number): number {
 
 function formatCoreArchiveLabel(session: { coreArchive: { name: string; size: number; catalogSummary?: { contentPools: number; rmgContent: number } } | undefined }): string {
   if (!session.coreArchive) {
-    return "no core";
+    return "Core not loaded";
   }
   const summary = session.coreArchive.catalogSummary;
-  return summary
-    ? `${session.coreArchive.name} (${summary.contentPools}p / ${summary.rmgContent}c)`
+  const detail = summary
+    ? `${session.coreArchive.name} (${summary.contentPools} pools / ${summary.rmgContent} content)`
     : session.coreArchive.name;
+  return `Core loaded: ${detail}`;
 }
 function showCoreArchiveModal(
   root: HTMLElement,

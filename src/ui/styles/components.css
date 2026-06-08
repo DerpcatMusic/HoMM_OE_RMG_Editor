@@ -73,6 +73,14 @@
   border: 1px solid var(--color-ink);
 }
 
+.header-status-core[data-state="loaded"] {
+  color: oklch(0.82 0.16 145);
+}
+
+.header-status-core[data-state="missing"] {
+  color: oklch(0.76 0.16 35);
+}
+
 .button,
 .tab-button,
 .nav-item,

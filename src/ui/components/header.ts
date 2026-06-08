@@ -7,6 +7,7 @@ export interface ShellHeaderProps {
   templateName: string;
   sourceFileName: string | undefined;
   coreArchiveLabel: string;
+  coreArchiveLoaded: boolean;
   dirty: boolean;
   canUndo: boolean;
   canRedo: boolean;
@@ -29,14 +30,14 @@ export function createShellHeader(props: ShellHeaderProps): HTMLElement {
       createButton("Load", { variant: "secondary", icon: "file_open", onClick: props.onLoadTemplate }),
       createButton("New", { variant: "secondary", icon: "note_add", onClick: props.onNewTemplate }),
       createButton("Save", { variant: "primary", icon: "save", onClick: props.onSaveTemplate, disabled: !props.canSave }),
-      createButton("Core", { variant: "secondary", icon: "package_2", onClick: props.onAddCoreArchive }),
+      createButton("Load Core", { variant: "secondary", icon: "package_2", onClick: props.onAddCoreArchive }),
       createButton("Undo", { variant: "secondary", icon: "undo", onClick: props.onUndo, disabled: !props.canUndo }),
       createButton("Redo", { variant: "secondary", icon: "redo", onClick: props.onRedo, disabled: !props.canRedo }),
     ]),
     el("div", { className: "header-status", attrs: { "aria-label": "Editor status" } }, [
       el("span", { className: "header-status-dot", attrs: { "data-state": props.dirty ? "dirty" : "saved", title: props.dirty ? "Unsaved changes" : "Saved", "aria-hidden": "true" } }),
       el("span", { text: props.dirty ? "Unsaved" : "Saved" }),
-      el("span", { className: "header-status-core", text: props.coreArchiveLabel, attrs: { title: props.coreArchiveLabel } }),
+      el("span", { className: "header-status-core", text: props.coreArchiveLabel, attrs: { title: props.coreArchiveLabel, "data-state": props.coreArchiveLoaded ? "loaded" : "missing" } }),
     ]),
   ]);
 }

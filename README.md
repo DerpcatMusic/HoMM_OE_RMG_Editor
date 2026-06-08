@@ -34,6 +34,7 @@
 - Searchable content-pool selectors for zone guarded, unguarded, and resource pool alternatives, filtered by Core.zip pool naming/source conventions.
 - Right-side tool dock with vertical Inspector/Browser tabs. Inspector owns selected entity editing; Browser owns searchable Core.zip lookup/copy/drag rows.
 - Browser panel inspired by the older Python/TS editor layout: scope filter, category filter, dense capped result list, click-to-copy IDs, draggable content SIDs, and a details pane for the selected entry.
+- Connection-aware canvas auto-layout: serial chains become lines, long chains wrap/snake inside the canvas, cycles become polygon-like clusters, hubs become spokes, and dragged manual positions stay pinned.
 - Inspector content-pool tab for creating template-local pools, adding groups, and editing group weights/include-lists/content rows.
 - Catalog-backed biome `FromList` controls in the zone editor after Core.zip is attached, with unknown existing args preserved.
 - Source-backed biome rule builder for `FromList`, `MatchZone`, and `MatchMainObject`, including context-derived zone/main-object args and previews.
@@ -41,7 +42,7 @@
 - SingleHero global mode normalization in core/session/UI: one hero, hero hiring banned, encounter holes disabled, and lost-start-hero enabled.
 - Undo/redo controls backed by transaction history.
 - Effect service layer for browser file I/O, Core.zip parsing/catalog generation, layout persistence, command programs, and typed UI errors.
-- Core.zip is cached in IndexedDB and auto-loaded on page refresh; load modal appears only when no cached Core.zip is found.
+- Core.zip is cached in IndexedDB and auto-loaded on page refresh; when no usable cached Core.zip exists, a drag/drop + file-picker modal prompts for it, and the header shows loaded/missing Core status.
 
 ## Still Missing
 
