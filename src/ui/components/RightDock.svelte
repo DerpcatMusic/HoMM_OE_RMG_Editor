@@ -1,14 +1,12 @@
 <script lang="ts">
   import { editor } from "../state/editor.svelte.js";
   import Inspector from "./Inspector.svelte";
+  import ContentBrowser from "./ContentBrowser.svelte";
 </script>
-
 <aside class="right-dock" aria-label="Right tools">
   <div class="right-dock-panel">
     {#if editor.rightDockTab === "browser"}
-      <div class="content-browser-pane">
-        <p class="browser-placeholder">Content browser — catalog entries from Core.zip will appear here.</p>
-      </div>
+      <ContentBrowser />
     {:else}
       <Inspector />
     {/if}
@@ -93,9 +91,4 @@
     font-size: 1.25rem;
     line-height: 1;
   }
-  .content-browser-pane {
-    height: 100%;
-    padding: var(--space-3);
-  }
-  .browser-placeholder { color: var(--color-muted); font-size: 0.75rem; }
 </style>
