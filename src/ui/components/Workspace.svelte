@@ -1,6 +1,8 @@
 <script lang="ts">
   import { editor } from "../state/editor.svelte.js";
   import { PLAYER_COLORS } from "../data/shellData.js";
+  import { PLAYER_REFS, CONNECTION_TYPES } from "../../core/rmg/enums.js";
+  import ContextMenu from "./ContextMenu.svelte";
   let zones = $derived(editor.zones);
   let connections = $derived(editor.connections);
   let selectedZone = $derived(editor.selectedZone);
@@ -16,6 +18,9 @@
   let connDragging = $state(false);
   let connFromZone = $state<string | null>(null);
   let connMousePos = $state({ x: 0, y: 0 });
+  // Context menu state
+  let ctxMenu = $state<{ x: number; y: number; items: Array<{ label: string; icon?: string; onClick: () => void }> } | null>(null);
+  function closeCtxMenu() { ctxMenu = null; }
   function zonePointerDown(e: PointerEvent, zone: typeof zones[number]) {
     if (e.button !== 0) return;
     if (e.ctrlKey) {
@@ -34,6 +39,39 @@
     dragPos = { x: zone.x, y: zone.y };
     editor.selectZoneByName(zone.label);
     e.preventDefault();
+  }
+  function zoneContextMenu(e: MouseEvent, zone: typeof zones[number]) {
+    e.preventDefault();
+    ctxMenu = {
+      x: e.clientX,
+      y: e.clientY,
+      items: [
+        { label: "Select", icon: "target", onClick: () => editor.selectZoneByName(zone.label) },
+        ...PLAYER_REFS.map((p) => ({
+          label: `Assign ${p}`,
+          icon: "person",
+          onClick: () => editor.reassignZoneOwner(zone.label, p),
+        })),
+        { label: "Assign Neutral", icon: "remove_circle_outline", onClick: () => editor.reassignZoneOwner(zone.label, "Neutral") },
+        { label: "Delete zone", icon: "delete", onClick: () => editor.deleteZone(zone.label) },
+      ],
+    };
+  }
+  function connContextMenu(e: MouseEvent, conn: typeof connections[number]) {
+    e.preventDefault();
+    ctxMenu = {
+      x: e.clientX,
+      y: e.clientY,
+      items: [
+        { label: "Select", icon: "target", onClick: () => editor.selectConnectionById(conn.id) },
+        ...Array.from(CONNECTION_TYPES).map((type) => ({
+          label: `Type: ${type}`,
+          icon: "swap_horiz",
+          onClick: () => editor.changeConnectionType(conn.id, type),
+        })),
+        { label: "Delete connection", icon: "delete", onClick: () => editor.deleteConnection(conn.id) },
+      ],
+    };
   }
   function stagePointerMove(e: PointerEvent) {
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
@@ -93,6 +131,12 @@
     const b = zoneCenter(to);
     return `M ${a.x.toFixed(2)} ${a.y.toFixed(2)} L ${b.x.toFixed(2)} ${b.y.toFixed(2)}`;
   }
+  function onConnKeydown(e: KeyboardEvent, connId: string) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      editor.selectConnectionById(connId);
+    }
+  }
 </script>
 <div class="workspace">
   <div class="workspace-tabs" role="tablist" aria-label="Workspace mode">
@@ -131,10 +175,11 @@
                 class="stage-link-hit"
                 d={connectionPath(conn)}
                 onclick={() => editor.selectConnectionById(conn.id)}
+                oncontextmenu={(e) => connContextMenu(e, conn)}
                 role="button"
                 tabindex="0"
                 aria-label="{conn.id} ({conn.type})"
-                onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); editor.selectConnectionById(conn.id); }}}
+                onkeydown={(e) => onConnKeydown(e, conn.id)}
               />
               <path
                 class="stage-link"
@@ -168,6 +213,7 @@
             data-focused-owner={isFocused}
             style="left:{p.x}%;top:{p.y}%;--zone-color:{ownerColor}"
             onpointerdown={(e) => zonePointerDown(e, zone)}
+            oncontextmenu={(e) => zoneContextMenu(e, zone)}
           >
             <strong>{zone.label}</strong>
             <span>{zone.owner} / size {zone.size}</span>
@@ -209,6 +255,9 @@
     </section>
   {/if}
 </div>
+{#if ctxMenu}
+  <ContextMenu {...ctxMenu} onClose={closeCtxMenu} />
+{/if}
 
 <style>
   .workspace {
