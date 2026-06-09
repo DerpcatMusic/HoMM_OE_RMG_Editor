@@ -11,7 +11,8 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "rootDir": ".",
-    "types": ["node"]
+    "types": ["node", "vite/client"],
+    "resolveJsonModule": true
   },
-  "include": ["src/**/*.ts", "tools/**/*.ts"]
+  "include": ["src/**/*.ts", "src/**/*.json", "tools/**/*.ts"]
 }

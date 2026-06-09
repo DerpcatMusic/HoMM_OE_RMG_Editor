@@ -1,3 +1,10 @@
+.shell-header-slot,
+.shell-sidebar-slot,
+.shell-workspace-slot,
+.shell-inspector-slot {
+  display: contents;
+}
+
 .app-shell {
   width: 100%;
   height: 100dvh;

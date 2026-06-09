@@ -1,8 +1,23 @@
 import type { RmgTemplate } from "../../core/rmg/rmgTypes.js";
-import type { ShellCatalogOptions, ShellConnectionItem, ShellZoneItem } from "../data/shellData.js";
-import { getShellSections, getShellMetrics, getSectionFields, type ShellMetrics } from "../data/shellData.js";
+import type { ShellMetrics, ShellZoneItem, ShellConnectionItem, ShellPlayerItem, ShellCatalogOptions, ShellZoneObjectItem } from "../data/shellData.js";
+import { getShellSections, getSectionFields, getShellMetrics } from "../data/shellData.js";
 import { projectTemplateToShellData } from "../data/templateProjection.js";
 import type { PlayerRef } from "../../core/rmg/enums.js";
+import {
+  loadTemplateAutosave,
+  saveTemplateAutosave,
+  loadCachedCoreArchiveFile,
+  pickCoreArchiveFile,
+  pickTemplateFile,
+  cacheCoreArchiveFile,
+  rememberCoreArchiveFile,
+  loadRememberedCoreArchive,
+  type RememberedCoreArchive,
+} from "./browserFiles.js";
+import { attachCoreArchiveProgram, loadTemplateProgram, saveTemplateProgram } from "../effect/editorPrograms.js";
+import { formatUiEffectError } from "../effect/errors.js";
+import { runUiEffect } from "../effect/runtime.js";
+import { getBundledCatalogSummary } from "../data/bundledCatalogService.js";
 import {
   createInitialEditorSession,
   type EditorSession,
@@ -48,22 +63,6 @@ import {
   setBundledCoreArchiveCatalogSummary,
 } from "./editorSession.js";
 import {
-  loadTemplateAutosave,
-  saveTemplateAutosave,
-  saveTextFile,
-  type RememberedCoreArchive,
-  loadRememberedCoreArchive,
-  cacheCoreArchiveFile,
-  loadCachedCoreArchiveFile,
-  pickCoreArchiveFile,
-  pickTemplateFile,
-  rememberCoreArchiveFile,
-} from "./browserFiles.js";
-import { attachCoreArchiveProgram, loadTemplateProgram, saveTemplateProgram } from "../effect/editorPrograms.js";
-import { formatUiEffectError } from "../effect/errors.js";
-import { runUiEffect } from "../effect/runtime.js";
-import type { CoreArchiveCatalogSummary, CoreArchiveRef } from "./editorSession.js";
-import {
   copyZone,
   copyConnection,
   applyZoneClipboard,
@@ -71,33 +70,29 @@ import {
   buildZoneDraft,
   buildConnectionDraft,
 } from "./clipboard.js";
-import { fetchBundledCatalogSummary } from "../data/bundledCatalogService.js";
-
 export type InspectorTab = "zone" | "connection" | "objects" | "content" | "pools" | "roads" | "raw" | "validation";
 export type WorkspaceTab = "canvas" | "zoneEdit";
 export type RightDockTab = "inspector" | "browser";
-
 export interface SidebarSectionFlex {
   settings: number;
   zones: number;
   players: number;
 }
-
 const EMPTY_ZONE: ShellZoneItem = {
   id: "__no_zone__",
-  label: "No zone",
+  label: "No zone selected",
   owner: "Neutral",
   role: "neutral",
   index: -1,
-  x: 0,
-  y: 0,
+  x: 46,
+  y: 42,
   size: 1,
   layout: "",
   zoneBiome: { type: "", args: [] },
   contentBiome: { type: "", args: [] },
   metaObjectsBiome: { type: "", args: [] },
   guardReactionDistribution: [],
-  guardedPool: "",
+  guardedPool: "none",
   guardedPools: [],
   unguardedPools: [],
   resourcesPools: [],
@@ -108,6 +103,8 @@ const EMPTY_ZONE: ShellZoneItem = {
   zoneObjects: [],
   zoneRoads: [],
 };
+
+
 
 class EditorState {
   session: EditorSession = $state(createInitialEditorSession());
@@ -473,14 +470,15 @@ class EditorState {
     } catch {
       // ignore
     }
-    // Load bundled catalogs (default) — fast, no zip parsing needed
+    // Load bundled catalogs (default) — synchronous, no zip parsing needed
     try {
-      const bundledSummary = await fetchBundledCatalogSummary();
+      const bundledSummary = getBundledCatalogSummary();
       if (!this.session.coreArchive) {
         this.session = setBundledCoreArchiveCatalogSummary(this.session, bundledSummary);
+        console.log("[editor] Bundled catalogs loaded:", bundledSummary.contentPools, "pools,", bundledSummary.rmgContent, "content");
       }
-    } catch {
-      // Bundled catalogs unavailable, fall through to cached upload
+    } catch (err) {
+      console.warn("[editor] Failed to load bundled catalogs:", err);
     }
     // Restore cached Core.zip upload if present (overrides bundled)
     try {
@@ -488,8 +486,8 @@ class EditorState {
       if (cachedFile && !this.session.coreArchive?.catalogSummary) {
         await this.loadCoreArchive(cachedFile);
       }
-    } catch {
-      // ignore
+    } catch (err) {
+      console.warn("[editor] Failed to load cached Core.zip:", err);
     }
   }
 }

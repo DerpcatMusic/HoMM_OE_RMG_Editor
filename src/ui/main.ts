@@ -1,9 +1,8 @@
-import { mountAppShell } from "./components/appShell.js";
+import { mount } from "svelte";
+import App from "./App.svelte";
+import "./styles/index.css";
 
-const root = document.querySelector<HTMLElement>("#app");
-
-if (!root) {
-  throw new Error("Missing #app mount point.");
+const target = document.getElementById("app");
+if (target) {
+  mount(App, { target });
 }
-
-mountAppShell(root);

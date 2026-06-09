@@ -173,7 +173,7 @@
   display: flex;
   flex-direction: column;
   border-right: var(--line-strong) solid var(--color-line-strong);
-  overflow: hidden;
+  overflow-y: auto;
   container-type: inline-size;
 }
 
@@ -865,7 +865,7 @@
   border: var(--line) solid var(--color-line);
   border-radius: var(--radius-md);
   background: color-mix(in oklch, var(--color-panel) 94%, black 6%);
-  overflow: clip;
+  /* overflow intentionally omitted — accordion body must flow freely for parent scroll */
 }
 
 .accordion-section + .accordion-section {
@@ -986,38 +986,6 @@ textarea.text-input {
   background: var(--color-panel);
 }
 
-.right-dock {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 3rem;
-  border-left: var(--line-strong) solid var(--color-line-strong);
-  background: var(--color-panel);
-}
-
-.right-dock-rail {
-  min-height: 0;
-  display: grid;
-  align-content: start;
-  border-left: var(--line-strong) solid var(--color-line-strong);
-  background: var(--color-panel-2);
-}
-
-.right-dock-tab {
-  min-width: 0;
-  min-height: 4.75rem;
-  display: grid;
-  place-items: center;
-  gap: var(--space-1);
-  padding: var(--space-2) 0;
-  border: 0;
-  border-bottom: var(--line) solid var(--color-line-strong);
-  background: var(--color-panel);
-  color: var(--color-ink);
-  cursor: pointer;
-}
-
-.right-dock-tab:hover {
-  background: var(--color-panel-2);
-}
 
 .right-dock {
   display: grid;
@@ -1081,7 +1049,7 @@ textarea.text-input {
 .right-dock-panel {
   min-width: 0;
   min-height: 0;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 .right-dock-panel > .inspector,

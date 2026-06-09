@@ -2,6 +2,8 @@ const REMEMBERED_CORE_ARCHIVE_KEY = "olden-era-rmg-editor:last-core-archive";
 const CORE_ARCHIVE_IDB_DB = "olden-era-rmg-editor";
 const CORE_ARCHIVE_IDB_STORE = "core-archives";
 const CORE_ARCHIVE_IDB_KEY = "current";
+const AUTOSAVE_IDB_STORE = "autosave";
+const AUTOSAVE_IDB_KEY = "template";
 
 let coreDirectoryHandle: FileSystemDirectoryHandle | undefined;
 
@@ -14,9 +16,19 @@ export interface RememberedCoreArchive {
 
 function openCoreArchiveDB(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open(CORE_ARCHIVE_IDB_DB, 1);
-    request.onupgradeneeded = () => {
-      request.result.createObjectStore(CORE_ARCHIVE_IDB_STORE);
+    const request = indexedDB.open(CORE_ARCHIVE_IDB_DB, 2);
+    request.onupgradeneeded = (event) => {
+      const db = request.result;
+      if (!db.objectStoreNames.contains(CORE_ARCHIVE_IDB_STORE)) {
+        db.createObjectStore(CORE_ARCHIVE_IDB_STORE);
+      }
+      if (!db.objectStoreNames.contains(AUTOSAVE_IDB_STORE)) {
+        db.createObjectStore(AUTOSAVE_IDB_STORE);
+      }
+      // Delete old store from version 1 if upgrading
+      if (event.oldVersion < 2) {
+        // Stores already created above
+      }
     };
     request.onsuccess = () => resolve(request.result);
     request.onerror = () => reject(request.error);
@@ -161,4 +173,34 @@ function pickFile(accept: string): Promise<File | undefined> {
     input.addEventListener("change", () => resolve(input.files?.[0]));
     input.click();
   });
+}
+
+export async function saveTemplateAutosave(templateJson: string): Promise<void> {
+  try {
+    const db = await openCoreArchiveDB();
+    const tx = db.transaction(AUTOSAVE_IDB_STORE, "readwrite");
+    const store = tx.objectStore(AUTOSAVE_IDB_STORE);
+    store.put(templateJson, AUTOSAVE_IDB_KEY);
+    await new Promise<void>((resolve, reject) => {
+      tx.oncomplete = () => { db.close(); resolve(); };
+      tx.onerror = () => { db.close(); reject(tx.error); };
+    });
+  } catch {
+    // IndexedDB can be disabled; autosave is best-effort.
+  }
+}
+
+export async function loadTemplateAutosave(): Promise<string | undefined> {
+  try {
+    const db = await openCoreArchiveDB();
+    const tx = db.transaction(AUTOSAVE_IDB_STORE, "readonly");
+    const store = tx.objectStore(AUTOSAVE_IDB_STORE);
+    const request = store.get(AUTOSAVE_IDB_KEY);
+    return await new Promise<string | undefined>((resolve, reject) => {
+      request.onsuccess = () => { db.close(); resolve(request.result as string | undefined); };
+      request.onerror = () => { db.close(); reject(request.error); };
+    });
+  } catch {
+    return undefined;
+  }
 }

@@ -1,66 +1,58 @@
 import type { CoreArchiveCatalogSummary, CoreCatalogOption } from "../state/editorSession.js";
-
+import contentPoolsJson from "../public/game-data/content-pools.json" with { type: "json" };
+import contentListsJson from "../public/game-data/content-lists.json" with { type: "json" };
+import factionsJson from "../public/game-data/factions.json" with { type: "json" };
+import biomesJson from "../public/game-data/biomes.json" with { type: "json" };
+import heroesJson from "../public/game-data/heroes.json" with { type: "json" };
+import magicsJson from "../public/game-data/magics.json" with { type: "json" };
+import unitsJson from "../public/game-data/units.json" with { type: "json" };
+import rmgContentJson from "../public/game-data/rmg-content.json" with { type: "json" };
 interface CatalogFile<T> {
   language: string;
   generatedAt: string;
   sourceHash: string;
   entries: T[];
 }
-
 interface ContentPoolEntry {
   id: string;
   groupCount: number;
   positiveDirectContentCount: number;
 }
-
 interface FactionEntry {
   id: string;
   name?: string;
 }
-
 interface BiomeEntry {
   id: string;
   faction?: string;
 }
-
 interface RmgContentEntry {
   sid: string;
   name?: string;
   tag?: string;
   metaType?: string;
 }
-
-async function fetchCatalog<T>(path: string): Promise<CatalogFile<T>> {
-  const response = await fetch(`/game-data/${path}`);
-  if (!response.ok) throw new Error(`Failed to fetch ${path}: ${response.status}`);
-  return response.json() as Promise<CatalogFile<T>>;
-}
-
-export async function fetchBundledCatalogSummary(): Promise<CoreArchiveCatalogSummary> {
-  const [pools, lists, factions, biomes, _heroes, _magics, _units, rmgContent] = await Promise.all([
-    fetchCatalog<ContentPoolEntry>("content-pools.json"),
-    fetchCatalog<unknown>("content-lists.json"),
-    fetchCatalog<FactionEntry>("factions.json"),
-    fetchCatalog<BiomeEntry>("biomes.json"),
-    fetchCatalog<unknown>("heroes.json"),
-    fetchCatalog<unknown>("magics.json"),
-    fetchCatalog<unknown>("units.json"),
-    fetchCatalog<RmgContentEntry>("rmg-content.json"),
-  ]);
-
+export function getBundledCatalogSummary(): CoreArchiveCatalogSummary {
+  const pools = contentPoolsJson as CatalogFile<ContentPoolEntry>;
+  const lists = contentListsJson as CatalogFile<unknown>;
+  const factions = factionsJson as CatalogFile<FactionEntry>;
+  const biomes = biomesJson as CatalogFile<BiomeEntry>;
+  const heroes = heroesJson as CatalogFile<unknown>;
+  const magics = magicsJson as CatalogFile<unknown>;
+  const units = unitsJson as CatalogFile<unknown>;
+  const rmgContent = rmgContentJson as CatalogFile<RmgContentEntry>;
   const contentPoolOptions = pools.entries.map((pool) => ({
     id: pool.id,
     label: `${pool.id} (${pool.groupCount} groups, ${pool.positiveDirectContentCount} content)`,
   }));
-
   return {
     contentPools: pools.entries.length,
     contentLists: lists.entries.length,
     factions: factions.entries.length,
     biomes: biomes.entries.length,
-    heroes: _heroes.entries.length,
-    magics: _magics.entries.length,
-    units: _units.entries.length,
+    heroes: heroes.entries.length,
+    magics: magics.entries.length,
+    units: units.entries.length,
     rmgContent: rmgContent.entries.length,
     contentPoolOptions,
     guardedContentPoolOptions: contentPoolOptions.filter(isGuardedContentPoolOption),
@@ -84,16 +76,13 @@ export async function fetchBundledCatalogSummary(): Promise<CoreArchiveCatalogSu
     })),
   };
 }
-
 function isUnguardedContentPoolOption(option: CoreCatalogOption): boolean {
   return `${option.id} ${option.label}`.toLocaleLowerCase().includes("unguarded");
 }
-
 function isResourceContentPoolOption(option: CoreCatalogOption): boolean {
   const normalized = `${option.id} ${option.label}`.toLocaleLowerCase();
   return normalized.includes("resources") || normalized.includes("resource_pool");
 }
-
 function isGuardedContentPoolOption(option: CoreCatalogOption): boolean {
   return !isUnguardedContentPoolOption(option) && !isResourceContentPoolOption(option);
 }
