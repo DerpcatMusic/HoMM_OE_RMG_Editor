@@ -34,6 +34,7 @@ export interface CoreArchiveRef {
   size: number;
   lastModified: number;
   catalogSummary?: CoreArchiveCatalogSummary;
+  source?: "bundled" | "uploaded";
 }
 
 export interface CoreArchiveCatalogSummary {
@@ -258,8 +259,26 @@ export function setCoreArchiveCatalogSummary(
       size: file.size,
       lastModified: file.lastModified,
       catalogSummary,
+      source: "uploaded",
     },
     lastMessage: `Parsed ${file.name}: ${catalogSummary.contentPools} pools, ${catalogSummary.rmgContent} content entries.`,
+    lastActionFailed: false,
+  };
+}
+export function setBundledCoreArchiveCatalogSummary(
+  session: EditorSession,
+  catalogSummary: CoreArchiveCatalogSummary,
+): EditorSession {
+  return {
+    ...session,
+    coreArchive: {
+      name: "Bundled Core",
+      size: 0,
+      lastModified: 0,
+      catalogSummary,
+      source: "bundled",
+    },
+    lastMessage: `Bundled core loaded: ${catalogSummary.contentPools} pools, ${catalogSummary.rmgContent} content entries.`,
     lastActionFailed: false,
   };
 }
