@@ -1,6 +1,8 @@
 <script lang="ts">
   import { editor } from "../../state/editor.svelte.js";
   import { GAME_MODES } from "../../../core/rmg/enums.js";
+  import { FIELD_PLACEHOLDERS } from "./fieldPlaceholders.js";
+  const ph = FIELD_PLACEHOLDERS;
   let template = $derived(editor.session.template);
   let gameRules = $derived(template.gameRules ?? {});
   let winCon = $derived(gameRules.winConditions ?? {});
@@ -121,11 +123,11 @@
   </div>
   <div class="setting-row">
     <label for="gs-faction-exp">Faction exp mod</label>
-    <input id="gs-faction-exp" type="number" value={factionLawsExpModifier ?? ""} onchange={(e) => { factionLawsExpModifier = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" step="0.1" />
+    <input id="gs-faction-exp" type="number" value={factionLawsExpModifier ?? ""} onchange={(e) => { factionLawsExpModifier = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["gs-faction-exp"]} step="0.1" />
   </div>
   <div class="setting-row">
     <label for="gs-astro-exp">Astrology exp mod</label>
-    <input id="gs-astro-exp" type="number" value={astrologyExpModifier ?? ""} onchange={(e) => { astrologyExpModifier = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" step="0.1" />
+    <input id="gs-astro-exp" type="number" value={astrologyExpModifier ?? ""} onchange={(e) => { astrologyExpModifier = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["gs-astro-exp"]} step="0.1" />
   </div>
   <h3 class="section-heading">Win conditions</h3>
   <div class="setting-row">
@@ -138,11 +140,11 @@
   </div>
   <div class="setting-row">
     <label for="gs-desert-day">Desertion day</label>
-    <input id="gs-desert-day" type="number" value={desertionDay ?? ""} onchange={(e) => { desertionDay = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" />
+    <input id="gs-desert-day" type="number" value={desertionDay ?? ""} onchange={(e) => { desertionDay = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["gs-desert-day"]} />
   </div>
   <div class="setting-row">
     <label for="gs-desert-val">Desertion value</label>
-    <input id="gs-desert-val" type="number" value={desertionValue ?? ""} onchange={(e) => { desertionValue = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" />
+    <input id="gs-desert-val" type="number" value={desertionValue ?? ""} onchange={(e) => { desertionValue = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["gs-desert-val"]} />
   </div>
   <div class="setting-row">
     <label for="gs-hero-light">Hero lighting</label>
@@ -150,7 +152,7 @@
   </div>
   <div class="setting-row">
     <label for="gs-hero-light-day">Lighting day</label>
-    <input id="gs-hero-light-day" type="number" value={heroLightingDay ?? ""} onchange={(e) => { heroLightingDay = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" />
+    <input id="gs-hero-light-day" type="number" value={heroLightingDay ?? ""} onchange={(e) => { heroLightingDay = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["gs-hero-light-day"]} />
   </div>
   <div class="setting-row">
     <label for="gs-lost-city">Lost start city</label>
@@ -158,7 +160,7 @@
   </div>
   <div class="setting-row">
     <label for="gs-lost-city-day">Lost city day</label>
-    <input id="gs-lost-city-day" type="number" value={lostStartCityDay ?? ""} onchange={(e) => { lostStartCityDay = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" />
+    <input id="gs-lost-city-day" type="number" value={lostStartCityDay ?? ""} onchange={(e) => { lostStartCityDay = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["gs-lost-city-day"]} />
   </div>
   <div class="setting-row">
     <label for="gs-lost-hero">Lost start hero</label>
@@ -170,15 +172,15 @@
   </div>
   <div class="setting-row">
     <label for="gs-glad-delay">Gladiator delay</label>
-    <input id="gs-glad-delay" type="number" value={gladiatorArenaDaysDelayStart ?? ""} onchange={(e) => { gladiatorArenaDaysDelayStart = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" />
+    <input id="gs-glad-delay" type="number" value={gladiatorArenaDaysDelayStart ?? ""} onchange={(e) => { gladiatorArenaDaysDelayStart = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["gs-glad-delay"]} />
   </div>
   <div class="setting-row">
     <label for="gs-glad-count">Gladiator days</label>
-    <input id="gs-glad-count" type="number" value={gladiatorArenaCountDay ?? ""} onchange={(e) => { gladiatorArenaCountDay = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" />
+    <input id="gs-glad-count" type="number" value={gladiatorArenaCountDay ?? ""} onchange={(e) => { gladiatorArenaCountDay = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["gs-glad-count"]} />
   </div>
   <div class="setting-row">
     <label for="gs-champ">Champion rule</label>
-    <input id="gs-champ" type="text" value={championSelectRule} onchange={(e) => { championSelectRule = e.currentTarget.value; apply(); }} placeholder="—" />
+    <input id="gs-champ" type="text" value={championSelectRule} onchange={(e) => { championSelectRule = e.currentTarget.value; apply(); }} placeholder={ph["gs-champ"]} />
   </div>
   <div class="setting-row">
     <label for="gs-city-hold">City hold</label>
@@ -186,7 +188,7 @@
   </div>
   <div class="setting-row">
     <label for="gs-city-hold-days">City hold days</label>
-    <input id="gs-city-hold-days" type="number" value={cityHoldDays ?? ""} onchange={(e) => { cityHoldDays = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" />
+    <input id="gs-city-hold-days" type="number" value={cityHoldDays ?? ""} onchange={(e) => { cityHoldDays = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["gs-city-hold-days"]} />
   </div>
   <div class="setting-row">
     <label for="gs-tournament">Tournament</label>
@@ -194,7 +196,7 @@
   </div>
   <div class="setting-row">
     <label for="gs-tourn-pts">Tournament points</label>
-    <input id="gs-tourn-pts" type="number" value={tournamentPointsToWin ?? ""} onchange={(e) => { tournamentPointsToWin = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" />
+    <input id="gs-tourn-pts" type="number" value={tournamentPointsToWin ?? ""} onchange={(e) => { tournamentPointsToWin = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["gs-tourn-pts"]} />
   </div>
 </div>
 <style>
@@ -246,6 +248,12 @@
     font-size: 0.6875rem;
     color: var(--color-ink);
   }
+  .setting-row input::placeholder,
+  .setting-row textarea::placeholder {
+    color: var(--color-muted);
+    opacity: 0.6;
+    font-size: 0.625rem;
+  }
   .setting-row input[type="checkbox"] {
     width: 1rem;
     height: 1rem;
@@ -254,5 +262,8 @@
   .setting-row input:disabled {
     opacity: 0.4;
     cursor: not-allowed;
+  }
+  .setting-row input:disabled::placeholder {
+    opacity: 0.3;
   }
 </style>

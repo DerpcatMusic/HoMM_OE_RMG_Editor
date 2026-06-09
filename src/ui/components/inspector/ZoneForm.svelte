@@ -1,5 +1,7 @@
 <script lang="ts">
   import { editor } from "../../state/editor.svelte.js";
+import { FIELD_PLACEHOLDERS } from "./fieldPlaceholders.js";
+const ph = FIELD_PLACEHOLDERS;
   import { BIOME_RULE_TYPES, GUARD_REACTIONS } from "../../../core/rmg/enums.js";
   import { buildZoneDraft, applyZoneClipboard } from "../../state/clipboard.js";
   import type { ZoneUpdateDraft } from "../../state/editorSession.js";
@@ -183,23 +185,23 @@
     <summary class="form-section-title">Identity and layout</summary>
     <label class="control-row">
       <span>Name</span>
-      <input type="text" bind:value={name} onchange={apply} />
+      <input type="text" bind:value={name} onchange={apply} placeholder={ph["zf-name"]} />
     </label>
     <label class="control-row">
       <span>Size</span>
-      <input type="number" bind:value={size} onchange={apply} min="1" max="10" step="0.1" />
+      <input type="number" bind:value={size} onchange={apply} min="1" max="10" step="0.1" placeholder={ph["zf-size"]} />
     </label>
     <label class="control-row">
       <span>Layout</span>
-      <input type="text" bind:value={layout} onchange={apply} placeholder="Default" />
+      <input type="text" bind:value={layout} onchange={apply} placeholder={ph["zf-layout"]} />
     </label>
     <label class="control-row">
       <span>Crossroads pos</span>
-      <input type="number" value={crossroadsPosition ?? ""} onchange={(e) => { crossroadsPosition = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" step="0.01" />
+      <input type="number" value={crossroadsPosition ?? ""} onchange={(e) => { crossroadsPosition = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["zf-crossroads"]} step="0.01" />
     </label>
     <label class="control-row">
       <span>Diplomacy mod</span>
-      <input type="number" value={diplomacyModifier ?? ""} onchange={(e) => { diplomacyModifier = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" step="0.01" />
+      <input type="number" value={diplomacyModifier ?? ""} onchange={(e) => { diplomacyModifier = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["zf-diplomacy"]} step="0.01" />
     </label>
 
     <!-- Biome rules -->
@@ -404,19 +406,19 @@
     <summary class="form-section-title">Guard settings</summary>
     <label class="control-row">
       <span>Guard cutoff</span>
-      <input type="number" value={guardCutoffValue ?? ""} onchange={(e) => { guardCutoffValue = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" />
+      <input type="number" value={guardCutoffValue ?? ""} onchange={(e) => { guardCutoffValue = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["zf-guard-cutoff"]} />
     </label>
     <label class="control-row">
       <span>Guard multiplier</span>
-      <input type="number" value={guardMultiplier ?? ""} onchange={(e) => { guardMultiplier = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" step="0.01" />
+      <input type="number" value={guardMultiplier ?? ""} onchange={(e) => { guardMultiplier = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["zf-guard-multiplier"]} step="0.01" />
     </label>
     <label class="control-row">
       <span>Guard random</span>
-      <input type="number" value={guardRandomization ?? ""} onchange={(e) => { guardRandomization = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" step="0.01" />
+      <input type="number" value={guardRandomization ?? ""} onchange={(e) => { guardRandomization = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["zf-guard-random"]} step="0.01" />
     </label>
     <label class="control-row">
       <span>Guard weekly</span>
-      <input type="number" value={guardWeeklyIncrement ?? ""} onchange={(e) => { guardWeeklyIncrement = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" />
+      <input type="number" value={guardWeeklyIncrement ?? ""} onchange={(e) => { guardWeeklyIncrement = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["zf-guard-weekly"]} />
     </label>
     <label class="control-row stack">
       <span>Reaction weights</span>
@@ -430,27 +432,27 @@
     <summary class="form-section-title">Content budgets</summary>
     <label class="control-row">
       <span>Guarded value</span>
-      <input type="number" value={guardedContentValue ?? ""} onchange={(e) => { guardedContentValue = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" />
+      <input type="number" value={guardedContentValue ?? ""} onchange={(e) => { guardedContentValue = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["zf-guarded-value"]} />
     </label>
     <label class="control-row">
       <span>Guarded per area</span>
-      <input type="number" value={guardedContentValuePerArea ?? ""} onchange={(e) => { guardedContentValuePerArea = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" step="0.1" />
+      <input type="number" value={guardedContentValuePerArea ?? ""} onchange={(e) => { guardedContentValuePerArea = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["zf-guarded-per-area"]} step="0.1" />
     </label>
     <label class="control-row">
       <span>Unguarded value</span>
-      <input type="number" value={unguardedContentValue ?? ""} onchange={(e) => { unguardedContentValue = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" />
+      <input type="number" value={unguardedContentValue ?? ""} onchange={(e) => { unguardedContentValue = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["zf-unguarded-value"]} />
     </label>
     <label class="control-row">
       <span>Unguarded per area</span>
-      <input type="number" value={unguardedContentValuePerArea ?? ""} onchange={(e) => { unguardedContentValuePerArea = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" step="0.1" />
+      <input type="number" value={unguardedContentValuePerArea ?? ""} onchange={(e) => { unguardedContentValuePerArea = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["zf-unguarded-per-area"]} step="0.1" />
     </label>
     <label class="control-row">
       <span>Resources value</span>
-      <input type="number" value={resourcesValue ?? ""} onchange={(e) => { resourcesValue = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" />
+      <input type="number" value={resourcesValue ?? ""} onchange={(e) => { resourcesValue = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["zf-resources-value"]} />
     </label>
     <label class="control-row">
       <span>Resources per area</span>
-      <input type="number" value={resourcesValuePerArea ?? ""} onchange={(e) => { resourcesValuePerArea = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" step="0.1" />
+      <input type="number" value={resourcesValuePerArea ?? ""} onchange={(e) => { resourcesValuePerArea = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["zf-resources-per-area"]} step="0.1" />
     </label>
 
     <!-- Pool and preset alternatives -->
@@ -466,7 +468,7 @@
           {#each catalogOptions.guardedContentPools as p}<option value={p.id} label={p.label} />{/each}
         </datalist>
         <div class="multi-picker-entry">
-          <input type="search" list="guarded-pool-options" bind:value={guardedPoolInput} placeholder="Search pool ID" />
+          <input type="search" list="guarded-pool-options" bind:value={guardedPoolInput} placeholder={ph["pf-pool-id"]} />
           <button class="button button-secondary" onclick={() => { guardedPools = addPool(guardedPools, guardedPoolInput); guardedPoolInput = ""; apply(); }}>Add</button>
         </div>
         <div class="picker-token-list">
@@ -488,7 +490,7 @@
           {#each catalogOptions.unguardedContentPools as p}<option value={p.id} label={p.label} />{/each}
         </datalist>
         <div class="multi-picker-entry">
-          <input type="search" list="unguarded-pool-options" bind:value={unguardedPoolInput} placeholder="Search pool ID" />
+          <input type="search" list="unguarded-pool-options" bind:value={unguardedPoolInput} placeholder={ph["pf-pool-id"]} />
           <button class="button button-secondary" onclick={() => { unguardedPools = addPool(unguardedPools, unguardedPoolInput); unguardedPoolInput = ""; apply(); }}>Add</button>
         </div>
         <div class="picker-token-list">
@@ -510,7 +512,7 @@
           {#each catalogOptions.resourceContentPools as p}<option value={p.id} label={p.label} />{/each}
         </datalist>
         <div class="multi-picker-entry">
-          <input type="search" list="resources-pool-options" bind:value={resourcesPoolInput} placeholder="Search pool ID" />
+          <input type="search" list="resources-pool-options" bind:value={resourcesPoolInput} placeholder={ph["pf-pool-id"]} />
           <button class="button button-secondary" onclick={() => { resourcesPools = addPool(resourcesPools, resourcesPoolInput); resourcesPoolInput = ""; apply(); }}>Add</button>
         </div>
         <div class="picker-token-list">
@@ -526,11 +528,11 @@
 
     <label class="control-row stack">
       <span>Mandatory presets</span>
-      <textarea rows="3" bind:value={mandatoryContent} onchange={apply} />
+      <textarea rows="3" bind:value={mandatoryContent} onchange={apply} placeholder={ph["zf-mandatory"]} />
     </label>
     <label class="control-row stack">
       <span>Count limits</span>
-      <textarea rows="3" bind:value={contentCountLimits} onchange={apply} />
+      <textarea rows="3" bind:value={contentCountLimits} onchange={apply} placeholder={ph["zf-count-limits"]} />
     </label>
 
   </details>
