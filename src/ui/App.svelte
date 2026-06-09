@@ -32,6 +32,9 @@
         return;
       }
     }
+    if (e.ctrlKey && e.altKey && !e.shiftKey && !e.metaKey) {
+      if (e.key === "z") { editor.redo(); e.preventDefault(); return; }
+    }
   }
 
   // Init once — async, non-blocking
