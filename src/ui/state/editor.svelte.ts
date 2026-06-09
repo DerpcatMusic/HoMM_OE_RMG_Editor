@@ -240,6 +240,9 @@ class EditorState {
     this.session = addConnectionFromSelectedZone(this.session);
     this.scheduleAutosave();
   }
+  setWorkspaceTab(tab: WorkspaceTab) {
+    this.workspaceTab = tab;
+  }
 
   addConnectionBetween(from: string, to: string) {
     this.session = addConnectionBetweenZones(this.session, from, to);
