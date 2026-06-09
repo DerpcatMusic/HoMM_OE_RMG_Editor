@@ -64,6 +64,7 @@ import {
   addBanToPoolInSession,
   removeBanFromPoolInSession,
   removeGroupFromPoolInSession,
+  updateContentWeightInSession,
   serializeSessionTemplate,
   getSessionSaveFileName,
   setBundledCoreArchiveCatalogSummary,
@@ -406,6 +407,11 @@ class EditorState {
 
   updatePoolGroup(poolIndex: number, groupIndex: number, weight: number | undefined, includeLists: readonly string[], content: readonly import("../../core/rmg/rmgTypes.js").ContentWeight[]) {
     this.session = updateContentPoolGroupInSession(this.session, { poolIndex, groupIndex, weight, includeLists, content });
+    this.scheduleAutosave();
+  }
+
+  updateContentWeight(poolIndex: number, groupIndex: number, contentIndex: number, weight: number | undefined) {
+    this.session = updateContentWeightInSession(this.session, poolIndex, groupIndex, contentIndex, weight);
     this.scheduleAutosave();
   }
 

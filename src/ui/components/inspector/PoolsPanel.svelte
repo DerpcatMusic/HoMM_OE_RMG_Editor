@@ -95,6 +95,11 @@
     editor.removeContentFromPoolGroup(activePool.poolIndex, focusedGroup, ci);
   }
 
+  function updateContentWeight(ci: number, weight: number | undefined) {
+    if (!activePool || activePool.source !== "template-local") return;
+    editor.updateContentWeight(activePool.poolIndex, focusedGroup, ci, weight);
+  }
+
   function addBan() {
     if (!activePool || activePool.source !== "template-local" || !banSearch.trim()) return;
     editor.addBanToPool(activePool.poolIndex, banSearch.trim());
@@ -252,9 +257,15 @@
                       <div class="content-row">
                         <span class="content-sid">{item.sid}</span>
                         {#if item.variant !== undefined}<span class="content-meta">v{item.variant}</span>{/if}
-                        {#if item.weight !== undefined}<span class="content-meta">w:{item.weight}</span>{/if}
                         {#if isEditable}
+                          <label class="weight-edit">
+                            w:<input type="number" class="input-xs" value={item.weight ?? ""}
+                              placeholder="100"
+                              onchange={(e) => updateContentWeight(ci, e.currentTarget.value ? Number(e.currentTarget.value) : undefined)} min="0" step="1" />
+                          </label>
                           <button class="button-icon danger" onclick={() => removeContent(ci)} title="Remove">✕</button>
+                        {:else if item.weight !== undefined}
+                          <span class="content-meta">w:{item.weight}</span>
                         {/if}
                       </div>
                     {/each}
@@ -589,4 +600,23 @@
   }
   textarea.input-sm { width: 100%; resize: vertical; font-family: var(--font-mono); }
   input[type="search"].input-sm { width: auto; flex: 1; }
+  .weight-edit {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    font-size: 0.5rem;
+    color: var(--color-muted);
+    white-space: nowrap;
+    margin-left: auto;
+  }
+  .input-xs {
+    font-size: 0.5625rem;
+    padding: 0 2px;
+    border: var(--line) solid var(--color-line);
+    background: var(--color-panel);
+    color: inherit;
+    font-family: var(--font-mono);
+    width: 3rem;
+    text-align: right;
+  }
 </style>

@@ -768,6 +768,34 @@ export function removeContentFromPoolGroupInSession(
   });
 }
 
+export function updateContentWeightInSession(
+  session: EditorSession,
+  poolIndex: number,
+  groupIndex: number,
+  contentIndex: number,
+  weight: number | undefined,
+): EditorSession {
+  const pool = session.template.contentPools?.[poolIndex];
+  if (!pool) return setSessionMessage(session, "Pool not found.");
+  const group = pool.groups?.[groupIndex];
+  if (!group) return setSessionMessage(session, "Group not found.");
+  const existingContent = [...(group.content ?? [])];
+  const item = existingContent[contentIndex];
+  if (!item) return setSessionMessage(session, "Content item not found.");
+  existingContent[contentIndex] = { ...item, weight };
+  return applyAction(session, {
+    action: {
+      type: "contentPool.group.update",
+      input: {
+        pool: { poolIndex },
+        groupIndex,
+        settings: { content: existingContent },
+      },
+    },
+    label: `Update content weight`,
+  });
+}
+
 export function addBanToPoolInSession(session: EditorSession, poolIndex: number, sid: string): EditorSession {
   return applyAction(session, {
     action: {
