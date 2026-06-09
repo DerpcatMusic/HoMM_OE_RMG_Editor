@@ -11,7 +11,7 @@
     "test:editor-actions": "bun run src/cli/editor-action-invariants.ts",
     "test:ui-session": "bun run src/cli/ui-session-invariants.ts",
     "game-data:refresh": "bun run src/cli/game-data-refresh.ts",
-    "game-data:bundle": "mkdir -p src/ui/public/game-data && cp .cache/game-data/*.json src/ui/public/game-data/",
+    "game-data:bundle": "mkdir -p src/ui/public/game-data && cp .cache/game-data/*.json src/ui/public/game-data/ 2>/dev/null || true",
     "asset-visual:refresh": "bun run src/cli/asset-visual-refresh.ts",
     "core:scan": "bun run src/cli/core-scan.ts",
     "editor:scan": "bun run src/cli/editor-scan.ts",
