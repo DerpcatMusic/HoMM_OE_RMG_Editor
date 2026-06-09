@@ -34,12 +34,9 @@
     }
   }
 
-  // Init on mount
-  $effect(() => {
-    editor.init();
-  });
+  // Init once — async, non-blocking
+  editor.init();
 </script>
-
 <svelte:window {onkeydown} />
 
 <div class="app-shell" style="--sidebar-width:{sidebarWidth}px;--inspector-width:{inspectorWidth}px;">
