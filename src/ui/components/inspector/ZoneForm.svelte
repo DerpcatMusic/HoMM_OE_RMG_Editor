@@ -179,7 +179,8 @@
     </div>
 
     <!-- Identity and layout -->
-    <h3 class="form-section-title">Identity and layout</h3>
+  <details open class="form-section" id="identity-and-layout">
+    <summary class="form-section-title">Identity and layout</summary>
     <label class="control-row">
       <span>Name</span>
       <input type="text" bind:value={name} onchange={apply} />
@@ -202,7 +203,9 @@
     </label>
 
     <!-- Biome rules -->
-    <h3 class="form-section-title">Biome rules</h3>
+  </details>
+  <details open class="form-section" id="biome-rules">
+    <summary class="form-section-title">Biome rules</summary>
     <label class="control-row">
       <span>Zone biome type</span>
       <select bind:value={zoneBiomeType} onchange={apply}>
@@ -396,7 +399,9 @@
     {/if}
 
     <!-- Guard settings -->
-    <h3 class="form-section-title">Guard settings</h3>
+  </details>
+  <details open class="form-section" id="guard-settings">
+    <summary class="form-section-title">Guard settings</summary>
     <label class="control-row">
       <span>Guard cutoff</span>
       <input type="number" value={guardCutoffValue ?? ""} onchange={(e) => { guardCutoffValue = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" />
@@ -420,7 +425,9 @@
     </label>
 
     <!-- Content budgets -->
-    <h3 class="form-section-title">Content budgets</h3>
+  </details>
+  <details open class="form-section" id="content-budgets">
+    <summary class="form-section-title">Content budgets</summary>
     <label class="control-row">
       <span>Guarded value</span>
       <input type="number" value={guardedContentValue ?? ""} onchange={(e) => { guardedContentValue = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" />
@@ -447,7 +454,9 @@
     </label>
 
     <!-- Pool and preset alternatives -->
-    <h3 class="form-section-title">Pool and preset alternatives</h3>
+  </details>
+  <details open class="form-section" id="pool-and-preset-alternatives">
+    <summary class="form-section-title">Pool and preset alternatives</summary>
 
     <!-- Guarded pools -->
     <div class="control-row stack">
@@ -524,11 +533,13 @@
       <textarea rows="3" bind:value={contentCountLimits} onchange={apply} />
     </label>
 
+  </details>
     <div class="form-actions">
       <button class="button button-secondary" onclick={paste}>Paste settings</button>
     </div>
   </div>
 {/if}
+
 
 <style>
   .placeholder { color: var(--color-muted); font-size: 0.75rem; padding: var(--space-3); }
@@ -539,7 +550,21 @@
     padding: var(--space-2) var(--space-3);
     border-bottom: var(--line) solid var(--color-line);
   }
+  .form-section {
+    border-bottom: var(--line) solid var(--color-line);
+  }
+  .form-section summary {
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+  }
+  .form-section summary::-webkit-details-marker {
+    display: none;
+  }
   .form-section-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: var(--space-2) var(--space-3);
     border-bottom: var(--line) solid var(--color-line);
     background: var(--color-panel-2);
@@ -552,6 +577,15 @@
     position: sticky;
     top: 0;
     z-index: 1;
+  }
+  .form-section-title::after {
+    content: "expand_more";
+    font-family: var(--font-icon);
+    font-size: 1rem;
+    transition: transform 0.15s;
+  }
+  .form-section[open] > summary .form-section-title::after {
+    transform: rotate(180deg);
   }
   .control-row {
     display: grid;
