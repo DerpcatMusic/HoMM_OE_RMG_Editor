@@ -35,6 +35,8 @@ export interface CoreArchiveRef {
   lastModified: number;
   catalogSummary?: CoreArchiveCatalogSummary;
   source?: "bundled" | "uploaded";
+  contentPoolIndex?: Map<string, import("../../core/rmg/rmgTypes.js").ContentPoolConfig>;
+  contentListIndex?: Map<string, import("../../core/rmg/rmgTypes.js").ContentList>;
 }
 
 export interface CoreArchiveCatalogSummary {
@@ -246,11 +248,12 @@ export function attachCoreArchive(session: EditorSession, file: File): EditorSes
     lastActionFailed: false,
   };
 }
-
 export function setCoreArchiveCatalogSummary(
   session: EditorSession,
   file: File,
   catalogSummary: CoreArchiveCatalogSummary,
+  contentPoolIndex?: Map<string, import("../../core/rmg/rmgTypes.js").ContentPoolConfig>,
+  contentListIndex?: Map<string, import("../../core/rmg/rmgTypes.js").ContentList>,
 ): EditorSession {
   return {
     ...session,
@@ -260,6 +263,8 @@ export function setCoreArchiveCatalogSummary(
       lastModified: file.lastModified,
       catalogSummary,
       source: "uploaded",
+      ...(contentPoolIndex ? { contentPoolIndex } : {}),
+      ...(contentListIndex ? { contentListIndex } : {}),
     },
     lastMessage: `Parsed ${file.name}: ${catalogSummary.contentPools} pools, ${catalogSummary.rmgContent} content entries.`,
     lastActionFailed: false,
@@ -652,6 +657,153 @@ export function updateContentPoolGroupInSession(session: EditorSession, draft: C
       },
     },
     label: `Update content pool ${draft.poolIndex} group ${draft.groupIndex}`,
+  });
+}
+
+export function cloneCorePoolToLocalAndRewriteZone(
+  session: EditorSession,
+  corePoolName: string,
+  zoneField: "guardedContentPool" | "unguardedContentPool" | "resourcesContentPool",
+): EditorSession {
+  const poolIndex = session.coreArchive?.contentPoolIndex;
+  if (!poolIndex) {
+    return setSessionMessage(session, "Core.zip must be uploaded to clone pools. Upload Core.zip first.");
+  }
+  const sourcePool = poolIndex.get(corePoolName);
+  if (!sourcePool) {
+    return setSessionMessage(session, `Core pool '${corePoolName}' not found.`);
+  }
+  const pools = session.template.contentPools ?? [];
+  const existingNames = new Set(pools.map((p) => p.name).filter(Boolean));
+  let localName = `${corePoolName}_local`;
+  let suffix = 2;
+  while (existingNames.has(localName)) {
+    localName = `${corePoolName}_local${suffix++}`;
+  }
+  // Clone the pool to local via contentPool.add action
+  let next = applyAction(session, {
+    action: {
+      type: "contentPool.add",
+      input: {
+        pool: JSON.parse(JSON.stringify({ ...sourcePool, name: localName })),
+      },
+    },
+    label: `Clone pool '${corePoolName}' to local '${localName}'`,
+  });
+  if (next.lastActionFailed) return next;
+  // Rewrite the zone's pool reference to use the local name
+  const zoneName = next.selectedZoneName;
+  if (!zoneName) return next;
+  const zone = next.template.variants?.[next.selectedVariantIndex]?.zones?.find((z) => z.name === zoneName);
+  if (!zone) return next;
+  const currentRefs = (zone[zoneField] ?? []) as string[];
+  const idx = currentRefs.indexOf(corePoolName);
+  if (idx === -1) return next;
+  const newRefs = [...currentRefs];
+  newRefs[idx] = localName;
+  next = applyAction(next, {
+    action: {
+      type: "zone.setContentPools",
+      input: {
+        variantIndex: next.selectedVariantIndex,
+        zone: { zoneName },
+        field: zoneField,
+        poolIds: newRefs,
+      },
+    },
+    label: `Rewrite zone '${zoneField}' to use local pool '${localName}'`,
+    selectedZoneName: zoneName,
+  });
+  return next;
+}
+
+export function addContentToPoolGroupInSession(
+  session: EditorSession,
+  poolIndex: number,
+  groupIndex: number,
+  sid: string,
+  variant?: number,
+): EditorSession {
+  const pool = session.template.contentPools?.[poolIndex];
+  if (!pool) return setSessionMessage(session, "Pool not found.");
+  const group = pool.groups?.[groupIndex];
+  if (!group) return setSessionMessage(session, "Group not found.");
+  const existingContent = [...(group.content ?? [])];
+  existingContent.push({ sid, ...(variant !== undefined ? { variant } : {}) });
+  return applyAction(session, {
+    action: {
+      type: "contentPool.group.update",
+      input: {
+        pool: { poolIndex },
+        groupIndex,
+        settings: { content: existingContent },
+      },
+    },
+    label: `Add '${sid}' to pool group`,
+  });
+}
+
+export function removeContentFromPoolGroupInSession(
+  session: EditorSession,
+  poolIndex: number,
+  groupIndex: number,
+  contentIndex: number,
+): EditorSession {
+  const pool = session.template.contentPools?.[poolIndex];
+  if (!pool) return setSessionMessage(session, "Pool not found.");
+  const group = pool.groups?.[groupIndex];
+  if (!group) return setSessionMessage(session, "Group not found.");
+  const existingContent = [...(group.content ?? [])];
+  existingContent.splice(contentIndex, 1);
+  return applyAction(session, {
+    action: {
+      type: "contentPool.group.update",
+      input: {
+        pool: { poolIndex },
+        groupIndex,
+        settings: { content: existingContent },
+      },
+    },
+    label: `Remove content from pool group`,
+  });
+}
+
+export function addBanToPoolInSession(session: EditorSession, poolIndex: number, sid: string): EditorSession {
+  return applyAction(session, {
+    action: {
+      type: "contentPool.ban.add",
+      input: {
+        pool: { poolIndex },
+        ban: { sid },
+      },
+    },
+    label: `Add ban '${sid}' to pool`,
+  });
+}
+
+export function removeBanFromPoolInSession(session: EditorSession, poolIndex: number, banIndex: number): EditorSession {
+  return applyAction(session, {
+    action: {
+      type: "contentPool.ban.remove",
+      input: {
+        pool: { poolIndex },
+        banIndex,
+      },
+    },
+    label: `Remove ban from pool`,
+  });
+}
+
+export function removeGroupFromPoolInSession(session: EditorSession, poolIndex: number, groupIndex: number): EditorSession {
+  return applyAction(session, {
+    action: {
+      type: "contentPool.group.remove",
+      input: {
+        pool: { poolIndex },
+        groupIndex,
+      },
+    },
+    label: `Remove group from pool`,
   });
 }
 

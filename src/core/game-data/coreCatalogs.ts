@@ -117,6 +117,32 @@ export async function generateCoreCatalogsFromSource(source: CoreDataSource, lan
   };
 }
 
+export async function readContentPoolConfigs(source: CoreDataSource): Promise<Map<string, ContentPoolConfig>> {
+  const files = await source.listJsonFiles("generator/content_pools", true);
+  const pools = new Map<string, ContentPoolConfig>();
+  for (const file of files) {
+    for (const pool of await readJsonArray<ContentPoolConfig>(source, file)) {
+      if (pool.name && !pools.has(pool.name)) {
+        pools.set(pool.name, pool);
+      }
+    }
+  }
+  return pools;
+}
+
+export async function readContentListConfigs(source: CoreDataSource): Promise<Map<string, ContentList>> {
+  const files = await source.listJsonFiles("generator/content_lists", true);
+  const lists = new Map<string, ContentList>();
+  for (const file of files) {
+    for (const list of await readJsonArray<ContentList>(source, file)) {
+      if (list.name && !lists.has(list.name)) {
+        lists.set(list.name, list);
+      }
+    }
+  }
+  return lists;
+}
+
 async function readContentPools(source: CoreDataSource): Promise<GeneratedContentPoolCatalogEntry[]> {
   const files = await source.listJsonFiles("generator/content_pools", true);
   const entries: GeneratedContentPoolCatalogEntry[] = [];

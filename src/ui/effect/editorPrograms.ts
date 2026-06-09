@@ -53,9 +53,9 @@ export function attachCoreArchiveProgram(
     if (!file) {
       return undefined;
     }
-    const catalogSummary = yield* parseCoreArchiveCatalogSummaryEffect(file);
+    const result = yield* parseCoreArchiveCatalogSummaryEffect(file);
     yield* Effect.sync(() => rememberCoreArchiveFile(file));
-    return setCoreArchiveCatalogSummary(session, file, catalogSummary);
+    return setCoreArchiveCatalogSummary(session, file, result.catalogSummary, result.contentPoolIndex, result.contentListIndex);
   });
 }
 

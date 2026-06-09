@@ -58,6 +58,12 @@ import {
   addLocalContentPoolToSession,
   addContentPoolGroupToSession,
   updateContentPoolGroupInSession,
+  cloneCorePoolToLocalAndRewriteZone,
+  addContentToPoolGroupInSession,
+  removeContentFromPoolGroupInSession,
+  addBanToPoolInSession,
+  removeBanFromPoolInSession,
+  removeGroupFromPoolInSession,
   serializeSessionTemplate,
   getSessionSaveFileName,
   setBundledCoreArchiveCatalogSummary,
@@ -112,6 +118,7 @@ class EditorState {
   workspaceTab: WorkspaceTab = $state("canvas");
   rightDockTab: RightDockTab = $state("inspector");
   activeContentPoolName: string = $state("");
+  activePoolSource: "template-local" | "core" | "" = $state("");
   sidebarSections: SidebarSectionFlex = $state({ settings: 6, zones: 2.5, players: 1.5 });
   focusedPlayer: string | undefined = $state(undefined);
 
@@ -344,6 +351,75 @@ class EditorState {
     this.session = setSessionStatusMessage(this.session, message);
   }
 
+  // --- Pool management ---
+  inspectPool(poolName: string, source: "template-local" | "core") {
+    this.activeContentPoolName = poolName;
+    this.activePoolSource = source;
+  }
+
+  clearPoolInspection() {
+    this.activeContentPoolName = "";
+    this.activePoolSource = "";
+  }
+
+  cloneCorePoolToEdit(corePoolName: string, zoneField: "guardedContentPool" | "unguardedContentPool" | "resourcesContentPool") {
+    this.session = cloneCorePoolToLocalAndRewriteZone(this.session, corePoolName, zoneField);
+    // Find the new local name and inspect it
+    const localPools = this.session.template.contentPools ?? [];
+    const localPool = localPools.find((p) => p.name?.startsWith(corePoolName) && p.name?.includes("_local"));
+    if (localPool?.name) {
+      this.activeContentPoolName = localPool.name;
+      this.activePoolSource = "template-local";
+    }
+    this.scheduleAutosave();
+  }
+
+  addContentToPoolGroup(poolIndex: number, groupIndex: number, sid: string) {
+    this.session = addContentToPoolGroupInSession(this.session, poolIndex, groupIndex, sid);
+    this.scheduleAutosave();
+  }
+
+  removeContentFromPoolGroup(poolIndex: number, groupIndex: number, contentIndex: number) {
+    this.session = removeContentFromPoolGroupInSession(this.session, poolIndex, groupIndex, contentIndex);
+    this.scheduleAutosave();
+  }
+
+  addBanToPool(poolIndex: number, sid: string) {
+    this.session = addBanToPoolInSession(this.session, poolIndex, sid);
+    this.scheduleAutosave();
+  }
+
+  removeBanFromPool(poolIndex: number, banIndex: number) {
+    this.session = removeBanFromPoolInSession(this.session, poolIndex, banIndex);
+    this.scheduleAutosave();
+  }
+
+  addGroupToPool(poolIndex: number) {
+    this.session = addContentPoolGroupToSession(this.session, { poolIndex });
+    this.scheduleAutosave();
+  }
+
+  removeGroupFromPool(poolIndex: number, groupIndex: number) {
+    this.session = removeGroupFromPoolInSession(this.session, poolIndex, groupIndex);
+    this.scheduleAutosave();
+  }
+
+  updatePoolGroup(poolIndex: number, groupIndex: number, weight: number | undefined, includeLists: readonly string[], content: readonly import("../../core/rmg/rmgTypes.js").ContentWeight[]) {
+    this.session = updateContentPoolGroupInSession(this.session, { poolIndex, groupIndex, weight, includeLists, content });
+    this.scheduleAutosave();
+  }
+
+  /** Resolve a pool by name from template-local first, then Core. */
+  resolvePool(poolName: string): { source: "template-local" | "core"; poolIndex: number } | undefined {
+    const localIndex = (this.session.template.contentPools ?? []).findIndex((p) => p.name === poolName);
+    if (localIndex !== -1) return { source: "template-local", poolIndex: localIndex };
+    // Check if it's a known Core pool name from catalog options
+    const isCorePool = this.catalogOptions.contentPools.some((p) => p.id === poolName);
+    if (isCorePool) return { source: "core", poolIndex: -1 };
+    return undefined;
+  }
+
+
   // --- Copy/Paste ---
   copySelectedZone() {
     const variant = this.session.template.variants?.[this.session.selectedVariantIndex];
@@ -397,6 +473,7 @@ class EditorState {
     const newSession = createInitialEditorSession();
     this.session = { ...newSession, coreArchive: this.session.coreArchive };
     this.activeContentPoolName = "";
+    this.activePoolSource = "";
     this.workspaceTab = "canvas";
     this.inspectorTab = "zone";
     this.rightDockTab = "inspector";
@@ -409,6 +486,7 @@ class EditorState {
       if (nextSession) {
         this.session = nextSession;
         this.activeContentPoolName = "";
+        this.activePoolSource = "";
         this.workspaceTab = "canvas";
         this.inspectorTab = "zone";
         this.rightDockTab = "inspector";
