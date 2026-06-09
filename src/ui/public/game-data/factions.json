@@ -1,0 +1,99 @@
+{
+  "language": "english",
+  "generatedAt": "2026-06-07T10:37:23.360Z",
+  "sourceHash": "b7e9d3c1727b5ac09e6b589034613378d0f342df96b7a3004f98755e9cf03a5b",
+  "entries": [
+    {
+      "id": "demon",
+      "playable": true,
+      "totalHeroCount": 28,
+      "heroCount": 18,
+      "campaignHeroCount": 10,
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/fractions/5_demon.json",
+      "name": "Hive",
+      "description": "Bent on conquering Jadame, Beelzebub’s Order of the Fly is a faction driven by swift and aggressive tactics. Their strength lies in the single‑minded determination of their ranks, exploiting the diversity of their opponents to strike with precision and speed.",
+      "icon": "fraction_demon",
+      "biome": "Lava",
+      "resourceName": "crystals"
+    },
+    {
+      "id": "dungeon",
+      "playable": true,
+      "totalHeroCount": 19,
+      "heroCount": 18,
+      "campaignHeroCount": 1,
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/fractions/3_dungeon.json",
+      "name": "Dungeon",
+      "description": "Formerly underground, currently backstage rulers of Jadame, the faction whose capital is Alvar focuses on subterfuge and versatility. Each of their units has two types of attack.",
+      "icon": "fraction_dungeon",
+      "biome": "Dirt",
+      "resourceName": "gemstones"
+    },
+    {
+      "id": "human",
+      "playable": true,
+      "totalHeroCount": 48,
+      "heroCount": 18,
+      "campaignHeroCount": 30,
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/fractions/1_human.json",
+      "name": "Temple",
+      "description": "The Church of the Sun strives to forge the best version of oneself. Its well‑rounded troops gain extra benefits from buffs.",
+      "icon": "fraction_human",
+      "biome": "Grass",
+      "resourceName": "gemstones"
+    },
+    {
+      "id": "mix",
+      "playable": false,
+      "totalHeroCount": 0,
+      "heroCount": 0,
+      "campaignHeroCount": 0
+    },
+    {
+      "id": "nature",
+      "playable": true,
+      "totalHeroCount": 25,
+      "heroCount": 18,
+      "campaignHeroCount": 7,
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/fractions/4_nature.json",
+      "name": "Grove",
+      "description": "Each of the Murmurwoods’ elemental spirits is a unique powerhouse, supported by equally strong — and expensive — rangers and druids.",
+      "icon": "fraction_nature",
+      "biome": "Autumn",
+      "resourceName": "crystals"
+    },
+    {
+      "id": "neutral",
+      "playable": false,
+      "totalHeroCount": 0,
+      "heroCount": 0,
+      "campaignHeroCount": 0
+    },
+    {
+      "id": "undead",
+      "playable": true,
+      "totalHeroCount": 36,
+      "heroCount": 18,
+      "campaignHeroCount": 18,
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/fractions/2_undead.json",
+      "name": "Necropolis",
+      "description": "Ruled by Necromancers and Vampires, Shadowspire’s undead rise after each battle and often sap strength from their foes with every strike.",
+      "icon": "fraction_undead",
+      "biome": "Deathland",
+      "resourceName": "mercury"
+    },
+    {
+      "id": "unfrozen",
+      "playable": true,
+      "totalHeroCount": 21,
+      "heroCount": 18,
+      "campaignHeroCount": 3,
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/fractions/6_unfrozen.json",
+      "name": "Schism",
+      "description": "A splinter faction of Alvar, this group has delved into the Depths of Water using ancient Vori rites. They possess the power to deny their opponents’ abilities and magic while summoning ever‑growing hordes of monstrous creatures to overwhelm their foes.",
+      "icon": "fraction_unfrozen",
+      "biome": "Snow",
+      "resourceName": "mercury"
+    }
+  ]
+}

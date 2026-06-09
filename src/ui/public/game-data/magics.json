@@ -1,0 +1,1311 @@
+{
+  "language": "english",
+  "generatedAt": "2026-06-07T10:37:23.360Z",
+  "sourceHash": "b7e9d3c1727b5ac09e6b589034613378d0f342df96b7a3004f98755e9cf03a5b",
+  "entries": [
+    {
+      "id": "bonus_magic_astral_summon_2",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_neutral_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Advanced Summon Avatar",
+      "school": "neutral",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "bonus_magic_astral_summon_unfrozen_2",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_neutral_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Advanced Summon Avatar",
+      "school": "neutral",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "bonus_magic_astral_summon_nature_2",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_neutral_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Advanced Summon Avatar",
+      "school": "neutral",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "primal_10_magic_primordial_purity",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_primal_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Anti‑Magic",
+      "school": "primal",
+      "rank": 4,
+      "usedOnMap": false
+    },
+    {
+      "id": "day_16_magic_arinas_chosen",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_day_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Arina’s Chosen",
+      "school": "day",
+      "rank": 5,
+      "usedOnMap": false
+    },
+    {
+      "id": "day_9_magic_arinas_hymn",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_day_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Arina’s Touch",
+      "school": "day",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "primal_11_magic_armageddon",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_primal_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Armageddon",
+      "school": "primal",
+      "rank": 5,
+      "usedOnMap": false
+    },
+    {
+      "id": "space_18_magic_assemble",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/world_space_magics.json",
+      "battleMagic": false,
+      "globallyBanned": false,
+      "name": "Assemble!",
+      "school": "space",
+      "rank": 3,
+      "usedOnMap": true
+    },
+    {
+      "id": "neutral_1_magic_back_to_garrison",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/world_neutral_magics.json",
+      "battleMagic": false,
+      "globallyBanned": false,
+      "name": "Back to Foothold!",
+      "school": "neutral",
+      "rank": 1,
+      "usedOnMap": true
+    },
+    {
+      "id": "neutral_1_magic_back_to_city",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/world_neutral_magics.json",
+      "battleMagic": false,
+      "globallyBanned": false,
+      "name": "Back to Town!",
+      "school": "neutral",
+      "rank": 1,
+      "usedOnMap": true
+    },
+    {
+      "id": "bonus_magic_astral_summon_1",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_neutral_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Basic Summon Avatar",
+      "school": "neutral",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "bonus_magic_astral_summon_unfrozen_1",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_neutral_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Basic Summon Avatar",
+      "school": "neutral",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "bonus_magic_astral_summon_nature_1",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_neutral_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Basic Summon Avatar",
+      "school": "neutral",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "night_13_magic_berserker",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_night_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Berserk",
+      "school": "night",
+      "rank": 4,
+      "usedOnMap": false
+    },
+    {
+      "id": "space_13_magic_black_hole",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_space_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Black Hole",
+      "school": "space",
+      "rank": 5,
+      "usedOnMap": false
+    },
+    {
+      "id": "day_2_magic_sharp_edge",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_day_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Blessing",
+      "school": "day",
+      "rank": 1,
+      "usedOnMap": false
+    },
+    {
+      "id": "space_6_magic_blink",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_space_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Blink",
+      "school": "space",
+      "rank": 2,
+      "usedOnMap": false
+    },
+    {
+      "id": "space_8_magic_carapace",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_space_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Carapace",
+      "school": "space",
+      "rank": 2,
+      "usedOnMap": false
+    },
+    {
+      "id": "primal_8_magic_cave_in",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_primal_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Cave In",
+      "school": "primal",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "primal_12_magic_chain_lightning",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_primal_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Chain Lightning",
+      "school": "primal",
+      "rank": 4,
+      "usedOnMap": false
+    },
+    {
+      "id": "primal_13_magic_avalanche",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_primal_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Circle of Winter",
+      "school": "primal",
+      "rank": 4,
+      "usedOnMap": false
+    },
+    {
+      "id": "day_18_magic_farsight",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/world_day_magics.json",
+      "battleMagic": false,
+      "globallyBanned": false,
+      "name": "Clear Fog",
+      "school": "day",
+      "rank": 4,
+      "usedOnMap": true
+    },
+    {
+      "id": "night_15_magic_deaths_call",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_night_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Coup de Grâce",
+      "school": "night",
+      "rank": 5,
+      "usedOnMap": false
+    },
+    {
+      "id": "primal_5_magic_crystal_crown",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_primal_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Crystal Crown",
+      "school": "primal",
+      "rank": 2,
+      "usedOnMap": false
+    },
+    {
+      "id": "night_4_magic_despair",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_night_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Despair",
+      "school": "night",
+      "rank": 1,
+      "usedOnMap": false
+    },
+    {
+      "id": "neutral_magic_dimension_door",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/world_neutral_magics.json",
+      "battleMagic": false,
+      "globallyBanned": false,
+      "name": "Dimension Door",
+      "school": "neutral",
+      "rank": 4,
+      "usedOnMap": true
+    },
+    {
+      "id": "bonus_magic_kill_summon",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_neutral_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Dispel Summon",
+      "school": "neutral",
+      "rank": 1,
+      "usedOnMap": false
+    },
+    {
+      "id": "space_14_magic_doreaths_tide",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_space_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Doreath’s Tide",
+      "school": "space",
+      "rank": 5,
+      "usedOnMap": false
+    },
+    {
+      "id": "night_bonus_magic_1_magic",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_neutral_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Dusk Dampening",
+      "school": "neutral",
+      "rank": 1,
+      "usedOnMap": false
+    },
+    {
+      "id": "space_1_magic_early_start",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_space_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Early Start",
+      "school": "space",
+      "rank": 1,
+      "usedOnMap": false
+    },
+    {
+      "id": "primal_9_magic_earths_rage",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_primal_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Earth’s Rage",
+      "school": "primal",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "space_3_magic_energyze",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_space_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Energize",
+      "school": "space",
+      "rank": 1,
+      "usedOnMap": false
+    },
+    {
+      "id": "space_2_magic_energy_explosion",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_space_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Energy Explosion",
+      "school": "space",
+      "rank": 2,
+      "usedOnMap": false
+    },
+    {
+      "id": "night_3_magic_enlarge_shadow",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_night_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Enlarge Shadow",
+      "school": "night",
+      "rank": 1,
+      "usedOnMap": false
+    },
+    {
+      "id": "bonus_magic_astral_summon_3",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_neutral_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Expert Summon Avatar",
+      "school": "neutral",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "bonus_magic_astral_summon_unfrozen_3",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_neutral_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Expert Summon Avatar",
+      "school": "neutral",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "bonus_magic_astral_summon_nature_3",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_neutral_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Expert Summon Avatar",
+      "school": "neutral",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "night_7_magic_fatal_decay",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_night_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Fatal Decay",
+      "school": "night",
+      "rank": 1,
+      "usedOnMap": false
+    },
+    {
+      "id": "day_4_magic_favorable_wind",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_day_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Favorable Wind",
+      "school": "day",
+      "rank": 2,
+      "usedOnMap": false
+    },
+    {
+      "id": "primal_4_magic_fire_globe",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_primal_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Fireball",
+      "school": "primal",
+      "rank": 2,
+      "usedOnMap": false
+    },
+    {
+      "id": "primal_7_magic_wall_of_flame",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_primal_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Firewall",
+      "school": "primal",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "day_17_magic_clear_view",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/world_day_magics.json",
+      "battleMagic": false,
+      "globallyBanned": false,
+      "name": "From a Bird’s Eye",
+      "school": "day",
+      "rank": 2,
+      "usedOnMap": true
+    },
+    {
+      "id": "neutral_magic_light_gate",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/world_neutral_magics.json",
+      "battleMagic": false,
+      "globallyBanned": false,
+      "name": "Gate of Light",
+      "school": "neutral",
+      "rank": 4,
+      "usedOnMap": true
+    },
+    {
+      "id": "bonus_magic_astral_summon_5",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_neutral_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Grandmaster Summon Avatar",
+      "school": "neutral",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "bonus_magic_astral_summon_unfrozen_5",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_neutral_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Grandmaster Summon Avatar",
+      "school": "neutral",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "bonus_magic_astral_summon_nature_5",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_neutral_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Grandmaster Summon Avatar",
+      "school": "neutral",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "primal_17_magic_groundsight",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/world_primal_magics.json",
+      "battleMagic": false,
+      "globallyBanned": false,
+      "name": "Groundsight",
+      "school": "primal",
+      "rank": 1,
+      "usedOnMap": true
+    },
+    {
+      "id": "space_11_magic_decimate",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_space_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Guillotine",
+      "school": "space",
+      "rank": 1,
+      "usedOnMap": false
+    },
+    {
+      "id": "day_3_magic_haste",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_day_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Haste",
+      "school": "day",
+      "rank": 1,
+      "usedOnMap": false
+    },
+    {
+      "id": "day_1_magic_healing_water",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_day_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Healing Water",
+      "school": "day",
+      "rank": 1,
+      "usedOnMap": false
+    },
+    {
+      "id": "day_13_magic_holy_arms",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_day_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Heavenly Blades",
+      "school": "day",
+      "rank": 4,
+      "usedOnMap": false
+    },
+    {
+      "id": "primal_14_magic_hksmillas_rampage",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_primal_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Hksmilla’s Rampage",
+      "school": "primal",
+      "rank": 5,
+      "usedOnMap": false
+    },
+    {
+      "id": "primal_6_magic_ice_bolt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_primal_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Ice Bolt",
+      "school": "primal",
+      "rank": 2,
+      "usedOnMap": false
+    },
+    {
+      "id": "space_9_magic_impending_fate",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_space_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Impending Fate",
+      "school": "space",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "day_7_magic_inner_light",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_day_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Inner Light",
+      "school": "day",
+      "rank": 2,
+      "usedOnMap": false
+    },
+    {
+      "id": "day_15_magic_judgement",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_day_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Judgement",
+      "school": "day",
+      "rank": 5,
+      "usedOnMap": false
+    },
+    {
+      "id": "kara_darkness",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/world_punishment_magics.json",
+      "battleMagic": false,
+      "globallyBanned": false,
+      "school": "neutral",
+      "rank": 1,
+      "usedOnMap": true
+    },
+    {
+      "id": "kara_death",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/world_punishment_magics.json",
+      "battleMagic": false,
+      "globallyBanned": false,
+      "school": "neutral",
+      "rank": 1,
+      "usedOnMap": true
+    },
+    {
+      "id": "kara_mana",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/world_punishment_magics.json",
+      "battleMagic": false,
+      "globallyBanned": false,
+      "school": "neutral",
+      "rank": 1,
+      "usedOnMap": true
+    },
+    {
+      "id": "kara_silence",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/world_punishment_magics.json",
+      "battleMagic": false,
+      "globallyBanned": false,
+      "school": "neutral",
+      "rank": 1,
+      "usedOnMap": true
+    },
+    {
+      "id": "kara_speed",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/world_punishment_magics.json",
+      "battleMagic": false,
+      "globallyBanned": false,
+      "school": "neutral",
+      "rank": 1,
+      "usedOnMap": true
+    },
+    {
+      "id": "kara_weakness",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/world_punishment_magics.json",
+      "battleMagic": false,
+      "globallyBanned": false,
+      "school": "neutral",
+      "rank": 1,
+      "usedOnMap": true
+    },
+    {
+      "id": "primal_1_magic_thunderbolt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_primal_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Lightning Bolt",
+      "school": "primal",
+      "rank": 1,
+      "usedOnMap": false
+    },
+    {
+      "id": "bonus_magic_pure_bolt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_neutral_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Magic Arrow",
+      "school": "neutral",
+      "rank": 1,
+      "usedOnMap": false
+    },
+    {
+      "id": "neutral_1_magic_mana_restore",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/world_neutral_magics.json",
+      "battleMagic": false,
+      "globallyBanned": false,
+      "name": "Mana Rite",
+      "school": "neutral",
+      "rank": 1,
+      "usedOnMap": true
+    },
+    {
+      "id": "neutral_1_magic_mana_transfer",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/world_neutral_magics.json",
+      "battleMagic": false,
+      "globallyBanned": false,
+      "name": "Mana Transfusion",
+      "school": "neutral",
+      "rank": 1,
+      "usedOnMap": true
+    },
+    {
+      "id": "bonus_magic_astral_summon_4",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_neutral_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Master Summon Avatar",
+      "school": "neutral",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "bonus_magic_astral_summon_unfrozen_4",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_neutral_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Master Summon Avatar",
+      "school": "neutral",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "bonus_magic_astral_summon_nature_4",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_neutral_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Master Summon Avatar",
+      "school": "neutral",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "day_16_magic_arinas_chosen_special",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_day_magics_special.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Masterful Arina’s Chosen",
+      "school": "day",
+      "rank": 5,
+      "usedOnMap": false
+    },
+    {
+      "id": "day_9_magic_arinas_hymn_special",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_day_magics_special.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Masterful Arina’s Touch",
+      "school": "day",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "night_13_magic_berserker_special",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_night_magics_special.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Masterful Berserk",
+      "school": "night",
+      "rank": 4,
+      "usedOnMap": false
+    },
+    {
+      "id": "day_2_magic_sharp_edge_special",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_day_magics_special.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Masterful Blessing",
+      "school": "day",
+      "rank": 1,
+      "usedOnMap": false
+    },
+    {
+      "id": "space_6_magic_blink_special",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_space_magics_special.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Masterful Blink",
+      "school": "space",
+      "rank": 2,
+      "usedOnMap": false
+    },
+    {
+      "id": "space_8_magic_carapace_special",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_space_magics_special.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Masterful Carapace",
+      "school": "space",
+      "rank": 2,
+      "usedOnMap": false
+    },
+    {
+      "id": "primal_8_magic_cave_in_special",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_primal_magics_special.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Masterful Cave In",
+      "school": "primal",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "primal_12_magic_chain_lightning_special",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_primal_magics_special.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Masterful Chain Lightning",
+      "school": "primal",
+      "rank": 4,
+      "usedOnMap": false
+    },
+    {
+      "id": "night_4_magic_despair_special",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_night_magics_special.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Masterful Despair",
+      "school": "night",
+      "rank": 1,
+      "usedOnMap": false
+    },
+    {
+      "id": "space_1_magic_early_start_special",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_space_magics_special.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Masterful Early Start",
+      "school": "space",
+      "rank": 1,
+      "usedOnMap": false
+    },
+    {
+      "id": "primal_4_magic_fire_globe_special",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_primal_magics_special.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Masterful Fireball",
+      "school": "primal",
+      "rank": 2,
+      "usedOnMap": false
+    },
+    {
+      "id": "primal_7_magic_wall_of_flame_special",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_primal_magics_special.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Masterful Firewall",
+      "school": "primal",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "space_11_magic_decimate_special",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_space_magics_special.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Masterful Guillotine",
+      "school": "space",
+      "rank": 1,
+      "usedOnMap": false
+    },
+    {
+      "id": "day_3_magic_haste_special",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_day_magics_special.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Masterful Haste",
+      "school": "day",
+      "rank": 1,
+      "usedOnMap": false
+    },
+    {
+      "id": "day_1_magic_healing_water_special",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_day_magics_special.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Masterful Healing Water",
+      "school": "day",
+      "rank": 1,
+      "usedOnMap": false
+    },
+    {
+      "id": "primal_6_magic_ice_bolt_special",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_primal_magics_special.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Masterful Ice Bolt",
+      "school": "primal",
+      "rank": 2,
+      "usedOnMap": false
+    },
+    {
+      "id": "space_10_magic_mirror_copy_special",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_space_magics_special.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Masterful Mirror Copy",
+      "school": "space",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "space_12_magic_rewind_special",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_space_magics_special.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Masterful Rewind Life",
+      "school": "space",
+      "rank": 4,
+      "usedOnMap": false
+    },
+    {
+      "id": "night_6_magic_deaths_grip_special",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_night_magics_special.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Masterful Umbral Grip",
+      "school": "night",
+      "rank": 2,
+      "usedOnMap": false
+    },
+    {
+      "id": "night_1_magic_unnatural_calm_special",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_night_magics_special.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Masterful Unnatural Calm",
+      "school": "night",
+      "rank": 1,
+      "usedOnMap": false
+    },
+    {
+      "id": "night_11_magic_vulnerability_special",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_night_magics_special.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Masterful Vulnerability",
+      "school": "night",
+      "rank": 4,
+      "usedOnMap": false
+    },
+    {
+      "id": "night_2_magic_web_special",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_night_magics_special.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Masterful Web",
+      "school": "night",
+      "rank": 2,
+      "usedOnMap": false
+    },
+    {
+      "id": "space_10_magic_mirror_copy",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_space_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Mirror Copy",
+      "school": "space",
+      "rank": 4,
+      "usedOnMap": false
+    },
+    {
+      "id": "night_14_magic_nairas_kiss",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_night_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Naira’s Kiss",
+      "school": "night",
+      "rank": 5,
+      "usedOnMap": false
+    },
+    {
+      "id": "night_18_magic_nairas_veil",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/world_night_magics.json",
+      "battleMagic": false,
+      "globallyBanned": false,
+      "name": "Naira’s Veil",
+      "school": "night",
+      "rank": 3,
+      "usedOnMap": true
+    },
+    {
+      "id": "change_use_necromancy",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/world_neutral_magics.json",
+      "battleMagic": false,
+      "globallyBanned": false,
+      "name": "Necromancer Will",
+      "school": "neutral",
+      "rank": 1,
+      "usedOnMap": true
+    },
+    {
+      "id": "space_4_magic_optical_illusion",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_space_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Optical Illusion",
+      "school": "space",
+      "rank": 1,
+      "usedOnMap": false
+    },
+    {
+      "id": "neutral_magic_pocket_dimension",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/world_neutral_magics.json",
+      "battleMagic": false,
+      "globallyBanned": false,
+      "name": "Pocket Dimension",
+      "school": "neutral",
+      "rank": 2,
+      "usedOnMap": true
+    },
+    {
+      "id": "primal_18_magic_primordial_chaos",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/world_primal_magics.json",
+      "battleMagic": false,
+      "globallyBanned": false,
+      "name": "Primordial Chaos",
+      "school": "primal",
+      "rank": 4,
+      "usedOnMap": true
+    },
+    {
+      "id": "day_12_magic_radiant_armor",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_day_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Radiant Armor",
+      "school": "day",
+      "rank": 4,
+      "usedOnMap": false
+    },
+    {
+      "id": "night_17_magic_read_minds",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/world_night_magics.json",
+      "battleMagic": false,
+      "globallyBanned": false,
+      "name": "Read Minds",
+      "school": "night",
+      "rank": 2,
+      "usedOnMap": true
+    },
+    {
+      "id": "space_16_magic_reality_distortion",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_space_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Reality Distortion",
+      "school": "space",
+      "rank": 5,
+      "usedOnMap": false
+    },
+    {
+      "id": "space_17_magic_reinforcements",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/world_space_magics.json",
+      "battleMagic": false,
+      "globallyBanned": false,
+      "name": "Reinforcements",
+      "school": "space",
+      "rank": 2,
+      "usedOnMap": true
+    },
+    {
+      "id": "neutral_1_magic_units_replace",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/world_neutral_magics.json",
+      "battleMagic": false,
+      "globallyBanned": false,
+      "name": "Relocation",
+      "school": "neutral",
+      "rank": 1,
+      "usedOnMap": true
+    },
+    {
+      "id": "space_12_magic_rewind",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_space_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Rewind Life",
+      "school": "space",
+      "rank": 4,
+      "usedOnMap": false
+    },
+    {
+      "id": "day_11_magic_masterful_parry",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_day_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Riposte",
+      "school": "day",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "neutral_magic_second_sight",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/world_neutral_magics.json",
+      "battleMagic": false,
+      "globallyBanned": false,
+      "name": "Second Wind",
+      "school": "neutral",
+      "rank": 2,
+      "usedOnMap": true
+    },
+    {
+      "id": "space_7_magic_shackles",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_space_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Shackles",
+      "school": "space",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "night_5_magic_shade_cloak",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_night_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Shade Cloak",
+      "school": "night",
+      "rank": 2,
+      "usedOnMap": false
+    },
+    {
+      "id": "night_16_magic_shadow_army",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_night_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Shadow Army",
+      "school": "night",
+      "rank": 5,
+      "usedOnMap": false
+    },
+    {
+      "id": "neutral_magic_shadow_form",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/world_neutral_magics.json",
+      "battleMagic": false,
+      "globallyBanned": false,
+      "name": "Shadowflight",
+      "school": "neutral",
+      "rank": 3,
+      "usedOnMap": true
+    },
+    {
+      "id": "day_5_magic_shorten_shadow",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_day_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Shorten Shadow",
+      "school": "day",
+      "rank": 1,
+      "usedOnMap": false
+    },
+    {
+      "id": "night_10_magic_silence",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_night_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Silence",
+      "school": "night",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "night_8_magic_sleep",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_night_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Sleep",
+      "school": "night",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "day_10_magic_second_song",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_day_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Song of Power",
+      "school": "day",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "space_15_magic_trap_snare",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_space_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Spatial Snare",
+      "school": "space",
+      "rank": 4,
+      "usedOnMap": false
+    },
+    {
+      "id": "primal_bonus_magic_1_magic",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_neutral_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Spell Eruption",
+      "school": "neutral",
+      "rank": 1,
+      "usedOnMap": false
+    },
+    {
+      "id": "primal_16_magic_stone_fangs",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_primal_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Stone Fangs",
+      "school": "primal",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "primal_15_magic_summon_primal_remnant",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_primal_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Summon Primal Remnant",
+      "school": "primal",
+      "rank": 5,
+      "usedOnMap": false
+    },
+    {
+      "id": "night_12_magic_summon_starchild",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_night_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Summon Starchild",
+      "school": "night",
+      "rank": 4,
+      "usedOnMap": false
+    },
+    {
+      "id": "day_8_magic_taunt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_day_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Taunt",
+      "school": "day",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "space_5_magic_trap_jaws",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_space_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Temporal Spheres",
+      "school": "space",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "primal_2_magic_thick_hide",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_primal_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Thick Hide",
+      "school": "primal",
+      "rank": 1,
+      "usedOnMap": false
+    },
+    {
+      "id": "neutral_magic_town_portal",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/world_neutral_magics.json",
+      "battleMagic": false,
+      "globallyBanned": false,
+      "name": "Town Portal",
+      "school": "neutral",
+      "rank": 3,
+      "usedOnMap": true
+    },
+    {
+      "id": "night_9_magic_twilight",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_night_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Twilight",
+      "school": "night",
+      "rank": 3,
+      "usedOnMap": false
+    },
+    {
+      "id": "night_6_magic_deaths_grip",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_night_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Umbral Grip",
+      "school": "night",
+      "rank": 2,
+      "usedOnMap": false
+    },
+    {
+      "id": "night_1_magic_unnatural_calm",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_night_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Unnatural Calm",
+      "school": "night",
+      "rank": 1,
+      "usedOnMap": false
+    },
+    {
+      "id": "day_14_magic_vengeance",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_day_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Vengeance",
+      "school": "day",
+      "rank": 4,
+      "usedOnMap": false
+    },
+    {
+      "id": "night_11_magic_vulnerability",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_night_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Vulnerability",
+      "school": "night",
+      "rank": 4,
+      "usedOnMap": false
+    },
+    {
+      "id": "day_6_magic_cleansing_ray",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_day_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Weakening Ray",
+      "school": "day",
+      "rank": 2,
+      "usedOnMap": false
+    },
+    {
+      "id": "primal_3_magic_wean",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_primal_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Wean",
+      "school": "primal",
+      "rank": 2,
+      "usedOnMap": false
+    },
+    {
+      "id": "night_2_magic_web",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/magics/battle_night_magics.json",
+      "battleMagic": true,
+      "globallyBanned": false,
+      "name": "Web",
+      "school": "night",
+      "rank": 2,
+      "usedOnMap": false
+    }
+  ]
+}

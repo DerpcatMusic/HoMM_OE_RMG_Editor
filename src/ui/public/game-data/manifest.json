@@ -1,0 +1,46 @@
+{
+  "generatedAt": "2026-06-07T10:37:23.360Z",
+  "language": "english",
+  "coreZipPath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip",
+  "coreZipSize": 11928832,
+  "coreZipMtimeMs": 1779742641121.985,
+  "sourceHash": "b7e9d3c1727b5ac09e6b589034613378d0f342df96b7a3004f98755e9cf03a5b",
+  "catalogs": {
+    "artifacts": {
+      "path": "/home/derpcat/Projects/Olden_Era_RMG_Editor/.cache/game-data/artifacts.json",
+      "entries": 154
+    },
+    "rmgContent": {
+      "path": "/home/derpcat/Projects/Olden_Era_RMG_Editor/.cache/game-data/rmg-content.json",
+      "entries": 872
+    },
+    "contentPools": {
+      "path": "/home/derpcat/Projects/Olden_Era_RMG_Editor/.cache/game-data/content-pools.json",
+      "entries": 532
+    },
+    "contentLists": {
+      "path": "/home/derpcat/Projects/Olden_Era_RMG_Editor/.cache/game-data/content-lists.json",
+      "entries": 211
+    },
+    "factions": {
+      "path": "/home/derpcat/Projects/Olden_Era_RMG_Editor/.cache/game-data/factions.json",
+      "entries": 8
+    },
+    "biomes": {
+      "path": "/home/derpcat/Projects/Olden_Era_RMG_Editor/.cache/game-data/biomes.json",
+      "entries": 7
+    },
+    "heroes": {
+      "path": "/home/derpcat/Projects/Olden_Era_RMG_Editor/.cache/game-data/heroes.json",
+      "entries": 177
+    },
+    "magics": {
+      "path": "/home/derpcat/Projects/Olden_Era_RMG_Editor/.cache/game-data/magics.json",
+      "entries": 131
+    },
+    "units": {
+      "path": "/home/derpcat/Projects/Olden_Era_RMG_Editor/.cache/game-data/units.json",
+      "entries": 152
+    }
+  }
+}

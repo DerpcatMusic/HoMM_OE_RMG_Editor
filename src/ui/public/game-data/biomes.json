@@ -1,0 +1,42 @@
+{
+  "language": "english",
+  "generatedAt": "2026-06-07T10:37:23.360Z",
+  "sourceHash": "b7e9d3c1727b5ac09e6b589034613378d0f342df96b7a3004f98755e9cf03a5b",
+  "entries": [
+    {
+      "id": "Autumn",
+      "faction": "nature",
+      "waterObject": "water fallen"
+    },
+    {
+      "id": "Deathland",
+      "faction": "undead",
+      "waterObject": "water death"
+    },
+    {
+      "id": "Dirt",
+      "faction": "dungeon",
+      "waterObject": "water dirt"
+    },
+    {
+      "id": "Grass",
+      "faction": "human",
+      "waterObject": "water grass"
+    },
+    {
+      "id": "Lava",
+      "faction": "demon",
+      "waterObject": "lava"
+    },
+    {
+      "id": "Sand",
+      "faction": "neutral",
+      "waterObject": "water sand"
+    },
+    {
+      "id": "Snow",
+      "faction": "unfrozen",
+      "waterObject": "water snow"
+    }
+  ]
+}

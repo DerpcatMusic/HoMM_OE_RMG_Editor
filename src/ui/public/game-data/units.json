@@ -1,0 +1,2072 @@
+{
+  "language": "english",
+  "generatedAt": "2026-06-07T10:37:23.360Z",
+  "sourceHash": "b7e9d3c1727b5ac09e6b589034613378d0f342df96b7a3004f98755e9cf03a5b",
+  "entries": [
+    {
+      "id": "unspeakable",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/unfrozen/unspeakable_l.json",
+      "tags": [
+        "unit",
+        "unfrozen"
+      ],
+      "globallyBanned": false,
+      "name": "Abyssal Envoy",
+      "faction": "unfrozen",
+      "tier": 7,
+      "squadValue": 3822,
+      "upgradeSid": "unspeakable_upg"
+    },
+    {
+      "id": "unspeakable_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/unfrozen/unspeakable_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "unfrozen"
+      ],
+      "globallyBanned": false,
+      "name": "Abyssal Executor",
+      "faction": "unfrozen",
+      "tier": 7,
+      "squadValue": 6719
+    },
+    {
+      "id": "unspeakable_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/unfrozen/unspeakable_upg_l.json",
+      "tags": [
+        "unit",
+        "unfrozen"
+      ],
+      "globallyBanned": false,
+      "name": "Abyssal Overseer",
+      "faction": "unfrozen",
+      "tier": 7,
+      "squadValue": 6719,
+      "upgradeSid": "unspeakable_upg_alt"
+    },
+    {
+      "id": "frostworm_rider_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/unfrozen/frostworm_rider_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "unfrozen"
+      ],
+      "globallyBanned": false,
+      "name": "Aga’Shoth Mat’ha",
+      "faction": "unfrozen",
+      "tier": 3,
+      "squadValue": 276
+    },
+    {
+      "id": "frostworm_rider",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/unfrozen/frostworm_rider_l.json",
+      "tags": [
+        "unit",
+        "unfrozen"
+      ],
+      "globallyBanned": false,
+      "name": "Aga’Shoth Rider",
+      "faction": "unfrozen",
+      "tier": 3,
+      "squadValue": 194,
+      "upgradeSid": "frostworm_rider_upg"
+    },
+    {
+      "id": "frostworm_rider_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/unfrozen/frostworm_rider_upg_l.json",
+      "tags": [
+        "unit",
+        "unfrozen"
+      ],
+      "globallyBanned": false,
+      "name": "Aga’Shoth Tamer",
+      "faction": "unfrozen",
+      "tier": 3,
+      "squadValue": 276,
+      "upgradeSid": "frostworm_rider_upg_alt"
+    },
+    {
+      "id": "angel",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/humans/angel_l.json",
+      "tags": [
+        "unit",
+        "human"
+      ],
+      "globallyBanned": false,
+      "name": "Angel",
+      "faction": "human",
+      "tier": 7,
+      "squadValue": 3660,
+      "upgradeSid": "angel_upg"
+    },
+    {
+      "id": "animated_armor",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/neutral/animated_armor_l.json",
+      "tags": [
+        "unit",
+        "neutral"
+      ],
+      "globallyBanned": false,
+      "name": "Animated Armor",
+      "faction": "neutral",
+      "tier": 3,
+      "squadValue": 275
+    },
+    {
+      "id": "angel_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/humans/angel_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "human"
+      ],
+      "globallyBanned": false,
+      "name": "Apotheosis",
+      "faction": "human",
+      "tier": 7,
+      "squadValue": 6396
+    },
+    {
+      "id": "arbitrator",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/unfrozen/arbitrator_l.json",
+      "tags": [
+        "unit",
+        "unfrozen"
+      ],
+      "globallyBanned": false,
+      "name": "Arbitrator",
+      "faction": "unfrozen",
+      "tier": 6,
+      "squadValue": 1411,
+      "upgradeSid": "arbitrator_upg"
+    },
+    {
+      "id": "angel_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/humans/angel_upg_l.json",
+      "tags": [
+        "unit",
+        "human"
+      ],
+      "globallyBanned": false,
+      "name": "Archangel",
+      "faction": "human",
+      "tier": 7,
+      "squadValue": 6396,
+      "upgradeSid": "angel_upg_alt"
+    },
+    {
+      "id": "pet_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/undead/pet_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "undead"
+      ],
+      "globallyBanned": false,
+      "name": "Armored Hound",
+      "faction": "undead",
+      "tier": 3,
+      "squadValue": 156
+    },
+    {
+      "id": "black_dragon_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/dungeon/black_dragon_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "dungeon",
+        "dragon"
+      ],
+      "globallyBanned": false,
+      "name": "Ashen Dragon",
+      "faction": "dungeon",
+      "tier": 7,
+      "squadValue": 8009
+    },
+    {
+      "id": "blade_dancer_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/dungeon/blade_dancer_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "dungeon"
+      ],
+      "globallyBanned": false,
+      "name": "Aureate Dancer",
+      "faction": "dungeon",
+      "tier": 3,
+      "squadValue": 205
+    },
+    {
+      "id": "crossbowman_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/humans/crossbowman_upg_l.json",
+      "tags": [
+        "unit",
+        "human"
+      ],
+      "globallyBanned": false,
+      "name": "Austringer",
+      "faction": "human",
+      "tier": 2,
+      "squadValue": 123,
+      "upgradeSid": "crossbowman_upg_alt"
+    },
+    {
+      "id": "avatar",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/neutral/avatar_l.json",
+      "tags": [
+        "unit",
+        "neutral"
+      ],
+      "globallyBanned": false,
+      "name": "Avatar",
+      "faction": "neutral",
+      "tier": 8,
+      "squadValue": 275
+    },
+    {
+      "id": "avatar_of_war_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/undead/avatar_of_war_upg_l.json",
+      "tags": [
+        "unit",
+        "undead"
+      ],
+      "globallyBanned": false,
+      "name": "Avatar of War",
+      "faction": "undead",
+      "tier": 6,
+      "squadValue": 1530,
+      "upgradeSid": "avatar_of_war_upg_alt"
+    },
+    {
+      "id": "avatar_nature",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/neutral/avatar_nature_l.json",
+      "tags": [
+        "unit",
+        "neutral"
+      ],
+      "globallyBanned": false,
+      "faction": "neutral",
+      "tier": 8,
+      "squadValue": 275
+    },
+    {
+      "id": "avatar_unfrozen",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/neutral/avatar_unfrozen_l.json",
+      "tags": [
+        "unit",
+        "neutral"
+      ],
+      "globallyBanned": false,
+      "faction": "neutral",
+      "tier": 8,
+      "squadValue": 275
+    },
+    {
+      "id": "pet_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/undead/pet_upg_l.json",
+      "tags": [
+        "unit",
+        "undead"
+      ],
+      "globallyBanned": false,
+      "name": "Barghest",
+      "faction": "undead",
+      "tier": 3,
+      "squadValue": 156,
+      "upgradeSid": "pet_upg_alt"
+    },
+    {
+      "id": "succubus_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/unfrozen/succubus_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "unfrozen"
+      ],
+      "globallyBanned": false,
+      "name": "Bewitcher",
+      "faction": "unfrozen",
+      "tier": 5,
+      "squadValue": 849
+    },
+    {
+      "id": "unfrozen_cultist_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/unfrozen/unfrozen_cultist_upg_l.json",
+      "tags": [
+        "unit",
+        "unfrozen"
+      ],
+      "globallyBanned": false,
+      "name": "Binder",
+      "faction": "unfrozen",
+      "tier": 2,
+      "squadValue": 184,
+      "upgradeSid": "unfrozen_cultist_upg_alt"
+    },
+    {
+      "id": "black_dragon_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/dungeon/black_dragon_upg_l.json",
+      "tags": [
+        "unit",
+        "dungeon",
+        "dragon"
+      ],
+      "globallyBanned": false,
+      "name": "Black Dragon",
+      "faction": "dungeon",
+      "tier": 7,
+      "squadValue": 8009,
+      "upgradeSid": "black_dragon_upg_alt"
+    },
+    {
+      "id": "assassin_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/dungeon/assassin_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "dungeon"
+      ],
+      "globallyBanned": false,
+      "name": "Bleak Infiltrator",
+      "faction": "dungeon",
+      "tier": 2,
+      "squadValue": 132
+    },
+    {
+      "id": "arbitrator_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/unfrozen/arbitrator_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "unfrozen"
+      ],
+      "globallyBanned": false,
+      "name": "Bloated Arbitrator",
+      "faction": "unfrozen",
+      "tier": 6,
+      "squadValue": 2259
+    },
+    {
+      "id": "aqualotl_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/nature/aqualotl_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "nature"
+      ],
+      "globallyBanned": false,
+      "name": "Brumal Naiad",
+      "faction": "nature",
+      "tier": 4,
+      "squadValue": 518
+    },
+    {
+      "id": "sunlight_cavalry",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/humans/sunlight_cavalry_l.json",
+      "tags": [
+        "unit",
+        "human"
+      ],
+      "globallyBanned": false,
+      "name": "Cavalry",
+      "faction": "human",
+      "tier": 5,
+      "squadValue": 908,
+      "upgradeSid": "sunlight_cavalry_upg"
+    },
+    {
+      "id": "black_dragon",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/dungeon/black_dragon_l.json",
+      "tags": [
+        "unit",
+        "dungeon",
+        "dragon"
+      ],
+      "globallyBanned": false,
+      "name": "Cave Dragon",
+      "faction": "dungeon",
+      "tier": 7,
+      "squadValue": 4620,
+      "upgradeSid": "black_dragon_upg"
+    },
+    {
+      "id": "wasp_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/demons/wasp_upg_l.json",
+      "tags": [
+        "unit",
+        "demon"
+      ],
+      "globallyBanned": false,
+      "name": "Chanter",
+      "faction": "demon",
+      "tier": 3,
+      "squadValue": 300,
+      "upgradeSid": "wasp_upg_alt"
+    },
+    {
+      "id": "hydra_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/dungeon/hydra_upg_l.json",
+      "tags": [
+        "unit",
+        "dungeon"
+      ],
+      "globallyBanned": false,
+      "name": "Chthonic Hydra",
+      "faction": "dungeon",
+      "tier": 6,
+      "squadValue": 2335,
+      "upgradeSid": "hydra_upg_alt"
+    },
+    {
+      "id": "succubus",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/unfrozen/succubus_l.json",
+      "tags": [
+        "unit",
+        "unfrozen"
+      ],
+      "globallyBanned": false,
+      "name": "Concubus",
+      "faction": "unfrozen",
+      "tier": 5,
+      "squadValue": 567,
+      "upgradeSid": "succubus_upg"
+    },
+    {
+      "id": "coatl",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/neutral/coatl_l.json",
+      "tags": [
+        "unit",
+        "neutral"
+      ],
+      "globallyBanned": false,
+      "name": "Couatl",
+      "faction": "neutral",
+      "tier": 6,
+      "squadValue": 1700
+    },
+    {
+      "id": "crossbowman",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/humans/crossbowman_l.json",
+      "tags": [
+        "unit",
+        "human"
+      ],
+      "globallyBanned": false,
+      "name": "Crossbowman",
+      "faction": "human",
+      "tier": 2,
+      "squadValue": 91,
+      "upgradeSid": "crossbowman_upg"
+    },
+    {
+      "id": "ent_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/nature/ent_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "nature"
+      ],
+      "globallyBanned": false,
+      "name": "Crystal Iriyad",
+      "faction": "nature",
+      "tier": 3,
+      "squadValue": 309
+    },
+    {
+      "id": "unfrozen_cultist",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/unfrozen/unfrozen_cultist_l.json",
+      "tags": [
+        "unit",
+        "unfrozen"
+      ],
+      "globallyBanned": false,
+      "name": "Cultist",
+      "faction": "unfrozen",
+      "tier": 2,
+      "squadValue": 138,
+      "upgradeSid": "unfrozen_cultist_upg"
+    },
+    {
+      "id": "twinkle_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/nature/twinkle_upg_l.json",
+      "tags": [
+        "unit",
+        "nature"
+      ],
+      "globallyBanned": false,
+      "name": "Dawn Hoplet",
+      "faction": "nature",
+      "tier": 2,
+      "squadValue": 178,
+      "upgradeSid": "twinkle_upg_alt"
+    },
+    {
+      "id": "olgoi_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/demons/olgoi_upg_l.json",
+      "tags": [
+        "unit",
+        "demon"
+      ],
+      "globallyBanned": false,
+      "name": "Devourer",
+      "faction": "demon",
+      "tier": 6,
+      "squadValue": 2250,
+      "upgradeSid": "olgoi_upg_alt"
+    },
+    {
+      "id": "dragon",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/dragon_l.json",
+      "tags": [
+        "unit",
+        "neutral",
+        "dragon"
+      ],
+      "globallyBanned": false,
+      "faction": "neutral",
+      "tier": 7,
+      "squadValue": 4894,
+      "upgradeSid": "dragon_upg"
+    },
+    {
+      "id": "dragon_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/dragon_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "neutral",
+        "dragon"
+      ],
+      "globallyBanned": false,
+      "faction": "neutral",
+      "tier": 7,
+      "squadValue": 8985
+    },
+    {
+      "id": "dragon_hunter",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/neutral/dragon_hunter_l.json",
+      "tags": [
+        "unit",
+        "neutral"
+      ],
+      "globallyBanned": false,
+      "name": "Dragonslayer",
+      "faction": "neutral",
+      "tier": 6,
+      "squadValue": 1700
+    },
+    {
+      "id": "avatar_of_war",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/undead/avatar_of_war_l.json",
+      "tags": [
+        "unit",
+        "undead"
+      ],
+      "globallyBanned": false,
+      "name": "Dread Knight",
+      "faction": "undead",
+      "tier": 6,
+      "squadValue": 952,
+      "upgradeSid": "avatar_of_war_upg"
+    },
+    {
+      "id": "twinkle_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/nature/twinkle_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "nature"
+      ],
+      "globallyBanned": false,
+      "name": "Dusk Hoplet",
+      "faction": "nature",
+      "tier": 2,
+      "squadValue": 178
+    },
+    {
+      "id": "phoenix_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/nature/phoenix_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "nature"
+      ],
+      "globallyBanned": false,
+      "name": "Energy Phoenix",
+      "faction": "nature",
+      "tier": 7,
+      "squadValue": 7594
+    },
+    {
+      "id": "inquisitor_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/humans/inquisitor_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "human"
+      ],
+      "globallyBanned": false,
+      "name": "Excommunicator",
+      "faction": "human",
+      "tier": 6,
+      "squadValue": 1853
+    },
+    {
+      "id": "fairy_dragon",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/neutral/fairy_dragon_l.json",
+      "tags": [
+        "unit",
+        "neutral",
+        "dragon"
+      ],
+      "globallyBanned": false,
+      "name": "Faerie Dragon",
+      "faction": "neutral",
+      "tier": 5,
+      "squadValue": 950
+    },
+    {
+      "id": "elf_tracker",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/nature/elf_tracker_l.json",
+      "tags": [
+        "unit",
+        "nature"
+      ],
+      "globallyBanned": false,
+      "name": "Faun",
+      "faction": "nature",
+      "tier": 1,
+      "squadValue": 84,
+      "upgradeSid": "elf_tracker_upg"
+    },
+    {
+      "id": "elf_tracker_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/nature/elf_tracker_upg_l.json",
+      "tags": [
+        "unit",
+        "nature"
+      ],
+      "globallyBanned": false,
+      "name": "Faun Archer",
+      "faction": "nature",
+      "tier": 1,
+      "squadValue": 111,
+      "upgradeSid": "elf_tracker_upg_alt"
+    },
+    {
+      "id": "elf_tracker_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/nature/elf_tracker_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "nature"
+      ],
+      "globallyBanned": false,
+      "name": "Faun Warrior",
+      "faction": "nature",
+      "tier": 1,
+      "squadValue": 111
+    },
+    {
+      "id": "lesser_eldritch_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/unfrozen/lesser_eldritch_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "unfrozen"
+      ],
+      "globallyBanned": false,
+      "name": "Ferocious Ra’Shoth",
+      "faction": "unfrozen",
+      "tier": 1,
+      "squadValue": 78
+    },
+    {
+      "id": "lava_larva",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/demons/lava_larva_l.json",
+      "tags": [
+        "unit",
+        "demon"
+      ],
+      "globallyBanned": false,
+      "name": "Fire Larva",
+      "faction": "demon",
+      "tier": 4,
+      "squadValue": 100
+    },
+    {
+      "id": "phoenix_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/nature/phoenix_upg_l.json",
+      "tags": [
+        "unit",
+        "nature"
+      ],
+      "globallyBanned": false,
+      "name": "Flaming Phoenix",
+      "faction": "nature",
+      "tier": 7,
+      "squadValue": 7594,
+      "upgradeSid": "phoenix_upg_alt"
+    },
+    {
+      "id": "ent_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/nature/ent_upg_l.json",
+      "tags": [
+        "unit",
+        "nature"
+      ],
+      "globallyBanned": false,
+      "name": "Fungal Iriyad",
+      "faction": "nature",
+      "tier": 3,
+      "squadValue": 309,
+      "upgradeSid": "ent_upg_alt"
+    },
+    {
+      "id": "undead_peasant",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/neutral/undead_peasant_l.json",
+      "tags": [
+        "unit",
+        "neutral"
+      ],
+      "globallyBanned": false,
+      "name": "Ghoul",
+      "faction": "neutral",
+      "tier": 2,
+      "squadValue": 1
+    },
+    {
+      "id": "giant_frog",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/neutral/giant_frog_l.json",
+      "tags": [
+        "unit",
+        "neutral",
+        "dragon"
+      ],
+      "globallyBanned": false,
+      "name": "Giant Toad",
+      "faction": "neutral",
+      "tier": 5,
+      "squadValue": 950
+    },
+    {
+      "id": "gnat",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/neutral/gnat_l.json",
+      "tags": [
+        "unit",
+        "demon"
+      ],
+      "globallyBanned": false,
+      "name": "Gnat",
+      "faction": "neutral",
+      "tier": 1,
+      "squadValue": 66
+    },
+    {
+      "id": "eldritch_flyer",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/unfrozen/eldritch_flyer_l.json",
+      "tags": [
+        "unit",
+        "unfrozen"
+      ],
+      "globallyBanned": false,
+      "name": "Grand Shoth",
+      "faction": "unfrozen",
+      "tier": 4,
+      "squadValue": 453,
+      "upgradeSid": "eldritch_flyer_upg"
+    },
+    {
+      "id": "graverobber",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/undead/graverobber_l.json",
+      "tags": [
+        "unit",
+        "undead"
+      ],
+      "globallyBanned": false,
+      "name": "Graverobber",
+      "faction": "undead",
+      "tier": 4,
+      "squadValue": 256,
+      "upgradeSid": "graverobber_upg"
+    },
+    {
+      "id": "griffin",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/humans/griffin_l.json",
+      "tags": [
+        "unit",
+        "human"
+      ],
+      "globallyBanned": false,
+      "name": "Griffin",
+      "faction": "human",
+      "tier": 3,
+      "squadValue": 233,
+      "upgradeSid": "griffin_upg"
+    },
+    {
+      "id": "gorilla",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/neutral/gorilla_l.json",
+      "tags": [
+        "unit",
+        "neutral"
+      ],
+      "globallyBanned": false,
+      "name": "Groll",
+      "faction": "neutral",
+      "tier": 3,
+      "squadValue": 275
+    },
+    {
+      "id": "esquire_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/humans/esquire_upg_l.json",
+      "tags": [
+        "unit",
+        "human"
+      ],
+      "globallyBanned": false,
+      "name": "Guard Captain",
+      "faction": "human",
+      "tier": 1,
+      "squadValue": 87,
+      "upgradeSid": "esquire_upg_alt"
+    },
+    {
+      "id": "griffin_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/humans/griffin_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "human"
+      ],
+      "globallyBanned": false,
+      "name": "Guardian Griffin",
+      "faction": "human",
+      "tier": 3,
+      "squadValue": 326
+    },
+    {
+      "id": "assassin_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/dungeon/assassin_upg_l.json",
+      "tags": [
+        "unit",
+        "dungeon"
+      ],
+      "globallyBanned": false,
+      "name": "Guile Infiltrator",
+      "faction": "dungeon",
+      "tier": 2,
+      "squadValue": 132,
+      "upgradeSid": "assassin_upg_alt"
+    },
+    {
+      "id": "halfling",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/neutral/halfling_l.json",
+      "tags": [
+        "unit",
+        "neutral"
+      ],
+      "globallyBanned": false,
+      "name": "Halfling",
+      "faction": "neutral",
+      "tier": 2,
+      "squadValue": 125
+    },
+    {
+      "id": "locust_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/demons/locust_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "demon"
+      ],
+      "globallyBanned": false,
+      "name": "Harvester Locust",
+      "faction": "demon",
+      "tier": 2,
+      "squadValue": 146
+    },
+    {
+      "id": "druid",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/nature/druid_l.json",
+      "tags": [
+        "unit",
+        "nature"
+      ],
+      "globallyBanned": false,
+      "name": "Herbomancer",
+      "faction": "nature",
+      "tier": 5,
+      "squadValue": 744,
+      "upgradeSid": "druid_upg"
+    },
+    {
+      "id": "lightweaver_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/humans/lightweaver_upg_l.json",
+      "tags": [
+        "unit",
+        "human"
+      ],
+      "globallyBanned": false,
+      "name": "Hierophant",
+      "faction": "human",
+      "tier": 4,
+      "squadValue": 425,
+      "upgradeSid": "lightweaver_upg_alt"
+    },
+    {
+      "id": "hive_queen_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/demons/hive_queen_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "demon"
+      ],
+      "globallyBanned": false,
+      "name": "Hive Huntress",
+      "faction": "demon",
+      "tier": 7,
+      "squadValue": 5935
+    },
+    {
+      "id": "hive_queen_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/demons/hive_queen_upg_l.json",
+      "tags": [
+        "unit",
+        "demon"
+      ],
+      "globallyBanned": false,
+      "name": "Hive Mother",
+      "faction": "demon",
+      "tier": 7,
+      "squadValue": 5935,
+      "upgradeSid": "hive_queen_upg_alt"
+    },
+    {
+      "id": "hive_queen",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/demons/hive_queen_l.json",
+      "tags": [
+        "unit",
+        "demon"
+      ],
+      "globallyBanned": false,
+      "name": "Hive Queen",
+      "faction": "demon",
+      "tier": 7,
+      "squadValue": 3356,
+      "upgradeSid": "hive_queen_upg"
+    },
+    {
+      "id": "avatar_of_war_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/undead/avatar_of_war_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "undead"
+      ],
+      "globallyBanned": false,
+      "name": "Hollow Reaper",
+      "faction": "undead",
+      "tier": 6,
+      "squadValue": 1530
+    },
+    {
+      "id": "twinkle",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/nature/twinkle_l.json",
+      "tags": [
+        "unit",
+        "nature"
+      ],
+      "globallyBanned": false,
+      "name": "Hoplet",
+      "faction": "nature",
+      "tier": 2,
+      "squadValue": 131,
+      "upgradeSid": "twinkle_upg"
+    },
+    {
+      "id": "wasp",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/demons/wasp_l.json",
+      "tags": [
+        "unit",
+        "demon"
+      ],
+      "globallyBanned": false,
+      "name": "Hornet",
+      "faction": "demon",
+      "tier": 3,
+      "squadValue": 215,
+      "upgradeSid": "wasp_upg"
+    },
+    {
+      "id": "hydra",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/dungeon/hydra_l.json",
+      "tags": [
+        "unit",
+        "dungeon"
+      ],
+      "globallyBanned": false,
+      "name": "Hydra",
+      "faction": "dungeon",
+      "tier": 6,
+      "squadValue": 1478,
+      "upgradeSid": "hydra_upg"
+    },
+    {
+      "id": "hydra_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/dungeon/hydra_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "dungeon"
+      ],
+      "globallyBanned": false,
+      "name": "Infernal Hydra",
+      "faction": "dungeon",
+      "tier": 6,
+      "squadValue": 2335
+    },
+    {
+      "id": "trogl_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/dungeon/trogl_upg_l.json",
+      "tags": [
+        "unit",
+        "dungeon"
+      ],
+      "globallyBanned": false,
+      "name": "Infernal Troglodyte",
+      "faction": "dungeon",
+      "tier": 1,
+      "squadValue": 52,
+      "upgradeSid": "trogl_upg_alt"
+    },
+    {
+      "id": "assassin",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/dungeon/assassin_l.json",
+      "tags": [
+        "unit",
+        "dungeon"
+      ],
+      "globallyBanned": false,
+      "name": "Infiltrator",
+      "faction": "dungeon",
+      "tier": 2,
+      "squadValue": 98,
+      "upgradeSid": "assassin_upg"
+    },
+    {
+      "id": "inquisitor",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/humans/inquisitor_l.json",
+      "tags": [
+        "unit",
+        "human"
+      ],
+      "globallyBanned": false,
+      "name": "Inquisitor",
+      "faction": "human",
+      "tier": 6,
+      "squadValue": 1152,
+      "upgradeSid": "inquisitor_upg"
+    },
+    {
+      "id": "blade_dancer_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/dungeon/blade_dancer_upg_l.json",
+      "tags": [
+        "unit",
+        "dungeon"
+      ],
+      "globallyBanned": false,
+      "name": "Jasper Dancer",
+      "faction": "dungeon",
+      "tier": 3,
+      "squadValue": 205,
+      "upgradeSid": "blade_dancer_upg_alt"
+    },
+    {
+      "id": "graverobber_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/undead/graverobber_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "undead"
+      ],
+      "globallyBanned": false,
+      "name": "Kennelmaster",
+      "faction": "undead",
+      "tier": 4,
+      "squadValue": 370
+    },
+    {
+      "id": "kitten_horn",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/neutral/kitten_horn_l.json",
+      "tags": [
+        "unit",
+        "neutral"
+      ],
+      "globallyBanned": false,
+      "name": "Kittenhorn",
+      "faction": "neutral",
+      "tier": 4,
+      "squadValue": 550
+    },
+    {
+      "id": "lich",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/undead/lich_l.json",
+      "tags": [
+        "unit",
+        "undead"
+      ],
+      "globallyBanned": false,
+      "name": "Lich",
+      "faction": "undead",
+      "tier": 5,
+      "squadValue": 339,
+      "upgradeSid": "lich_upg"
+    },
+    {
+      "id": "lich_dragon",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/neutral/lich_dragon_l.json",
+      "tags": [
+        "unit",
+        "neutral"
+      ],
+      "globallyBanned": false,
+      "name": "Lich Dragon",
+      "faction": "neutral",
+      "tier": 8,
+      "squadValue": 30000
+    },
+    {
+      "id": "lightweaver",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/humans/lightweaver_l.json",
+      "tags": [
+        "unit",
+        "human"
+      ],
+      "globallyBanned": false,
+      "name": "Lightweaver",
+      "faction": "human",
+      "tier": 4,
+      "squadValue": 289,
+      "upgradeSid": "lightweaver_upg"
+    },
+    {
+      "id": "locust",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/demons/locust_l.json",
+      "tags": [
+        "unit",
+        "demon"
+      ],
+      "globallyBanned": false,
+      "name": "Locust",
+      "faction": "demon",
+      "tier": 2,
+      "squadValue": 108,
+      "upgradeSid": "locust_upg"
+    },
+    {
+      "id": "godslayer_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/demons/godslayer_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "demon"
+      ],
+      "globallyBanned": false,
+      "name": "Maniacal Reaver",
+      "faction": "demon",
+      "tier": 5,
+      "squadValue": 1242
+    },
+    {
+      "id": "crossbowman_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/humans/crossbowman_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "human"
+      ],
+      "globallyBanned": false,
+      "name": "Marksman",
+      "faction": "human",
+      "tier": 2,
+      "squadValue": 123
+    },
+    {
+      "id": "medusa",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/dungeon/medusa_l.json",
+      "tags": [
+        "unit",
+        "dungeon"
+      ],
+      "globallyBanned": false,
+      "name": "Medusa",
+      "faction": "dungeon",
+      "tier": 5,
+      "squadValue": 535,
+      "upgradeSid": "medusa_upg"
+    },
+    {
+      "id": "medusa_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/dungeon/medusa_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "dungeon"
+      ],
+      "globallyBanned": false,
+      "name": "Medusa Queen",
+      "faction": "dungeon",
+      "tier": 5,
+      "squadValue": 791
+    },
+    {
+      "id": "medusa_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/dungeon/medusa_upg_l.json",
+      "tags": [
+        "unit",
+        "dungeon"
+      ],
+      "globallyBanned": false,
+      "name": "Medusa Sculptor",
+      "faction": "dungeon",
+      "tier": 5,
+      "squadValue": 791,
+      "upgradeSid": "medusa_upg_alt"
+    },
+    {
+      "id": "godslayer_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/demons/godslayer_upg_l.json",
+      "tags": [
+        "unit",
+        "demon"
+      ],
+      "globallyBanned": false,
+      "name": "Menacing Reaver",
+      "faction": "demon",
+      "tier": 5,
+      "squadValue": 1242,
+      "upgradeSid": "godslayer_upg_alt"
+    },
+    {
+      "id": "graverobber_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/undead/graverobber_upg_l.json",
+      "tags": [
+        "unit",
+        "undead"
+      ],
+      "globallyBanned": false,
+      "name": "Merchant of Death",
+      "faction": "undead",
+      "tier": 4,
+      "squadValue": 370,
+      "upgradeSid": "graverobber_upg_alt"
+    },
+    {
+      "id": "minos",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/dungeon/minos_l.json",
+      "tags": [
+        "unit",
+        "dungeon"
+      ],
+      "globallyBanned": false,
+      "name": "Minotaur",
+      "faction": "dungeon",
+      "tier": 4,
+      "squadValue": 381,
+      "upgradeSid": "minos_upg"
+    },
+    {
+      "id": "minos_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/dungeon/minos_upg_l.json",
+      "tags": [
+        "unit",
+        "dungeon"
+      ],
+      "globallyBanned": false,
+      "name": "Minotaur Lord",
+      "faction": "dungeon",
+      "tier": 4,
+      "squadValue": 559,
+      "upgradeSid": "minos_upg_alt"
+    },
+    {
+      "id": "minos_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/dungeon/minos_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "dungeon"
+      ],
+      "globallyBanned": false,
+      "name": "Minotaur Vanguard",
+      "faction": "dungeon",
+      "tier": 4,
+      "squadValue": 559
+    },
+    {
+      "id": "qilin_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/nature/qilin_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "nature"
+      ],
+      "globallyBanned": false,
+      "name": "Mist Qilin",
+      "faction": "nature",
+      "tier": 6,
+      "squadValue": 2527
+    },
+    {
+      "id": "succubus_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/unfrozen/succubus_upg_l.json",
+      "tags": [
+        "unit",
+        "unfrozen"
+      ],
+      "globallyBanned": false,
+      "name": "Mistress of Chains",
+      "faction": "unfrozen",
+      "tier": 5,
+      "squadValue": 849,
+      "upgradeSid": "succubus_upg_alt"
+    },
+    {
+      "id": "inquisitor_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/humans/inquisitor_upg_l.json",
+      "tags": [
+        "unit",
+        "human"
+      ],
+      "globallyBanned": false,
+      "name": "Mother Superior",
+      "faction": "human",
+      "tier": 6,
+      "squadValue": 1853,
+      "upgradeSid": "inquisitor_upg_alt"
+    },
+    {
+      "id": "druid_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/nature/druid_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "nature"
+      ],
+      "globallyBanned": false,
+      "name": "Murmurmancer",
+      "faction": "nature",
+      "tier": 5,
+      "squadValue": 1106
+    },
+    {
+      "id": "aqualotl",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/nature/aqualotl_l.json",
+      "tags": [
+        "unit",
+        "nature"
+      ],
+      "globallyBanned": false,
+      "name": "Naiad",
+      "faction": "nature",
+      "tier": 4,
+      "squadValue": 363,
+      "upgradeSid": "aqualotl_upg"
+    },
+    {
+      "id": "sunlight_cavalry_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/humans/sunlight_cavalry_upg_l.json",
+      "tags": [
+        "unit",
+        "human"
+      ],
+      "globallyBanned": false,
+      "name": "Noble Cavalry",
+      "faction": "human",
+      "tier": 5,
+      "squadValue": 1366,
+      "upgradeSid": "sunlight_cavalry_upg_alt"
+    },
+    {
+      "id": "blade_dancer",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/dungeon/blade_dancer_l.json",
+      "tags": [
+        "unit",
+        "dungeon"
+      ],
+      "globallyBanned": false,
+      "name": "Onyx Dancer",
+      "faction": "dungeon",
+      "tier": 3,
+      "squadValue": 147,
+      "upgradeSid": "blade_dancer_upg"
+    },
+    {
+      "id": "locust_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/demons/locust_upg_l.json",
+      "tags": [
+        "unit",
+        "demon"
+      ],
+      "globallyBanned": false,
+      "name": "Overgrown Locust",
+      "faction": "demon",
+      "tier": 2,
+      "squadValue": 146,
+      "upgradeSid": "locust_upg_alt"
+    },
+    {
+      "id": "trick_demon",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/demons/trick_demon_l.json",
+      "tags": [
+        "unit",
+        "demon"
+      ],
+      "globallyBanned": false,
+      "name": "Parasite",
+      "faction": "demon",
+      "tier": 1,
+      "squadValue": 65,
+      "upgradeSid": "trick_demon_upg"
+    },
+    {
+      "id": "peasant",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/neutral/peasant_l.json",
+      "tags": [
+        "unit",
+        "neutral"
+      ],
+      "globallyBanned": false,
+      "name": "Peasant",
+      "faction": "neutral",
+      "tier": 2,
+      "squadValue": 125
+    },
+    {
+      "id": "peasant_normal",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/neutral/peasant_normal_l.json",
+      "tags": [
+        "unit",
+        "neutral"
+      ],
+      "globallyBanned": false,
+      "faction": "neutral",
+      "tier": 2,
+      "squadValue": 10
+    },
+    {
+      "id": "lich_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/undead/lich_upg_l.json",
+      "tags": [
+        "unit",
+        "undead"
+      ],
+      "globallyBanned": false,
+      "name": "Pestilent Lich",
+      "faction": "undead",
+      "tier": 5,
+      "squadValue": 505,
+      "upgradeSid": "lich_upg_alt"
+    },
+    {
+      "id": "flicker_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/undead/flicker_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "undead"
+      ],
+      "globallyBanned": false,
+      "name": "Phantasm",
+      "faction": "undead",
+      "tier": 2,
+      "squadValue": 120
+    },
+    {
+      "id": "phoenix",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/nature/phoenix_l.json",
+      "tags": [
+        "unit",
+        "nature"
+      ],
+      "globallyBanned": false,
+      "name": "Phoenix",
+      "faction": "nature",
+      "tier": 7,
+      "squadValue": 4330,
+      "upgradeSid": "phoenix_upg"
+    },
+    {
+      "id": "pixie",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/neutral/pixie_l.json",
+      "tags": [
+        "unit",
+        "neutral"
+      ],
+      "globallyBanned": false,
+      "name": "Pixie",
+      "faction": "neutral",
+      "tier": 1,
+      "squadValue": 75
+    },
+    {
+      "id": "primal_remnant",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/neutral/primal_remnant_l.json",
+      "tags": [
+        "unit",
+        "neutral"
+      ],
+      "globallyBanned": false,
+      "name": "Primal Remnant",
+      "faction": "neutral",
+      "tier": 4,
+      "squadValue": 550
+    },
+    {
+      "id": "olgoi_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/demons/olgoi_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "demon"
+      ],
+      "globallyBanned": false,
+      "name": "Pyroboros",
+      "faction": "demon",
+      "tier": 6,
+      "squadValue": 2250
+    },
+    {
+      "id": "qilin",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/nature/qilin_l.json",
+      "tags": [
+        "unit",
+        "nature"
+      ],
+      "globallyBanned": false,
+      "name": "Qilin",
+      "faction": "nature",
+      "tier": 6,
+      "squadValue": 1595,
+      "upgradeSid": "qilin_upg"
+    },
+    {
+      "id": "lesser_eldritch",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/unfrozen/lesser_eldritch_l.json",
+      "tags": [
+        "unit",
+        "unfrozen"
+      ],
+      "globallyBanned": false,
+      "name": "Ra’Shoth",
+      "faction": "unfrozen",
+      "tier": 1,
+      "squadValue": 59,
+      "upgradeSid": "lesser_eldritch_upg"
+    },
+    {
+      "id": "trick_demon_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/demons/trick_demon_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "demon"
+      ],
+      "globallyBanned": false,
+      "name": "Ravager Parasite",
+      "faction": "demon",
+      "tier": 1,
+      "squadValue": 85
+    },
+    {
+      "id": "godslayer",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/demons/godslayer_l.json",
+      "tags": [
+        "unit",
+        "demon"
+      ],
+      "globallyBanned": false,
+      "name": "Reaver",
+      "faction": "demon",
+      "tier": 5,
+      "squadValue": 825,
+      "upgradeSid": "godslayer_upg"
+    },
+    {
+      "id": "dragon_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/dragon_upg_l.json",
+      "tags": [
+        "unit",
+        "neutral",
+        "dragon"
+      ],
+      "globallyBanned": false,
+      "name": "Red Dragon",
+      "faction": "neutral",
+      "tier": 7,
+      "squadValue": 8628,
+      "upgradeSid": "dragon_upg_alt"
+    },
+    {
+      "id": "arbitrator_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/unfrozen/arbitrator_upg_l.json",
+      "tags": [
+        "unit",
+        "unfrozen"
+      ],
+      "globallyBanned": false,
+      "name": "Rift Arbitrator",
+      "faction": "unfrozen",
+      "tier": 6,
+      "squadValue": 2259,
+      "upgradeSid": "arbitrator_upg_alt"
+    },
+    {
+      "id": "lich_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/undead/lich_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "undead"
+      ],
+      "globallyBanned": false,
+      "name": "Sanguine Lich",
+      "faction": "undead",
+      "tier": 5,
+      "squadValue": 505
+    },
+    {
+      "id": "jaw",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/demons/jaw_l.json",
+      "tags": [
+        "unit",
+        "demon"
+      ],
+      "globallyBanned": false,
+      "name": "Scorpion",
+      "faction": "demon",
+      "tier": 4,
+      "squadValue": 299,
+      "upgradeSid": "jaw_upg"
+    },
+    {
+      "id": "sentinel",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/neutral/sentinel_l.json",
+      "tags": [
+        "unit",
+        "neutral"
+      ],
+      "globallyBanned": false,
+      "name": "Sentinel of Glory",
+      "faction": "neutral",
+      "tier": 7,
+      "squadValue": 7000
+    },
+    {
+      "id": "skeleton",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/undead/skeleton_l.json",
+      "tags": [
+        "unit",
+        "undead"
+      ],
+      "globallyBanned": false,
+      "name": "Skeleton",
+      "faction": "undead",
+      "tier": 1,
+      "squadValue": 29,
+      "upgradeSid": "skeleton_upg"
+    },
+    {
+      "id": "skeleton_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/undead/skeleton_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "undead"
+      ],
+      "globallyBanned": false,
+      "name": "Skeleton Archer",
+      "faction": "undead",
+      "tier": 1,
+      "squadValue": 38
+    },
+    {
+      "id": "skeleton_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/undead/skeleton_upg_l.json",
+      "tags": [
+        "unit",
+        "undead"
+      ],
+      "globallyBanned": false,
+      "name": "Skeleton Warrior",
+      "faction": "undead",
+      "tier": 1,
+      "squadValue": 38,
+      "upgradeSid": "skeleton_upg_alt"
+    },
+    {
+      "id": "jaw_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/demons/jaw_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "demon"
+      ],
+      "globallyBanned": false,
+      "name": "Spelaean Scorpion",
+      "faction": "demon",
+      "tier": 4,
+      "squadValue": 435
+    },
+    {
+      "id": "druid_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/nature/druid_upg_l.json",
+      "tags": [
+        "unit",
+        "nature"
+      ],
+      "globallyBanned": false,
+      "name": "Sporemancer",
+      "faction": "nature",
+      "tier": 5,
+      "squadValue": 1106,
+      "upgradeSid": "druid_upg_alt"
+    },
+    {
+      "id": "star_child",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/neutral/star_child_l.json",
+      "tags": [
+        "unit",
+        "neutral"
+      ],
+      "globallyBanned": false,
+      "name": "Starchild",
+      "faction": "neutral",
+      "tier": 4,
+      "squadValue": 550
+    },
+    {
+      "id": "wasp_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/demons/wasp_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "demon"
+      ],
+      "globallyBanned": false,
+      "name": "Stinger",
+      "faction": "demon",
+      "tier": 3,
+      "squadValue": 300
+    },
+    {
+      "id": "lesser_eldritch_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/unfrozen/lesser_eldritch_upg_l.json",
+      "tags": [
+        "unit",
+        "unfrozen"
+      ],
+      "globallyBanned": false,
+      "name": "Stinging Ra’Shoth",
+      "faction": "unfrozen",
+      "tier": 1,
+      "squadValue": 78,
+      "upgradeSid": "lesser_eldritch_upg_alt"
+    },
+    {
+      "id": "lightweaver_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/humans/lightweaver_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "human"
+      ],
+      "globallyBanned": false,
+      "name": "Sun Herald",
+      "faction": "human",
+      "tier": 4,
+      "squadValue": 425
+    },
+    {
+      "id": "esquire_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/humans/esquire_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "human"
+      ],
+      "globallyBanned": false,
+      "name": "Sun’s Aegis",
+      "faction": "human",
+      "tier": 1,
+      "squadValue": 87
+    },
+    {
+      "id": "sunlight_cavalry_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/humans/sunlight_cavalry_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "human"
+      ],
+      "globallyBanned": false,
+      "name": "Sunspear Cavalry",
+      "faction": "human",
+      "tier": 5,
+      "squadValue": 1366
+    },
+    {
+      "id": "esquire",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/humans/esquire_l.json",
+      "tags": [
+        "unit",
+        "human"
+      ],
+      "globallyBanned": false,
+      "name": "Swordsman",
+      "faction": "human",
+      "tier": 1,
+      "squadValue": 67,
+      "upgradeSid": "esquire_upg"
+    },
+    {
+      "id": "griffin_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/humans/griffin_upg_l.json",
+      "tags": [
+        "unit",
+        "human"
+      ],
+      "globallyBanned": false,
+      "name": "Temple Griffin",
+      "faction": "human",
+      "tier": 3,
+      "squadValue": 326,
+      "upgradeSid": "griffin_upg_alt"
+    },
+    {
+      "id": "qilin_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/nature/qilin_upg_l.json",
+      "tags": [
+        "unit",
+        "nature"
+      ],
+      "globallyBanned": false,
+      "name": "Thunder Qilin",
+      "faction": "nature",
+      "tier": 6,
+      "squadValue": 2527,
+      "upgradeSid": "qilin_upg_alt"
+    },
+    {
+      "id": "trogl_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/dungeon/trogl_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "dungeon"
+      ],
+      "globallyBanned": false,
+      "name": "Toxic Troglodyte",
+      "faction": "dungeon",
+      "tier": 1,
+      "squadValue": 52
+    },
+    {
+      "id": "trogl",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/dungeon/trogl_l.json",
+      "tags": [
+        "unit",
+        "dungeon"
+      ],
+      "globallyBanned": false,
+      "name": "Troglodyte",
+      "faction": "dungeon",
+      "tier": 1,
+      "squadValue": 40,
+      "upgradeSid": "trogl_upg"
+    },
+    {
+      "id": "pet",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/undead/pet_l.json",
+      "tags": [
+        "unit",
+        "undead"
+      ],
+      "globallyBanned": false,
+      "name": "Undead Pet",
+      "faction": "undead",
+      "tier": 3,
+      "squadValue": 110,
+      "upgradeSid": "pet_upg"
+    },
+    {
+      "id": "unicorn",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/neutral/unicorn_l.json",
+      "tags": [
+        "unit",
+        "neutral"
+      ],
+      "globallyBanned": false,
+      "name": "Unicorn",
+      "faction": "neutral",
+      "tier": 4,
+      "squadValue": 550
+    },
+    {
+      "id": "eldritch_flyer_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/unfrozen/eldritch_flyer_upg_l.json",
+      "tags": [
+        "unit",
+        "unfrozen"
+      ],
+      "globallyBanned": false,
+      "name": "Unspeakable Shoth",
+      "faction": "unfrozen",
+      "tier": 4,
+      "squadValue": 657,
+      "upgradeSid": "eldritch_flyer_upg_alt"
+    },
+    {
+      "id": "eldritch_flyer_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/unfrozen/eldritch_flyer_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "unfrozen"
+      ],
+      "globallyBanned": false,
+      "name": "Unthinkable Shoth",
+      "faction": "unfrozen",
+      "tier": 4,
+      "squadValue": 657
+    },
+    {
+      "id": "vampire",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/undead/vampire_l.json",
+      "tags": [
+        "unit",
+        "undead"
+      ],
+      "globallyBanned": false,
+      "name": "Vampire",
+      "faction": "undead",
+      "tier": 7,
+      "squadValue": 1875,
+      "upgradeSid": "vampire_upg"
+    },
+    {
+      "id": "vampire_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/undead/vampire_upg_l.json",
+      "tags": [
+        "unit",
+        "undead"
+      ],
+      "globallyBanned": false,
+      "name": "Vampire Lord",
+      "faction": "undead",
+      "tier": 7,
+      "squadValue": 3259,
+      "upgradeSid": "vampire_upg_alt"
+    },
+    {
+      "id": "vampire_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/undead/vampire_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "undead"
+      ],
+      "globallyBanned": false,
+      "name": "Vampire Scholar",
+      "faction": "undead",
+      "tier": 7,
+      "squadValue": 3259
+    },
+    {
+      "id": "aqualotl_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/nature/aqualotl_upg_l.json",
+      "tags": [
+        "unit",
+        "nature"
+      ],
+      "globallyBanned": false,
+      "name": "Vernal Naiad",
+      "faction": "nature",
+      "tier": 4,
+      "squadValue": 518,
+      "upgradeSid": "aqualotl_upg_alt"
+    },
+    {
+      "id": "ent",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/nature/ent_l.json",
+      "tags": [
+        "unit",
+        "nature"
+      ],
+      "globallyBanned": false,
+      "name": "Vine Iriyad",
+      "faction": "nature",
+      "tier": 3,
+      "squadValue": 222,
+      "upgradeSid": "ent_upg"
+    },
+    {
+      "id": "jaw_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/demons/jaw_upg_l.json",
+      "tags": [
+        "unit",
+        "demon"
+      ],
+      "globallyBanned": false,
+      "name": "Volcanic Scorpion",
+      "faction": "demon",
+      "tier": 4,
+      "squadValue": 435,
+      "upgradeSid": "jaw_upg_alt"
+    },
+    {
+      "id": "unfrozen_cultist_upg_alt",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/unfrozen/unfrozen_cultist_upg_alt_l.json",
+      "tags": [
+        "unit",
+        "unfrozen"
+      ],
+      "globallyBanned": false,
+      "name": "Votary",
+      "faction": "unfrozen",
+      "tier": 2,
+      "squadValue": 184
+    },
+    {
+      "id": "trick_demon_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/demons/trick_demon_upg_l.json",
+      "tags": [
+        "unit",
+        "demon"
+      ],
+      "globallyBanned": false,
+      "name": "Warden Parasite",
+      "faction": "demon",
+      "tier": 1,
+      "squadValue": 85,
+      "upgradeSid": "trick_demon_upg_alt"
+    },
+    {
+      "id": "olgoi",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/demons/olgoi_l.json",
+      "tags": [
+        "unit",
+        "demon"
+      ],
+      "globallyBanned": false,
+      "name": "Waurms",
+      "faction": "demon",
+      "tier": 6,
+      "squadValue": 1404,
+      "upgradeSid": "olgoi_upg"
+    },
+    {
+      "id": "flicker",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/undead/flicker_l.json",
+      "tags": [
+        "unit",
+        "undead"
+      ],
+      "globallyBanned": false,
+      "name": "Wight",
+      "faction": "undead",
+      "tier": 2,
+      "squadValue": 90,
+      "upgradeSid": "flicker_upg"
+    },
+    {
+      "id": "mech_guard",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/neutral/mech_guard_l.json",
+      "tags": [
+        "unit",
+        "neutral"
+      ],
+      "globallyBanned": false,
+      "name": "Worldwatcher",
+      "faction": "neutral",
+      "tier": 6,
+      "squadValue": 1700
+    },
+    {
+      "id": "flicker_upg",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/units/units_logics/undead/flicker_upg_l.json",
+      "tags": [
+        "unit",
+        "undead"
+      ],
+      "globallyBanned": false,
+      "name": "Wraith",
+      "faction": "undead",
+      "tier": 2,
+      "squadValue": 120,
+      "upgradeSid": "flicker_upg_alt"
+    }
+  ]
+}

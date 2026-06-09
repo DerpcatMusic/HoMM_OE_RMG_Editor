@@ -1,0 +1,6707 @@
+{
+  "language": "english",
+  "generatedAt": "2026-06-07T10:37:23.360Z",
+  "sourceHash": "b7e9d3c1727b5ac09e6b589034613378d0f342df96b7a3004f98755e9cf03a5b",
+  "entries": [
+    {
+      "id": "basic_content_list_basic_mines",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 3,
+      "positiveContentCount": 3,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "mine_gold",
+          "weight": 100
+        },
+        {
+          "sid": "mine_wood",
+          "weight": 100
+        },
+        {
+          "sid": "mine_ore",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_basic_resources",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 3,
+      "positiveContentCount": 3,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "resource_gold",
+          "weight": 250
+        },
+        {
+          "sid": "resource_wood",
+          "weight": 100
+        },
+        {
+          "sid": "resource_ore",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_basic_storage",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 7,
+      "positiveContentCount": 7,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "storage_wood",
+          "weight": 100
+        },
+        {
+          "sid": "storage_ore",
+          "weight": 100
+        },
+        {
+          "sid": "storage_gold",
+          "weight": 100
+        },
+        {
+          "sid": "storage_gemstones",
+          "weight": 75
+        },
+        {
+          "sid": "storage_crystals",
+          "weight": 75
+        },
+        {
+          "sid": "storage_mercury",
+          "weight": 75
+        },
+        {
+          "sid": "storage_dust",
+          "weight": 50
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_epic_interact",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 3,
+      "positiveContentCount": 3,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "tree_of_abundance",
+          "weight": 100
+        },
+        {
+          "sid": "eternal_dragon",
+          "weight": 100
+        },
+        {
+          "sid": "fickle_shrine",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_resource_banks_tier_1",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 4,
+      "positiveContentCount": 4,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "black_tower",
+          "weight": 100
+        },
+        {
+          "sid": "abandoned_mansion",
+          "weight": 100
+        },
+        {
+          "sid": "mereas_shrine",
+          "weight": 100
+        },
+        {
+          "sid": "shady_den",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_resource_banks_tier_2",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 21,
+      "positiveContentCount": 21,
+      "biomeFilteredContentCount": 11,
+      "sampleContent": [
+        {
+          "sid": "raiders_camp",
+          "weight": 100
+        },
+        {
+          "sid": "overgrown_grave",
+          "weight": 100
+        },
+        {
+          "sid": "legions_memorial",
+          "weight": 100
+        },
+        {
+          "sid": "alvars_eye",
+          "weight": 100
+        },
+        {
+          "sid": "cursed_old_house",
+          "weight": 125
+        },
+        {
+          "sid": "abnormal_structure",
+          "weight": 125
+        },
+        {
+          "sid": "prismatic_lair",
+          "weight": 100
+        },
+        {
+          "sid": "uncanny_rite",
+          "weight": 150
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_resource_banks_tier_2_no_biome_restriction",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 10,
+      "positiveContentCount": 10,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "raiders_camp",
+          "weight": 100
+        },
+        {
+          "sid": "overgrown_grave",
+          "weight": 100
+        },
+        {
+          "sid": "legions_memorial",
+          "weight": 100
+        },
+        {
+          "sid": "alvars_eye",
+          "weight": 100
+        },
+        {
+          "sid": "cursed_old_house",
+          "weight": 100
+        },
+        {
+          "sid": "abnormal_structure",
+          "weight": 100
+        },
+        {
+          "sid": "prismatic_lair",
+          "weight": 100
+        },
+        {
+          "sid": "uncanny_rite",
+          "weight": 150
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_resource_banks_tier_3",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 5,
+      "positiveContentCount": 5,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "troglodyte_throne",
+          "weight": 100
+        },
+        {
+          "sid": "twilight_bloom",
+          "weight": 100
+        },
+        {
+          "sid": "unstable_ruins",
+          "weight": 100
+        },
+        {
+          "sid": "dragon_utopia",
+          "weight": 100
+        },
+        {
+          "sid": "research_laboratory",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_units_banks",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 14,
+      "positiveContentCount": 14,
+      "biomeFilteredContentCount": 7,
+      "sampleContent": [
+        {
+          "sid": "jousting_range",
+          "weight": 10
+        },
+        {
+          "sid": "unforgotten_grave",
+          "weight": 10
+        },
+        {
+          "sid": "petrified_memorial",
+          "weight": 10
+        },
+        {
+          "sid": "ritual_pyre",
+          "weight": 10
+        },
+        {
+          "sid": "boreal_call",
+          "weight": 10
+        },
+        {
+          "sid": "the_gorge",
+          "weight": 10
+        },
+        {
+          "sid": "point_of_balance",
+          "weight": 400
+        },
+        {
+          "sid": "jousting_range",
+          "weight": 1000,
+          "biome": "Grass"
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_units_banks_2_1_2",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "jousting_range",
+          "weight": 100
+        },
+        {
+          "sid": "unforgotten_grave",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_units_banks_2_1_3",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "jousting_range",
+          "weight": 100
+        },
+        {
+          "sid": "petrified_memorial",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_units_banks_2_1_4",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "jousting_range",
+          "weight": 100
+        },
+        {
+          "sid": "ritual_pyre",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_units_banks_2_1_5",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "jousting_range",
+          "weight": 100
+        },
+        {
+          "sid": "boreal_call",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_units_banks_2_1_6",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "jousting_range",
+          "weight": 100
+        },
+        {
+          "sid": "the_gorge",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_units_banks_2_1_7",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "jousting_range",
+          "weight": 100
+        },
+        {
+          "sid": "point_of_balance",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_units_banks_2_2_3",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "unforgotten_grave",
+          "weight": 100
+        },
+        {
+          "sid": "petrified_memorial",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_units_banks_2_2_4",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "unforgotten_grave",
+          "weight": 100
+        },
+        {
+          "sid": "ritual_pyre",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_units_banks_2_2_5",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "unforgotten_grave",
+          "weight": 100
+        },
+        {
+          "sid": "boreal_call",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_units_banks_2_2_6",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "unforgotten_grave",
+          "weight": 100
+        },
+        {
+          "sid": "the_gorge",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_units_banks_2_2_7",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "unforgotten_grave",
+          "weight": 100
+        },
+        {
+          "sid": "point_of_balance",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_units_banks_2_3_4",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "petrified_memorial",
+          "weight": 100
+        },
+        {
+          "sid": "ritual_pyre",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_units_banks_2_3_5",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "petrified_memorial",
+          "weight": 100
+        },
+        {
+          "sid": "boreal_call",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_units_banks_2_3_6",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "petrified_memorial",
+          "weight": 100
+        },
+        {
+          "sid": "the_gorge",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_units_banks_2_3_7",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "petrified_memorial",
+          "weight": 100
+        },
+        {
+          "sid": "point_of_balance",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_units_banks_2_4_5",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "ritual_pyre",
+          "weight": 100
+        },
+        {
+          "sid": "boreal_call",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_units_banks_2_4_6",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "ritual_pyre",
+          "weight": 100
+        },
+        {
+          "sid": "the_gorge",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_units_banks_2_4_7",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "ritual_pyre",
+          "weight": 100
+        },
+        {
+          "sid": "point_of_balance",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_units_banks_2_5_6",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "boreal_call",
+          "weight": 100
+        },
+        {
+          "sid": "the_gorge",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_units_banks_2_5_7",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "boreal_call",
+          "weight": 100
+        },
+        {
+          "sid": "point_of_balance",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_units_banks_2_6_7",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "the_gorge",
+          "weight": 100
+        },
+        {
+          "sid": "point_of_balance",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_units_banks_no_biome_restriction",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 7,
+      "positiveContentCount": 7,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "jousting_range",
+          "weight": 100
+        },
+        {
+          "sid": "unforgotten_grave",
+          "weight": 100
+        },
+        {
+          "sid": "petrified_memorial",
+          "weight": 100
+        },
+        {
+          "sid": "ritual_pyre",
+          "weight": 100
+        },
+        {
+          "sid": "boreal_call",
+          "weight": 100
+        },
+        {
+          "sid": "the_gorge",
+          "weight": 100
+        },
+        {
+          "sid": "point_of_balance",
+          "weight": 150
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_guarded_units_banks_only_biome_restriction",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 7,
+      "positiveContentCount": 7,
+      "biomeFilteredContentCount": 7,
+      "sampleContent": [
+        {
+          "sid": "jousting_range",
+          "weight": 1000,
+          "biome": "Grass"
+        },
+        {
+          "sid": "unforgotten_grave",
+          "weight": 1000,
+          "biome": "Deathland"
+        },
+        {
+          "sid": "petrified_memorial",
+          "weight": 1000,
+          "biome": "Dirt"
+        },
+        {
+          "sid": "ritual_pyre",
+          "weight": 1000,
+          "biome": "Autumn"
+        },
+        {
+          "sid": "boreal_call",
+          "weight": 1000,
+          "biome": "Snow"
+        },
+        {
+          "sid": "the_gorge",
+          "weight": 1000,
+          "biome": "Lava"
+        },
+        {
+          "sid": "point_of_balance",
+          "weight": 1000,
+          "biome": "Sand"
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_hero_buff_tier_1",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 10,
+      "positiveContentCount": 10,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "mana_well",
+          "weight": 150
+        },
+        {
+          "sid": "fountain",
+          "weight": 100
+        },
+        {
+          "sid": "fountain_2",
+          "weight": 100
+        },
+        {
+          "sid": "stables",
+          "weight": 150
+        },
+        {
+          "sid": "tear_of_truth",
+          "weight": 25
+        },
+        {
+          "sid": "beer_fountain",
+          "weight": 100
+        },
+        {
+          "sid": "quixs_path",
+          "weight": 100
+        },
+        {
+          "sid": "pile_of_books",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_hero_exp_tier_1",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 1,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "learning_stone",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_hero_exp_tier_2",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "lost_library",
+          "weight": 100
+        },
+        {
+          "sid": "tree_of_knowledge",
+          "weight": 75
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_hero_stats_and_skills_tier_1",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 5,
+      "positiveContentCount": 5,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "stinging_sword",
+          "weight": 250
+        },
+        {
+          "sid": "armory_automaton",
+          "weight": 250
+        },
+        {
+          "sid": "magic_wheel",
+          "weight": 250
+        },
+        {
+          "sid": "knowledge_garden",
+          "weight": 250
+        },
+        {
+          "sid": "wise_owl",
+          "weight": 200
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_hero_stats_and_skills_tier_2",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 5,
+      "positiveContentCount": 5,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "fort",
+          "weight": 100
+        },
+        {
+          "sid": "orb_observatory",
+          "weight": 100
+        },
+        {
+          "sid": "university",
+          "weight": 100
+        },
+        {
+          "sid": "circus",
+          "weight": 50
+        },
+        {
+          "sid": "infernal_cirque",
+          "weight": 50
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_hero_stats_and_skills_tier_3",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 3,
+      "positiveContentCount": 3,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "maze",
+          "weight": 200
+        },
+        {
+          "sid": "trial_scales",
+          "weight": 150
+        },
+        {
+          "sid": "college_of_wonder",
+          "weight": 150
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_magic_tier_1",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 6,
+      "positiveContentCount": 6,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "mystical_tower",
+          "weight": 75
+        },
+        {
+          "sid": "celestial_sphere",
+          "weight": 25
+        },
+        {
+          "sid": "altar_of_magic_1",
+          "weight": 100
+        },
+        {
+          "sid": "altar_of_magic_2",
+          "weight": 100
+        },
+        {
+          "sid": "altar_of_magic_3",
+          "weight": 100
+        },
+        {
+          "sid": "altar_of_magic_4",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_magic_tier_2",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 4,
+      "positiveContentCount": 4,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "magic_amplifier_1",
+          "weight": 100
+        },
+        {
+          "sid": "magic_amplifier_2",
+          "weight": 100
+        },
+        {
+          "sid": "magic_amplifier_3",
+          "weight": 100
+        },
+        {
+          "sid": "magic_amplifier_4",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_random_hires",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 7,
+      "positiveContentCount": 7,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "random_hire_1",
+          "weight": 100
+        },
+        {
+          "sid": "random_hire_2",
+          "weight": 100
+        },
+        {
+          "sid": "random_hire_3",
+          "weight": 100
+        },
+        {
+          "sid": "random_hire_4",
+          "weight": 100
+        },
+        {
+          "sid": "random_hire_5",
+          "weight": 100
+        },
+        {
+          "sid": "random_hire_6",
+          "weight": 100
+        },
+        {
+          "sid": "random_hire_7",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_random_hires_tier_1",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 1,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "random_hire_1",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_random_hires_tier_2",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 1,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "random_hire_2",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_random_hires_tier_3",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 1,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "random_hire_3",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_random_hires_tier_4",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 1,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "random_hire_4",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_random_hires_tier_5",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 1,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "random_hire_5",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_random_hires_tier_6",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 1,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "random_hire_6",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_random_hires_tier_7",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 1,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "random_hire_7",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_resource_banks_tier_1",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 8,
+      "positiveContentCount": 8,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "gardener",
+          "weight": 75
+        },
+        {
+          "sid": "windmill",
+          "weight": 100
+        },
+        {
+          "sid": "village",
+          "weight": 100
+        },
+        {
+          "sid": "gingerbread_house",
+          "weight": 75
+        },
+        {
+          "sid": "peasant_cart",
+          "weight": 50
+        },
+        {
+          "sid": "abandoned_corpse",
+          "weight": 50
+        },
+        {
+          "sid": "crow_nest",
+          "weight": 25
+        },
+        {
+          "sid": "goblin_cache",
+          "weight": 25
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_resource_banks_tier_2",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "monty_hall",
+          "weight": 100
+        },
+        {
+          "sid": "heros_crypt",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_building_uncommon_interact",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 4,
+      "positiveContentCount": 4,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "mercenary_guild",
+          "weight": 100
+        },
+        {
+          "sid": "sacrificial_shrine",
+          "weight": 100
+        },
+        {
+          "sid": "chimerologist",
+          "weight": 100
+        },
+        {
+          "sid": "arena",
+          "weight": 50
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_non_content",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 8,
+      "positiveContentCount": 3,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "mirage",
+          "weight": 0
+        },
+        {
+          "sid": "eternal_dragon",
+          "weight": 0
+        },
+        {
+          "sid": "insaras_eye",
+          "weight": 0
+        },
+        {
+          "sid": "remote_foothold",
+          "weight": 0
+        },
+        {
+          "sid": "abandoned_outpost",
+          "weight": 0
+        },
+        {
+          "sid": "market",
+          "weight": 100
+        },
+        {
+          "sid": "forge",
+          "weight": 100
+        },
+        {
+          "sid": "tavern",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_enchanted_scroll_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 1,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "enchanted_scroll_box",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_enchanted_scroll_box_tier_1",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 15,
+      "positiveContentCount": 15,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 0,
+          "weight": 5
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 1,
+          "weight": 5
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 2,
+          "weight": 5
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 3,
+          "weight": 5
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 18,
+          "weight": 5
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 19,
+          "weight": 5
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 20,
+          "weight": 5
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 21,
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_enchanted_scroll_box_tier_2",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 15,
+      "positiveContentCount": 15,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 4,
+          "weight": 4
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 5,
+          "weight": 4
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 6,
+          "weight": 4
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 7,
+          "weight": 4
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 22,
+          "weight": 4
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 23,
+          "weight": 4
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 24,
+          "weight": 4
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 25,
+          "weight": 4
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_enchanted_scroll_box_tier_3",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 16,
+      "positiveContentCount": 16,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 8,
+          "weight": 3
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 9,
+          "weight": 3
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 10,
+          "weight": 3
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 11,
+          "weight": 3
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 26,
+          "weight": 3
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 27,
+          "weight": 3
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 28,
+          "weight": 3
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 29,
+          "weight": 3
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_enchanted_scroll_box_tier_4",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 15,
+      "positiveContentCount": 15,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 12,
+          "weight": 2
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 13,
+          "weight": 2
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 14,
+          "weight": 2
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 15,
+          "weight": 2
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 30,
+          "weight": 2
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 31,
+          "weight": 2
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 32,
+          "weight": 2
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 47,
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_enchanted_scroll_box_tier_5",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 11,
+      "positiveContentCount": 11,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 16,
+          "weight": 1
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 17,
+          "weight": 1
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 33,
+          "weight": 1
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 34,
+          "weight": 1
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 35,
+          "weight": 1
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 51,
+          "weight": 1
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 52,
+          "weight": 1
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 53,
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_enchanted_scroll_box_world_spells",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 8,
+      "positiveContentCount": 8,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 0,
+          "weight": 1
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 12,
+          "weight": 1
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 22,
+          "weight": 1
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 26,
+          "weight": 1
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 39,
+          "weight": 1
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 43,
+          "weight": 1
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 54,
+          "weight": 1
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 61,
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_mythic_scroll_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 1,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "mythic_scroll_box",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_mythic_scroll_box_control_spells",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 6,
+      "positiveContentCount": 6,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "mythic_scroll_box",
+          "variant": 0,
+          "weight": 1
+        },
+        {
+          "sid": "mythic_scroll_box",
+          "variant": 1,
+          "weight": 1
+        },
+        {
+          "sid": "mythic_scroll_box",
+          "variant": 2,
+          "weight": 1
+        },
+        {
+          "sid": "mythic_scroll_box",
+          "variant": 3,
+          "weight": 1
+        },
+        {
+          "sid": "mythic_scroll_box",
+          "variant": 4,
+          "weight": 1
+        },
+        {
+          "sid": "mythic_scroll_box",
+          "variant": 5,
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 1,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_pandora_box_all_default",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 28,
+      "positiveContentCount": 28,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 0,
+          "weight": 600
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 600
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 600
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 600
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 4,
+          "weight": 600
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 600
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 600
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 600
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_pandora_box_all_stats",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 4,
+      "positiveContentCount": 4,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 15,
+          "weight": 100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 16,
+          "weight": 75
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 17,
+          "weight": 50
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 18,
+          "weight": 25
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_pandora_box_exp",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 4,
+      "positiveContentCount": 4,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 4,
+          "weight": 100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 75
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 50
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 25
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_pandora_box_gold",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 4,
+      "positiveContentCount": 4,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 0,
+          "weight": 100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 75
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 50
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 25
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_pandora_box_magic_school",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 4,
+      "positiveContentCount": 4,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 19,
+          "weight": 100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 20,
+          "weight": 100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 21,
+          "weight": 100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 22,
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_pandora_box_magic_tier",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 5,
+      "positiveContentCount": 5,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 23,
+          "weight": 125
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 24,
+          "weight": 100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 25,
+          "weight": 75
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 26,
+          "weight": 50
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 27,
+          "weight": 25
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_pandora_box_units",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 7,
+      "positiveContentCount": 7,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 8,
+          "weight": 175
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 9,
+          "weight": 150
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 10,
+          "weight": 125
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 11,
+          "weight": 100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 12,
+          "weight": 75
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 13,
+          "weight": 50
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 14,
+          "weight": 25
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_prison",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 1,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "prison",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_random_items",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 4,
+      "positiveContentCount": 4,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "random_item_common",
+          "weight": 100
+        },
+        {
+          "sid": "random_item_rare",
+          "weight": 100
+        },
+        {
+          "sid": "random_item_epic",
+          "weight": 100
+        },
+        {
+          "sid": "random_item_legendary",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_random_items_tier_1",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 1,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "random_item_common",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_random_items_tier_2",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 1,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "random_item_rare",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_random_items_tier_3",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 1,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "random_item_epic",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_random_items_tier_4",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 1,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "random_item_legendary",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_scroll_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 1,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "scroll_box",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_scroll_box_control_spells",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 8,
+      "positiveContentCount": 8,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "scroll_box",
+          "variant": 0,
+          "weight": 1
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 12,
+          "weight": 1
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 22,
+          "weight": 1
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 26,
+          "weight": 1
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 39,
+          "weight": 1
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 43,
+          "weight": 1
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 54,
+          "weight": 1
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 61,
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_scroll_box_tier_1",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 15,
+      "positiveContentCount": 15,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "scroll_box",
+          "variant": 0,
+          "weight": 5
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 1,
+          "weight": 5
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 2,
+          "weight": 5
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 3,
+          "weight": 5
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 18,
+          "weight": 5
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 19,
+          "weight": 5
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 20,
+          "weight": 5
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 21,
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_scroll_box_tier_2",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 15,
+      "positiveContentCount": 15,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "scroll_box",
+          "variant": 4,
+          "weight": 4
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 5,
+          "weight": 4
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 6,
+          "weight": 4
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 7,
+          "weight": 4
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 22,
+          "weight": 4
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 23,
+          "weight": 4
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 24,
+          "weight": 4
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 25,
+          "weight": 4
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_scroll_box_tier_3",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 16,
+      "positiveContentCount": 16,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "scroll_box",
+          "variant": 8,
+          "weight": 3
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 9,
+          "weight": 3
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 10,
+          "weight": 3
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 11,
+          "weight": 3
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 26,
+          "weight": 3
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 27,
+          "weight": 3
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 28,
+          "weight": 3
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 29,
+          "weight": 3
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_scroll_box_tier_4",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 15,
+      "positiveContentCount": 15,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "scroll_box",
+          "variant": 12,
+          "weight": 2
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 13,
+          "weight": 2
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 14,
+          "weight": 2
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 15,
+          "weight": 2
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 30,
+          "weight": 2
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 31,
+          "weight": 2
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 32,
+          "weight": 2
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 47,
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_pickup_scroll_box_tier_5",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists_variants_table.json",
+      "contentCount": 11,
+      "positiveContentCount": 11,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "scroll_box",
+          "variant": 16,
+          "weight": 1
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 17,
+          "weight": 1
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 33,
+          "weight": 1
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 34,
+          "weight": 1
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 35,
+          "weight": 1
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 51,
+          "weight": 1
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 52,
+          "weight": 1
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 53,
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_rare_mines",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 3,
+      "positiveContentCount": 3,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "mine_gemstones",
+          "weight": 100
+        },
+        {
+          "sid": "mine_crystals",
+          "weight": 100
+        },
+        {
+          "sid": "mine_mercury",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_rare_mines_by_biome",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 6,
+      "positiveContentCount": 6,
+      "biomeFilteredContentCount": 6,
+      "sampleContent": [
+        {
+          "sid": "mine_gemstones",
+          "weight": 100,
+          "biome": "Grass"
+        },
+        {
+          "sid": "mine_gemstones",
+          "weight": 100,
+          "biome": "Dirt"
+        },
+        {
+          "sid": "mine_crystals",
+          "weight": 100,
+          "biome": "Autumn"
+        },
+        {
+          "sid": "mine_crystals",
+          "weight": 100,
+          "biome": "Lava"
+        },
+        {
+          "sid": "mine_mercury",
+          "weight": 100,
+          "biome": "Deathland"
+        },
+        {
+          "sid": "mine_mercury",
+          "weight": 100,
+          "biome": "Snow"
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_rare_resources",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 9,
+      "positiveContentCount": 9,
+      "biomeFilteredContentCount": 6,
+      "sampleContent": [
+        {
+          "sid": "resource_crystals",
+          "weight": 50
+        },
+        {
+          "sid": "resource_mercury",
+          "weight": 50
+        },
+        {
+          "sid": "resource_gemstones",
+          "weight": 50
+        },
+        {
+          "sid": "resource_gemstones",
+          "weight": 100,
+          "biome": "Grass"
+        },
+        {
+          "sid": "resource_mercury",
+          "weight": 100,
+          "biome": "Deathland"
+        },
+        {
+          "sid": "resource_gemstones",
+          "weight": 100,
+          "biome": "Dirt"
+        },
+        {
+          "sid": "resource_crystals",
+          "weight": 100,
+          "biome": "Autumn"
+        },
+        {
+          "sid": "resource_mercury",
+          "weight": 100,
+          "biome": "Snow"
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_special_mines",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 1,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "alchemy_lab",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_special_resources",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 3,
+      "positiveContentCount": 3,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "resource_dust",
+          "weight": 25
+        },
+        {
+          "sid": "chest",
+          "weight": 250
+        },
+        {
+          "sid": "camp_fire",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_vision_buildings_tier_1",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 2,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "flattering_mirror",
+          "weight": 0
+        },
+        {
+          "sid": "watchtower",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "basic_content_list_vision_buildings_tier_2",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/basic_content_lists.json",
+      "contentCount": 1,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "wind_rose",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "content_list_basic_buildings",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 3,
+      "positiveContentCount": 3,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "market",
+          "weight": 100
+        },
+        {
+          "sid": "forge",
+          "weight": 50
+        },
+        {
+          "sid": "tavern",
+          "weight": 50
+        }
+      ]
+    },
+    {
+      "id": "content_list_basic_mines",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 3,
+      "positiveContentCount": 3,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "mine_gold",
+          "weight": 100
+        },
+        {
+          "sid": "mine_wood",
+          "weight": 100
+        },
+        {
+          "sid": "mine_ore",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "content_list_basic_resources",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 3,
+      "positiveContentCount": 3,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "resource_gold",
+          "weight": 250
+        },
+        {
+          "sid": "resource_wood",
+          "weight": 100
+        },
+        {
+          "sid": "resource_ore",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "content_list_basic_storage",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 7,
+      "positiveContentCount": 7,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "storage_wood",
+          "weight": 100
+        },
+        {
+          "sid": "storage_ore",
+          "weight": 100
+        },
+        {
+          "sid": "storage_gold",
+          "weight": 100
+        },
+        {
+          "sid": "storage_gemstones",
+          "weight": 75
+        },
+        {
+          "sid": "storage_crystals",
+          "weight": 75
+        },
+        {
+          "sid": "storage_mercury",
+          "weight": 75
+        },
+        {
+          "sid": "storage_dust",
+          "weight": 50
+        }
+      ]
+    },
+    {
+      "id": "content_list_building_buff_movepoints",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 4,
+      "positiveContentCount": 4,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "fountain",
+          "weight": 25
+        },
+        {
+          "sid": "fountain_2",
+          "weight": 25
+        },
+        {
+          "sid": "huntsmans_camp",
+          "weight": 25
+        },
+        {
+          "sid": "tear_of_truth",
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "id": "content_list_building_common_guarded_resource_bank_fix",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 3,
+      "positiveContentCount": 3,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "black_tower",
+          "weight": 60
+        },
+        {
+          "sid": "abandoned_mansion",
+          "weight": 100
+        },
+        {
+          "sid": "mereas_shrine",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "content_list_building_common_hero_buffs",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 7,
+      "positiveContentCount": 6,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "beer_fountain",
+          "weight": 100
+        },
+        {
+          "sid": "quixs_path",
+          "weight": 100
+        },
+        {
+          "sid": "stables",
+          "weight": 100
+        },
+        {
+          "sid": "pile_of_books",
+          "weight": 75
+        },
+        {
+          "sid": "insaras_eye",
+          "weight": 0
+        },
+        {
+          "sid": "mysterious_stone",
+          "weight": 75
+        },
+        {
+          "sid": "crystal_trail",
+          "weight": 20
+        }
+      ]
+    },
+    {
+      "id": "content_list_building_common_hero_stats",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 4,
+      "positiveContentCount": 4,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "stinging_sword",
+          "weight": 100
+        },
+        {
+          "sid": "armory_automaton",
+          "weight": 100
+        },
+        {
+          "sid": "magic_wheel",
+          "weight": 100
+        },
+        {
+          "sid": "knowledge_garden",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "content_list_building_common_interact",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 5,
+      "positiveContentCount": 4,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "fountain",
+          "weight": 25
+        },
+        {
+          "sid": "fountain_2",
+          "weight": 25
+        },
+        {
+          "sid": "learning_stone",
+          "weight": 150
+        },
+        {
+          "sid": "lost_library",
+          "weight": 50
+        },
+        {
+          "sid": "huntsmans_camp",
+          "weight": 0
+        }
+      ]
+    },
+    {
+      "id": "content_list_building_common_interact_no_imbalance",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 3,
+      "positiveContentCount": 3,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "fountain",
+          "weight": 25
+        },
+        {
+          "sid": "fountain_2",
+          "weight": 25
+        },
+        {
+          "sid": "learning_stone",
+          "weight": 150
+        }
+      ]
+    },
+    {
+      "id": "content_list_building_common_resource_banks",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 7,
+      "positiveContentCount": 7,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "gardener",
+          "weight": 75
+        },
+        {
+          "sid": "windmill",
+          "weight": 100
+        },
+        {
+          "sid": "village",
+          "weight": 100
+        },
+        {
+          "sid": "peasant_cart",
+          "weight": 25
+        },
+        {
+          "sid": "crow_nest",
+          "weight": 25
+        },
+        {
+          "sid": "goblin_cache",
+          "weight": 25
+        },
+        {
+          "sid": "gingerbread_house",
+          "weight": 75
+        }
+      ]
+    },
+    {
+      "id": "content_list_building_commons_magic",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 4,
+      "positiveContentCount": 4,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "altar_of_magic_1",
+          "weight": 100
+        },
+        {
+          "sid": "altar_of_magic_2",
+          "weight": 100
+        },
+        {
+          "sid": "altar_of_magic_3",
+          "weight": 100
+        },
+        {
+          "sid": "altar_of_magic_4",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "content_list_building_epic_guarded_resource_banks",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 5,
+      "positiveContentCount": 5,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "troglodyte_throne",
+          "weight": 100
+        },
+        {
+          "sid": "twilight_bloom",
+          "weight": 100
+        },
+        {
+          "sid": "unstable_ruins",
+          "weight": 250
+        },
+        {
+          "sid": "dragon_utopia",
+          "weight": 250
+        },
+        {
+          "sid": "research_laboratory",
+          "weight": 250
+        }
+      ]
+    },
+    {
+      "id": "content_list_building_random_hires",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 7,
+      "positiveContentCount": 7,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "random_hire_1",
+          "weight": 250
+        },
+        {
+          "sid": "random_hire_2",
+          "weight": 250
+        },
+        {
+          "sid": "random_hire_3",
+          "weight": 225
+        },
+        {
+          "sid": "random_hire_4",
+          "weight": 225
+        },
+        {
+          "sid": "random_hire_5",
+          "weight": 200
+        },
+        {
+          "sid": "random_hire_6",
+          "weight": 200
+        },
+        {
+          "sid": "random_hire_7",
+          "weight": 150
+        }
+      ]
+    },
+    {
+      "id": "content_list_building_random_hires_high_tier",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 3,
+      "positiveContentCount": 3,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "random_hire_5",
+          "weight": 200
+        },
+        {
+          "sid": "random_hire_6",
+          "weight": 200
+        },
+        {
+          "sid": "random_hire_7",
+          "weight": 150
+        }
+      ]
+    },
+    {
+      "id": "content_list_building_random_hires_low_tier",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 4,
+      "positiveContentCount": 4,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "random_hire_1",
+          "weight": 250
+        },
+        {
+          "sid": "random_hire_2",
+          "weight": 250
+        },
+        {
+          "sid": "random_hire_3",
+          "weight": 225
+        },
+        {
+          "sid": "random_hire_4",
+          "weight": 225
+        }
+      ]
+    },
+    {
+      "id": "content_list_building_special",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 5,
+      "positiveContentCount": 0,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "mirage",
+          "weight": 0
+        },
+        {
+          "sid": "infernal_cirque",
+          "weight": 0
+        },
+        {
+          "sid": "eternal_dragon",
+          "weight": 0
+        },
+        {
+          "sid": "remote_foothold",
+          "weight": 0
+        },
+        {
+          "sid": "abandoned_outpost",
+          "weight": 0
+        }
+      ]
+    },
+    {
+      "id": "content_list_building_template_sprint_uncommon_guarded_units_banks",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_sprint.json",
+      "contentCount": 14,
+      "positiveContentCount": 7,
+      "biomeFilteredContentCount": 7,
+      "sampleContent": [
+        {
+          "sid": "jousting_range",
+          "weight": 0
+        },
+        {
+          "sid": "unforgotten_grave",
+          "weight": 0
+        },
+        {
+          "sid": "petrified_memorial",
+          "weight": 0
+        },
+        {
+          "sid": "ritual_pyre",
+          "weight": 0
+        },
+        {
+          "sid": "boreal_call",
+          "weight": 0
+        },
+        {
+          "sid": "the_gorge",
+          "weight": 0
+        },
+        {
+          "sid": "point_of_balance",
+          "weight": 0
+        },
+        {
+          "sid": "jousting_range",
+          "weight": 1000,
+          "biome": "Grass"
+        }
+      ]
+    },
+    {
+      "id": "content_list_building_uncommon_guarded_resource_banks",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 17,
+      "positiveContentCount": 17,
+      "biomeFilteredContentCount": 9,
+      "sampleContent": [
+        {
+          "sid": "raiders_camp",
+          "weight": 100
+        },
+        {
+          "sid": "overgrown_grave",
+          "weight": 100
+        },
+        {
+          "sid": "legions_memorial",
+          "weight": 100
+        },
+        {
+          "sid": "alvars_eye",
+          "weight": 100
+        },
+        {
+          "sid": "prismatic_lair",
+          "weight": 100
+        },
+        {
+          "sid": "uncanny_rite",
+          "weight": 150
+        },
+        {
+          "sid": "circle_of_life",
+          "weight": 150
+        },
+        {
+          "sid": "iridescent_abbey",
+          "weight": 150
+        }
+      ]
+    },
+    {
+      "id": "content_list_building_uncommon_guarded_units_banks",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 14,
+      "positiveContentCount": 14,
+      "biomeFilteredContentCount": 7,
+      "sampleContent": [
+        {
+          "sid": "jousting_range",
+          "weight": 100
+        },
+        {
+          "sid": "unforgotten_grave",
+          "weight": 100
+        },
+        {
+          "sid": "petrified_memorial",
+          "weight": 100
+        },
+        {
+          "sid": "ritual_pyre",
+          "weight": 100
+        },
+        {
+          "sid": "boreal_call",
+          "weight": 100
+        },
+        {
+          "sid": "the_gorge",
+          "weight": 100
+        },
+        {
+          "sid": "point_of_balance",
+          "weight": 250
+        },
+        {
+          "sid": "jousting_range",
+          "weight": 1000,
+          "biome": "Grass"
+        }
+      ]
+    },
+    {
+      "id": "content_list_building_uncommon_guarded_units_banks_equal",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 7,
+      "positiveContentCount": 7,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "jousting_range",
+          "weight": 100
+        },
+        {
+          "sid": "unforgotten_grave",
+          "weight": 100
+        },
+        {
+          "sid": "petrified_memorial",
+          "weight": 100
+        },
+        {
+          "sid": "ritual_pyre",
+          "weight": 100
+        },
+        {
+          "sid": "boreal_call",
+          "weight": 100
+        },
+        {
+          "sid": "the_gorge",
+          "weight": 100
+        },
+        {
+          "sid": "point_of_balance",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "content_list_building_uncommon_hero_banks",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 6,
+      "positiveContentCount": 5,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "university",
+          "weight": 100
+        },
+        {
+          "sid": "tree_of_knowledge",
+          "weight": 100
+        },
+        {
+          "sid": "wise_owl",
+          "weight": 100
+        },
+        {
+          "sid": "circus",
+          "weight": 60
+        },
+        {
+          "sid": "fickle_shrine",
+          "weight": 0
+        },
+        {
+          "sid": "infernal_cirque",
+          "weight": 50
+        }
+      ]
+    },
+    {
+      "id": "content_list_building_uncommon_hero_stats",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 5,
+      "positiveContentCount": 5,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "maze",
+          "weight": 100
+        },
+        {
+          "sid": "trial_scales",
+          "weight": 50
+        },
+        {
+          "sid": "fort",
+          "weight": 150
+        },
+        {
+          "sid": "orb_observatory",
+          "weight": 100
+        },
+        {
+          "sid": "college_of_wonder",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "content_list_building_uncommon_interact",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 5,
+      "positiveContentCount": 5,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "mercenary_guild",
+          "weight": 125
+        },
+        {
+          "sid": "arena",
+          "weight": 50
+        },
+        {
+          "sid": "sacrificial_shrine",
+          "weight": 100
+        },
+        {
+          "sid": "chimerologist",
+          "weight": 75
+        },
+        {
+          "sid": "tree_of_abundance",
+          "weight": 25
+        }
+      ]
+    },
+    {
+      "id": "content_list_building_uncommon_resource_banks",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 3,
+      "positiveContentCount": 3,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "shady_den",
+          "weight": 50
+        },
+        {
+          "sid": "monty_hall",
+          "weight": 100
+        },
+        {
+          "sid": "heros_crypt",
+          "weight": 50
+        }
+      ]
+    },
+    {
+      "id": "content_list_building_uncommon_resource_banks_fix",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 3,
+      "positiveContentCount": 3,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "shady_den",
+          "weight": 50
+        },
+        {
+          "sid": "monty_hall",
+          "weight": 30
+        },
+        {
+          "sid": "heros_crypt",
+          "weight": 50
+        }
+      ]
+    },
+    {
+      "id": "content_list_building_uncommons_magic",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 5,
+      "positiveContentCount": 5,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "celestial_sphere",
+          "weight": 150
+        },
+        {
+          "sid": "magic_amplifier_2",
+          "weight": 100
+        },
+        {
+          "sid": "magic_amplifier_1",
+          "weight": 100
+        },
+        {
+          "sid": "magic_amplifier_3",
+          "weight": 100
+        },
+        {
+          "sid": "magic_amplifier_4",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "content_list_building_utopia",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 4,
+      "positiveContentCount": 4,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "dragon_utopia",
+          "variant": 0,
+          "weight": 3
+        },
+        {
+          "sid": "dragon_utopia",
+          "variant": 1,
+          "weight": 3
+        },
+        {
+          "sid": "dragon_utopia",
+          "variant": 2,
+          "weight": 3
+        },
+        {
+          "sid": "dragon_utopia",
+          "variant": 3,
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "content_list_pickup_enchanted_scroll_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 1,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "enchanted_scroll_box",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "content_list_pickup_enchanted_scroll_box_control_spells",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 5,
+      "positiveContentCount": 5,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 29,
+          "weight": 1
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 16,
+          "weight": 1
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 33,
+          "weight": 1
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 51,
+          "weight": 1
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 69,
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "content_list_pickup_enchanted_scroll_box_tier_1",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 15,
+      "positiveContentCount": 15,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 0,
+          "weight": 5
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 1,
+          "weight": 5
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 2,
+          "weight": 5
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 3,
+          "weight": 5
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 18,
+          "weight": 5
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 19,
+          "weight": 5
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 20,
+          "weight": 5
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 21,
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "id": "content_list_pickup_enchanted_scroll_box_tier_2",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 15,
+      "positiveContentCount": 15,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 4,
+          "weight": 4
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 5,
+          "weight": 4
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 6,
+          "weight": 4
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 7,
+          "weight": 4
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 22,
+          "weight": 4
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 23,
+          "weight": 4
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 24,
+          "weight": 4
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 25,
+          "weight": 4
+        }
+      ]
+    },
+    {
+      "id": "content_list_pickup_enchanted_scroll_box_tier_3",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 16,
+      "positiveContentCount": 16,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 8,
+          "weight": 3
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 9,
+          "weight": 3
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 10,
+          "weight": 3
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 11,
+          "weight": 3
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 26,
+          "weight": 3
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 27,
+          "weight": 3
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 28,
+          "weight": 3
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 29,
+          "weight": 3
+        }
+      ]
+    },
+    {
+      "id": "content_list_pickup_enchanted_scroll_box_tier_4",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 15,
+      "positiveContentCount": 15,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 12,
+          "weight": 2
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 13,
+          "weight": 2
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 14,
+          "weight": 2
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 15,
+          "weight": 2
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 30,
+          "weight": 2
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 31,
+          "weight": 2
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 32,
+          "weight": 2
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 47,
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "id": "content_list_pickup_enchanted_scroll_box_tier_5",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 11,
+      "positiveContentCount": 11,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 16,
+          "weight": 1
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 17,
+          "weight": 1
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 33,
+          "weight": 1
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 34,
+          "weight": 1
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 35,
+          "weight": 1
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 51,
+          "weight": 1
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 52,
+          "weight": 1
+        },
+        {
+          "sid": "enchanted_scroll_box",
+          "variant": 53,
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "content_list_pickup_mythic_scroll_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 1,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "mythic_scroll_box",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "content_list_pickup_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 1,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "content_list_pickup_pandora_box_army",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 7,
+      "positiveContentCount": 7,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 8,
+          "weight": 100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 9,
+          "weight": 100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 10,
+          "weight": 100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 11,
+          "weight": 100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 12,
+          "weight": 100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 13,
+          "weight": 100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 14,
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "content_list_pickup_pandora_box_army_high_tier",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 3,
+      "positiveContentCount": 3,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 12,
+          "weight": 80
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 13,
+          "weight": 110
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 14,
+          "weight": 110
+        }
+      ]
+    },
+    {
+      "id": "content_list_pickup_pandora_box_army_low_tier",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 4,
+      "positiveContentCount": 4,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 8,
+          "weight": 100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 9,
+          "weight": 100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 10,
+          "weight": 100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 11,
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "content_list_pickup_pandora_box_exp",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 4,
+      "positiveContentCount": 4,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 4,
+          "weight": 100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "content_list_pickup_pandora_box_gold",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 4,
+      "positiveContentCount": 4,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 0,
+          "weight": 100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "content_list_pickup_prison",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 1,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "prison",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "content_list_pickup_random_items",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 4,
+      "positiveContentCount": 4,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "random_item_common",
+          "weight": 100
+        },
+        {
+          "sid": "random_item_rare",
+          "weight": 100
+        },
+        {
+          "sid": "random_item_epic",
+          "weight": 100
+        },
+        {
+          "sid": "random_item_legendary",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "content_list_pickup_scroll_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 1,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "scroll_box",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "content_list_pickup_scroll_box_tier_1",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 15,
+      "positiveContentCount": 15,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "scroll_box",
+          "variant": 0,
+          "weight": 5
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 1,
+          "weight": 5
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 2,
+          "weight": 5
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 3,
+          "weight": 5
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 18,
+          "weight": 5
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 19,
+          "weight": 5
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 20,
+          "weight": 5
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 21,
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "id": "content_list_pickup_scroll_box_tier_2",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 15,
+      "positiveContentCount": 15,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "scroll_box",
+          "variant": 4,
+          "weight": 4
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 5,
+          "weight": 4
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 6,
+          "weight": 4
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 7,
+          "weight": 4
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 22,
+          "weight": 4
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 23,
+          "weight": 4
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 24,
+          "weight": 4
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 25,
+          "weight": 4
+        }
+      ]
+    },
+    {
+      "id": "content_list_pickup_scroll_box_tier_3",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 16,
+      "positiveContentCount": 16,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "scroll_box",
+          "variant": 8,
+          "weight": 3
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 9,
+          "weight": 3
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 10,
+          "weight": 3
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 11,
+          "weight": 3
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 26,
+          "weight": 3
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 27,
+          "weight": 3
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 28,
+          "weight": 3
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 29,
+          "weight": 3
+        }
+      ]
+    },
+    {
+      "id": "content_list_pickup_scroll_box_tier_4",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 15,
+      "positiveContentCount": 15,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "scroll_box",
+          "variant": 12,
+          "weight": 2
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 13,
+          "weight": 2
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 14,
+          "weight": 2
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 15,
+          "weight": 2
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 30,
+          "weight": 2
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 31,
+          "weight": 2
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 32,
+          "weight": 2
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 47,
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "id": "content_list_pickup_scroll_box_tier_5",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 11,
+      "positiveContentCount": 11,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "scroll_box",
+          "variant": 16,
+          "weight": 1
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 17,
+          "weight": 1
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 33,
+          "weight": 1
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 34,
+          "weight": 1
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 35,
+          "weight": 1
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 51,
+          "weight": 1
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 52,
+          "weight": 1
+        },
+        {
+          "sid": "scroll_box",
+          "variant": 53,
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "id": "content_list_rare_mines",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 3,
+      "positiveContentCount": 3,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "mine_gemstones",
+          "weight": 100
+        },
+        {
+          "sid": "mine_crystals",
+          "weight": 100
+        },
+        {
+          "sid": "mine_mercury",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "content_list_rare_resources",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 9,
+      "positiveContentCount": 9,
+      "biomeFilteredContentCount": 6,
+      "sampleContent": [
+        {
+          "sid": "resource_crystals",
+          "weight": 50
+        },
+        {
+          "sid": "resource_mercury",
+          "weight": 50
+        },
+        {
+          "sid": "resource_gemstones",
+          "weight": 50
+        },
+        {
+          "sid": "resource_gemstones",
+          "weight": 100,
+          "biome": "Grass"
+        },
+        {
+          "sid": "resource_mercury",
+          "weight": 100,
+          "biome": "Deathland"
+        },
+        {
+          "sid": "resource_gemstones",
+          "weight": 100,
+          "biome": "Dirt"
+        },
+        {
+          "sid": "resource_crystals",
+          "weight": 100,
+          "biome": "Autumn"
+        },
+        {
+          "sid": "resource_mercury",
+          "weight": 100,
+          "biome": "Snow"
+        }
+      ]
+    },
+    {
+      "id": "content_list_special_mines",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 1,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "alchemy_lab",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "content_list_special_resources",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 3,
+      "positiveContentCount": 3,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "resource_dust",
+          "weight": 25
+        },
+        {
+          "sid": "chest",
+          "weight": 250
+        },
+        {
+          "sid": "camp_fire",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "content_list_town_gates",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 1,
+      "positiveContentCount": 0,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "town_gate"
+        }
+      ]
+    },
+    {
+      "id": "content_list_vision_buildings",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/generator_content_lists.json",
+      "contentCount": 3,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "flattering_mirror",
+          "weight": 0
+        },
+        {
+          "sid": "watchtower",
+          "weight": 100
+        },
+        {
+          "sid": "wind_rose",
+          "weight": 10
+        }
+      ]
+    },
+    {
+      "id": "template_pool_blitz_guarded_resource_banks_tier_3_base",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_blitz.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "troglodyte_throne",
+          "weight": 100
+        },
+        {
+          "sid": "twilight_bloom",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "template_pool_blitz_guarded_resource_banks_tier_3_pro",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_blitz.json",
+      "contentCount": 3,
+      "positiveContentCount": 3,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "unstable_ruins",
+          "weight": 50
+        },
+        {
+          "sid": "dragon_utopia",
+          "weight": 100
+        },
+        {
+          "sid": "research_laboratory",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "template_pool_blitz_guarded_side_1_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_blitz.json",
+      "contentCount": 12,
+      "positiveContentCount": 12,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 0,
+          "weight": 700
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 900
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 4,
+          "weight": 350
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 350
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 350
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 11,
+          "weight": 1500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 12,
+          "weight": 1500
+        }
+      ]
+    },
+    {
+      "id": "template_pool_blitz_guarded_side_2_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_blitz.json",
+      "contentCount": 14,
+      "positiveContentCount": 14,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 0,
+          "weight": 700
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 700
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 700
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 700
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 4,
+          "weight": 350
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 350
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 350
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 350
+        }
+      ]
+    },
+    {
+      "id": "template_pool_blitz_guarded_side_3_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_blitz.json",
+      "contentCount": 12,
+      "positiveContentCount": 12,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 900
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 700
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 350
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 350
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 350
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 13,
+          "weight": 1500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 14,
+          "weight": 1500
+        }
+      ]
+    },
+    {
+      "id": "template_pool_blitz_guarded_start_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_blitz.json",
+      "contentCount": 7,
+      "positiveContentCount": 7,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 0,
+          "weight": 2100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 2100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 4,
+          "weight": 2100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 2100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 8,
+          "weight": 1100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 9,
+          "weight": 1100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 10,
+          "weight": 1100
+        }
+      ]
+    },
+    {
+      "id": "template_pool_blitz_guarded_supertreasure_1_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_blitz.json",
+      "contentCount": 20,
+      "positiveContentCount": 20,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 1500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 9,
+          "weight": 1250
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 10,
+          "weight": 1250
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 11,
+          "weight": 1250
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 12,
+          "weight": 1250
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 15,
+          "weight": 400
+        }
+      ]
+    },
+    {
+      "id": "template_pool_blitz_guarded_supertreasure_2_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_blitz.json",
+      "contentCount": 20,
+      "positiveContentCount": 20,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 10,
+          "weight": 1250
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 11,
+          "weight": 1250
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 12,
+          "weight": 1250
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 13,
+          "weight": 1250
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 15,
+          "weight": 400
+        }
+      ]
+    },
+    {
+      "id": "template_pool_blitz_guarded_supertreasure_3_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_blitz.json",
+      "contentCount": 20,
+      "positiveContentCount": 20,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 1500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 11,
+          "weight": 1250
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 12,
+          "weight": 1250
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 13,
+          "weight": 1250
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 14,
+          "weight": 1250
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 15,
+          "weight": 400
+        }
+      ]
+    },
+    {
+      "id": "template_pool_blitz_guarded_treasure_1_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_blitz.json",
+      "contentCount": 11,
+      "positiveContentCount": 11,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 1052
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 752
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 452
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 1815
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 1415
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 1015
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 15,
+          "weight": 1480
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 16,
+          "weight": 740
+        }
+      ]
+    },
+    {
+      "id": "template_pool_blitz_guarded_treasure_2_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_blitz.json",
+      "contentCount": 11,
+      "positiveContentCount": 11,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 752
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 752
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 752
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 1415
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 1415
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 1415
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 16,
+          "weight": 1480
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 17,
+          "weight": 740
+        }
+      ]
+    },
+    {
+      "id": "template_pool_blitz_guarded_treasure_3_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_blitz.json",
+      "contentCount": 11,
+      "positiveContentCount": 11,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 452
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 752
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 1052
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 1015
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 1415
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 1815
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 17,
+          "weight": 1480
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 18,
+          "weight": 740
+        }
+      ]
+    },
+    {
+      "id": "template_pool_chosen_one_guarded_resource_banks_tier_3_base",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_chosen_one.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "troglodyte_throne",
+          "weight": 100
+        },
+        {
+          "sid": "twilight_bloom",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "template_pool_chosen_one_guarded_resource_banks_tier_3_pro",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_chosen_one.json",
+      "contentCount": 3,
+      "positiveContentCount": 3,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "unstable_ruins",
+          "weight": 100
+        },
+        {
+          "sid": "dragon_utopia",
+          "weight": 100
+        },
+        {
+          "sid": "research_laboratory",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "template_pool_chosen_one_guarded_side_spawn_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_chosen_one.json",
+      "contentCount": 8,
+      "positiveContentCount": 8,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 0,
+          "weight": 1075
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 2075
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 2075
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 1075
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 4,
+          "weight": 1075
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 2075
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 2075
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 1075
+        }
+      ]
+    },
+    {
+      "id": "template_pool_chosen_one_guarded_side_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_chosen_one.json",
+      "contentCount": 9,
+      "positiveContentCount": 9,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 525
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 525
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 525
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 250
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 250
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 250
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 15,
+          "weight": 525
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 16,
+          "weight": 525
+        }
+      ]
+    },
+    {
+      "id": "template_pool_chosen_one_guarded_start_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_chosen_one.json",
+      "contentCount": 4,
+      "positiveContentCount": 4,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 0,
+          "weight": 3150
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 3150
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 4,
+          "weight": 3150
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 3150
+        }
+      ]
+    },
+    {
+      "id": "template_pool_chosen_one_guarded_supertreasure_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_chosen_one.json",
+      "contentCount": 7,
+      "positiveContentCount": 7,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 16,
+          "weight": 1060
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 17,
+          "weight": 1360
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 18,
+          "weight": 760
+        }
+      ]
+    },
+    {
+      "id": "template_pool_chosen_one_guarded_treasure_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_chosen_one.json",
+      "contentCount": 10,
+      "positiveContentCount": 10,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 750
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 1050
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 1350
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 750
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 1050
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 1350
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 15,
+          "weight": 859
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 16,
+          "weight": 859
+        }
+      ]
+    },
+    {
+      "id": "template_pool_exodus_guarded_side_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_exodus.json",
+      "contentCount": 15,
+      "positiveContentCount": 15,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 12,
+          "weight": 1500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 13,
+          "weight": 2500
+        }
+      ]
+    },
+    {
+      "id": "template_pool_exodus_guarded_start_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_exodus.json",
+      "contentCount": 10,
+      "positiveContentCount": 10,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 0,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 1500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 1500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 4,
+          "weight": 500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 750
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 750
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 500
+        }
+      ]
+    },
+    {
+      "id": "template_pool_exodus_guarded_treasure_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_exodus.json",
+      "contentCount": 9,
+      "positiveContentCount": 9,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 15,
+          "weight": 750
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 16,
+          "weight": 1150
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 17,
+          "weight": 1350
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 18,
+          "weight": 1750
+        }
+      ]
+    },
+    {
+      "id": "template_pool_harmony_building_random_hires_center",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_harmony.json",
+      "contentCount": 7,
+      "positiveContentCount": 6,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "random_hire_1",
+          "weight": 0
+        },
+        {
+          "sid": "random_hire_2",
+          "weight": 25
+        },
+        {
+          "sid": "random_hire_3",
+          "weight": 25
+        },
+        {
+          "sid": "random_hire_4",
+          "weight": 25
+        },
+        {
+          "sid": "random_hire_5",
+          "weight": 75
+        },
+        {
+          "sid": "random_hire_6",
+          "weight": 150
+        },
+        {
+          "sid": "random_hire_7",
+          "weight": 125
+        }
+      ]
+    },
+    {
+      "id": "template_pool_harmony_building_random_hires_side",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_harmony.json",
+      "contentCount": 7,
+      "positiveContentCount": 7,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "random_hire_1",
+          "weight": 100
+        },
+        {
+          "sid": "random_hire_2",
+          "weight": 100
+        },
+        {
+          "sid": "random_hire_3",
+          "weight": 125
+        },
+        {
+          "sid": "random_hire_4",
+          "weight": 300
+        },
+        {
+          "sid": "random_hire_5",
+          "weight": 150
+        },
+        {
+          "sid": "random_hire_6",
+          "weight": 15
+        },
+        {
+          "sid": "random_hire_7",
+          "weight": 15
+        }
+      ]
+    },
+    {
+      "id": "template_pool_harmony_building_random_hires_spawn",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_harmony.json",
+      "contentCount": 7,
+      "positiveContentCount": 6,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "random_hire_1",
+          "weight": 100
+        },
+        {
+          "sid": "random_hire_2",
+          "weight": 100
+        },
+        {
+          "sid": "random_hire_3",
+          "weight": 75
+        },
+        {
+          "sid": "random_hire_4",
+          "weight": 25
+        },
+        {
+          "sid": "random_hire_5",
+          "weight": 25
+        },
+        {
+          "sid": "random_hire_6",
+          "weight": 25
+        },
+        {
+          "sid": "random_hire_7",
+          "weight": 0
+        }
+      ]
+    },
+    {
+      "id": "template_pool_harmony_guarded_center_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_harmony.json",
+      "contentCount": 19,
+      "positiveContentCount": 19,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 1100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 3100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 700
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 1400
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 2100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 12,
+          "weight": 750
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 13,
+          "weight": 750
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 14,
+          "weight": 750
+        }
+      ]
+    },
+    {
+      "id": "template_pool_harmony_guarded_side_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_harmony.json",
+      "contentCount": 17,
+      "positiveContentCount": 17,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 1400
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 1400
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 1400
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 2500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 2500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 10,
+          "weight": 750
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 11,
+          "weight": 750
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 12,
+          "weight": 750
+        }
+      ]
+    },
+    {
+      "id": "template_pool_harmony_guarded_start_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_harmony.json",
+      "contentCount": 11,
+      "positiveContentCount": 11,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 0,
+          "weight": 1953
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 1953
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 1953
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 4,
+          "weight": 2198
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 2198
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 8,
+          "weight": 400
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 9,
+          "weight": 400
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 10,
+          "weight": 400
+        }
+      ]
+    },
+    {
+      "id": "template_pool_helltide_guarded_side_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_helltide.json",
+      "contentCount": 7,
+      "positiveContentCount": 7,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 12,
+          "weight": 1500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 13,
+          "weight": 2500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 14,
+          "weight": 5000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 15,
+          "weight": 750
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 16,
+          "weight": 1150
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 17,
+          "weight": 1350
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 18,
+          "weight": 1750
+        }
+      ]
+    },
+    {
+      "id": "template_pool_helltide_guarded_start_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_helltide.json",
+      "contentCount": 17,
+      "positiveContentCount": 17,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 0,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 1500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 1500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 4,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 1500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 1500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 1000
+        }
+      ]
+    },
+    {
+      "id": "template_pool_infinity_guarded_center_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_infinity.json",
+      "contentCount": 15,
+      "positiveContentCount": 15,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 840
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 840
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 840
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 840
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 16,
+          "weight": 860
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 17,
+          "weight": 860
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 18,
+          "weight": 860
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 19,
+          "weight": 430
+        }
+      ]
+    },
+    {
+      "id": "template_pool_infinity_guarded_resource_banks_tier_3_base",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_infinity.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "troglodyte_throne",
+          "weight": 100
+        },
+        {
+          "sid": "twilight_bloom",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "template_pool_infinity_guarded_resource_banks_tier_3_pro",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_infinity.json",
+      "contentCount": 3,
+      "positiveContentCount": 3,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "unstable_ruins",
+          "weight": 100
+        },
+        {
+          "sid": "dragon_utopia",
+          "weight": 100
+        },
+        {
+          "sid": "research_laboratory",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "template_pool_infinity_guarded_start_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_infinity.json",
+      "contentCount": 17,
+      "positiveContentCount": 17,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 0,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 1500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 1500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 4,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 1500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 1500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 1000
+        }
+      ]
+    },
+    {
+      "id": "template_pool_jebus_cross_guarded_center_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_jebus_cross.json",
+      "contentCount": 18,
+      "positiveContentCount": 18,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 840
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 840
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 640
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 640
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 12,
+          "weight": 940
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 13,
+          "weight": 1460
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 14,
+          "weight": 2080
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 16,
+          "weight": 860
+        }
+      ]
+    },
+    {
+      "id": "template_pool_jebus_cross_guarded_resource_banks_tier_3_base",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_jebus_cross.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "troglodyte_throne",
+          "weight": 100
+        },
+        {
+          "sid": "twilight_bloom",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "template_pool_jebus_cross_guarded_resource_banks_tier_3_pro",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_jebus_cross.json",
+      "contentCount": 3,
+      "positiveContentCount": 3,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "unstable_ruins",
+          "weight": 100
+        },
+        {
+          "sid": "dragon_utopia",
+          "weight": 100
+        },
+        {
+          "sid": "research_laboratory",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "template_pool_jebus_cross_guarded_start_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_jebus_cross.json",
+      "contentCount": 21,
+      "positiveContentCount": 21,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 0,
+          "weight": 216
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 816
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 716
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 616
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 4,
+          "weight": 1055
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 955
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 855
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 8,
+          "weight": 816
+        }
+      ]
+    },
+    {
+      "id": "template_pool_last_fortress_guarded_center_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_last_fortress.json",
+      "contentCount": 18,
+      "positiveContentCount": 18,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 840
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 840
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 840
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 840
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 840
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 840
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 15,
+          "weight": 960
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 16,
+          "weight": 860
+        }
+      ]
+    },
+    {
+      "id": "template_pool_last_fortress_guarded_resource_banks_tier_3_base",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_last_fortress.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "troglodyte_throne",
+          "weight": 100
+        },
+        {
+          "sid": "twilight_bloom",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "template_pool_last_fortress_guarded_resource_banks_tier_3_pro",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_last_fortress.json",
+      "contentCount": 3,
+      "positiveContentCount": 3,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "unstable_ruins",
+          "weight": 100
+        },
+        {
+          "sid": "dragon_utopia",
+          "weight": 100
+        },
+        {
+          "sid": "research_laboratory",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "template_pool_last_fortress_guarded_start_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_last_fortress.json",
+      "contentCount": 14,
+      "positiveContentCount": 14,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 0,
+          "weight": 1116
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 916
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 716
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 4,
+          "weight": 1155
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 955
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 15,
+          "weight": 572
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 16,
+          "weight": 572
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 19,
+          "weight": 286
+        }
+      ]
+    },
+    {
+      "id": "template_pool_massacre_guarded_resource_banks_tier_3_base",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_massacre.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "troglodyte_throne",
+          "weight": 100
+        },
+        {
+          "sid": "twilight_bloom",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "template_pool_massacre_guarded_resource_banks_tier_3_pro",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_massacre.json",
+      "contentCount": 3,
+      "positiveContentCount": 3,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "unstable_ruins",
+          "weight": 100
+        },
+        {
+          "sid": "dragon_utopia",
+          "weight": 100
+        },
+        {
+          "sid": "research_laboratory",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "template_pool_massacre_guarded_side_spawn_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_massacre.json",
+      "contentCount": 8,
+      "positiveContentCount": 8,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 0,
+          "weight": 1075
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 2075
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 2075
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 1075
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 4,
+          "weight": 1075
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 2075
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 2075
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 1075
+        }
+      ]
+    },
+    {
+      "id": "template_pool_massacre_guarded_side_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_massacre.json",
+      "contentCount": 9,
+      "positiveContentCount": 9,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 525
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 525
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 525
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 250
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 250
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 250
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 15,
+          "weight": 525
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 16,
+          "weight": 525
+        }
+      ]
+    },
+    {
+      "id": "template_pool_massacre_guarded_start_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_massacre.json",
+      "contentCount": 4,
+      "positiveContentCount": 4,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 0,
+          "weight": 3150
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 3150
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 4,
+          "weight": 3150
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 3150
+        }
+      ]
+    },
+    {
+      "id": "template_pool_massacre_guarded_supertreasure_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_massacre.json",
+      "contentCount": 7,
+      "positiveContentCount": 7,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 16,
+          "weight": 1060
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 17,
+          "weight": 1360
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 18,
+          "weight": 760
+        }
+      ]
+    },
+    {
+      "id": "template_pool_massacre_guarded_treasure_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_massacre.json",
+      "contentCount": 10,
+      "positiveContentCount": 10,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 750
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 1050
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 1350
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 750
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 1050
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 1350
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 15,
+          "weight": 859
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 16,
+          "weight": 859
+        }
+      ]
+    },
+    {
+      "id": "template_pool_shamrock_guarded_center_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_shamrock.json",
+      "contentCount": 15,
+      "positiveContentCount": 15,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 1250
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 1500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 1250
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 1500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 19,
+          "weight": 600
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 20,
+          "weight": 600
+        }
+      ]
+    },
+    {
+      "id": "template_pool_shamrock_guarded_resource_banks_tier_3_base",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_shamrock.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "troglodyte_throne",
+          "weight": 100
+        },
+        {
+          "sid": "twilight_bloom",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "template_pool_shamrock_guarded_resource_banks_tier_3_pro",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_shamrock.json",
+      "contentCount": 3,
+      "positiveContentCount": 3,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "unstable_ruins",
+          "weight": 100
+        },
+        {
+          "sid": "dragon_utopia",
+          "weight": 100
+        },
+        {
+          "sid": "research_laboratory",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "template_pool_shamrock_guarded_second_spawn_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_shamrock.json",
+      "contentCount": 12,
+      "positiveContentCount": 12,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 0,
+          "weight": 1050
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 1050
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 1050
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 4,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 8,
+          "weight": 788
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 9,
+          "weight": 788
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 10,
+          "weight": 788
+        }
+      ]
+    },
+    {
+      "id": "template_pool_shamrock_guarded_side_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_shamrock.json",
+      "contentCount": 12,
+      "positiveContentCount": 12,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 0,
+          "weight": 1050
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 1050
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 1050
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 4,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 8,
+          "weight": 788
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 9,
+          "weight": 788
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 10,
+          "weight": 788
+        }
+      ]
+    },
+    {
+      "id": "template_pool_shamrock_guarded_start_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_shamrock.json",
+      "contentCount": 9,
+      "positiveContentCount": 9,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 0,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 4,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 8,
+          "weight": 1260
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 9,
+          "weight": 1260
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 10,
+          "weight": 1260
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 15,
+          "weight": 1260
+        }
+      ]
+    },
+    {
+      "id": "template_pool_shamrock_guarded_treasure_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_shamrock.json",
+      "contentCount": 10,
+      "positiveContentCount": 10,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 13,
+          "weight": 2000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 14,
+          "weight": 2000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 15,
+          "weight": 400
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 16,
+          "weight": 500
+        }
+      ]
+    },
+    {
+      "id": "template_pool_symphony_guarded_resource_banks_tier_3_base",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_symphony.json",
+      "contentCount": 2,
+      "positiveContentCount": 2,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "troglodyte_throne",
+          "weight": 100
+        },
+        {
+          "sid": "twilight_bloom",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "template_pool_symphony_guarded_resource_banks_tier_3_pro",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_symphony.json",
+      "contentCount": 3,
+      "positiveContentCount": 3,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "unstable_ruins",
+          "weight": 100
+        },
+        {
+          "sid": "dragon_utopia",
+          "weight": 100
+        },
+        {
+          "sid": "research_laboratory",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "template_pool_symphony_guarded_side_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_symphony.json",
+      "contentCount": 8,
+      "positiveContentCount": 8,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 0,
+          "weight": 1050
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 1050
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 1050
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 4,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 15,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 23,
+          "weight": 788
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 24,
+          "weight": 788
+        }
+      ]
+    },
+    {
+      "id": "template_pool_symphony_guarded_side2_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_symphony.json",
+      "contentCount": 15,
+      "positiveContentCount": 15,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 1250
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 1500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 1250
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 1500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 19,
+          "weight": 600
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 20,
+          "weight": 600
+        }
+      ]
+    },
+    {
+      "id": "template_pool_symphony_guarded_start_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_symphony.json",
+      "contentCount": 6,
+      "positiveContentCount": 6,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 0,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 4,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 15,
+          "weight": 1260
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 23,
+          "weight": 1260
+        }
+      ]
+    },
+    {
+      "id": "template_pool_symphony_guarded_treasure_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_symphony.json",
+      "contentCount": 10,
+      "positiveContentCount": 10,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 1575
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 13,
+          "weight": 2000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 14,
+          "weight": 2000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 15,
+          "weight": 400
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 16,
+          "weight": 500
+        }
+      ]
+    },
+    {
+      "id": "template_pool_universe_guarded_center_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_universe.json",
+      "contentCount": 17,
+      "positiveContentCount": 17,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 550
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 1250
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 1050
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 550
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 1250
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 1050
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 15,
+          "weight": 715
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 16,
+          "weight": 715
+        }
+      ]
+    },
+    {
+      "id": "template_pool_universe_guarded_side_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_universe.json",
+      "contentCount": 14,
+      "positiveContentCount": 14,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 0,
+          "weight": 1313
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 1313
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 1313
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 1313
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 4,
+          "weight": 1750
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 1750
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 1750
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 19,
+          "weight": 263
+        }
+      ]
+    },
+    {
+      "id": "template_pool_universe_guarded_start_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_universe.json",
+      "contentCount": 5,
+      "positiveContentCount": 5,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 0,
+          "weight": 2100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 2100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 2100
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 4,
+          "weight": 3150
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 3150
+        }
+      ]
+    },
+    {
+      "id": "test_content_list",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/test_content_lists.json",
+      "contentCount": 325,
+      "positiveContentCount": 1,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "resource_gold",
+          "weight": 100
+        },
+        {
+          "sid": "resource_wood",
+          "weight": 0
+        },
+        {
+          "sid": "resource_ore",
+          "weight": 0
+        },
+        {
+          "sid": "resource_crystals",
+          "weight": 0
+        },
+        {
+          "sid": "resource_mercury",
+          "weight": 0
+        },
+        {
+          "sid": "resource_gemstones",
+          "weight": 0
+        },
+        {
+          "sid": "resource_dust",
+          "weight": 0
+        },
+        {
+          "sid": "chest",
+          "weight": 0
+        }
+      ]
+    }
+  ]
+}
