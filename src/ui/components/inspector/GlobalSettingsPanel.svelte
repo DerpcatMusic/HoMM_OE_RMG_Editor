@@ -219,7 +219,7 @@
   }
   .setting-row {
     display: grid;
-    grid-template-columns: 5rem 1fr;
+    grid-template-columns: minmax(6rem, max-content) 1fr;
     align-items: center;
     gap: var(--space-2);
     padding: var(--space-1) var(--space-3);

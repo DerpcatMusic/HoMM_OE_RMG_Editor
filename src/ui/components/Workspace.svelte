@@ -124,7 +124,6 @@
         role="application"
         aria-label="Map canvas"
       >
-        <div class="stage-grid"></div>
         <svg class="stage-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
           {#each connections as conn (conn.id)}
             <g>
@@ -132,11 +131,16 @@
                 class="stage-link-hit"
                 d={connectionPath(conn)}
                 onclick={() => editor.selectConnectionById(conn.id)}
+                role="button"
+                tabindex="0"
+                aria-label="{conn.id} ({conn.type})"
+                onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); editor.selectConnectionById(conn.id); }}}
               />
               <path
                 class="stage-link"
                 class:is-selected={conn.id === selectedConnId}
                 d={connectionPath(conn)}
+                data-connection-type={conn.type}
                 style="--conn-color: var(--color-connection-{conn.type?.toLowerCase() ?? 'default'})"
               />
             </g>
@@ -265,56 +269,62 @@
   .stage-link {
     fill: none;
     stroke: var(--conn-color, var(--color-connection-default));
-    stroke-width: 0.4;
+    stroke-width: 4;
     vector-effect: non-scaling-stroke;
+    pointer-events: none;
   }
   .stage-link.is-selected {
-    stroke-width: 0.8;
-    filter: brightness(1.3);
+    stroke-width: 6;
   }
   .stage-link-hit {
     fill: none;
     stroke: transparent;
-    stroke-width: 2;
+    stroke-width: 12;
     vector-effect: non-scaling-stroke;
     pointer-events: stroke;
     cursor: pointer;
   }
   .conn-draft {
     stroke: var(--color-muted);
-    stroke-width: 0.3;
-    stroke-dasharray: 1 1;
+    stroke-width: 3;
+    stroke-dasharray: 4 4;
     vector-effect: non-scaling-stroke;
   }
   .stage-node {
     position: absolute;
-    width: 10%;
-    min-height: 5%;
-    border: var(--line-strong) solid var(--color-line-strong);
-    border-left-width: 5px;
-    border-left-color: var(--zone-color, #666);
-    background: var(--color-panel);
-    padding: var(--space-1) var(--space-2);
-    cursor: grab;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    font: inherit;
+    z-index: 2;
+    width: 10.5rem;
+    display: grid;
+    gap: var(--space-1);
+    padding: var(--space-2);
     text-align: left;
+    touch-action: none;
+    border: var(--line) solid var(--color-line-strong);
+    border-radius: 0;
+    border-left: 5px solid var(--zone-color, #666);
+    background: var(--color-panel);
+    cursor: grab;
+    font: inherit;
     color: var(--color-ink);
     transition: box-shadow 0.1s;
-    z-index: 2;
   }
+  .stage-node:hover { background: var(--color-panel-2); }
   .stage-node:active { cursor: grabbing; }
   .stage-node.is-selected {
+    background: var(--color-active);
+    outline: var(--line-strong) solid var(--color-line-strong);
     box-shadow: 0 0 0 2px var(--color-focus);
     z-index: 3;
   }
   .stage-node.is-focused {
-    box-shadow: 0 0 0 2px var(--color-focus), 0 0 8px 2px color-mix(in srgb, var(--zone-color) 30%, transparent);
+    outline: 3px solid var(--zone-color, #888);
+    outline-offset: 2px;
+    box-shadow: 0 0 14px 2px var(--zone-color);
+    z-index: 10;
   }
   .stage-node strong {
-    font-size: 0.6875rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
     font-weight: 600;
     overflow: hidden;
     text-overflow: ellipsis;

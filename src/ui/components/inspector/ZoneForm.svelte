@@ -5,9 +5,10 @@
   import type { ZoneUpdateDraft } from "../../state/editorSession.js";
 
   let zone = $derived(editor.selectedZone);
+  let zones = $derived(editor.zones);
   let catalogOptions = $derived(editor.catalogOptions);
 
-  // Form state — synced from zone when it changes
+  // Form state
   let name = $state("");
   let size = $state(1);
   let layout = $state("");
@@ -23,12 +24,23 @@
   let guardMultiplier = $state<number | undefined>(undefined);
   let guardRandomization = $state<number | undefined>(undefined);
   let guardWeeklyIncrement = $state<number | undefined>(undefined);
+  let guardReactionDistribution = $state<number[]>([]);
   let guardedContentValue = $state<number | undefined>(undefined);
   let guardedContentValuePerArea = $state<number | undefined>(undefined);
   let unguardedContentValue = $state<number | undefined>(undefined);
   let unguardedContentValuePerArea = $state<number | undefined>(undefined);
   let resourcesValue = $state<number | undefined>(undefined);
   let resourcesValuePerArea = $state<number | undefined>(undefined);
+  let guardedPools = $state<string[]>([]);
+  let unguardedPools = $state<string[]>([]);
+  let resourcesPools = $state<string[]>([]);
+  let mandatoryContent = $state<string>("");
+  let contentCountLimits = $state<string>("");
+
+  // Pool picker inputs
+  let guardedPoolInput = $state("");
+  let unguardedPoolInput = $state("");
+  let resourcesPoolInput = $state("");
 
   // Sync form state when zone changes
   let lastZoneId = $state("");
@@ -50,12 +62,18 @@
       guardMultiplier = zone.guardMultiplier;
       guardRandomization = zone.guardRandomization;
       guardWeeklyIncrement = zone.guardWeeklyIncrement;
+      guardReactionDistribution = zone.guardReactionDistribution ?? [];
       guardedContentValue = zone.guardedContentValue;
       guardedContentValuePerArea = zone.guardedContentValuePerArea;
       unguardedContentValue = zone.unguardedContentValue;
       unguardedContentValuePerArea = zone.unguardedContentValuePerArea;
       resourcesValue = zone.resourcesValue;
       resourcesValuePerArea = zone.resourcesValuePerArea;
+      guardedPools = [...(zone.guardedPools ?? [])];
+      unguardedPools = [...(zone.unguardedPools ?? [])];
+      resourcesPools = [...(zone.resourcesPools ?? [])];
+      mandatoryContent = (zone.mandatoryContent ?? []).join("\n");
+      contentCountLimits = (zone.contentCountLimits ?? []).join("\n");
     }
   });
 
@@ -76,18 +94,18 @@
       guardMultiplier,
       guardRandomization,
       guardWeeklyIncrement,
-      guardReactionDistribution: zone.guardReactionDistribution,
+      guardReactionDistribution: guardReactionDistribution.length > 0 ? guardReactionDistribution : undefined,
       guardedContentValue,
       guardedContentValuePerArea,
       unguardedContentValue,
       unguardedContentValuePerArea,
       resourcesValue,
       resourcesValuePerArea,
-      guardedPools: zone.guardedPools ?? [],
-      unguardedPools: zone.unguardedPools ?? [],
-      resourcesPools: zone.resourcesPools ?? [],
-      mandatoryContent: zone.mandatoryContent ?? [],
-      contentCountLimits: zone.contentCountLimits ?? [],
+      guardedPools,
+      unguardedPools,
+      resourcesPools,
+      mandatoryContent: parseStringList(mandatoryContent),
+      contentCountLimits: parseStringList(contentCountLimits),
     };
   }
 
@@ -99,203 +117,531 @@
     const draft = applyZoneClipboard(buildDraft());
     editor.applyZoneChanges(draft);
   }
+
+  function parseStringList(value: string): string[] {
+    return value.split(/[\n,]+/).map((s) => s.trim()).filter(Boolean);
+  }
+
+  function parseNumberList(value: string): number[] | undefined {
+    const items = parseStringList(value);
+    if (items.length === 0) return undefined;
+    return items.map((s) => Number(s));
+  }
+
+  // Biome args helpers
+  function splitBiomeArgs(args: string[]): { biomes: string[]; exclusions: string[] } {
+    const biomes: string[] = [];
+    const exclusions: string[] = [];
+    for (const arg of args) {
+      if (arg.trim().startsWith("differentFrom:")) exclusions.push(arg);
+      else biomes.push(arg);
+    }
+    return { biomes, exclusions };
+  }
+
+  function buildBiomeArgs(biomes: string[], exclusions: string[]): string[] {
+    return [...biomes, ...exclusions];
+  }
+
+  function biomeFromListCandidates(args: string[]): string[] {
+    return splitBiomeArgs(args).biomes;
+  }
+
+  function biomeFromListExclusions(args: string[]): string[] {
+    return splitBiomeArgs(args).exclusions;
+  }
+
+  function mainObjectOptionsForZone(z: typeof zone): Array<{ value: string; label: string }> {
+    if (!z || z.mainObjectCount <= 0) return [];
+    return Array.from({ length: z.mainObjectCount }, (_, i) => {
+      const obj = z.zoneObjects.find((o) => o.id === `main:${i}`);
+      return { value: String(i), label: obj ? `${i}: ${obj.label}` : String(i) };
+    });
+  }
+
+  // Pool picker helpers
+  function addPool(list: string[], input: string): string[] {
+    const v = input.trim();
+    if (!v || list.includes(v)) return list;
+    return [...list, v];
+  }
+  function removePool(list: string[], index: number): string[] {
+    return list.filter((_, i) => i !== index);
+  }
 </script>
 
 {#if zone.id === "__no_zone__"}
   <p class="placeholder">Select a zone on the canvas to edit its properties.</p>
 {:else}
   <div class="zone-form">
-    <!-- Identity -->
-    <section class="form-section">
-      <h3 class="section-title">Identity</h3>
-      <label class="field">
-        <span class="field-label">Name</span>
-        <input type="text" bind:value={name} onchange={apply} />
-      </label>
-      <label class="field">
-        <span class="field-label">Size</span>
-        <input type="number" bind:value={size} onchange={apply} min="1" max="10" />
-      </label>
-      <label class="field">
-        <span class="field-label">Layout</span>
-        <input type="text" bind:value={layout} onchange={apply} placeholder="Default" />
-      </label>
-      <label class="field">
-        <span class="field-label">Crossroads pos</span>
-        <input type="number" bind:value={crossroadsPosition} onchange={apply} min="0" max="100" />
-      </label>
-      <label class="field">
-        <span class="field-label">Diplomacy mod</span>
-        <input type="number" bind:value={diplomacyModifier} onchange={apply} min="-100" max="100" />
-      </label>
-    </section>
+    <div class="form-actions-bar">
+      <button class="button button-secondary" onclick={() => editor.removeSelectedZone()}>Remove zone</button>
+    </div>
+
+    <!-- Identity and layout -->
+    <h3 class="form-section-title">Identity and layout</h3>
+    <label class="control-row">
+      <span>Name</span>
+      <input type="text" bind:value={name} onchange={apply} />
+    </label>
+    <label class="control-row">
+      <span>Size</span>
+      <input type="number" bind:value={size} onchange={apply} min="1" max="10" step="0.1" />
+    </label>
+    <label class="control-row">
+      <span>Layout</span>
+      <input type="text" bind:value={layout} onchange={apply} placeholder="Default" />
+    </label>
+    <label class="control-row">
+      <span>Crossroads pos</span>
+      <input type="number" value={crossroadsPosition ?? ""} onchange={(e) => { crossroadsPosition = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" step="0.01" />
+    </label>
+    <label class="control-row">
+      <span>Diplomacy mod</span>
+      <input type="number" value={diplomacyModifier ?? ""} onchange={(e) => { diplomacyModifier = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" step="0.01" />
+    </label>
 
     <!-- Biome rules -->
-    <section class="form-section">
-      <h3 class="section-title">Biome rules</h3>
-      <label class="field">
-        <span class="field-label">Zone biome</span>
-        <select bind:value={zoneBiomeType} onchange={apply}>
-          <option value="">None</option>
-          {#each BIOME_RULE_TYPES as t}<option value={t}>{t}</option>{/each}
+    <h3 class="form-section-title">Biome rules</h3>
+    <label class="control-row">
+      <span>Zone biome type</span>
+      <select bind:value={zoneBiomeType} onchange={apply}>
+        <option value="">None</option>
+        {#each BIOME_RULE_TYPES as t}<option value={t}>{t}</option>{/each}
+      </select>
+    </label>
+    {#if zoneBiomeType === "FromList"}
+      <div class="control-row stack">
+        <span>Zone biome candidates</span>
+        <select multiple class="multi-select" size={Math.min(7, Math.max(3, catalogOptions.biomes.length))}
+          onchange={(e) => {
+            const selected = Array.from(e.currentTarget.selectedOptions).map((o) => o.value);
+            const exclusions = biomeFromListExclusions(zoneBiomeArgs);
+            zoneBiomeArgs = buildBiomeArgs(selected, exclusions);
+            apply();
+          }}>
+          {#each catalogOptions.biomes as b}
+            <option value={b.id} selected={biomeFromListCandidates(zoneBiomeArgs).includes(b.id)}>{b.label}</option>
+          {/each}
+          {#each biomeFromListCandidates(zoneBiomeArgs).filter((id) => !catalogOptions.biomes.some((b) => b.id === id)) as orphan}
+            <option value={orphan} selected>{orphan} (not in catalog)</option>
+          {/each}
+        </select>
+      </div>
+      <label class="control-row stack">
+        <span>differentFrom exclusions</span>
+        <textarea rows="2" value={biomeFromListExclusions(zoneBiomeArgs).join("\n")}
+          onchange={(e) => {
+            const candidates = biomeFromListCandidates(zoneBiomeArgs);
+            const exclusions = parseStringList(e.currentTarget.value).map((s) => s.startsWith("differentFrom:") ? s : `differentFrom:${s}`);
+            zoneBiomeArgs = buildBiomeArgs(candidates, exclusions);
+            apply();
+          }} />
+      </label>
+      <p class="control-note">Rolls terrain biome from selected candidates, excluding any differentFrom references. Empty candidates mean any biome.</p>
+    {:else if zoneBiomeType === "MatchZone"}
+      <label class="control-row">
+        <span>Match zone</span>
+        <select value={zoneBiomeArgs[0] ?? ""} onchange={(e) => { zoneBiomeArgs = e.currentTarget.value ? [e.currentTarget.value] : []; apply(); }}>
+          <option value="">no arg: roll random biome</option>
+          {#each zones as z}<option value={z.label}>{z.label}</option>{/each}
         </select>
       </label>
-      <label class="field">
-        <span class="field-label">Content biome</span>
-        <select bind:value={contentBiomeType} onchange={apply}>
-          <option value="">None</option>
-          {#each BIOME_RULE_TYPES as t}<option value={t}>{t}</option>{/each}
+      <p class="control-note">Copies biome from the selected zone. No args rolls a random biome.</p>
+    {:else if zoneBiomeType === "MatchMainObject"}
+      <label class="control-row">
+        <span>Main object index</span>
+        <select value={zoneBiomeArgs[0] ?? ""} onchange={(e) => { zoneBiomeArgs = e.currentTarget.value ? [e.currentTarget.value, zoneBiomeArgs[1] ?? ""].filter(Boolean) : []; apply(); }}>
+          <option value="">—</option>
+          {#each mainObjectOptionsForZone(zone) as o}<option value={o.value}>{o.label}</option>{/each}
         </select>
       </label>
-      <label class="field">
-        <span class="field-label">Objects biome</span>
-        <select bind:value={metaObjectsBiomeType} onchange={apply}>
-          <option value="">None</option>
-          {#each BIOME_RULE_TYPES as t}<option value={t}>{t}</option>{/each}
+      <label class="control-row">
+        <span>Optional zone</span>
+        <select value={zoneBiomeArgs[1] ?? ""} onchange={(e) => { zoneBiomeArgs = zoneBiomeArgs[0] ? [zoneBiomeArgs[0], e.currentTarget.value].filter(Boolean) : []; apply(); }}>
+          <option value="">current zone ({zone.label})</option>
+          {#each zones as z}<option value={z.label}>{z.label}</option>{/each}
         </select>
       </label>
-    </section>
+      <p class="control-note">Uses the faction-derived biome of the selected main object. Optional zone defaults to current zone.</p>
+    {:else if zoneBiomeType}
+      <label class="control-row stack">
+        <span>Zone biome args</span>
+        <textarea rows="3" value={zoneBiomeArgs.join("\n")} onchange={(e) => { zoneBiomeArgs = parseStringList(e.currentTarget.value); apply(); }} />
+      </label>
+    {/if}
 
-    <!-- Guard tuning -->
-    <section class="form-section">
-      <h3 class="section-title">Guard tuning</h3>
-      <label class="field">
-        <span class="field-label">Cutoff value</span>
-        <input type="number" bind:value={guardCutoffValue} onchange={apply} min="0" />
+    <label class="control-row">
+      <span>Content biome type</span>
+      <select bind:value={contentBiomeType} onchange={apply}>
+        <option value="">None</option>
+        {#each BIOME_RULE_TYPES as t}<option value={t}>{t}</option>{/each}
+      </select>
+    </label>
+    {#if contentBiomeType === "FromList"}
+      <div class="control-row stack">
+        <span>Content biome candidates</span>
+        <select multiple class="multi-select" size={Math.min(7, Math.max(3, catalogOptions.biomes.length))}
+          onchange={(e) => {
+            const selected = Array.from(e.currentTarget.selectedOptions).map((o) => o.value);
+            const exclusions = biomeFromListExclusions(contentBiomeArgs);
+            contentBiomeArgs = buildBiomeArgs(selected, exclusions);
+            apply();
+          }}>
+          {#each catalogOptions.biomes as b}
+            <option value={b.id} selected={biomeFromListCandidates(contentBiomeArgs).includes(b.id)}>{b.label}</option>
+          {/each}
+        </select>
+      </div>
+      <label class="control-row stack">
+        <span>differentFrom exclusions</span>
+        <textarea rows="2" value={biomeFromListExclusions(contentBiomeArgs).join("\n")}
+          onchange={(e) => {
+            const candidates = biomeFromListCandidates(contentBiomeArgs);
+            const exclusions = parseStringList(e.currentTarget.value).map((s) => s.startsWith("differentFrom:") ? s : `differentFrom:${s}`);
+            contentBiomeArgs = buildBiomeArgs(candidates, exclusions);
+            apply();
+          }} />
       </label>
-      <label class="field">
-        <span class="field-label">Multiplier</span>
-        <input type="number" bind:value={guardMultiplier} onchange={apply} min="0" step="0.1" />
+    {:else if contentBiomeType === "MatchZone"}
+      <label class="control-row">
+        <span>Match zone</span>
+        <select value={contentBiomeArgs[0] ?? ""} onchange={(e) => { contentBiomeArgs = e.currentTarget.value ? [e.currentTarget.value] : []; apply(); }}>
+          <option value="">no arg: match current zone</option>
+          {#each zones as z}<option value={z.label}>{z.label}</option>{/each}
+        </select>
       </label>
-      <label class="field">
-        <span class="field-label">Randomization</span>
-        <input type="number" bind:value={guardRandomization} onchange={apply} min="0" max="100" />
+    {:else if contentBiomeType === "MatchMainObject"}
+      <label class="control-row">
+        <span>Main object index</span>
+        <select value={contentBiomeArgs[0] ?? ""} onchange={(e) => { contentBiomeArgs = e.currentTarget.value ? [e.currentTarget.value, contentBiomeArgs[1] ?? ""].filter(Boolean) : []; apply(); }}>
+          <option value="">—</option>
+          {#each mainObjectOptionsForZone(zone) as o}<option value={o.value}>{o.label}</option>{/each}
+        </select>
       </label>
-      <label class="field">
-        <span class="field-label">Weekly increment</span>
-        <input type="number" bind:value={guardWeeklyIncrement} onchange={apply} min="0" />
+      <label class="control-row">
+        <span>Optional zone</span>
+        <select value={contentBiomeArgs[1] ?? ""} onchange={(e) => { contentBiomeArgs = contentBiomeArgs[0] ? [contentBiomeArgs[0], e.currentTarget.value].filter(Boolean) : []; apply(); }}>
+          <option value="">current zone ({zone.label})</option>
+          {#each zones as z}<option value={z.label}>{z.label}</option>{/each}
+        </select>
       </label>
-    </section>
+    {:else if contentBiomeType}
+      <label class="control-row stack">
+        <span>Content biome args</span>
+        <textarea rows="3" value={contentBiomeArgs.join("\n")} onchange={(e) => { contentBiomeArgs = parseStringList(e.currentTarget.value); apply(); }} />
+      </label>
+    {/if}
+
+    <label class="control-row">
+      <span>Meta biome type</span>
+      <select bind:value={metaObjectsBiomeType} onchange={apply}>
+        <option value="">None</option>
+        {#each BIOME_RULE_TYPES as t}<option value={t}>{t}</option>{/each}
+      </select>
+    </label>
+    {#if metaObjectsBiomeType === "FromList"}
+      <div class="control-row stack">
+        <span>Meta biome candidates</span>
+        <select multiple class="multi-select" size={Math.min(7, Math.max(3, catalogOptions.biomes.length))}
+          onchange={(e) => {
+            const selected = Array.from(e.currentTarget.selectedOptions).map((o) => o.value);
+            const exclusions = biomeFromListExclusions(metaObjectsBiomeArgs);
+            metaObjectsBiomeArgs = buildBiomeArgs(selected, exclusions);
+            apply();
+          }}>
+          {#each catalogOptions.biomes as b}
+            <option value={b.id} selected={biomeFromListCandidates(metaObjectsBiomeArgs).includes(b.id)}>{b.label}</option>
+          {/each}
+        </select>
+      </div>
+      <label class="control-row stack">
+        <span>differentFrom exclusions</span>
+        <textarea rows="2" value={biomeFromListExclusions(metaObjectsBiomeArgs).join("\n")}
+          onchange={(e) => {
+            const candidates = biomeFromListCandidates(metaObjectsBiomeArgs);
+            const exclusions = parseStringList(e.currentTarget.value).map((s) => s.startsWith("differentFrom:") ? s : `differentFrom:${s}`);
+            metaObjectsBiomeArgs = buildBiomeArgs(candidates, exclusions);
+            apply();
+          }} />
+      </label>
+    {:else if metaObjectsBiomeType === "MatchZone"}
+      <label class="control-row">
+        <span>Match zone</span>
+        <select value={metaObjectsBiomeArgs[0] ?? ""} onchange={(e) => { metaObjectsBiomeArgs = e.currentTarget.value ? [e.currentTarget.value] : []; apply(); }}>
+          <option value="">no arg: match current zone</option>
+          {#each zones as z}<option value={z.label}>{z.label}</option>{/each}
+        </select>
+      </label>
+    {:else if metaObjectsBiomeType === "MatchMainObject"}
+      <label class="control-row">
+        <span>Main object index</span>
+        <select value={metaObjectsBiomeArgs[0] ?? ""} onchange={(e) => { metaObjectsBiomeArgs = e.currentTarget.value ? [e.currentTarget.value, metaObjectsBiomeArgs[1] ?? ""].filter(Boolean) : []; apply(); }}>
+          <option value="">—</option>
+          {#each mainObjectOptionsForZone(zone) as o}<option value={o.value}>{o.label}</option>{/each}
+        </select>
+      </label>
+      <label class="control-row">
+        <span>Optional zone</span>
+        <select value={metaObjectsBiomeArgs[1] ?? ""} onchange={(e) => { metaObjectsBiomeArgs = metaObjectsBiomeArgs[0] ? [metaObjectsBiomeArgs[0], e.currentTarget.value].filter(Boolean) : []; apply(); }}>
+          <option value="">current zone ({zone.label})</option>
+          {#each zones as z}<option value={z.label}>{z.label}</option>{/each}
+        </select>
+      </label>
+    {:else if metaObjectsBiomeType}
+      <label class="control-row stack">
+        <span>Meta biome args</span>
+        <textarea rows="3" value={metaObjectsBiomeArgs.join("\n")} onchange={(e) => { metaObjectsBiomeArgs = parseStringList(e.currentTarget.value); apply(); }} />
+      </label>
+    {/if}
+
+    <!-- Guard settings -->
+    <h3 class="form-section-title">Guard settings</h3>
+    <label class="control-row">
+      <span>Guard cutoff</span>
+      <input type="number" value={guardCutoffValue ?? ""} onchange={(e) => { guardCutoffValue = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" />
+    </label>
+    <label class="control-row">
+      <span>Guard multiplier</span>
+      <input type="number" value={guardMultiplier ?? ""} onchange={(e) => { guardMultiplier = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" step="0.01" />
+    </label>
+    <label class="control-row">
+      <span>Guard random</span>
+      <input type="number" value={guardRandomization ?? ""} onchange={(e) => { guardRandomization = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" step="0.01" />
+    </label>
+    <label class="control-row">
+      <span>Guard weekly</span>
+      <input type="number" value={guardWeeklyIncrement ?? ""} onchange={(e) => { guardWeeklyIncrement = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" />
+    </label>
+    <label class="control-row stack">
+      <span>Reaction weights</span>
+      <textarea rows="2" value={guardReactionDistribution.join("\n")}
+        onchange={(e) => { guardReactionDistribution = parseNumberList(e.currentTarget.value) ?? []; apply(); }} />
+    </label>
 
     <!-- Content budgets -->
-    <section class="form-section">
-      <h3 class="section-title">Content budgets</h3>
-      <div class="field-grid">
-        <label class="field">
-          <span class="field-label">Guarded value</span>
-          <input type="number" bind:value={guardedContentValue} onchange={apply} min="0" />
-        </label>
-        <label class="field">
-          <span class="field-label">Guarded/area</span>
-          <input type="number" bind:value={guardedContentValuePerArea} onchange={apply} min="0" step="0.1" />
-        </label>
-        <label class="field">
-          <span class="field-label">Unguarded value</span>
-          <input type="number" bind:value={unguardedContentValue} onchange={apply} min="0" />
-        </label>
-        <label class="field">
-          <span class="field-label">Unguarded/area</span>
-          <input type="number" bind:value={unguardedContentValuePerArea} onchange={apply} min="0" step="0.1" />
-        </label>
-        <label class="field">
-          <span class="field-label">Resources value</span>
-          <input type="number" bind:value={resourcesValue} onchange={apply} min="0" />
-        </label>
-        <label class="field">
-          <span class="field-label">Resources/area</span>
-          <input type="number" bind:value={resourcesValuePerArea} onchange={apply} min="0" step="0.1" />
-        </label>
-      </div>
-    </section>
+    <h3 class="form-section-title">Content budgets</h3>
+    <label class="control-row">
+      <span>Guarded value</span>
+      <input type="number" value={guardedContentValue ?? ""} onchange={(e) => { guardedContentValue = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" />
+    </label>
+    <label class="control-row">
+      <span>Guarded per area</span>
+      <input type="number" value={guardedContentValuePerArea ?? ""} onchange={(e) => { guardedContentValuePerArea = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" step="0.1" />
+    </label>
+    <label class="control-row">
+      <span>Unguarded value</span>
+      <input type="number" value={unguardedContentValue ?? ""} onchange={(e) => { unguardedContentValue = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" />
+    </label>
+    <label class="control-row">
+      <span>Unguarded per area</span>
+      <input type="number" value={unguardedContentValuePerArea ?? ""} onchange={(e) => { unguardedContentValuePerArea = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" step="0.1" />
+    </label>
+    <label class="control-row">
+      <span>Resources value</span>
+      <input type="number" value={resourcesValue ?? ""} onchange={(e) => { resourcesValue = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" />
+    </label>
+    <label class="control-row">
+      <span>Resources per area</span>
+      <input type="number" value={resourcesValuePerArea ?? ""} onchange={(e) => { resourcesValuePerArea = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder="—" step="0.1" />
+    </label>
 
-    <!-- Pool display (read-only for now) -->
-    <section class="form-section">
-      <h3 class="section-title">Pools</h3>
-      {#if zone.guardedPools.length > 0}
-        <p class="pool-list"><strong>Guarded:</strong> {zone.guardedPools.join(", ")}</p>
-      {/if}
-      {#if zone.unguardedPools.length > 0}
-        <p class="pool-list"><strong>Unguarded:</strong> {zone.unguardedPools.join(", ")}</p>
-      {/if}
-      {#if zone.resourcesPools.length > 0}
-        <p class="pool-list"><strong>Resources:</strong> {zone.resourcesPools.join(", ")}</p>
-      {/if}
-      {#if zone.mandatoryContent.length > 0}
-        <p class="pool-list"><strong>Mandatory:</strong> {zone.mandatoryContent.join(", ")}</p>
-      {/if}
-      {#if zone.guardedPools.length === 0 && zone.unguardedPools.length === 0 && zone.resourcesPools.length === 0}
-        <p class="pool-list muted">No pools assigned</p>
-      {/if}
-    </section>
+    <!-- Pool and preset alternatives -->
+    <h3 class="form-section-title">Pool and preset alternatives</h3>
+
+    <!-- Guarded pools -->
+    <div class="control-row stack">
+      <span>Guarded pools</span>
+      <div class="multi-picker">
+        <datalist id="guarded-pool-options">
+          {#each catalogOptions.guardedContentPools as p}<option value={p.id} label={p.label} />{/each}
+        </datalist>
+        <div class="multi-picker-entry">
+          <input type="search" list="guarded-pool-options" bind:value={guardedPoolInput} placeholder="Search pool ID" />
+          <button class="button button-secondary" onclick={() => { guardedPools = addPool(guardedPools, guardedPoolInput); guardedPoolInput = ""; apply(); }}>Add</button>
+        </div>
+        <div class="picker-token-list">
+          {#each guardedPools as pool, i}
+            <button type="button" class="picker-token" onclick={() => { guardedPools = removePool(guardedPools, i); apply(); }} title="Remove {pool}">
+              <strong>{pool}</strong>
+              <span class="material-symbols-outlined picker-token-remove">close</span>
+            </button>
+          {/each}
+        </div>
+      </div>
+    </div>
+
+    <!-- Unguarded pools -->
+    <div class="control-row stack">
+      <span>Unguarded pools</span>
+      <div class="multi-picker">
+        <datalist id="unguarded-pool-options">
+          {#each catalogOptions.unguardedContentPools as p}<option value={p.id} label={p.label} />{/each}
+        </datalist>
+        <div class="multi-picker-entry">
+          <input type="search" list="unguarded-pool-options" bind:value={unguardedPoolInput} placeholder="Search pool ID" />
+          <button class="button button-secondary" onclick={() => { unguardedPools = addPool(unguardedPools, unguardedPoolInput); unguardedPoolInput = ""; apply(); }}>Add</button>
+        </div>
+        <div class="picker-token-list">
+          {#each unguardedPools as pool, i}
+            <button type="button" class="picker-token" onclick={() => { unguardedPools = removePool(unguardedPools, i); apply(); }} title="Remove {pool}">
+              <strong>{pool}</strong>
+              <span class="material-symbols-outlined picker-token-remove">close</span>
+            </button>
+          {/each}
+        </div>
+      </div>
+    </div>
+
+    <!-- Resource pools -->
+    <div class="control-row stack">
+      <span>Resource pools</span>
+      <div class="multi-picker">
+        <datalist id="resources-pool-options">
+          {#each catalogOptions.resourceContentPools as p}<option value={p.id} label={p.label} />{/each}
+        </datalist>
+        <div class="multi-picker-entry">
+          <input type="search" list="resources-pool-options" bind:value={resourcesPoolInput} placeholder="Search pool ID" />
+          <button class="button button-secondary" onclick={() => { resourcesPools = addPool(resourcesPools, resourcesPoolInput); resourcesPoolInput = ""; apply(); }}>Add</button>
+        </div>
+        <div class="picker-token-list">
+          {#each resourcesPools as pool, i}
+            <button type="button" class="picker-token" onclick={() => { resourcesPools = removePool(resourcesPools, i); apply(); }} title="Remove {pool}">
+              <strong>{pool}</strong>
+              <span class="material-symbols-outlined picker-token-remove">close</span>
+            </button>
+          {/each}
+        </div>
+      </div>
+    </div>
+
+    <label class="control-row stack">
+      <span>Mandatory presets</span>
+      <textarea rows="3" bind:value={mandatoryContent} onchange={apply} />
+    </label>
+    <label class="control-row stack">
+      <span>Count limits</span>
+      <textarea rows="3" bind:value={contentCountLimits} onchange={apply} />
+    </label>
 
     <div class="form-actions">
-      <button class="action-btn" onclick={paste}>Paste settings</button>
+      <button class="button button-secondary" onclick={paste}>Paste settings</button>
     </div>
   </div>
 {/if}
 
 <style>
-  .zone-form {
-    display: grid;
-    gap: var(--space-3);
-  }
-  .placeholder { color: var(--color-muted); font-size: 0.75rem; }
-  .form-section {
-    display: grid;
+  .placeholder { color: var(--color-muted); font-size: 0.75rem; padding: var(--space-3); }
+  .zone-form { display: grid; gap: 0; overflow-y: auto; }
+  .form-actions-bar {
+    display: flex;
     gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border-bottom: var(--line) solid var(--color-line);
   }
-  .section-title {
-    font-size: 0.6875rem;
-    font-weight: 600;
+  .form-section-title {
+    padding: var(--space-2) var(--space-3);
+    border-bottom: var(--line) solid var(--color-line);
+    background: var(--color-panel-2);
+    font-size: 0.625rem;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--color-muted);
+    font-weight: 500;
     margin: 0;
-    padding-bottom: var(--space-1);
-    border-bottom: var(--line) solid var(--color-line);
+    position: sticky;
+    top: 0;
+    z-index: 1;
   }
-  .field {
+  .control-row {
     display: grid;
-    grid-template-columns: 6rem 1fr;
+    grid-template-columns: minmax(5rem, max-content) 1fr;
     align-items: center;
     gap: var(--space-2);
+    padding: var(--space-1) var(--space-3);
+    border-bottom: var(--line) solid var(--color-line);
     font-size: 0.6875rem;
   }
-  .field-label {
+  .control-row.stack {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+  .control-row.stack > span:first-child {
     color: var(--color-muted);
     font-size: 0.625rem;
     text-transform: uppercase;
     letter-spacing: 0.04em;
   }
-  .field input, .field select {
-    height: 1.5rem;
-    padding: 0 var(--space-1);
+  .control-row > span:first-child {
+    color: var(--color-muted);
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .control-row input,
+  .control-row select,
+  .control-row textarea {
+    min-height: 1.5rem;
+    padding: var(--space-1);
     border: var(--line) solid var(--color-line);
     background: var(--color-panel);
     font: inherit;
     font-size: 0.6875rem;
+    color: var(--color-ink);
+    width: 100%;
   }
-  .field-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-1);
+  .control-row input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+    justify-self: start;
   }
-  .pool-list { font-size: 0.6875rem; margin: 0; }
-  .pool-list.muted { color: var(--color-muted); }
+  .multi-select {
+    min-height: 6rem;
+  }
+  .control-note {
+    padding: var(--space-1) var(--space-3);
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 0.625rem;
+    border-bottom: var(--line) solid var(--color-line);
+  }
+  .multi-picker { display: grid; gap: var(--space-1); }
+  .multi-picker-entry { display: flex; gap: var(--space-1); }
+  .multi-picker-entry input { flex: 1; }
+  .picker-token-list { display: flex; flex-wrap: wrap; gap: var(--space-1); }
+  .picker-token {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 1px var(--space-1);
+    background: var(--color-panel-2);
+    border: var(--line) solid var(--color-line);
+    font: inherit;
+    font-size: 0.625rem;
+    cursor: pointer;
+  }
+  .picker-token:hover { background: var(--color-line); }
+  .picker-token strong { font-family: var(--font-mono); }
+  .picker-token-remove { font-size: 0.75rem; opacity: 0.6; }
   .form-actions {
     display: flex;
     gap: var(--space-2);
-    padding-top: var(--space-2);
-    border-top: var(--line) solid var(--color-line);
+    padding: var(--space-2) var(--space-3);
   }
-  .action-btn {
-    height: 1.5rem;
-    padding: 0 var(--space-2);
-    border: var(--line) solid var(--color-line);
+  .button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-1) var(--space-2);
+    border: var(--line) solid var(--color-line-strong);
     background: var(--color-panel);
     font: inherit;
     font-size: 0.6875rem;
     cursor: pointer;
+    color: var(--color-ink);
   }
-  .action-btn:hover { background: var(--color-panel-2); }
+  .button-secondary:hover { background: var(--color-panel-2); }
 </style>
