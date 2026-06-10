@@ -660,18 +660,19 @@
   .zone-node {
     position: absolute;
     z-index: 2;
-    transform: translate(-50%, -50%);
     display: flex; flex-direction: column; align-items: center;
     gap: 1px;
     padding: 4px 6px;
     border: var(--line) solid var(--color-line-strong);
     background: var(--color-panel);
-    cursor: pointer;
+    cursor: grab;
     font: inherit; color: inherit;
     min-width: 2rem;
     text-align: center;
     transition: box-shadow 0.1s;
+    touch-action: none;
   }
+  .zone-node:active { cursor: grabbing; }
   .zone-node:hover { background: var(--color-panel-2); box-shadow: 0 0 0 2px var(--color-focus); }
   .zone-node.is-main { border-left: 3px solid #c90; }
   .zone-node.is-connection { border-left: 3px solid #5af; }

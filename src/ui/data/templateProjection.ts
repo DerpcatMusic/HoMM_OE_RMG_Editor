@@ -31,7 +31,7 @@ export function projectTemplateToShellData(
     canvasPositions,
   );
   const zones = variantZones.map((zone, index, allZones) =>
-    projectZone(zone, index, allZones.length, variant, canvasPositions, autoPositions, zoneObjectPositions)
+    projectZone(zone, index, allZones.length, variant, canvasPositions, autoPositions, zoneObjectPositions, template.mandatoryContent)
   );
   const selectedZone = zones.find((zone) => zone.label === selectedZoneName) ?? zones[0];
   const connections = (variant?.connections ?? []).map((connection, index) => ({
@@ -101,13 +101,14 @@ function projectZone(
   canvasPositions: Readonly<Record<string, { x: number; y: number }>>,
   autoPositions: Readonly<Record<string, { x: number; y: number }>>,
   zoneObjectPositions: Readonly<Record<string, Readonly<Record<string, { x: number; y: number }>>>>,
+  mandatoryContentPresets?: readonly import("../../core/rmg/rmgTypes.js").MandatoryContentPreset[],
 ): ShellZoneItem {
   const label = zone.name ?? `Zone ${index + 1}`;
   const guardedPools = [...(zone.guardedContentPool ?? [])];
   const unguardedPools = [...(zone.unguardedContentPool ?? [])];
   const resourcesPools = [...(zone.resourcesContentPool ?? [])];
   const position = canvasPositions[label] ?? autoPositions[label] ?? zonePosition(index, zoneCount, inferZoneRole(zone, label));
-  const zoneObjects = applyZoneObjectPositions(projectZoneObjects(zone, label, variant), zoneObjectPositions[label] ?? {});
+  const zoneObjects = applyZoneObjectPositions(projectZoneObjects(zone, label, variant, mandatoryContentPresets), zoneObjectPositions[label] ?? {});
   const zoneRoads = projectZoneRoads(zone, zoneObjects);
   return {
     id: label,
@@ -206,12 +207,38 @@ function zonePosition(index: number, zoneCount: number, role: ShellZoneItem["rol
 function clampPercent(value: number): number {
   return Math.max(6, Math.min(82, Number(value.toFixed(2))));
 }
-
-function projectZoneObjects(zone: Zone, zoneName: string, variant: Variant | undefined): ShellZoneObjectItem[] {
+function projectZoneObjects(zone: Zone, zoneName: string, variant: Variant | undefined, mandatoryContentPresets?: readonly import("../../core/rmg/rmgTypes.js").MandatoryContentPreset[]): ShellZoneObjectItem[] {
   const objects = (zone.mainObjects ?? []).map((mainObject, index, allObjects) => projectMainObject(mainObject, index, allObjects.length));
   const incidentConnections = (variant?.connections ?? []).filter((connection) => connection.from === zoneName || connection.to === zoneName);
   const connectionObjects = incidentConnections.map((connection, index, allConnections) => projectConnectionAnchor(connection, index, allConnections.length));
   const extras = new Map<string, ShellZoneObjectItem>();
+  // Add mandatory content entries from zone's referenced presets
+  const zonePresetNames = new Set(zone.mandatoryContent ?? []);
+  if (mandatoryContentPresets) {
+    let mcIndex = 0;
+    for (const preset of mandatoryContentPresets) {
+      if (!preset.name || !zonePresetNames.has(preset.name)) continue;
+      for (const entry of preset.content ?? []) {
+        const entryName = entry.name ?? entry.sid ?? `mc_${mcIndex}`;
+        const id = `mc:${entryName}`;
+        if (!extras.has(id)) {
+          const angle = (Math.PI * 2 * mcIndex) / Math.max(1, (preset.content ?? []).length) - Math.PI / 2;
+          extras.set(id, {
+            id,
+            label: entry.name ?? entry.sid ?? `Entry ${mcIndex}`,
+            type: "MandatoryContent",
+            detail: entry.sid ?? "",
+            x: clampInternalPercent(42 + Math.cos(angle) * 30),
+            y: clampInternalPercent(45 + Math.sin(angle) * 30),
+            placementArgs: [],
+            faction: { type: "", args: [] },
+          });
+        }
+        mcIndex++;
+      }
+    }
+  }
+  // Add road target extras (crossroads, etc.)
   for (const road of zone.roads ?? []) {
     ensureRoadTargetObject(road.from, extras);
     ensureRoadTargetObject(road.to, extras);
