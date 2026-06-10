@@ -218,7 +218,7 @@
   // Node click (non-drag) → focus inspector panel
   function nodeFocusInspector(obj: typeof selectedZone.zoneObjects[number]) {
     if (obj.id.startsWith("main:")) {
-      editor.setInspectorTab("objects");
+      editor.selectObject(obj.index ?? 0);
     } else if (obj.id.startsWith("connection:")) {
       editor.setInspectorTab("connection");
     } else if (obj.id === "crossroads") {

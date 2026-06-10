@@ -32,6 +32,7 @@ import {
   addConnectionFromSelectedZone,
   addConnectionBetweenZones,
   addMainObjectToSelectedZone,
+  removeMainObjectFromSession,
   addDefaultRoadToSelectedZone,
   addRoadBetweenInSession,
   moveZoneInSession,
@@ -130,6 +131,7 @@ class EditorState {
   activeContentPoolName: string = $state("");
   activePoolSource: "template-local" | "core" | "" = $state("");
   activeMandatoryContentPresetName: string = $state("");
+  activeObjectIndex: number = $state(-1);
   sidebarSections: SidebarSectionFlex = $state({ settings: 6, zones: 2.5, players: 1.5 });
   focusedPlayer: string | undefined = $state(undefined);
 
@@ -275,6 +277,19 @@ class EditorState {
     this.workspaceTab = "zoneEdit";
     this.inspectorTab = "objects";
     this.rightDockTab = "inspector";
+    this.scheduleAutosave();
+  }
+  selectObject(index: number) {
+    this.activeObjectIndex = index;
+    this.inspectorTab = "objects";
+  }
+  updateMainObject(draft: import("./editorSession.js").MainObjectUpdateDraft) {
+    this.session = updateSelectedZoneMainObjectInSession(this.session, draft);
+    this.scheduleAutosave();
+  }
+  removeMainObject(index: number) {
+    this.session = removeMainObjectFromSession(this.session, index);
+    if (this.activeObjectIndex === index) this.activeObjectIndex = -1;
     this.scheduleAutosave();
   }
 

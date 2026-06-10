@@ -495,6 +495,24 @@ export function addMainObjectToSelectedZone(session: EditorSession): EditorSessi
     label: `Add main object to ${zoneName}`,
   });
 }
+export function removeMainObjectFromSession(session: EditorSession, objectIndex: number): EditorSession {
+  const zoneName = session.selectedZoneName;
+  if (!zoneName) return setSessionMessage(session, "No selected zone for main object removal.");
+  if (!Number.isInteger(objectIndex) || objectIndex < 0) return setSessionMessage(session, "Select a valid main object to remove.");
+  return applyAction(session, {
+    action: {
+      type: "mainObject.remove",
+      input: {
+        variantIndex: session.selectedVariantIndex,
+        zone: { zoneName },
+        mainObject: { mainObjectIndex: objectIndex },
+        cleanupExactReferences: true,
+        allowIndexShift: true,
+      },
+    },
+    label: `Remove main object ${objectIndex} from ${zoneName}`,
+  });
+}
 
 export function addDefaultRoadToSelectedZone(session: EditorSession): EditorSession {
   const zoneName = session.selectedZoneName;
