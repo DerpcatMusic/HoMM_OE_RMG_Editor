@@ -219,9 +219,7 @@
   function nodeFocusInspector(obj: typeof selectedZone.zoneObjects[number]) {
     if (obj.id.startsWith("main:")) {
       editor.selectObject(obj.index ?? 0);
-    } else if (obj.id.startsWith("connection:")) {
-      editor.setInspectorTab("connection");
-    } else if (obj.id === "crossroads") {
+    } else if (obj.id.startsWith("connection:") || obj.id === "crossroads") {
       editor.setInspectorTab("roads");
     } else {
       // MandatoryContent entry → focus pools tab
@@ -249,8 +247,7 @@
       const obj = selectedZone.zoneObjects.find((o) => o.id === dragNodeId);
       const startPos = obj ? { x: obj.x, y: obj.y } : nodeDragPos;
       const moved = Math.abs(nodeDragPos.x - startPos.x) + Math.abs(nodeDragPos.y - startPos.y);
-      if (moved < 1 && obj) {
-        // Click without drag → focus inspector
+      if (moved < 3 && obj) {
         nodeFocusInspector(obj);
       } else {
         editor.moveZoneObject(selectedZone.label, dragNodeId, nodeDragPos);
