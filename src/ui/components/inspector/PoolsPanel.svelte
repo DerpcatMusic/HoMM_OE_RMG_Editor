@@ -663,9 +663,12 @@
             </div>
             <div class="pane-list">
               {#each presetEntries as entry, ei}
-                <div class="group-row" class:is-focused={focusedEntry === ei} onclick={() => focusedEntry = ei} onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') focusedEntry = ei; }} role="button" tabindex="0">
+                {@const hasName = !!entry.name}
+                {@const hasRules = (entry.rules ?? []).length > 0}
+                <div class="group-row" class:is-focused={focusedEntry === ei} class:unnamed={!hasName && hasRules} onclick={() => focusedEntry = ei} onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') focusedEntry = ei; }} role="button" tabindex="0">
                   <span class="group-row-name">E{ei}</span>
                   <span class="group-row-meta">{entry.name ?? entry.sid ?? "?"}</span>
+                  {#if !hasName && hasRules}<span class="unnamed-warn" title="Has rules but no name — cannot be road target">⚠</span>{/if}
                   <button class="button-icon danger" onclick={(e) => { e.stopPropagation(); removePresetEntry(ei); }} title="Remove">✕</button>
                 </div>
               {/each}
@@ -1162,6 +1165,8 @@
   }
   /* Mandatory content browser */
   .mc-browser { border-color: var(--color-line-strong); }
+  .group-row.unnamed { background: color-mix(in srgb, #c90 10%, transparent); }
+  .unnamed-warn { font-size: 0.5rem; color: #c90; flex-shrink: 0; }
   .flag-strip { display: flex; flex-wrap: wrap; gap: var(--space-1); }
   .flag-chip {
     display: flex; align-items: center; gap: 2px;

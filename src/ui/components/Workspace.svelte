@@ -542,6 +542,11 @@
             <option value="Dirt">Dirt</option>
           </select>
         </label>
+        {#if selectedZone.crossroadsPosition !== undefined}
+          <div class="road-type-selector">
+            <span class="muted-label">Crossroads pos: {selectedZone.crossroadsPosition}</span>
+          </div>
+        {/if}
         <div class="zone-roads-summary">
           <strong>Roads</strong>
           <span>{selectedZone.zoneRoads.map((r) => `${r.type}: ${r.fromId}→${r.toId}`).join(" / ") || "none"}</span>
@@ -744,6 +749,7 @@
   .zone-roads-summary { display: flex; align-items: center; gap: var(--space-1); }
   .zone-roads-summary strong { font-size: 0.5625rem; }
   .zone-roads-summary span { font-family: var(--font-mono); font-size: 0.5rem; color: var(--color-muted); }
+  .muted-label { font-size: 0.5rem; color: var(--color-muted); font-family: var(--font-mono); }
   .button-sm { font-size: 0.5625rem; padding: 1px var(--space-1); }
   .input-sm {
     font-size: 0.625rem; padding: 2px var(--space-1);
