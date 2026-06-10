@@ -20,10 +20,20 @@
   let connMousePos = $state({ x: 0, y: 0 });
   // Context menu state
   let ctxMenu = $state<{ x: number; y: number; items: Array<{ label: string; icon?: string; onClick: () => void }> } | null>(null);
-  // Zone edit road creation state
+  // Zone edit state
   let creatingRoad = $state(false);
   let roadFromNodeId = $state<string | null>(null);
   let roadType = $state<"Dirt" | "Stone">("Stone");
+  let selectedRoadId = $state<string | null>(null);
+  // Zone node drag state
+  let nodeDragging = $state(false);
+  let dragNodeId = $state<string | null>(null);
+  let nodeDragOffset = $state({ x: 0, y: 0 });
+  let nodeDragPos = $state({ x: 0, y: 0 });
+  // Zone node connection drag (Ctrl+drag)
+  let nodeConnDragging = $state(false);
+  let nodeConnFromId = $state<string | null>(null);
+  let nodeConnMousePos = $state({ x: 0, y: 0 });
   function closeCtxMenu() { ctxMenu = null; }
   function zonePointerDown(e: PointerEvent, zone: typeof zones[number]) {
     if (e.button !== 0) return;
@@ -141,10 +151,7 @@
       editor.selectConnectionById(connId);
     }
   }
-  // --- Zone edit road functions ---
-  function zoneObjectNodeId(obj: { id: string }): string {
-    return obj.id;
-  }
+  // --- Zone edit: node/road interaction ---
   function nodeTypeFromId(id: string): string {
     if (id.startsWith("main:")) return "MainObject";
     if (id.startsWith("connection:")) return "Connection";
@@ -155,22 +162,115 @@
     if (id.startsWith("main:")) return id.replace("main:", "");
     if (id.startsWith("connection:")) return id.replace("connection:", "");
     if (id === "crossroads") return "";
-    return id; // MandatoryContent entry name
+    return id;
   }
+  function zoneStageRect(e: PointerEvent) {
+    return (e.currentTarget as HTMLElement).closest(".zone-stage")!.getBoundingClientRect();
+  }
+  function zoneStagePct(e: PointerEvent, rect: DOMRect) {
+    return {
+      x: ((e.clientX - rect.left) / rect.width) * 100,
+      y: ((e.clientY - rect.top) / rect.height) * 100,
+    };
+  }
+  function nodePos(obj: { id: string; x: number; y: number }) {
+    if (nodeDragging && dragNodeId === obj.id) return nodeDragPos;
+    return { x: obj.x, y: obj.y };
+  }
+  function roadEndpointPos(targetId: string): { x: number; y: number } | null {
+    const obj = selectedZone.zoneObjects.find((o) => o.id === targetId);
+    if (obj) return nodePos(obj);
+    return null;
+  }
+  function roadPath(road: typeof selectedZone.zoneRoads[number]): string {
+    const from = roadEndpointPos(road.fromId);
+    const to = roadEndpointPos(road.toId);
+    if (!from || !to) return "";
+    return `M ${from.x.toFixed(2)} ${from.y.toFixed(2)} L ${to.x.toFixed(2)} ${to.y.toFixed(2)}`;
+  }
+  // Node pointer down: drag, ctrl+drag, or click
+  function nodePointerDown(e: PointerEvent, obj: typeof selectedZone.zoneObjects[number]) {
+    if (e.button !== 0) return;
+    const rect = zoneStageRect(e);
+    const p = zoneStagePct(e, rect);
+    // Ctrl+drag → create road (like canvas ctrl+drag for connections)
+    if (e.ctrlKey) {
+      nodeConnDragging = true;
+      nodeConnFromId = obj.id;
+      nodeConnMousePos = p;
+      e.preventDefault();
+      return;
+    }
+    // Shift+click → road creation mode (two-click)
+    if (e.shiftKey) {
+      nodeClick(obj.id);
+      e.preventDefault();
+      return;
+    }
+    // Normal drag → move node
+    nodeDragging = true;
+    dragNodeId = obj.id;
+    const pos = nodePos(obj);
+    nodeDragOffset = { x: p.x - pos.x, y: p.y - pos.y };
+    nodeDragPos = { x: pos.x, y: pos.y };
+    e.preventDefault();
+  }
+  // Stage pointer move
+  function zoneStagePointerMove(e: PointerEvent) {
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    const p = zoneStagePct(e, rect);
+    if (nodeDragging && dragNodeId) {
+      nodeDragPos = {
+        x: Math.max(5, Math.min(95, p.x - nodeDragOffset.x)),
+        y: Math.max(5, Math.min(95, p.y - nodeDragOffset.y)),
+      };
+    }
+    if (nodeConnDragging) {
+      nodeConnMousePos = p;
+    }
+  }
+  // Stage pointer up
+  function zoneStagePointerUp(e: PointerEvent) {
+    if (nodeDragging && dragNodeId) {
+      editor.moveZoneObject(selectedZone.label, dragNodeId, nodeDragPos);
+      nodeDragging = false;
+      dragNodeId = null;
+    }
+    if (nodeConnDragging && nodeConnFromId) {
+      const el = document.elementFromPoint(e.clientX, e.clientY)?.closest(".zone-node") as HTMLElement | null;
+      const targetId = el?.dataset.nodeId;
+      if (targetId && targetId !== nodeConnFromId) {
+        const fromType = nodeTypeFromId(nodeConnFromId);
+        const fromArg = nodeArgFromId(nodeConnFromId);
+        const toType = nodeTypeFromId(targetId);
+        const toArg = nodeArgFromId(targetId);
+        editor.addRoadBetween(
+          { type: fromType, args: fromArg ? [fromArg] : [] },
+          { type: toType, args: toArg ? [toArg] : [] },
+          roadType
+        );
+      }
+      nodeConnDragging = false;
+      nodeConnFromId = null;
+    }
+  }
+  // Double-click on stage → add main object
+  function zoneStageDblClick(e: MouseEvent) {
+    if ((e.target as HTMLElement).closest(".zone-node")) return;
+    editor.addMainObject();
+  }
+  // Node click (shift+click or two-click mode)
   function nodeClick(objId: string) {
     if (!creatingRoad) {
-      // Start road creation
       creatingRoad = true;
       roadFromNodeId = objId;
       return;
     }
-    // Complete road creation
     if (roadFromNodeId && roadFromNodeId !== objId) {
       const fromType = nodeTypeFromId(roadFromNodeId);
       const fromArg = nodeArgFromId(roadFromNodeId);
       const toType = nodeTypeFromId(objId);
       const toArg = nodeArgFromId(objId);
-      // Use the road mutation
       editor.addRoadBetween(
         { type: fromType, args: fromArg ? [fromArg] : [] },
         { type: toType, args: toArg ? [toArg] : [] },
@@ -183,17 +283,52 @@
   function cancelRoadCreation() {
     creatingRoad = false;
     roadFromNodeId = null;
+    selectedRoadId = null;
   }
-  function roadEndpointPos(targetId: string): { x: number; y: number } | null {
-    const obj = selectedZone.zoneObjects.find((o) => o.id === targetId);
-    if (obj) return { x: obj.x, y: obj.y };
-    return null;
+  // Context menu on nodes
+  function nodeContextMenu(e: MouseEvent, obj: typeof selectedZone.zoneObjects[number]) {
+    e.preventDefault();
+    const isMain = obj.id.startsWith("main:");
+    const targetId = obj.id;
+    ctxMenu = {
+      x: e.clientX,
+      y: e.clientY,
+      items: [
+        { label: "Start road from here", icon: "route", onClick: () => { creatingRoad = true; roadFromNodeId = targetId; } },
+        ...(isMain ? [{ label: "Remove main object", icon: "delete", onClick: () => { /* TODO: remove main object */ } }] : []),
+      ],
+    };
   }
-  function roadPath(road: typeof selectedZone.zoneRoads[number]): string {
-    const from = roadEndpointPos(road.fromId);
-    const to = roadEndpointPos(road.toId);
-    if (!from || !to) return "";
-    return `M ${from.x.toFixed(2)} ${from.y.toFixed(2)} L ${to.x.toFixed(2)} ${to.y.toFixed(2)}`;
+  // Context menu on road lines
+  function roadContextMenu(e: MouseEvent, road: typeof selectedZone.zoneRoads[number]) {
+    e.preventDefault();
+    selectedRoadId = road.id;
+    ctxMenu = {
+      x: e.clientX,
+      y: e.clientY,
+      items: [
+        { label: `Delete road (${road.type})`, icon: "delete", onClick: () => editor.removeRoad(road.index) },
+        { label: "Change to Stone", icon: "swap_horiz", onClick: () => editor.updateRoad(road.index, { roadIndex: road.index, type: "Stone", from: road.fromTarget, to: road.toTarget }) },
+        { label: "Change to Dirt", icon: "swap_horiz", onClick: () => editor.updateRoad(road.index, { roadIndex: road.index, type: "Dirt", from: road.fromTarget, to: road.toTarget }) },
+      ],
+    };
+  }
+  // Keyboard on zone stage
+  function zoneStageKeydown(e: KeyboardEvent) {
+    if (e.key === "Escape") {
+      cancelRoadCreation();
+      e.preventDefault();
+      return;
+    }
+    if (e.key === "Delete" && selectedRoadId) {
+      const road = selectedZone.zoneRoads.find((r) => r.id === selectedRoadId);
+      if (road) {
+        editor.removeRoad(road.index);
+        selectedRoadId = null;
+      }
+      e.preventDefault();
+      return;
+    }
   }
 </script>
 <div class="workspace">
@@ -293,22 +428,56 @@
       </div>
       <p class="conditional-note">
         {#if creatingRoad}
-          Click a target node to complete the road. <button class="button button-sm" onclick={cancelRoadCreation}>Cancel</button>
+          Click a target node to complete the road. <button class="button button-sm" onclick={cancelRoadCreation}>Cancel (Esc)</button>
+        {:else if nodeConnDragging}
+          Release on a target node to create a road.
         {:else}
-          Click a node to start creating a road. Roads connect zone objects.
+          Drag to move. Ctrl+drag to connect. Shift+click for two-click road. Double-click empty to add main object.
         {/if}
       </p>
-      <div class="zone-stage">
+      <div class="zone-stage"
+        onpointermove={zoneStagePointerMove}
+        onpointerup={zoneStagePointerUp}
+        ondblclick={zoneStageDblClick}
+        onkeydown={zoneStageKeydown}
+        role="application"
+        aria-label="Zone edit canvas"
+        tabindex="0"
+      >
         <div class="stage-grid"></div>
         <!-- SVG layer for roads -->
         <svg class="stage-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
           {#each selectedZone.zoneRoads as road (road.id)}
             {@const path = roadPath(road)}
             {#if path}
-              <path class="zone-road-line" class:is-stone={road.type === "Stone"} d={path} />
+              <g>
+                <!-- Hit area (wider, invisible) -->
+                <path
+                  class="road-hit"
+                  d={path}
+                  onclick={() => { selectedRoadId = road.id; }}
+                  oncontextmenu={(e) => roadContextMenu(e, road)}
+                  role="button"
+                  tabindex="0"
+                />
+                <!-- Visible road line -->
+                <path
+                  class="zone-road-line"
+                  class:is-stone={road.type === "Stone"}
+                  class:is-selected={selectedRoadId === road.id}
+                  d={path}
+                />
+              </g>
             {/if}
           {/each}
-          <!-- Draft road start marker -->
+          <!-- Ctrl+drag draft line -->
+          {#if nodeConnDragging && nodeConnFromId}
+            {@const fromPos = roadEndpointPos(nodeConnFromId)}
+            {#if fromPos}
+              <line class="conn-draft" x1={fromPos.x} y1={fromPos.y} x2={nodeConnMousePos.x} y2={nodeConnMousePos.y} />
+            {/if}
+          {/if}
+          <!-- Two-click draft marker -->
           {#if creatingRoad && roadFromNodeId}
             {@const fromPos = roadEndpointPos(roadFromNodeId)}
             {#if fromPos}
@@ -321,16 +490,19 @@
           {@const isMain = obj.id.startsWith("main:")}
           {@const isConnection = obj.id.startsWith("connection:")}
           {@const isCrossroads = obj.id === "crossroads"}
-          {@const isRoadTarget = creatingRoad && roadFromNodeId === obj.id}
+          {@const isRoadSource = creatingRoad && roadFromNodeId === obj.id}
+          {@const pos = nodePos(obj)}
           <button
             type="button"
             class="zone-node"
             class:is-main={isMain}
             class:is-connection={isConnection}
             class:is-crossroads={isCrossroads}
-            class:is-road-source={isRoadTarget}
-            style="left:{obj.x}%;top:{obj.y}%"
-            onclick={() => nodeClick(obj.id)}
+            class:is-road-source={isRoadSource}
+            data-node-id={obj.id}
+            style="left:{pos.x}%;top:{pos.y}%"
+            onpointerdown={(e) => nodePointerDown(e, obj)}
+            oncontextmenu={(e) => nodeContextMenu(e, obj)}
             title="{obj.type}: {obj.label}"
           >
             <span class="node-icon">{isMain ? "🏰" : isConnection ? "🚪" : isCrossroads ? "╬" : "📦"}</span>
@@ -520,6 +692,18 @@
     stroke: #bbb;
     stroke-width: 3;
     stroke-dasharray: none;
+  }
+  .zone-road-line.is-selected {
+    stroke: var(--color-accent);
+    stroke-width: 4;
+  }
+  .road-hit {
+    fill: none;
+    stroke: transparent;
+    stroke-width: 10;
+    vector-effect: non-scaling-stroke;
+    pointer-events: stroke;
+    cursor: pointer;
   }
   .road-draft-start {
     fill: var(--color-accent);
