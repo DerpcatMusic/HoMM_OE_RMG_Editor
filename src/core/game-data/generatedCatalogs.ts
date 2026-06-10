@@ -7,6 +7,8 @@ import { indexArtifactCatalogFromSource, type ArtifactCatalogEntry, type Artifac
 import { indexRmgContentCatalogFromSource, type RmgContentCatalogEntry, type RmgContentCatalogStats } from "./contentCatalog.js";
 import {
   generateCoreCatalogsFromSource,
+  readContentPoolConfigs,
+  readContentListConfigs,
   type GeneratedBiomeCatalogEntry,
   type GeneratedContentListCatalogEntry,
   type GeneratedContentPoolCatalogEntry,
@@ -38,6 +40,8 @@ export interface GeneratedCatalogManifest {
     heroes: GeneratedCatalogFileInfo;
     magics: GeneratedCatalogFileInfo;
     units: GeneratedCatalogFileInfo;
+    contentPoolConfigs: GeneratedCatalogFileInfo;
+    contentListConfigs: GeneratedCatalogFileInfo;
   };
 }
 
@@ -75,10 +79,12 @@ export async function refreshGeneratedCatalogs(input: RefreshGeneratedCatalogsIn
   const coreZipStat = await fs.stat(input.paths.coreZipPath);
   const sourceHash = hashSource(input.paths.coreZipPath, coreZipStat.size, coreZipStat.mtimeMs);
   const generatedAt = new Date().toISOString();
-  const [artifacts, rmgContent, coreCatalogs] = await Promise.all([
+  const [artifacts, rmgContent, coreCatalogs, fullPoolConfigs, fullListConfigs] = await Promise.all([
     indexArtifactCatalogFromSource(source, language),
     indexRmgContentCatalogFromSource(source, language),
     generateCoreCatalogsFromSource(source, language),
+    readContentPoolConfigs(source),
+    readContentListConfigs(source),
   ]);
 
   await fs.mkdir(input.paths.generatedDataDir, { recursive: true });
@@ -92,7 +98,8 @@ export async function refreshGeneratedCatalogs(input: RefreshGeneratedCatalogsIn
   const magicsPath = path.join(input.paths.generatedDataDir, "magics.json");
   const unitsPath = path.join(input.paths.generatedDataDir, "units.json");
   const manifestPath = path.join(input.paths.generatedDataDir, "manifest.json");
-
+  const poolConfigsPath = path.join(input.paths.generatedDataDir, "content-pool-configs.json");
+  const listConfigsPath = path.join(input.paths.generatedDataDir, "content-list-configs.json");
   const artifactFile: GeneratedArtifactCatalogFile = {
     language,
     generatedAt,
@@ -117,6 +124,8 @@ export async function refreshGeneratedCatalogs(input: RefreshGeneratedCatalogsIn
   await writeCoreCatalogFile(heroesPath, language, generatedAt, sourceHash, coreCatalogs.heroes);
   await writeCoreCatalogFile(magicsPath, language, generatedAt, sourceHash, coreCatalogs.magics);
   await writeCoreCatalogFile(unitsPath, language, generatedAt, sourceHash, coreCatalogs.units);
+  await fs.writeFile(poolConfigsPath, `${JSON.stringify({ language, generatedAt, sourceHash, entries: [...fullPoolConfigs.values()] }, null, 2)}\n`, "utf8");
+  await fs.writeFile(listConfigsPath, `${JSON.stringify({ language, generatedAt, sourceHash, entries: [...fullListConfigs.values()] }, null, 2)}\n`, "utf8");
 
   const manifest: GeneratedCatalogManifest = {
     generatedAt,
@@ -161,6 +170,14 @@ export async function refreshGeneratedCatalogs(input: RefreshGeneratedCatalogsIn
       units: {
         path: unitsPath,
         entries: coreCatalogs.units.length,
+      },
+      contentPoolConfigs: {
+        path: poolConfigsPath,
+        entries: fullPoolConfigs.size,
+      },
+      contentListConfigs: {
+        path: listConfigsPath,
+        entries: fullListConfigs.size,
       },
     },
   };

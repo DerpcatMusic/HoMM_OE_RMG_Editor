@@ -273,6 +273,8 @@ export function setCoreArchiveCatalogSummary(
 export function setBundledCoreArchiveCatalogSummary(
   session: EditorSession,
   catalogSummary: CoreArchiveCatalogSummary,
+  contentPoolIndex?: Map<string, import("../../core/rmg/rmgTypes.js").ContentPoolConfig>,
+  contentListIndex?: Map<string, import("../../core/rmg/rmgTypes.js").ContentList>,
 ): EditorSession {
   return {
     ...session,
@@ -282,6 +284,8 @@ export function setBundledCoreArchiveCatalogSummary(
       lastModified: 0,
       catalogSummary,
       source: "bundled",
+      ...(contentPoolIndex ? { contentPoolIndex } : {}),
+      ...(contentListIndex ? { contentListIndex } : {}),
     },
     lastMessage: `Bundled core loaded: ${catalogSummary.contentPools} pools, ${catalogSummary.rmgContent} content entries.`,
     lastActionFailed: false,
@@ -782,7 +786,7 @@ export function updateContentWeightInSession(
   const existingContent = [...(group.content ?? [])];
   const item = existingContent[contentIndex];
   if (!item) return setSessionMessage(session, "Content item not found.");
-  existingContent[contentIndex] = { ...item, weight };
+  existingContent[contentIndex] = weight === undefined ? { ...item } : { ...item, weight };
   return applyAction(session, {
     action: {
       type: "contentPool.group.update",
@@ -832,6 +836,51 @@ export function removeGroupFromPoolInSession(session: EditorSession, poolIndex: 
       },
     },
     label: `Remove group from pool`,
+  });
+}
+export function addMandatoryContentPresetToSession(
+  session: EditorSession,
+  name: string,
+): EditorSession {
+  return applyAction(session, {
+    action: {
+      type: "mandatoryContentPreset.add",
+      input: {
+        preset: { name, content: [] },
+      },
+    },
+    label: `Add mandatory content preset "${name}"`,
+  });
+}
+export function removeMandatoryContentPresetFromSession(
+  session: EditorSession,
+  presetIndex: number,
+): EditorSession {
+  return applyAction(session, {
+    action: {
+      type: "mandatoryContentPreset.remove",
+      input: {
+        preset: { presetIndex },
+        cascade: true,
+      },
+    },
+    label: `Remove mandatory content preset`,
+  });
+}
+export function updateMandatoryContentPresetInSession(
+  session: EditorSession,
+  presetIndex: number,
+  settings: { name?: string; content?: import("../../core/rmg/rmgTypes.js").MandatoryContent[] },
+): EditorSession {
+  return applyAction(session, {
+    action: {
+      type: "mandatoryContentPreset.update",
+      input: {
+        preset: { presetIndex },
+        settings,
+      },
+    },
+    label: `Update mandatory content preset`,
   });
 }
 
@@ -1452,6 +1501,72 @@ function applyZoneField(
     },
     label,
     selectedZoneName: zoneName,
+  });
+}
+export function setZonePoolFieldInSession(
+  session: EditorSession,
+  field: "guardedContentPool" | "unguardedContentPool" | "resourcesContentPool",
+  poolNames: readonly string[],
+): EditorSession {
+  const zoneName = session.selectedZoneName;
+  if (!zoneName) return setSessionMessage(session, "No zone selected.");
+  const labels: Record<string, string> = { guardedContentPool: "guarded", unguardedContentPool: "unguarded", resourcesContentPool: "resource" };
+  return applyZoneField(session, zoneName, field, [...poolNames], `Update ${labels[field]} pools`);
+}
+export function setZoneMandatoryPresetsInSession(
+  session: EditorSession,
+  presetNames: readonly string[],
+): EditorSession {
+  const zoneName = session.selectedZoneName;
+  if (!zoneName) return setSessionMessage(session, "No zone selected.");
+  return applyAction(session, {
+    action: {
+      type: "zone.setMandatoryContentPresets",
+      input: {
+        variantIndex: session.selectedVariantIndex,
+        zone: { zoneName },
+        presetIds: [...presetNames],
+      },
+    },
+    label: "Update mandatory presets",
+    selectedZoneName: zoneName,
+  });
+}
+export function setZoneCountLimitPresetsInSession(
+  session: EditorSession,
+  presetNames: readonly string[],
+): EditorSession {
+  const zoneName = session.selectedZoneName;
+  if (!zoneName) return setSessionMessage(session, "No zone selected.");
+  return applyAction(session, {
+    action: {
+      type: "zone.setContentCountLimitPresets",
+      input: {
+        variantIndex: session.selectedVariantIndex,
+        zone: { zoneName },
+        presetIds: [...presetNames],
+      },
+    },
+    label: "Update count limit presets",
+    selectedZoneName: zoneName,
+  });
+}
+export function removeLocalPoolFromSession(
+  session: EditorSession,
+  poolName: string,
+): EditorSession {
+  const pools = session.template.contentPools ?? [];
+  const idx = pools.findIndex((p) => p.name === poolName);
+  if (idx === -1) return setSessionMessage(session, `Pool "${poolName}" not found.`);
+  return applyAction(session, {
+    action: {
+      type: "contentPool.remove",
+      input: {
+        pool: { poolIndex: idx },
+        cascade: true,
+      },
+    },
+    label: `Remove pool "${poolName}"`,
   });
 }
 

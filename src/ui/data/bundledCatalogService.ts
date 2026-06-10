@@ -1,12 +1,15 @@
 import type { CoreArchiveCatalogSummary, CoreCatalogOption } from "../state/editorSession.js";
-import contentPoolsJson from "../public/game-data/content-pools.json" with { type: "json" };
-import contentListsJson from "../public/game-data/content-lists.json" with { type: "json" };
-import factionsJson from "../public/game-data/factions.json" with { type: "json" };
-import biomesJson from "../public/game-data/biomes.json" with { type: "json" };
-import heroesJson from "../public/game-data/heroes.json" with { type: "json" };
-import magicsJson from "../public/game-data/magics.json" with { type: "json" };
-import unitsJson from "../public/game-data/units.json" with { type: "json" };
-import rmgContentJson from "../public/game-data/rmg-content.json" with { type: "json" };
+import type { ContentPoolConfig, ContentList } from "../../core/rmg/rmgTypes.js";
+import contentPoolsJson from "./game-data/content-pools.json" with { type: "json" };
+import contentListsJson from "./game-data/content-lists.json" with { type: "json" };
+import contentPoolConfigsJson from "./game-data/content-pool-configs.json" with { type: "json" };
+import contentListConfigsJson from "./game-data/content-list-configs.json" with { type: "json" };
+import factionsJson from "./game-data/factions.json" with { type: "json" };
+import biomesJson from "./game-data/biomes.json" with { type: "json" };
+import heroesJson from "./game-data/heroes.json" with { type: "json" };
+import magicsJson from "./game-data/magics.json" with { type: "json" };
+import unitsJson from "./game-data/units.json" with { type: "json" };
+import rmgContentJson from "./game-data/rmg-content.json" with { type: "json" };
 interface CatalogFile<T> {
   language: string;
   generatedAt: string;
@@ -75,6 +78,26 @@ export function getBundledCatalogSummary(): CoreArchiveCatalogSummary {
       label: faction.name ? `${faction.name} (${faction.id})` : faction.id,
     })),
   };
+}
+export function getBundledContentPoolIndex(): Map<string, ContentPoolConfig> {
+  const configs = contentPoolConfigsJson as CatalogFile<ContentPoolConfig>;
+  const map = new Map<string, ContentPoolConfig>();
+  for (const pool of configs.entries) {
+    if (pool.name && !map.has(pool.name)) {
+      map.set(pool.name, pool);
+    }
+  }
+  return map;
+}
+export function getBundledContentListIndex(): Map<string, ContentList> {
+  const configs = contentListConfigsJson as CatalogFile<ContentList>;
+  const map = new Map<string, ContentList>();
+  for (const list of configs.entries) {
+    if (list.name && !map.has(list.name)) {
+      map.set(list.name, list);
+    }
+  }
+  return map;
 }
 function isUnguardedContentPoolOption(option: CoreCatalogOption): boolean {
   return `${option.id} ${option.label}`.toLocaleLowerCase().includes("unguarded");

@@ -17,7 +17,7 @@ import {
 import { attachCoreArchiveProgram, loadTemplateProgram, saveTemplateProgram } from "../effect/editorPrograms.js";
 import { formatUiEffectError } from "../effect/errors.js";
 import { runUiEffect } from "../effect/runtime.js";
-import { getBundledCatalogSummary } from "../data/bundledCatalogService.js";
+import { getBundledCatalogSummary, getBundledContentPoolIndex, getBundledContentListIndex } from "../data/bundledCatalogService.js";
 import {
   createInitialEditorSession,
   type EditorSession,
@@ -65,6 +65,13 @@ import {
   removeBanFromPoolInSession,
   removeGroupFromPoolInSession,
   updateContentWeightInSession,
+  addMandatoryContentPresetToSession,
+  removeMandatoryContentPresetFromSession,
+  updateMandatoryContentPresetInSession,
+  setZonePoolFieldInSession,
+  setZoneMandatoryPresetsInSession,
+  setZoneCountLimitPresetsInSession,
+  removeLocalPoolFromSession,
   serializeSessionTemplate,
   getSessionSaveFileName,
   setBundledCoreArchiveCatalogSummary,
@@ -120,6 +127,7 @@ class EditorState {
   rightDockTab: RightDockTab = $state("inspector");
   activeContentPoolName: string = $state("");
   activePoolSource: "template-local" | "core" | "" = $state("");
+  activeMandatoryContentPresetName: string = $state("");
   sidebarSections: SidebarSectionFlex = $state({ settings: 6, zones: 2.5, players: 1.5 });
   focusedPlayer: string | undefined = $state(undefined);
 
@@ -186,7 +194,7 @@ class EditorState {
   }
 
   get metrics(): ShellMetrics {
-    return getShellMetrics(this.session.template);
+    return getShellMetrics();
   }
 
   get sourceFileName(): string | undefined {
@@ -424,6 +432,52 @@ class EditorState {
     if (isCorePool) return { source: "core", poolIndex: -1 };
     return undefined;
   }
+  // --- Mandatory content preset management ---
+  inspectMandatoryContentPreset(name: string) {
+    this.activeMandatoryContentPresetName = name;
+  }
+  clearMandatoryContentInspection() {
+    this.activeMandatoryContentPresetName = "";
+  }
+  addMandatoryContentPreset(name: string) {
+    this.session = addMandatoryContentPresetToSession(this.session, name);
+    this.scheduleAutosave();
+  }
+  removeMandatoryContentPreset(presetIndex: number) {
+    this.session = removeMandatoryContentPresetFromSession(this.session, presetIndex);
+    this.scheduleAutosave();
+  }
+  updateMandatoryContentPreset(presetIndex: number, content: readonly import("../../core/rmg/rmgTypes.js").MandatoryContent[]) {
+    this.session = updateMandatoryContentPresetInSession(this.session, presetIndex, { content: [...content] });
+    this.scheduleAutosave();
+  }
+  resolveMandatoryContentPreset(name: string): { presetIndex: number } | undefined {
+    const presets = this.session.template.mandatoryContent ?? [];
+    const index = presets.findIndex((p) => p.name === name);
+    if (index !== -1) return { presetIndex: index };
+    return undefined;
+  }
+  // --- Zone assignment management ---
+  setZonePoolField(field: "guardedContentPool" | "unguardedContentPool" | "resourcesContentPool", poolNames: readonly string[]) {
+    this.session = setZonePoolFieldInSession(this.session, field, poolNames);
+    this.scheduleAutosave();
+  }
+  setZoneMandatoryPresets(presetNames: readonly string[]) {
+    this.session = setZoneMandatoryPresetsInSession(this.session, presetNames);
+    this.scheduleAutosave();
+  }
+  setZoneCountLimitPresets(presetNames: readonly string[]) {
+    this.session = setZoneCountLimitPresetsInSession(this.session, presetNames);
+    this.scheduleAutosave();
+  }
+  addLocalPool(name: string) {
+    this.session = addLocalContentPoolToSession(this.session, { name });
+    this.scheduleAutosave();
+  }
+  removeLocalPool(poolName: string) {
+    this.session = removeLocalPoolFromSession(this.session, poolName);
+    this.scheduleAutosave();
+  }
 
 
   // --- Copy/Paste ---
@@ -560,9 +614,11 @@ class EditorState {
     // Load bundled catalogs (default) — synchronous, no zip parsing needed
     try {
       const bundledSummary = getBundledCatalogSummary();
+      const bundledPoolIndex = getBundledContentPoolIndex();
+      const bundledListIndex = getBundledContentListIndex();
       if (!this.session.coreArchive) {
-        this.session = setBundledCoreArchiveCatalogSummary(this.session, bundledSummary);
-        console.log("[editor] Bundled catalogs loaded:", bundledSummary.contentPools, "pools,", bundledSummary.rmgContent, "content");
+        this.session = setBundledCoreArchiveCatalogSummary(this.session, bundledSummary, bundledPoolIndex, bundledListIndex);
+        console.log("[editor] Bundled catalogs loaded:", bundledSummary.contentPools, "pools,", bundledSummary.rmgContent, "content,", bundledPoolIndex.size, "pool configs,", bundledListIndex.size, "list configs");
       }
     } catch (err) {
       console.warn("[editor] Failed to load bundled catalogs:", err);

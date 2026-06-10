@@ -1,7 +1,7 @@
 {
   "language": "english",
-  "generatedAt": "2026-06-07T10:37:23.360Z",
-  "sourceHash": "b7e9d3c1727b5ac09e6b589034613378d0f342df96b7a3004f98755e9cf03a5b",
+  "generatedAt": "2026-06-10T09:32:49.067Z",
+  "sourceHash": "1fd21d400361ec0cdde68f71e881a34da604a83e4334bbf3bcc4359c256fe6f5",
   "entries": [
     {
       "id": "unspeakable",
@@ -14,7 +14,7 @@
       "name": "Abyssal Envoy",
       "faction": "unfrozen",
       "tier": 7,
-      "squadValue": 3822,
+      "squadValue": 3810,
       "upgradeSid": "unspeakable_upg"
     },
     {
@@ -28,7 +28,7 @@
       "name": "Abyssal Executor",
       "faction": "unfrozen",
       "tier": 7,
-      "squadValue": 6719
+      "squadValue": 6689
     },
     {
       "id": "unspeakable_upg",
@@ -41,7 +41,7 @@
       "name": "Abyssal Overseer",
       "faction": "unfrozen",
       "tier": 7,
-      "squadValue": 6719,
+      "squadValue": 6689,
       "upgradeSid": "unspeakable_upg_alt"
     },
     {
@@ -55,7 +55,7 @@
       "name": "Aga’Shoth Mat’ha",
       "faction": "unfrozen",
       "tier": 3,
-      "squadValue": 276
+      "squadValue": 256
     },
     {
       "id": "frostworm_rider",
@@ -68,7 +68,7 @@
       "name": "Aga’Shoth Rider",
       "faction": "unfrozen",
       "tier": 3,
-      "squadValue": 194,
+      "squadValue": 181,
       "upgradeSid": "frostworm_rider_upg"
     },
     {
@@ -82,7 +82,7 @@
       "name": "Aga’Shoth Tamer",
       "faction": "unfrozen",
       "tier": 3,
-      "squadValue": 276,
+      "squadValue": 256,
       "upgradeSid": "frostworm_rider_upg_alt"
     },
     {
@@ -123,7 +123,7 @@
       "name": "Apotheosis",
       "faction": "human",
       "tier": 7,
-      "squadValue": 6396
+      "squadValue": 6362
     },
     {
       "id": "arbitrator",
@@ -150,7 +150,7 @@
       "name": "Archangel",
       "faction": "human",
       "tier": 7,
-      "squadValue": 6396,
+      "squadValue": 6362,
       "upgradeSid": "angel_upg_alt"
     },
     {
@@ -164,7 +164,7 @@
       "name": "Armored Hound",
       "faction": "undead",
       "tier": 3,
-      "squadValue": 156
+      "squadValue": 152
     },
     {
       "id": "black_dragon_upg_alt",
@@ -191,7 +191,7 @@
       "name": "Aureate Dancer",
       "faction": "dungeon",
       "tier": 3,
-      "squadValue": 205
+      "squadValue": 203
     },
     {
       "id": "crossbowman_upg",
@@ -269,7 +269,7 @@
       "name": "Barghest",
       "faction": "undead",
       "tier": 3,
-      "squadValue": 156,
+      "squadValue": 152,
       "upgradeSid": "pet_upg_alt"
     },
     {
@@ -283,7 +283,7 @@
       "name": "Bewitcher",
       "faction": "unfrozen",
       "tier": 5,
-      "squadValue": 849
+      "squadValue": 845
     },
     {
       "id": "unfrozen_cultist_upg",
@@ -296,7 +296,7 @@
       "name": "Binder",
       "faction": "unfrozen",
       "tier": 2,
-      "squadValue": 184,
+      "squadValue": 193,
       "upgradeSid": "unfrozen_cultist_upg_alt"
     },
     {
@@ -338,7 +338,7 @@
       "name": "Bloated Arbitrator",
       "faction": "unfrozen",
       "tier": 6,
-      "squadValue": 2259
+      "squadValue": 2273
     },
     {
       "id": "aqualotl_upg_alt",
@@ -351,7 +351,7 @@
       "name": "Brumal Naiad",
       "faction": "nature",
       "tier": 4,
-      "squadValue": 518
+      "squadValue": 550
     },
     {
       "id": "sunlight_cavalry",
@@ -393,7 +393,7 @@
       "name": "Chanter",
       "faction": "demon",
       "tier": 3,
-      "squadValue": 300,
+      "squadValue": 327,
       "upgradeSid": "wasp_upg_alt"
     },
     {
@@ -407,7 +407,7 @@
       "name": "Chthonic Hydra",
       "faction": "dungeon",
       "tier": 6,
-      "squadValue": 2335,
+      "squadValue": 2377,
       "upgradeSid": "hydra_upg_alt"
     },
     {
@@ -462,7 +462,7 @@
       "name": "Crystal Iriyad",
       "faction": "nature",
       "tier": 3,
-      "squadValue": 309
+      "squadValue": 302
     },
     {
       "id": "unfrozen_cultist",
@@ -475,7 +475,7 @@
       "name": "Cultist",
       "faction": "unfrozen",
       "tier": 2,
-      "squadValue": 138,
+      "squadValue": 144,
       "upgradeSid": "unfrozen_cultist_upg"
     },
     {
@@ -584,7 +584,7 @@
       "name": "Energy Phoenix",
       "faction": "nature",
       "tier": 7,
-      "squadValue": 7594
+      "squadValue": 7469
     },
     {
       "id": "inquisitor_upg_alt",
@@ -597,7 +597,7 @@
       "name": "Excommunicator",
       "faction": "human",
       "tier": 6,
-      "squadValue": 1853
+      "squadValue": 1806
     },
     {
       "id": "fairy_dragon",
@@ -624,7 +624,7 @@
       "name": "Faun",
       "faction": "nature",
       "tier": 1,
-      "squadValue": 84,
+      "squadValue": 93,
       "upgradeSid": "elf_tracker_upg"
     },
     {
@@ -638,7 +638,7 @@
       "name": "Faun Archer",
       "faction": "nature",
       "tier": 1,
-      "squadValue": 111,
+      "squadValue": 121,
       "upgradeSid": "elf_tracker_upg_alt"
     },
     {
@@ -652,7 +652,7 @@
       "name": "Faun Warrior",
       "faction": "nature",
       "tier": 1,
-      "squadValue": 111
+      "squadValue": 121
     },
     {
       "id": "lesser_eldritch_upg_alt",
@@ -665,7 +665,7 @@
       "name": "Ferocious Ra’Shoth",
       "faction": "unfrozen",
       "tier": 1,
-      "squadValue": 78
+      "squadValue": 81
     },
     {
       "id": "lava_larva",
@@ -691,7 +691,7 @@
       "name": "Flaming Phoenix",
       "faction": "nature",
       "tier": 7,
-      "squadValue": 7594,
+      "squadValue": 7469,
       "upgradeSid": "phoenix_upg_alt"
     },
     {
@@ -705,7 +705,7 @@
       "name": "Fungal Iriyad",
       "faction": "nature",
       "tier": 3,
-      "squadValue": 309,
+      "squadValue": 302,
       "upgradeSid": "ent_upg_alt"
     },
     {
@@ -773,7 +773,7 @@
       "name": "Graverobber",
       "faction": "undead",
       "tier": 4,
-      "squadValue": 256,
+      "squadValue": 244,
       "upgradeSid": "graverobber_upg"
     },
     {
@@ -868,7 +868,7 @@
       "name": "Harvester Locust",
       "faction": "demon",
       "tier": 2,
-      "squadValue": 146
+      "squadValue": 155
     },
     {
       "id": "druid",
@@ -881,7 +881,7 @@
       "name": "Herbomancer",
       "faction": "nature",
       "tier": 5,
-      "squadValue": 744,
+      "squadValue": 680,
       "upgradeSid": "druid_upg"
     },
     {
@@ -895,7 +895,7 @@
       "name": "Hierophant",
       "faction": "human",
       "tier": 4,
-      "squadValue": 425,
+      "squadValue": 459,
       "upgradeSid": "lightweaver_upg_alt"
     },
     {
@@ -909,7 +909,7 @@
       "name": "Hive Huntress",
       "faction": "demon",
       "tier": 7,
-      "squadValue": 5935
+      "squadValue": 5568
     },
     {
       "id": "hive_queen_upg",
@@ -922,7 +922,7 @@
       "name": "Hive Mother",
       "faction": "demon",
       "tier": 7,
-      "squadValue": 5935,
+      "squadValue": 5568,
       "upgradeSid": "hive_queen_upg_alt"
     },
     {
@@ -936,7 +936,7 @@
       "name": "Hive Queen",
       "faction": "demon",
       "tier": 7,
-      "squadValue": 3356,
+      "squadValue": 3162,
       "upgradeSid": "hive_queen_upg"
     },
     {
@@ -977,7 +977,7 @@
       "name": "Hornet",
       "faction": "demon",
       "tier": 3,
-      "squadValue": 215,
+      "squadValue": 233,
       "upgradeSid": "wasp_upg"
     },
     {
@@ -991,7 +991,7 @@
       "name": "Hydra",
       "faction": "dungeon",
       "tier": 6,
-      "squadValue": 1478,
+      "squadValue": 1464,
       "upgradeSid": "hydra_upg"
     },
     {
@@ -1005,7 +1005,7 @@
       "name": "Infernal Hydra",
       "faction": "dungeon",
       "tier": 6,
-      "squadValue": 2335
+      "squadValue": 2377
     },
     {
       "id": "trogl_upg",
@@ -1046,7 +1046,7 @@
       "name": "Inquisitor",
       "faction": "human",
       "tier": 6,
-      "squadValue": 1152,
+      "squadValue": 1122,
       "upgradeSid": "inquisitor_upg"
     },
     {
@@ -1060,7 +1060,7 @@
       "name": "Jasper Dancer",
       "faction": "dungeon",
       "tier": 3,
-      "squadValue": 205,
+      "squadValue": 203,
       "upgradeSid": "blade_dancer_upg_alt"
     },
     {
@@ -1074,7 +1074,7 @@
       "name": "Kennelmaster",
       "faction": "undead",
       "tier": 4,
-      "squadValue": 370
+      "squadValue": 353
     },
     {
       "id": "kitten_horn",
@@ -1127,7 +1127,7 @@
       "name": "Lightweaver",
       "faction": "human",
       "tier": 4,
-      "squadValue": 289,
+      "squadValue": 312,
       "upgradeSid": "lightweaver_upg"
     },
     {
@@ -1141,7 +1141,7 @@
       "name": "Locust",
       "faction": "demon",
       "tier": 2,
-      "squadValue": 108,
+      "squadValue": 115,
       "upgradeSid": "locust_upg"
     },
     {
@@ -1195,7 +1195,7 @@
       "name": "Medusa Queen",
       "faction": "dungeon",
       "tier": 5,
-      "squadValue": 791
+      "squadValue": 812
     },
     {
       "id": "medusa_upg",
@@ -1208,7 +1208,7 @@
       "name": "Medusa Sculptor",
       "faction": "dungeon",
       "tier": 5,
-      "squadValue": 791,
+      "squadValue": 812,
       "upgradeSid": "medusa_upg_alt"
     },
     {
@@ -1236,7 +1236,7 @@
       "name": "Merchant of Death",
       "faction": "undead",
       "tier": 4,
-      "squadValue": 370,
+      "squadValue": 353,
       "upgradeSid": "graverobber_upg_alt"
     },
     {
@@ -1250,7 +1250,7 @@
       "name": "Minotaur",
       "faction": "dungeon",
       "tier": 4,
-      "squadValue": 381,
+      "squadValue": 384,
       "upgradeSid": "minos_upg"
     },
     {
@@ -1264,7 +1264,7 @@
       "name": "Minotaur Lord",
       "faction": "dungeon",
       "tier": 4,
-      "squadValue": 559,
+      "squadValue": 552,
       "upgradeSid": "minos_upg_alt"
     },
     {
@@ -1278,7 +1278,7 @@
       "name": "Minotaur Vanguard",
       "faction": "dungeon",
       "tier": 4,
-      "squadValue": 559
+      "squadValue": 552
     },
     {
       "id": "qilin_upg_alt",
@@ -1291,7 +1291,7 @@
       "name": "Mist Qilin",
       "faction": "nature",
       "tier": 6,
-      "squadValue": 2527
+      "squadValue": 2351
     },
     {
       "id": "succubus_upg",
@@ -1304,7 +1304,7 @@
       "name": "Mistress of Chains",
       "faction": "unfrozen",
       "tier": 5,
-      "squadValue": 849,
+      "squadValue": 845,
       "upgradeSid": "succubus_upg_alt"
     },
     {
@@ -1318,7 +1318,7 @@
       "name": "Mother Superior",
       "faction": "human",
       "tier": 6,
-      "squadValue": 1853,
+      "squadValue": 1806,
       "upgradeSid": "inquisitor_upg_alt"
     },
     {
@@ -1332,7 +1332,7 @@
       "name": "Murmurmancer",
       "faction": "nature",
       "tier": 5,
-      "squadValue": 1106
+      "squadValue": 1027
     },
     {
       "id": "aqualotl",
@@ -1345,7 +1345,7 @@
       "name": "Naiad",
       "faction": "nature",
       "tier": 4,
-      "squadValue": 363,
+      "squadValue": 382,
       "upgradeSid": "aqualotl_upg"
     },
     {
@@ -1387,7 +1387,7 @@
       "name": "Overgrown Locust",
       "faction": "demon",
       "tier": 2,
-      "squadValue": 146,
+      "squadValue": 155,
       "upgradeSid": "locust_upg_alt"
     },
     {
@@ -1401,7 +1401,7 @@
       "name": "Parasite",
       "faction": "demon",
       "tier": 1,
-      "squadValue": 65,
+      "squadValue": 70,
       "upgradeSid": "trick_demon_upg"
     },
     {
@@ -1454,7 +1454,7 @@
       "name": "Phantasm",
       "faction": "undead",
       "tier": 2,
-      "squadValue": 120
+      "squadValue": 114
     },
     {
       "id": "phoenix",
@@ -1467,7 +1467,7 @@
       "name": "Phoenix",
       "faction": "nature",
       "tier": 7,
-      "squadValue": 4330,
+      "squadValue": 4302,
       "upgradeSid": "phoenix_upg"
     },
     {
@@ -1520,7 +1520,7 @@
       "name": "Qilin",
       "faction": "nature",
       "tier": 6,
-      "squadValue": 1595,
+      "squadValue": 1481,
       "upgradeSid": "qilin_upg"
     },
     {
@@ -1534,7 +1534,7 @@
       "name": "Ra’Shoth",
       "faction": "unfrozen",
       "tier": 1,
-      "squadValue": 59,
+      "squadValue": 63,
       "upgradeSid": "lesser_eldritch_upg"
     },
     {
@@ -1548,7 +1548,7 @@
       "name": "Ravager Parasite",
       "faction": "demon",
       "tier": 1,
-      "squadValue": 85
+      "squadValue": 92
     },
     {
       "id": "godslayer",
@@ -1590,7 +1590,7 @@
       "name": "Rift Arbitrator",
       "faction": "unfrozen",
       "tier": 6,
-      "squadValue": 2259,
+      "squadValue": 2273,
       "upgradeSid": "arbitrator_upg_alt"
     },
     {
@@ -1617,7 +1617,7 @@
       "name": "Scorpion",
       "faction": "demon",
       "tier": 4,
-      "squadValue": 299,
+      "squadValue": 277,
       "upgradeSid": "jaw_upg"
     },
     {
@@ -1685,7 +1685,7 @@
       "name": "Spelaean Scorpion",
       "faction": "demon",
       "tier": 4,
-      "squadValue": 435
+      "squadValue": 407
     },
     {
       "id": "druid_upg",
@@ -1698,7 +1698,7 @@
       "name": "Sporemancer",
       "faction": "nature",
       "tier": 5,
-      "squadValue": 1106,
+      "squadValue": 1027,
       "upgradeSid": "druid_upg_alt"
     },
     {
@@ -1725,7 +1725,7 @@
       "name": "Stinger",
       "faction": "demon",
       "tier": 3,
-      "squadValue": 300
+      "squadValue": 327
     },
     {
       "id": "lesser_eldritch_upg",
@@ -1738,7 +1738,7 @@
       "name": "Stinging Ra’Shoth",
       "faction": "unfrozen",
       "tier": 1,
-      "squadValue": 78,
+      "squadValue": 81,
       "upgradeSid": "lesser_eldritch_upg_alt"
     },
     {
@@ -1752,7 +1752,7 @@
       "name": "Sun Herald",
       "faction": "human",
       "tier": 4,
-      "squadValue": 425
+      "squadValue": 455
     },
     {
       "id": "esquire_upg_alt",
@@ -1819,7 +1819,7 @@
       "name": "Thunder Qilin",
       "faction": "nature",
       "tier": 6,
-      "squadValue": 2527,
+      "squadValue": 2351,
       "upgradeSid": "qilin_upg_alt"
     },
     {
@@ -1928,7 +1928,7 @@
       "name": "Vampire Lord",
       "faction": "undead",
       "tier": 7,
-      "squadValue": 3259,
+      "squadValue": 3276,
       "upgradeSid": "vampire_upg_alt"
     },
     {
@@ -1942,7 +1942,7 @@
       "name": "Vampire Scholar",
       "faction": "undead",
       "tier": 7,
-      "squadValue": 3259
+      "squadValue": 3276
     },
     {
       "id": "aqualotl_upg",
@@ -1955,7 +1955,7 @@
       "name": "Vernal Naiad",
       "faction": "nature",
       "tier": 4,
-      "squadValue": 518,
+      "squadValue": 550,
       "upgradeSid": "aqualotl_upg_alt"
     },
     {
@@ -1969,7 +1969,7 @@
       "name": "Vine Iriyad",
       "faction": "nature",
       "tier": 3,
-      "squadValue": 222,
+      "squadValue": 214,
       "upgradeSid": "ent_upg"
     },
     {
@@ -1983,7 +1983,7 @@
       "name": "Volcanic Scorpion",
       "faction": "demon",
       "tier": 4,
-      "squadValue": 435,
+      "squadValue": 407,
       "upgradeSid": "jaw_upg_alt"
     },
     {
@@ -1997,7 +1997,7 @@
       "name": "Votary",
       "faction": "unfrozen",
       "tier": 2,
-      "squadValue": 184
+      "squadValue": 193
     },
     {
       "id": "trick_demon_upg",
@@ -2010,7 +2010,7 @@
       "name": "Warden Parasite",
       "faction": "demon",
       "tier": 1,
-      "squadValue": 85,
+      "squadValue": 92,
       "upgradeSid": "trick_demon_upg_alt"
     },
     {
@@ -2038,7 +2038,7 @@
       "name": "Wight",
       "faction": "undead",
       "tier": 2,
-      "squadValue": 90,
+      "squadValue": 85,
       "upgradeSid": "flicker_upg"
     },
     {
@@ -2065,7 +2065,7 @@
       "name": "Wraith",
       "faction": "undead",
       "tier": 2,
-      "squadValue": 120,
+      "squadValue": 114,
       "upgradeSid": "flicker_upg_alt"
     }
   ]

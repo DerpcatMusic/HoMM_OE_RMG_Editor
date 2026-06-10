@@ -1,7 +1,7 @@
 {
   "language": "english",
-  "generatedAt": "2026-06-07T10:37:23.360Z",
-  "sourceHash": "b7e9d3c1727b5ac09e6b589034613378d0f342df96b7a3004f98755e9cf03a5b",
+  "generatedAt": "2026-06-10T09:32:49.067Z",
+  "sourceHash": "1fd21d400361ec0cdde68f71e881a34da604a83e4334bbf3bcc4359c256fe6f5",
   "entries": [
     {
       "id": "basic_content_list_basic_mines",
@@ -4958,12 +4958,66 @@
       ]
     },
     {
-      "id": "template_pool_exodus_guarded_treasure_zone_pandora_box",
+      "id": "template_pool_exodus_guarded_super_treasure_zone_pandora_box",
       "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_exodus.json",
-      "contentCount": 9,
+      "contentCount": 11,
       "positiveContentCount": 9,
       "biomeFilteredContentCount": 0,
       "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 500
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 15,
+          "weight": 750
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 16,
+          "weight": 750
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 17,
+          "weight": 0
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 18,
+          "weight": 0
+        }
+      ]
+    },
+    {
+      "id": "template_pool_exodus_guarded_treasure_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_exodus.json",
+      "contentCount": 10,
+      "positiveContentCount": 10,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 1000
+        },
         {
           "sid": "pandora_box",
           "variant": 2,
@@ -4972,6 +5026,11 @@
         {
           "sid": "pandora_box",
           "variant": 3,
+          "weight": 1000
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
           "weight": 1000
         },
         {
@@ -4986,23 +5045,13 @@
         },
         {
           "sid": "pandora_box",
-          "variant": 15,
-          "weight": 750
+          "variant": 19,
+          "weight": 500
         },
         {
           "sid": "pandora_box",
-          "variant": 16,
-          "weight": 1150
-        },
-        {
-          "sid": "pandora_box",
-          "variant": 17,
-          "weight": 1350
-        },
-        {
-          "sid": "pandora_box",
-          "variant": 18,
-          "weight": 1750
+          "variant": 20,
+          "weight": 500
         }
       ]
     },
@@ -5019,7 +5068,7 @@
         },
         {
           "sid": "random_hire_2",
-          "weight": 25
+          "weight": 10
         },
         {
           "sid": "random_hire_3",
@@ -5031,7 +5080,7 @@
         },
         {
           "sid": "random_hire_5",
-          "weight": 75
+          "weight": 95
         },
         {
           "sid": "random_hire_6",
@@ -5039,7 +5088,7 @@
         },
         {
           "sid": "random_hire_7",
-          "weight": 125
+          "weight": 135
         }
       ]
     },
@@ -5052,31 +5101,31 @@
       "sampleContent": [
         {
           "sid": "random_hire_1",
-          "weight": 100
+          "weight": 15
         },
         {
           "sid": "random_hire_2",
-          "weight": 100
+          "weight": 15
         },
         {
           "sid": "random_hire_3",
-          "weight": 125
+          "weight": 195
         },
         {
           "sid": "random_hire_4",
-          "weight": 300
+          "weight": 225
         },
         {
           "sid": "random_hire_5",
-          "weight": 150
+          "weight": 200
         },
         {
           "sid": "random_hire_6",
-          "weight": 15
+          "weight": 10
         },
         {
           "sid": "random_hire_7",
-          "weight": 15
+          "weight": 10
         }
       ]
     },
@@ -5089,15 +5138,15 @@
       "sampleContent": [
         {
           "sid": "random_hire_1",
-          "weight": 100
+          "weight": 75
         },
         {
           "sid": "random_hire_2",
-          "weight": 100
+          "weight": 75
         },
         {
           "sid": "random_hire_3",
-          "weight": 75
+          "weight": 100
         },
         {
           "sid": "random_hire_4",
@@ -5581,16 +5630,16 @@
       ]
     },
     {
-      "id": "template_pool_jebus_cross_guarded_start_zone_pandora_box",
+      "id": "template_pool_jebus_cross_guarded_side_zone_pandora_box",
       "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_jebus_cross.json",
-      "contentCount": 21,
-      "positiveContentCount": 21,
+      "contentCount": 12,
+      "positiveContentCount": 11,
       "biomeFilteredContentCount": 0,
       "sampleContent": [
         {
           "sid": "pandora_box",
           "variant": 0,
-          "weight": 216
+          "weight": 0
         },
         {
           "sid": "pandora_box",
@@ -5621,6 +5670,55 @@
           "sid": "pandora_box",
           "variant": 6,
           "weight": 855
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 7,
+          "weight": 755
+        }
+      ]
+    },
+    {
+      "id": "template_pool_jebus_cross_guarded_start_zone_pandora_box",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_lists/custom_content_lists_jebus_cross.json",
+      "contentCount": 21,
+      "positiveContentCount": 21,
+      "biomeFilteredContentCount": 0,
+      "sampleContent": [
+        {
+          "sid": "pandora_box",
+          "variant": 0,
+          "weight": 216
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 1,
+          "weight": 816
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 2,
+          "weight": 716
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 3,
+          "weight": 616
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 4,
+          "weight": 855
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 5,
+          "weight": 755
+        },
+        {
+          "sid": "pandora_box",
+          "variant": 6,
+          "weight": 655
         },
         {
           "sid": "pandora_box",

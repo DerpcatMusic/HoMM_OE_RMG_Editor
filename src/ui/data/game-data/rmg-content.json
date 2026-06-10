@@ -1,7 +1,7 @@
 {
   "language": "english",
-  "generatedAt": "2026-06-07T10:37:23.360Z",
-  "sourceHash": "b7e9d3c1727b5ac09e6b589034613378d0f342df96b7a3004f98755e9cf03a5b",
+  "generatedAt": "2026-06-10T09:32:49.067Z",
+  "sourceHash": "1fd21d400361ec0cdde68f71e881a34da604a83e4334bbf3bcc4359c256fe6f5",
   "stats": {
     "total": 872,
     "mapObjects": 857,
@@ -4192,8 +4192,8 @@
       "kind": "mapObject",
       "rmgPlaceable": true,
       "variantCount": 4,
-      "officialRefs": 67,
-      "officialPositiveRefs": 52,
+      "officialRefs": 69,
+      "officialPositiveRefs": 54,
       "sourcePaths": [
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/map/objects/4_interactables.json",
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/objects_logic/event_banks/guarded_res_banks/dragon_utopia.json"
@@ -4701,7 +4701,7 @@
       "kind": "mapObject",
       "rmgPlaceable": true,
       "variantCount": 1,
-      "officialRefs": 24,
+      "officialRefs": 26,
       "officialPositiveRefs": 4,
       "sourcePaths": [
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/map/objects/4_interactables.json",
@@ -4716,7 +4716,7 @@
       "kind": "mapObject",
       "rmgPlaceable": true,
       "variantCount": 1,
-      "officialRefs": 23,
+      "officialRefs": 25,
       "officialPositiveRefs": 4,
       "sourcePaths": [
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/map/objects/4_interactables.json",
@@ -4730,8 +4730,8 @@
       "kind": "mapObject",
       "rmgPlaceable": true,
       "variantCount": 1,
-      "officialRefs": 88,
-      "officialPositiveRefs": 87,
+      "officialRefs": 91,
+      "officialPositiveRefs": 90,
       "sourcePaths": [
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/map/objects/4_interactables.json",
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/objects_logic/event_banks/stats_banks/orb_observatory.json"
@@ -7312,15 +7312,15 @@
       "warnings": [],
       "name": "Monster Head",
       "tag": "Artifact",
-      "value": 3000
+      "value": 6000
     },
     {
       "sid": "college_of_wonder",
       "kind": "mapObject",
       "rmgPlaceable": true,
       "variantCount": 1,
-      "officialRefs": 89,
-      "officialPositiveRefs": 88,
+      "officialRefs": 92,
+      "officialPositiveRefs": 91,
       "sourcePaths": [
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/map/objects/4_interactables.json",
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/objects_logic/event_banks/stats_banks/college_of_wonder.json"
@@ -8571,8 +8571,8 @@
       "kind": "mapObject",
       "rmgPlaceable": true,
       "variantCount": 4,
-      "officialRefs": 70,
-      "officialPositiveRefs": 69,
+      "officialRefs": 72,
+      "officialPositiveRefs": 70,
       "sourcePaths": [
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/map/objects/4_interactables.json",
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/objects_logic/event_banks/guarded_res_banks/unstable_ruins.json"
@@ -8628,8 +8628,8 @@
       "kind": "mapObject",
       "rmgPlaceable": true,
       "variantCount": 47,
-      "officialRefs": 665,
-      "officialPositiveRefs": 651,
+      "officialRefs": 689,
+      "officialPositiveRefs": 672,
       "sourcePaths": [
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/map/objects/3_resources.json",
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/objects_logic/chests/pandora_box.json"
@@ -8660,8 +8660,8 @@
       "kind": "mapObject",
       "rmgPlaceable": true,
       "variantCount": 1,
-      "officialRefs": 88,
-      "officialPositiveRefs": 87,
+      "officialRefs": 91,
+      "officialPositiveRefs": 90,
       "sourcePaths": [
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/map/objects/4_interactables.json",
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/objects_logic/event_banks/stats_banks/fort.json"
@@ -9849,7 +9849,7 @@
       "kind": "mapObject",
       "rmgPlaceable": true,
       "variantCount": 1,
-      "officialRefs": 37,
+      "officialRefs": 39,
       "officialPositiveRefs": 2,
       "sourcePaths": [
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/map/objects/4_interactables.json",
@@ -9968,8 +9968,8 @@
       "kind": "metaObject",
       "rmgPlaceable": true,
       "variantCount": 0,
-      "officialRefs": 185,
-      "officialPositiveRefs": 122,
+      "officialRefs": 192,
+      "officialPositiveRefs": 125,
       "sourcePaths": [
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/generator_config.json"
       ],
@@ -9983,8 +9983,8 @@
       "kind": "metaObject",
       "rmgPlaceable": true,
       "variantCount": 0,
-      "officialRefs": 185,
-      "officialPositiveRefs": 125,
+      "officialRefs": 192,
+      "officialPositiveRefs": 128,
       "sourcePaths": [
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/generator_config.json"
       ],
@@ -9998,8 +9998,8 @@
       "kind": "metaObject",
       "rmgPlaceable": true,
       "variantCount": 0,
-      "officialRefs": 180,
-      "officialPositiveRefs": 137,
+      "officialRefs": 185,
+      "officialPositiveRefs": 136,
       "sourcePaths": [
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/generator_config.json"
       ],
@@ -10013,8 +10013,8 @@
       "kind": "metaObject",
       "rmgPlaceable": true,
       "variantCount": 0,
-      "officialRefs": 176,
-      "officialPositiveRefs": 130,
+      "officialRefs": 183,
+      "officialPositiveRefs": 136,
       "sourcePaths": [
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/generator_config.json"
       ],
@@ -10028,8 +10028,8 @@
       "kind": "metaObject",
       "rmgPlaceable": true,
       "variantCount": 0,
-      "officialRefs": 163,
-      "officialPositiveRefs": 133,
+      "officialRefs": 171,
+      "officialPositiveRefs": 138,
       "sourcePaths": [
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/generator_config.json"
       ],
@@ -10043,8 +10043,8 @@
       "kind": "metaObject",
       "rmgPlaceable": true,
       "variantCount": 0,
-      "officialRefs": 174,
-      "officialPositiveRefs": 137,
+      "officialRefs": 182,
+      "officialPositiveRefs": 142,
       "sourcePaths": [
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/generator_config.json"
       ],
@@ -10058,8 +10058,8 @@
       "kind": "metaObject",
       "rmgPlaceable": true,
       "variantCount": 0,
-      "officialRefs": 175,
-      "officialPositiveRefs": 129,
+      "officialRefs": 183,
+      "officialPositiveRefs": 135,
       "sourcePaths": [
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/generator_config.json"
       ],
@@ -10073,8 +10073,8 @@
       "kind": "metaObject",
       "rmgPlaceable": true,
       "variantCount": 0,
-      "officialRefs": 229,
-      "officialPositiveRefs": 191,
+      "officialRefs": 233,
+      "officialPositiveRefs": 195,
       "sourcePaths": [
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/generator_config.json"
       ],
@@ -10087,8 +10087,8 @@
       "kind": "metaObject",
       "rmgPlaceable": true,
       "variantCount": 0,
-      "officialRefs": 228,
-      "officialPositiveRefs": 150,
+      "officialRefs": 232,
+      "officialPositiveRefs": 152,
       "sourcePaths": [
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/generator_config.json"
       ],
@@ -10101,8 +10101,8 @@
       "kind": "metaObject",
       "rmgPlaceable": true,
       "variantCount": 0,
-      "officialRefs": 228,
-      "officialPositiveRefs": 105,
+      "officialRefs": 232,
+      "officialPositiveRefs": 106,
       "sourcePaths": [
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/generator_config.json"
       ],
@@ -10115,8 +10115,8 @@
       "kind": "metaObject",
       "rmgPlaceable": true,
       "variantCount": 0,
-      "officialRefs": 228,
-      "officialPositiveRefs": 162,
+      "officialRefs": 232,
+      "officialPositiveRefs": 164,
       "sourcePaths": [
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/generator_config.json"
       ],
@@ -10270,7 +10270,7 @@
       "kind": "mapObject",
       "rmgPlaceable": true,
       "variantCount": 4,
-      "officialRefs": 23,
+      "officialRefs": 24,
       "officialPositiveRefs": 22,
       "sourcePaths": [
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/map/objects/4_interactables.json",
@@ -10326,7 +10326,7 @@
       "warnings": [],
       "name": "Ring of Neutrality",
       "tag": "Artifact",
-      "value": 12000
+      "value": 6000
     },
     {
       "sid": "ritual_pyre",
@@ -11112,7 +11112,7 @@
       "kind": "mapObject",
       "rmgPlaceable": true,
       "variantCount": 1,
-      "officialRefs": 51,
+      "officialRefs": 53,
       "officialPositiveRefs": 2,
       "sourcePaths": [
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/map/objects/4_interactables.json",
@@ -12164,8 +12164,8 @@
       "kind": "mapObject",
       "rmgPlaceable": true,
       "variantCount": 4,
-      "officialRefs": 68,
-      "officialPositiveRefs": 67,
+      "officialRefs": 70,
+      "officialPositiveRefs": 69,
       "sourcePaths": [
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/map/objects/4_interactables.json",
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/objects_logic/event_banks/guarded_res_banks/troglodyte_throne.json"
@@ -12242,8 +12242,8 @@
       "kind": "mapObject",
       "rmgPlaceable": true,
       "variantCount": 4,
-      "officialRefs": 68,
-      "officialPositiveRefs": 67,
+      "officialRefs": 70,
+      "officialPositiveRefs": 69,
       "sourcePaths": [
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/map/objects/4_interactables.json",
         "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:DB/objects_logic/event_banks/guarded_res_banks/twilight_bloom.json"
@@ -12740,7 +12740,7 @@
       "sid": "wise_owl",
       "kind": "mapObject",
       "rmgPlaceable": true,
-      "variantCount": 22,
+      "variantCount": 21,
       "officialRefs": 3,
       "officialPositiveRefs": 2,
       "sourcePaths": [

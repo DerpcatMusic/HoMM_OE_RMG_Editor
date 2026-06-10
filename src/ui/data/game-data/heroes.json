@@ -1,7 +1,7 @@
 {
   "language": "english",
-  "generatedAt": "2026-06-07T10:37:23.360Z",
-  "sourceHash": "b7e9d3c1727b5ac09e6b589034613378d0f342df96b7a3004f98755e9cf03a5b",
+  "generatedAt": "2026-06-10T09:32:49.067Z",
+  "sourceHash": "1fd21d400361ec0cdde68f71e881a34da604a83e4334bbf3bcc4359c256fe6f5",
   "entries": [
     {
       "id": "campaign_hero_1",
@@ -810,8 +810,8 @@
       "icon": "hero_demon_18_Pauper_X_Wistari",
       "faction": "demon",
       "nativeBiome": "Lava",
-      "classType": "magic",
-      "skillsRollVariant": "demons_magic_skills_table",
+      "classType": "might",
+      "skillsRollVariant": "demons_might_skills_table",
       "costGold": 2500,
       "startLevel": 1
     },
@@ -880,8 +880,8 @@
       "icon": "hero_demon_6_XTaviola",
       "faction": "demon",
       "nativeBiome": "Lava",
-      "classType": "might",
-      "skillsRollVariant": "demons_might_skills_table",
+      "classType": "magic",
+      "skillsRollVariant": "demons_magic_skills_table",
       "costGold": 2500,
       "startLevel": 1
     },

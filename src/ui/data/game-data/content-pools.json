@@ -1,7 +1,7 @@
 {
   "language": "english",
-  "generatedAt": "2026-06-07T10:37:23.360Z",
-  "sourceHash": "b7e9d3c1727b5ac09e6b589034613378d0f342df96b7a3004f98755e9cf03a5b",
+  "generatedAt": "2026-06-10T09:32:49.067Z",
+  "sourceHash": "1fd21d400361ec0cdde68f71e881a34da604a83e4334bbf3bcc4359c256fe6f5",
   "entries": [
     {
       "id": "classic_template_pool_random_t0_base",
@@ -1418,11 +1418,11 @@
         },
         {
           "sid": "resource_wood",
-          "weight": 100
+          "weight": 200
         },
         {
           "sid": "resource_ore",
-          "weight": 100
+          "weight": 200
         },
         {
           "sid": "resource_crystals",
@@ -1462,11 +1462,11 @@
         },
         {
           "sid": "resource_wood",
-          "weight": 100
+          "weight": 200
         },
         {
           "sid": "resource_ore",
-          "weight": 100
+          "weight": 200
         },
         {
           "sid": "resource_crystals",
@@ -1506,11 +1506,11 @@
         },
         {
           "sid": "resource_wood",
-          "weight": 100
+          "weight": 200
         },
         {
           "sid": "resource_ore",
-          "weight": 100
+          "weight": 200
         },
         {
           "sid": "resource_crystals",
@@ -1550,11 +1550,11 @@
         },
         {
           "sid": "resource_wood",
-          "weight": 150
+          "weight": 250
         },
         {
           "sid": "resource_ore",
-          "weight": 150
+          "weight": 250
         },
         {
           "sid": "resource_crystals",
@@ -1594,11 +1594,11 @@
         },
         {
           "sid": "resource_wood",
-          "weight": 200
+          "weight": 300
         },
         {
           "sid": "resource_ore",
-          "weight": 200
+          "weight": 300
         },
         {
           "sid": "resource_crystals",
@@ -1638,11 +1638,11 @@
         },
         {
           "sid": "resource_wood",
-          "weight": 100
+          "weight": 200
         },
         {
           "sid": "resource_ore",
-          "weight": 100
+          "weight": 200
         },
         {
           "sid": "resource_crystals",
@@ -1682,11 +1682,11 @@
         },
         {
           "sid": "resource_wood",
-          "weight": 200
+          "weight": 300
         },
         {
           "sid": "resource_ore",
-          "weight": 200
+          "weight": 300
         },
         {
           "sid": "resource_crystals",
@@ -2108,7 +2108,7 @@
       "includeListCount": 21,
       "directContentCount": 18,
       "positiveDirectContentCount": 9,
-      "banCount": 3,
+      "banCount": 0,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -2451,7 +2451,7 @@
       "includeListCount": 12,
       "directContentCount": 11,
       "positiveDirectContentCount": 10,
-      "banCount": 6,
+      "banCount": 3,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -2693,7 +2693,7 @@
       "includeListCount": 6,
       "directContentCount": 4,
       "positiveDirectContentCount": 1,
-      "banCount": 5,
+      "banCount": 4,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -2908,7 +2908,7 @@
       "includeListCount": 7,
       "directContentCount": 11,
       "positiveDirectContentCount": 4,
-      "banCount": 4,
+      "banCount": 1,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -2952,7 +2952,7 @@
       "includeListCount": 5,
       "directContentCount": 0,
       "positiveDirectContentCount": 0,
-      "banCount": 7,
+      "banCount": 4,
       "hasValueDistribution": true,
       "sampleContent": []
     },
@@ -2974,7 +2974,7 @@
       "includeListCount": 0,
       "directContentCount": 0,
       "positiveDirectContentCount": 0,
-      "banCount": 4,
+      "banCount": 1,
       "hasValueDistribution": true,
       "sampleContent": []
     },
@@ -3116,8 +3116,8 @@
       "groupCount": 21,
       "includeListCount": 25,
       "directContentCount": 20,
-      "positiveDirectContentCount": 18,
-      "banCount": 4,
+      "positiveDirectContentCount": 17,
+      "banCount": 0,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -3134,7 +3134,7 @@
         },
         {
           "sid": "random_item_legendary",
-          "weight": 40
+          "weight": 0
         },
         {
           "sid": "fort",
@@ -3161,7 +3161,7 @@
       "includeListCount": 7,
       "directContentCount": 11,
       "positiveDirectContentCount": 4,
-      "banCount": 3,
+      "banCount": 0,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -3205,7 +3205,7 @@
       "includeListCount": 5,
       "directContentCount": 0,
       "positiveDirectContentCount": 0,
-      "banCount": 7,
+      "banCount": 4,
       "hasValueDistribution": true,
       "sampleContent": []
     },
@@ -3506,7 +3506,7 @@
       "includeListCount": 23,
       "directContentCount": 9,
       "positiveDirectContentCount": 7,
-      "banCount": 3,
+      "banCount": 0,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -3638,7 +3638,7 @@
       "includeListCount": 7,
       "directContentCount": 4,
       "positiveDirectContentCount": 1,
-      "banCount": 7,
+      "banCount": 4,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -3666,7 +3666,7 @@
       "includeListCount": 6,
       "directContentCount": 4,
       "positiveDirectContentCount": 1,
-      "banCount": 7,
+      "banCount": 4,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -3793,7 +3793,7 @@
       "includeListCount": 24,
       "directContentCount": 20,
       "positiveDirectContentCount": 17,
-      "banCount": 4,
+      "banCount": 2,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -3837,7 +3837,7 @@
       "includeListCount": 6,
       "directContentCount": 4,
       "positiveDirectContentCount": 1,
-      "banCount": 7,
+      "banCount": 4,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -3972,12 +3972,100 @@
       ]
     },
     {
-      "id": "content_pool_template_jebus_outcast_pools_guarded_start_zone",
+      "id": "content_pool_template_jebus_outcast_pools_guarded_start_zone_1",
       "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_jebus_outcast_pools.json",
-      "groupCount": 18,
-      "includeListCount": 22,
-      "directContentCount": 15,
-      "positiveDirectContentCount": 11,
+      "groupCount": 19,
+      "includeListCount": 23,
+      "directContentCount": 22,
+      "positiveDirectContentCount": 14,
+      "banCount": 5,
+      "hasValueDistribution": true,
+      "sampleContent": [
+        {
+          "sid": "random_item_common",
+          "weight": 100
+        },
+        {
+          "sid": "random_item_rare",
+          "weight": 80
+        },
+        {
+          "sid": "random_item_epic",
+          "weight": 60
+        },
+        {
+          "sid": "random_item_legendary",
+          "weight": 40
+        },
+        {
+          "sid": "fountain",
+          "weight": 0
+        },
+        {
+          "sid": "fountain_2",
+          "weight": 0
+        },
+        {
+          "sid": "fort",
+          "weight": 200
+        },
+        {
+          "sid": "orb_observatory",
+          "weight": 200
+        }
+      ]
+    },
+    {
+      "id": "content_pool_template_jebus_outcast_pools_guarded_start_zone_2",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_jebus_outcast_pools.json",
+      "groupCount": 19,
+      "includeListCount": 23,
+      "directContentCount": 22,
+      "positiveDirectContentCount": 14,
+      "banCount": 5,
+      "hasValueDistribution": true,
+      "sampleContent": [
+        {
+          "sid": "random_item_common",
+          "weight": 100
+        },
+        {
+          "sid": "random_item_rare",
+          "weight": 80
+        },
+        {
+          "sid": "random_item_epic",
+          "weight": 60
+        },
+        {
+          "sid": "random_item_legendary",
+          "weight": 40
+        },
+        {
+          "sid": "fountain",
+          "weight": 0
+        },
+        {
+          "sid": "fountain_2",
+          "weight": 0
+        },
+        {
+          "sid": "fort",
+          "weight": 200
+        },
+        {
+          "sid": "orb_observatory",
+          "weight": 200
+        }
+      ]
+    },
+    {
+      "id": "content_pool_template_jebus_outcast_pools_guarded_start_zone_3",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_jebus_outcast_pools.json",
+      "groupCount": 19,
+      "includeListCount": 23,
+      "directContentCount": 22,
+      "positiveDirectContentCount": 14,
       "banCount": 5,
       "hasValueDistribution": true,
       "sampleContent": [
@@ -4071,12 +4159,100 @@
       ]
     },
     {
-      "id": "content_pool_template_jebus_outcast_pools_unguarded_start_zone",
+      "id": "content_pool_template_jebus_outcast_pools_unguarded_start_zone_1",
       "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_jebus_outcast_pools.json",
       "groupCount": 14,
       "includeListCount": 14,
       "directContentCount": 11,
-      "positiveDirectContentCount": 3,
+      "positiveDirectContentCount": 4,
+      "banCount": 4,
+      "hasValueDistribution": true,
+      "sampleContent": [
+        {
+          "sid": "random_item_common",
+          "weight": 100
+        },
+        {
+          "sid": "random_item_rare",
+          "weight": 0
+        },
+        {
+          "sid": "random_item_epic",
+          "weight": 0
+        },
+        {
+          "sid": "random_item_legendary",
+          "weight": 0
+        },
+        {
+          "sid": "random_hire_1",
+          "weight": 175
+        },
+        {
+          "sid": "random_hire_2",
+          "weight": 100
+        },
+        {
+          "sid": "random_hire_3",
+          "weight": 0
+        },
+        {
+          "sid": "random_hire_4",
+          "weight": 0
+        }
+      ]
+    },
+    {
+      "id": "content_pool_template_jebus_outcast_pools_unguarded_start_zone_2",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_jebus_outcast_pools.json",
+      "groupCount": 14,
+      "includeListCount": 14,
+      "directContentCount": 11,
+      "positiveDirectContentCount": 4,
+      "banCount": 4,
+      "hasValueDistribution": true,
+      "sampleContent": [
+        {
+          "sid": "random_item_common",
+          "weight": 100
+        },
+        {
+          "sid": "random_item_rare",
+          "weight": 0
+        },
+        {
+          "sid": "random_item_epic",
+          "weight": 0
+        },
+        {
+          "sid": "random_item_legendary",
+          "weight": 0
+        },
+        {
+          "sid": "random_hire_1",
+          "weight": 175
+        },
+        {
+          "sid": "random_hire_2",
+          "weight": 100
+        },
+        {
+          "sid": "random_hire_3",
+          "weight": 0
+        },
+        {
+          "sid": "random_hire_4",
+          "weight": 0
+        }
+      ]
+    },
+    {
+      "id": "content_pool_template_jebus_outcast_pools_unguarded_start_zone_3",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_jebus_outcast_pools.json",
+      "groupCount": 14,
+      "includeListCount": 14,
+      "directContentCount": 11,
+      "positiveDirectContentCount": 4,
       "banCount": 4,
       "hasValueDistribution": true,
       "sampleContent": [
@@ -4325,7 +4501,7 @@
       "includeListCount": 6,
       "directContentCount": 4,
       "positiveDirectContentCount": 1,
-      "banCount": 7,
+      "banCount": 4,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -4692,7 +4868,7 @@
     },
     {
       "id": "content_pool_template_maneuvers_guarded_green_zone",
-      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_maneuvers_pools copy.json",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_maneuvers_pools.json",
       "groupCount": 10,
       "includeListCount": 14,
       "directContentCount": 11,
@@ -4736,7 +4912,7 @@
     },
     {
       "id": "content_pool_template_maneuvers_guarded_red_zone",
-      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_maneuvers_pools copy.json",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_maneuvers_pools.json",
       "groupCount": 15,
       "includeListCount": 19,
       "directContentCount": 16,
@@ -4780,7 +4956,7 @@
     },
     {
       "id": "content_pool_template_maneuvers_guarded_start_zone",
-      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_maneuvers_pools copy.json",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_maneuvers_pools.json",
       "groupCount": 16,
       "includeListCount": 20,
       "directContentCount": 11,
@@ -4824,12 +5000,12 @@
     },
     {
       "id": "content_pool_template_maneuvers_guarded_yellow_zone",
-      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_maneuvers_pools copy.json",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_maneuvers_pools.json",
       "groupCount": 16,
       "includeListCount": 16,
       "directContentCount": 11,
       "positiveDirectContentCount": 5,
-      "banCount": 3,
+      "banCount": 0,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -4868,12 +5044,12 @@
     },
     {
       "id": "content_pool_template_maneuvers_unguarded_green_zone",
-      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_maneuvers_pools copy.json",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_maneuvers_pools.json",
       "groupCount": 8,
       "includeListCount": 8,
       "directContentCount": 11,
       "positiveDirectContentCount": 4,
-      "banCount": 3,
+      "banCount": 1,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -4912,23 +5088,23 @@
     },
     {
       "id": "content_pool_template_maneuvers_unguarded_red_zone",
-      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_maneuvers_pools copy.json",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_maneuvers_pools.json",
       "groupCount": 0,
       "includeListCount": 0,
       "directContentCount": 0,
       "positiveDirectContentCount": 0,
-      "banCount": 3,
+      "banCount": 0,
       "hasValueDistribution": true,
       "sampleContent": []
     },
     {
       "id": "content_pool_template_maneuvers_unguarded_start_zone",
-      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_maneuvers_pools copy.json",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_maneuvers_pools.json",
       "groupCount": 12,
       "includeListCount": 12,
       "directContentCount": 11,
       "positiveDirectContentCount": 8,
-      "banCount": 7,
+      "banCount": 4,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -4967,7 +5143,7 @@
     },
     {
       "id": "content_pool_template_maneuvers_unguarded_yellow_zone",
-      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_maneuvers_pools copy.json",
+      "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_maneuvers_pools.json",
       "groupCount": 4,
       "includeListCount": 4,
       "directContentCount": 4,
@@ -5132,7 +5308,7 @@
       "includeListCount": 16,
       "directContentCount": 11,
       "positiveDirectContentCount": 5,
-      "banCount": 3,
+      "banCount": 0,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -5176,7 +5352,7 @@
       "includeListCount": 8,
       "directContentCount": 11,
       "positiveDirectContentCount": 4,
-      "banCount": 3,
+      "banCount": 1,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -5220,7 +5396,7 @@
       "includeListCount": 0,
       "directContentCount": 0,
       "positiveDirectContentCount": 0,
-      "banCount": 3,
+      "banCount": 0,
       "hasValueDistribution": true,
       "sampleContent": []
     },
@@ -5231,7 +5407,7 @@
       "includeListCount": 12,
       "directContentCount": 11,
       "positiveDirectContentCount": 8,
-      "banCount": 7,
+      "banCount": 5,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -5435,7 +5611,7 @@
       "includeListCount": 25,
       "directContentCount": 20,
       "positiveDirectContentCount": 18,
-      "banCount": 4,
+      "banCount": 2,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -5479,7 +5655,7 @@
       "includeListCount": 11,
       "directContentCount": 11,
       "positiveDirectContentCount": 8,
-      "banCount": 3,
+      "banCount": 0,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -5523,7 +5699,7 @@
       "includeListCount": 10,
       "directContentCount": 11,
       "positiveDirectContentCount": 8,
-      "banCount": 7,
+      "banCount": 4,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -5677,7 +5853,7 @@
       "includeListCount": 26,
       "directContentCount": 20,
       "positiveDirectContentCount": 18,
-      "banCount": 4,
+      "banCount": 2,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -5721,7 +5897,7 @@
       "includeListCount": 6,
       "directContentCount": 4,
       "positiveDirectContentCount": 1,
-      "banCount": 7,
+      "banCount": 4,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -5931,7 +6107,7 @@
       "includeListCount": 6,
       "directContentCount": 3,
       "positiveDirectContentCount": 3,
-      "banCount": 5,
+      "banCount": 4,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -5966,7 +6142,7 @@
       "includeListCount": 9,
       "directContentCount": 7,
       "positiveDirectContentCount": 6,
-      "banCount": 10,
+      "banCount": 7,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -6046,7 +6222,7 @@
       "includeListCount": 15,
       "directContentCount": 7,
       "positiveDirectContentCount": 6,
-      "banCount": 10,
+      "banCount": 8,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -6159,7 +6335,7 @@
       "includeListCount": 3,
       "directContentCount": 4,
       "positiveDirectContentCount": 1,
-      "banCount": 2,
+      "banCount": 0,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -6187,7 +6363,7 @@
       "includeListCount": 8,
       "directContentCount": 4,
       "positiveDirectContentCount": 1,
-      "banCount": 6,
+      "banCount": 5,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -6299,7 +6475,7 @@
       "includeListCount": 6,
       "directContentCount": 4,
       "positiveDirectContentCount": 1,
-      "banCount": 6,
+      "banCount": 5,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -6426,7 +6602,7 @@
       "includeListCount": 13,
       "directContentCount": 15,
       "positiveDirectContentCount": 11,
-      "banCount": 3,
+      "banCount": 1,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -6613,7 +6789,7 @@
       "includeListCount": 7,
       "directContentCount": 11,
       "positiveDirectContentCount": 4,
-      "banCount": 4,
+      "banCount": 1,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -6657,7 +6833,7 @@
       "includeListCount": 5,
       "directContentCount": 0,
       "positiveDirectContentCount": 0,
-      "banCount": 7,
+      "banCount": 4,
       "hasValueDistribution": true,
       "sampleContent": []
     },
@@ -6728,7 +6904,7 @@
       "directContentCount": 21,
       "positiveDirectContentCount": 11,
       "banCount": 0,
-      "hasValueDistribution": true,
+      "hasValueDistribution": false,
       "sampleContent": [
         {
           "sid": "random_item_common",
@@ -6775,7 +6951,7 @@
       "includeListCount": 11,
       "directContentCount": 14,
       "positiveDirectContentCount": 7,
-      "banCount": 3,
+      "banCount": 0,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -6815,16 +6991,16 @@
     {
       "id": "content_pool_template_sprint_guarded_red_zone",
       "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_sprint_pools.json",
-      "groupCount": 5,
+      "groupCount": 6,
       "includeListCount": 9,
-      "directContentCount": 4,
-      "positiveDirectContentCount": 3,
+      "directContentCount": 7,
+      "positiveDirectContentCount": 6,
       "banCount": 3,
       "hasValueDistribution": true,
       "sampleContent": [
         {
           "sid": "random_item_common",
-          "weight": 25
+          "weight": 45
         },
         {
           "sid": "random_item_rare",
@@ -6832,11 +7008,23 @@
         },
         {
           "sid": "random_item_epic",
-          "weight": 15
+          "weight": 25
         },
         {
           "sid": "random_item_legendary",
           "weight": 0
+        },
+        {
+          "sid": "fort",
+          "weight": 200
+        },
+        {
+          "sid": "orb_observatory",
+          "weight": 200
+        },
+        {
+          "sid": "college_of_wonder",
+          "weight": 100
         }
       ]
     },
@@ -6930,9 +7118,9 @@
       "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_sprint_pools.json",
       "groupCount": 12,
       "includeListCount": 12,
-      "directContentCount": 25,
+      "directContentCount": 26,
       "positiveDirectContentCount": 13,
-      "banCount": 3,
+      "banCount": 0,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -7046,8 +7234,8 @@
       "groupCount": 5,
       "includeListCount": 5,
       "directContentCount": 11,
-      "positiveDirectContentCount": 4,
-      "banCount": 3,
+      "positiveDirectContentCount": 3,
+      "banCount": 0,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -7076,7 +7264,7 @@
         },
         {
           "sid": "random_hire_3",
-          "weight": 125
+          "weight": 0
         },
         {
           "sid": "random_hire_4",
@@ -7144,18 +7332,18 @@
       "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_sprint_pools.json",
       "groupCount": 4,
       "includeListCount": 4,
-      "directContentCount": 4,
-      "positiveDirectContentCount": 3,
+      "directContentCount": 7,
+      "positiveDirectContentCount": 2,
       "banCount": 0,
       "hasValueDistribution": true,
       "sampleContent": [
         {
           "sid": "random_hire_1",
-          "weight": 20
+          "weight": 0
         },
         {
           "sid": "random_hire_2",
-          "weight": 20
+          "weight": 0
         },
         {
           "sid": "random_hire_3",
@@ -7163,6 +7351,18 @@
         },
         {
           "sid": "random_hire_4",
+          "weight": 30
+        },
+        {
+          "sid": "random_hire_5",
+          "weight": 0
+        },
+        {
+          "sid": "random_hire_6",
+          "weight": 0
+        },
+        {
+          "sid": "random_hire_7",
           "weight": 0
         }
       ]
@@ -7218,7 +7418,7 @@
       "includeListCount": 24,
       "directContentCount": 20,
       "positiveDirectContentCount": 18,
-      "banCount": 4,
+      "banCount": 2,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -7262,7 +7462,7 @@
       "includeListCount": 9,
       "directContentCount": 11,
       "positiveDirectContentCount": 8,
-      "banCount": 7,
+      "banCount": 4,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -7678,7 +7878,7 @@
       "includeListCount": 17,
       "directContentCount": 11,
       "positiveDirectContentCount": 6,
-      "banCount": 3,
+      "banCount": 0,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -7722,7 +7922,7 @@
       "includeListCount": 8,
       "directContentCount": 11,
       "positiveDirectContentCount": 4,
-      "banCount": 3,
+      "banCount": 0,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -7766,7 +7966,7 @@
       "includeListCount": 0,
       "directContentCount": 0,
       "positiveDirectContentCount": 0,
-      "banCount": 3,
+      "banCount": 0,
       "hasValueDistribution": true,
       "sampleContent": []
     },
@@ -7777,7 +7977,7 @@
       "includeListCount": 7,
       "directContentCount": 11,
       "positiveDirectContentCount": 5,
-      "banCount": 7,
+      "banCount": 4,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -8139,7 +8339,7 @@
       "includeListCount": 25,
       "directContentCount": 20,
       "positiveDirectContentCount": 18,
-      "banCount": 4,
+      "banCount": 2,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -8183,7 +8383,7 @@
       "includeListCount": 13,
       "directContentCount": 15,
       "positiveDirectContentCount": 11,
-      "banCount": 3,
+      "banCount": 0,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -8227,7 +8427,7 @@
       "includeListCount": 5,
       "directContentCount": 0,
       "positiveDirectContentCount": 0,
-      "banCount": 5,
+      "banCount": 4,
       "hasValueDistribution": true,
       "sampleContent": []
     },
@@ -8337,7 +8537,7 @@
       "includeListCount": 23,
       "directContentCount": 18,
       "positiveDirectContentCount": 11,
-      "banCount": 6,
+      "banCount": 3,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -8381,7 +8581,7 @@
       "includeListCount": 5,
       "directContentCount": 4,
       "positiveDirectContentCount": 1,
-      "banCount": 3,
+      "banCount": 0,
       "hasValueDistribution": true,
       "sampleContent": [
         {
@@ -8409,7 +8609,7 @@
       "includeListCount": 3,
       "directContentCount": 0,
       "positiveDirectContentCount": 0,
-      "banCount": 3,
+      "banCount": 0,
       "hasValueDistribution": true,
       "sampleContent": []
     },
@@ -8548,9 +8748,9 @@
     {
       "id": "template_pool_arcade_guarded_center_zone",
       "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_arcade_pools.json",
-      "groupCount": 10,
-      "includeListCount": 10,
-      "directContentCount": 6,
+      "groupCount": 9,
+      "includeListCount": 9,
+      "directContentCount": 4,
       "positiveDirectContentCount": 2,
       "banCount": 1,
       "hasValueDistribution": false,
@@ -8570,14 +8770,6 @@
         {
           "sid": "random_item_legendary",
           "weight": 150
-        },
-        {
-          "sid": "stables",
-          "weight": 0
-        },
-        {
-          "sid": "quixs_path",
-          "weight": 0
         }
       ]
     },
@@ -8648,11 +8840,19 @@
       "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_arcade_pools.json",
       "groupCount": 6,
       "includeListCount": 7,
-      "directContentCount": 4,
+      "directContentCount": 6,
       "positiveDirectContentCount": 0,
       "banCount": 1,
       "hasValueDistribution": true,
       "sampleContent": [
+        {
+          "sid": "stables",
+          "weight": 0
+        },
+        {
+          "sid": "quixs_path",
+          "weight": 0
+        },
         {
           "sid": "random_hire_4",
           "weight": 0
@@ -10153,8 +10353,8 @@
       "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_pools_exodus.json",
       "groupCount": 23,
       "includeListCount": 23,
-      "directContentCount": 8,
-      "positiveDirectContentCount": 8,
+      "directContentCount": 14,
+      "positiveDirectContentCount": 14,
       "banCount": 6,
       "hasValueDistribution": true,
       "sampleContent": [
@@ -10187,8 +10387,8 @@
           "weight": 250
         },
         {
-          "sid": "random_hire_3",
-          "weight": 50
+          "sid": "random_hire_1",
+          "weight": 35
         }
       ]
     },
@@ -10313,8 +10513,8 @@
       "sourcePath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip:generator/content_pools/template_pools_exodus.json",
       "groupCount": 9,
       "includeListCount": 9,
-      "directContentCount": 4,
-      "positiveDirectContentCount": 1,
+      "directContentCount": 10,
+      "positiveDirectContentCount": 7,
       "banCount": 0,
       "hasValueDistribution": true,
       "sampleContent": [
@@ -10331,8 +10531,24 @@
           "weight": 0
         },
         {
+          "sid": "random_hire_1",
+          "weight": 35
+        },
+        {
+          "sid": "random_hire_2",
+          "weight": 35
+        },
+        {
           "sid": "random_hire_3",
-          "weight": 50
+          "weight": 20
+        },
+        {
+          "sid": "random_hire_4",
+          "weight": 160
+        },
+        {
+          "sid": "random_hire_5",
+          "weight": 180
         }
       ]
     },
@@ -10933,11 +11149,11 @@
       "sampleContent": [
         {
           "sid": "random_item_common",
-          "weight": 50
+          "weight": 25
         },
         {
           "sid": "random_item_rare",
-          "weight": 150
+          "weight": 50
         },
         {
           "sid": "random_item_epic",
@@ -10945,7 +11161,7 @@
         },
         {
           "sid": "random_item_legendary",
-          "weight": 75
+          "weight": 100
         },
         {
           "sid": "mana_well",
@@ -11065,11 +11281,11 @@
       "sampleContent": [
         {
           "sid": "random_hire_1",
-          "weight": 150
+          "weight": 100
         },
         {
           "sid": "random_hire_2",
-          "weight": 150
+          "weight": 125
         },
         {
           "sid": "random_hire_3",
@@ -11077,19 +11293,19 @@
         },
         {
           "sid": "random_hire_4",
-          "weight": 150
+          "weight": 175
         },
         {
           "sid": "random_hire_5",
-          "weight": 100
+          "weight": 200
         },
         {
           "sid": "random_hire_6",
-          "weight": 75
+          "weight": 225
         },
         {
           "sid": "random_hire_7",
-          "weight": 50
+          "weight": 250
         },
         {
           "sid": "point_of_balance",
@@ -11109,11 +11325,11 @@
       "sampleContent": [
         {
           "sid": "random_hire_1",
-          "weight": 150
+          "weight": 100
         },
         {
           "sid": "random_hire_2",
-          "weight": 150
+          "weight": 125
         },
         {
           "sid": "random_hire_3",
@@ -11121,19 +11337,19 @@
         },
         {
           "sid": "random_hire_4",
-          "weight": 150
+          "weight": 175
         },
         {
           "sid": "random_hire_5",
-          "weight": 100
+          "weight": 200
         },
         {
           "sid": "random_hire_6",
-          "weight": 75
+          "weight": 225
         },
         {
           "sid": "random_hire_7",
-          "weight": 50
+          "weight": 250
         },
         {
           "sid": "point_of_balance",

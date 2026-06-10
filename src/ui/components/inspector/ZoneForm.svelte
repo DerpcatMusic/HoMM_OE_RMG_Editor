@@ -36,8 +36,7 @@ const ph = FIELD_PLACEHOLDERS;
   let guardedPools = $state<string[]>([]);
   let unguardedPools = $state<string[]>([]);
   let resourcesPools = $state<string[]>([]);
-  let mandatoryContent = $state<string>("");
-  let contentCountLimits = $state<string>("");
+  // mandatoryContent and contentCountLimits now managed in Pools tab
 
   // Pool picker inputs
   let guardedPoolInput = $state("");
@@ -74,8 +73,6 @@ const ph = FIELD_PLACEHOLDERS;
       guardedPools = [...(zone.guardedPools ?? [])];
       unguardedPools = [...(zone.unguardedPools ?? [])];
       resourcesPools = [...(zone.resourcesPools ?? [])];
-      mandatoryContent = (zone.mandatoryContent ?? []).join("\n");
-      contentCountLimits = (zone.contentCountLimits ?? []).join("\n");
     }
   });
 
@@ -106,8 +103,8 @@ const ph = FIELD_PLACEHOLDERS;
       guardedPools,
       unguardedPools,
       resourcesPools,
-      mandatoryContent: parseStringList(mandatoryContent),
-      contentCountLimits: parseStringList(contentCountLimits),
+      mandatoryContent: zone.mandatoryContent ?? [],
+      contentCountLimits: zone.contentCountLimits ?? [],
     };
   }
 
@@ -525,15 +522,11 @@ const ph = FIELD_PLACEHOLDERS;
         </div>
       </div>
     </div>
+    <div class="form-notice">
+      <span class="material-symbols-outlined" style="font-size:0.875rem">open_in_new</span>
+      <span>Mandatory presets & count limits are edited in the <strong>Pools</strong> tab.</span>
+    </div>
 
-    <label class="control-row stack">
-      <span>Mandatory presets</span>
-      <textarea rows="3" bind:value={mandatoryContent} onchange={apply} placeholder={ph["zf-mandatory"]} />
-    </label>
-    <label class="control-row stack">
-      <span>Count limits</span>
-      <textarea rows="3" bind:value={contentCountLimits} onchange={apply} placeholder={ph["zf-count-limits"]} />
-    </label>
 
   </details>
     <div class="form-actions">
@@ -680,4 +673,12 @@ const ph = FIELD_PLACEHOLDERS;
     color: var(--color-ink);
   }
   .button-secondary:hover { background: var(--color-panel-2); }
+  .form-notice {
+    display: flex; align-items: center; gap: var(--space-1);
+    padding: var(--space-1) var(--space-3);
+    font-size: 0.625rem; color: var(--color-muted);
+    background: var(--color-panel-2);
+    border-top: var(--line) solid var(--color-line);
+  }
+  .form-notice strong { color: var(--color-accent); }
 </style>

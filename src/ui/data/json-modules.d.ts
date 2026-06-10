@@ -1,32 +1,40 @@
-declare module "../public/game-data/content-pools.json" {
+declare module "./game-data/content-pools.json" {
   const value: { language: string; generatedAt: string; sourceHash: string; entries: unknown[] };
   export default value;
 }
-declare module "../public/game-data/content-lists.json" {
+declare module "./game-data/content-lists.json" {
   const value: { language: string; generatedAt: string; sourceHash: string; entries: unknown[] };
   export default value;
 }
-declare module "../public/game-data/factions.json" {
+declare module "./game-data/factions.json" {
   const value: { language: string; generatedAt: string; sourceHash: string; entries: unknown[] };
   export default value;
 }
-declare module "../public/game-data/biomes.json" {
+declare module "./game-data/biomes.json" {
   const value: { language: string; generatedAt: string; sourceHash: string; entries: unknown[] };
   export default value;
 }
-declare module "../public/game-data/heroes.json" {
+declare module "./game-data/heroes.json" {
   const value: { language: string; generatedAt: string; sourceHash: string; entries: unknown[] };
   export default value;
 }
-declare module "../public/game-data/magics.json" {
+declare module "./game-data/magics.json" {
   const value: { language: string; generatedAt: string; sourceHash: string; entries: unknown[] };
   export default value;
 }
-declare module "../public/game-data/units.json" {
+declare module "./game-data/units.json" {
   const value: { language: string; generatedAt: string; sourceHash: string; entries: unknown[] };
   export default value;
 }
-declare module "../public/game-data/rmg-content.json" {
+declare module "./game-data/rmg-content.json" {
+  const value: { language: string; generatedAt: string; sourceHash: string; entries: unknown[] };
+  export default value;
+}
+declare module "./game-data/content-pool-configs.json" {
+  const value: { language: string; generatedAt: string; sourceHash: string; entries: unknown[] };
+  export default value;
+}
+declare module "./game-data/content-list-configs.json" {
   const value: { language: string; generatedAt: string; sourceHash: string; entries: unknown[] };
   export default value;
 }

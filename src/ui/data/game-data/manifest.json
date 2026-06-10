@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-06-07T10:37:23.360Z",
+  "generatedAt": "2026-06-10T09:32:49.067Z",
   "language": "english",
   "coreZipPath": "/home/derpcat/Projects/Olden_Era_RMG_Editor/external/Core.zip",
-  "coreZipSize": 11928832,
-  "coreZipMtimeMs": 1779742641121.985,
-  "sourceHash": "b7e9d3c1727b5ac09e6b589034613378d0f342df96b7a3004f98755e9cf03a5b",
+  "coreZipSize": 11937492,
+  "coreZipMtimeMs": 1780845020410.7295,
+  "sourceHash": "1fd21d400361ec0cdde68f71e881a34da604a83e4334bbf3bcc4359c256fe6f5",
   "catalogs": {
     "artifacts": {
       "path": "/home/derpcat/Projects/Olden_Era_RMG_Editor/.cache/game-data/artifacts.json",
@@ -16,11 +16,11 @@
     },
     "contentPools": {
       "path": "/home/derpcat/Projects/Olden_Era_RMG_Editor/.cache/game-data/content-pools.json",
-      "entries": 532
+      "entries": 536
     },
     "contentLists": {
       "path": "/home/derpcat/Projects/Olden_Era_RMG_Editor/.cache/game-data/content-lists.json",
-      "entries": 211
+      "entries": 213
     },
     "factions": {
       "path": "/home/derpcat/Projects/Olden_Era_RMG_Editor/.cache/game-data/factions.json",
@@ -41,6 +41,14 @@
     "units": {
       "path": "/home/derpcat/Projects/Olden_Era_RMG_Editor/.cache/game-data/units.json",
       "entries": 152
+    },
+    "contentPoolConfigs": {
+      "path": "/home/derpcat/Projects/Olden_Era_RMG_Editor/.cache/game-data/content-pool-configs.json",
+      "entries": 536
+    },
+    "contentListConfigs": {
+      "path": "/home/derpcat/Projects/Olden_Era_RMG_Editor/.cache/game-data/content-list-configs.json",
+      "entries": 213
     }
   }
 }
