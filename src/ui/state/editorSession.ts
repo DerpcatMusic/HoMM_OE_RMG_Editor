@@ -561,6 +561,22 @@ export function updateSelectedZoneRoadInSession(session: EditorSession, draft: R
     label: `Update road ${draft.roadIndex + 1} in ${zoneName}`,
   });
 }
+export function removeZoneRoadInSession(session: EditorSession, roadIndex: number): EditorSession {
+  const zoneName = session.selectedZoneName;
+  if (!zoneName) return setSessionMessage(session, "No selected zone for road removal.");
+  if (!Number.isInteger(roadIndex) || roadIndex < 0) return setSessionMessage(session, "Select a valid road to remove.");
+  return applyAction(session, {
+    action: {
+      type: "road.remove",
+      input: {
+        variantIndex: session.selectedVariantIndex,
+        zone: { zoneName },
+        roadIndex,
+      },
+    },
+    label: `Remove road ${roadIndex + 1} in ${zoneName}`,
+  });
+}
 
 export function updateSelectedZoneMainObjectInSession(session: EditorSession, draft: MainObjectUpdateDraft): EditorSession {
   const zoneName = session.selectedZoneName;

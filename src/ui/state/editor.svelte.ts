@@ -39,6 +39,7 @@ import {
   updateSelectedConnectionInSession,
   updateSelectedZoneMainObjectInSession,
   updateSelectedZoneRoadInSession,
+  removeZoneRoadInSession,
   updateGlobalSettingsInSession,
   updateTemplateGameMode,
   addPlayerToSession,
@@ -276,6 +277,14 @@ class EditorState {
   addRoad() {
     this.session = addDefaultRoadToSelectedZone(this.session);
     this.workspaceTab = "zoneEdit";
+    this.scheduleAutosave();
+  }
+  updateRoad(roadIndex: number, draft: import("./editorSession.js").RoadUpdateDraft) {
+    this.session = updateSelectedZoneRoadInSession(this.session, { ...draft, roadIndex });
+    this.scheduleAutosave();
+  }
+  removeRoad(roadIndex: number) {
+    this.session = removeZoneRoadInSession(this.session, roadIndex);
     this.scheduleAutosave();
   }
 
