@@ -263,6 +263,67 @@
     const current = presetEntries[entryIndex]?.[field];
     updateEntryField(entryIndex, field, current ? undefined : true);
   }
+  // --- Rule management ---
+  const RULE_TYPES = ["Random", "Sid", "MainObject", "Crossroads", "Connection", "Road", "MandatoryContent"] as const;
+  const OWNER_REFS = ["Player1", "Player2", "Player3", "Player4", "Player5", "Player6", "Player7", "Player8"] as const;
+  let newRuleType = $state("Road");
+  function ruleNeedsArgs(type: string): boolean {
+    return type === "Sid" || type === "MainObject" || type === "Connection" || type === "MandatoryContent";
+  }
+  function ruleArgLabel(type: string): string {
+    switch (type) {
+      case "Sid": return "Object SID";
+      case "MainObject": return "Main object index (0-based)";
+      case "Connection": return "Connection name";
+      case "MandatoryContent": return "Entry name";
+      default: return "";
+    }
+  }
+  function ruleArgOptions(type: string): { id: string; label: string }[] {
+    switch (type) {
+      case "Sid": return catalogOptions.rmgContent;
+      case "MandatoryContent": return presetEntries.map((e, i) => ({ id: e.name ?? `E${i}`, label: e.sid ?? e.name ?? `Entry ${i}` }));
+      default: return [];
+    }
+  }
+  function addRule(entryIndex: number) {
+    if (!activePreset) return;
+    const entry = presetEntries[entryIndex];
+    if (!entry) return;
+    const newRule: import("../../../core/rmg/rmgTypes.js").PlacementRule = { type: newRuleType as any };
+    if (ruleNeedsArgs(newRuleType)) newRule.args = [""];
+    const nextRules = [...(entry.rules ?? []), newRule];
+    updateEntryField(entryIndex, "rules", nextRules);
+  }
+  function removeRule(entryIndex: number, ruleIndex: number) {
+    if (!activePreset) return;
+    const entry = presetEntries[entryIndex];
+    if (!entry) return;
+    const nextRules = (entry.rules ?? []).filter((_, i) => i !== ruleIndex);
+    updateEntryField(entryIndex, "rules", nextRules.length > 0 ? nextRules : undefined);
+  }
+  function updateRuleArg(entryIndex: number, ruleIndex: number, argIndex: number, value: string) {
+    if (!activePreset) return;
+    const entry = presetEntries[entryIndex];
+    if (!entry) return;
+    const nextRules = (entry.rules ?? []).map((rule, i) => {
+      if (i !== ruleIndex) return rule;
+      const nextArgs = [...(rule.args ?? [])];
+      nextArgs[argIndex] = value;
+      return { ...rule, args: nextArgs };
+    });
+    updateEntryField(entryIndex, "rules", nextRules);
+  }
+  function updateRuleField(entryIndex: number, ruleIndex: number, field: string, value: unknown) {
+    if (!activePreset) return;
+    const entry = presetEntries[entryIndex];
+    if (!entry) return;
+    const nextRules = (entry.rules ?? []).map((rule, i) => {
+      if (i !== ruleIndex) return rule;
+      return { ...rule, [field]: value };
+    });
+    updateEntryField(entryIndex, "rules", nextRules);
+  }
 
   // --- Template-local entity management ---
   function addNewPool() {
@@ -696,30 +757,65 @@
               <!-- Owner (always visible, prominent for mines) -->
               <div class="pane-field">
                 <span class="field-label">Owner</span>
-                <input type="text" class="input-sm" value={entry.owner ?? ""}
+                <datalist id="owner-opts">
+                  {#each OWNER_REFS as p}<option value={p}></option>{/each}
+                </datalist>
+                <input type="search" class="input-sm" list="owner-opts" value={entry.owner ?? ""}
                   onchange={(e) => updateEntryField(focusedEntry, "owner", e.currentTarget.value || undefined)}
                   placeholder={isMine ? "Player1..Player8" : "optional"} />
                 {#if entry.owner}<span class="field-hint">Parsed as spawn enum</span>{/if}
               </div>
-              <!-- Rules (always visible) -->
+              <!-- Rules (always visible, editable) -->
               <div class="pane-field">
                 <span class="field-label">Placement rules ({(entry.rules ?? []).length})</span>
                 {#if (entry.rules ?? []).length > 0}
-                  <div class="content-scroll mini">
-                    {#each entry.rules ?? [] as rule}
-                      <div class="content-row">
-                        <span class="content-sid">{rule.type ?? "?"}</span>
-                        {#if rule.args?.length}<span class="content-meta">[{rule.args.join(", ")}]</span>{/if}
-                        {#if rule.target !== undefined}<span class="content-meta">t:{rule.target}</span>{/if}
-                        {#if rule.targetMin !== undefined}<span class="content-meta">min:{rule.targetMin}</span>{/if}
-                        {#if rule.targetMax !== undefined}<span class="content-meta">max:{rule.targetMax}</span>{/if}
-                        {#if rule.weight !== undefined}<span class="content-meta">w:{rule.weight}</span>{/if}
+                  <div class="rules-list">
+                    {#each entry.rules ?? [] as rule, ri}
+                      <div class="rule-row">
+                        <div class="rule-header">
+                          <span class="rule-type">{rule.type ?? "?"}</span>
+                          <button class="button-icon danger" onclick={() => removeRule(focusedEntry, ri)} title="Remove rule">✕</button>
+                        </div>
+                        {#if rule.args?.length}
+                          <div class="rule-args">
+                            {#each rule.args as arg, ai}
+                              {#if rule.type === "Sid"}
+                                <input type="search" class="input-sm" list="mc-sid-options" value={arg}
+                                  onchange={(e) => updateRuleArg(focusedEntry, ri, ai, e.currentTarget.value)} />
+                              {:else if rule.type === "MandatoryContent"}
+                                <input type="text" class="input-sm" value={arg}
+                                  onchange={(e) => updateRuleArg(focusedEntry, ri, ai, e.currentTarget.value)}
+                                  placeholder="entry name" />
+                              {:else}
+                                <input type="text" class="input-sm" value={arg}
+                                  onchange={(e) => updateRuleArg(focusedEntry, ri, ai, e.currentTarget.value)}
+                                  placeholder={ruleArgLabel(rule.type ?? "")} />
+                              {/if}
+                            {/each}
+                          </div>
+                        {/if}
+                        <div class="rule-tuning">
+                          <label class="rule-tune"><span>w:</span><input type="number" class="input-xs" value={rule.weight ?? ""}
+                            onchange={(e) => updateRuleField(focusedEntry, ri, "weight", e.currentTarget.value ? Number(e.currentTarget.value) : undefined)} step="0.1" /></label>
+                          <label class="rule-tune"><span>t:</span><input type="number" class="input-xs" value={rule.target ?? ""}
+                            onchange={(e) => updateRuleField(focusedEntry, ri, "target", e.currentTarget.value ? Number(e.currentTarget.value) : undefined)} step="0.1" min="0" max="1" /></label>
+                          <label class="rule-tune"><span>min:</span><input type="number" class="input-xs" value={rule.targetMin ?? ""}
+                            onchange={(e) => updateRuleField(focusedEntry, ri, "targetMin", e.currentTarget.value ? Number(e.currentTarget.value) : undefined)} step="0.1" min="0" max="1" /></label>
+                          <label class="rule-tune"><span>max:</span><input type="number" class="input-xs" value={rule.targetMax ?? ""}
+                            onchange={(e) => updateRuleField(focusedEntry, ri, "targetMax", e.currentTarget.value ? Number(e.currentTarget.value) : undefined)} step="0.1" min="0" max="1" /></label>
+                        </div>
                       </div>
                     {/each}
                   </div>
                 {:else}
                   <span class="field-hint">No rules (shuffled placement)</span>
                 {/if}
+                <div class="add-rule-row">
+                  <select class="input-sm" bind:value={newRuleType}>
+                    {#each RULE_TYPES as rt}<option value={rt}>{rt}</option>{/each}
+                  </select>
+                  <button class="button button-secondary button-sm" onclick={() => addRule(focusedEntry)}>+ Rule</button>
+                </div>
               </div>
             {:else}
               <div class="pane-header">
@@ -1015,6 +1111,22 @@
   .entity-btn:hover { background: var(--color-panel-2); }
   .entity-name { font-family: var(--font-mono); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .entity-meta { font-size: 0.5625rem; color: var(--color-muted); white-space: nowrap; }
+  .rules-list { display: flex; flex-direction: column; gap: 2px; }
+  .rule-row {
+    background: var(--color-panel-2);
+    border: var(--line) solid var(--color-line);
+    padding: 2px var(--space-1);
+    display: grid; gap: 2px;
+  }
+  .rule-header { display: flex; align-items: center; gap: var(--space-1); }
+  .rule-type { font-family: var(--font-mono); font-size: 0.5625rem; font-weight: 600; flex: 1; }
+  .rule-args { display: flex; gap: 2px; }
+  .rule-args input { flex: 1; }
+  .rule-tuning { display: flex; gap: var(--space-1); flex-wrap: wrap; }
+  .rule-tune { display: flex; align-items: center; gap: 1px; font-size: 0.5rem; color: var(--color-muted); }
+  .rule-tune span { white-space: nowrap; }
+  .add-rule-row { display: flex; gap: var(--space-1); padding-top: 2px; }
+  .add-rule-row select { flex: 1; }
   .add-entity-row {
     display: flex; gap: var(--space-1);
     padding: var(--space-2) var(--space-3);
