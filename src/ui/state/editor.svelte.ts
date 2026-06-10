@@ -261,6 +261,9 @@ class EditorState {
   setWorkspaceTab(tab: WorkspaceTab) {
     this.workspaceTab = tab;
   }
+  setInspectorTab(tab: InspectorTab) {
+    this.inspectorTab = tab;
+  }
 
   addConnectionBetween(from: string, to: string) {
     this.session = addConnectionBetweenZones(this.session, from, to);

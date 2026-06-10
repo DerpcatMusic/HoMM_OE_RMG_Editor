@@ -207,13 +207,26 @@
       e.preventDefault();
       return;
     }
-    // Normal drag → move node
-    nodeDragging = true;
-    dragNodeId = obj.id;
-    const pos = nodePos(obj);
+    // Read position BEFORE setting dragging (nodePos returns stale nodeDragPos once dragging=true)
+    const pos = { x: obj.x, y: obj.y };
     nodeDragOffset = { x: p.x - pos.x, y: p.y - pos.y };
     nodeDragPos = { x: pos.x, y: pos.y };
+    nodeDragging = true;
+    dragNodeId = obj.id;
     e.preventDefault();
+  }
+  // Node click (non-drag) → focus inspector panel
+  function nodeFocusInspector(obj: typeof selectedZone.zoneObjects[number]) {
+    if (obj.id.startsWith("main:")) {
+      editor.setInspectorTab("objects");
+    } else if (obj.id.startsWith("connection:")) {
+      editor.setInspectorTab("connection");
+    } else if (obj.id === "crossroads") {
+      editor.setInspectorTab("roads");
+    } else {
+      // MandatoryContent entry → focus pools tab
+      editor.setInspectorTab("pools");
+    }
   }
   // Stage pointer move
   function zoneStagePointerMove(e: PointerEvent) {
@@ -232,7 +245,16 @@
   // Stage pointer up
   function zoneStagePointerUp(e: PointerEvent) {
     if (nodeDragging && dragNodeId) {
-      editor.moveZoneObject(selectedZone.label, dragNodeId, nodeDragPos);
+      // Detect click vs drag (if barely moved, treat as click)
+      const obj = selectedZone.zoneObjects.find((o) => o.id === dragNodeId);
+      const startPos = obj ? { x: obj.x, y: obj.y } : nodeDragPos;
+      const moved = Math.abs(nodeDragPos.x - startPos.x) + Math.abs(nodeDragPos.y - startPos.y);
+      if (moved < 1 && obj) {
+        // Click without drag → focus inspector
+        nodeFocusInspector(obj);
+      } else {
+        editor.moveZoneObject(selectedZone.label, dragNodeId, nodeDragPos);
+      }
       nodeDragging = false;
       dragNodeId = null;
     }
