@@ -20,6 +20,10 @@
   let connMousePos = $state({ x: 0, y: 0 });
   // Context menu state
   let ctxMenu = $state<{ x: number; y: number; items: Array<{ label: string; icon?: string; onClick: () => void }> } | null>(null);
+  // Zone edit road creation state
+  let creatingRoad = $state(false);
+  let roadFromNodeId = $state<string | null>(null);
+  let roadType = $state<"Dirt" | "Stone">("Stone");
   function closeCtxMenu() { ctxMenu = null; }
   function zonePointerDown(e: PointerEvent, zone: typeof zones[number]) {
     if (e.button !== 0) return;
@@ -137,6 +141,60 @@
       editor.selectConnectionById(connId);
     }
   }
+  // --- Zone edit road functions ---
+  function zoneObjectNodeId(obj: { id: string }): string {
+    return obj.id;
+  }
+  function nodeTypeFromId(id: string): string {
+    if (id.startsWith("main:")) return "MainObject";
+    if (id.startsWith("connection:")) return "Connection";
+    if (id === "crossroads") return "Crossroads";
+    return "MandatoryContent";
+  }
+  function nodeArgFromId(id: string): string {
+    if (id.startsWith("main:")) return id.replace("main:", "");
+    if (id.startsWith("connection:")) return id.replace("connection:", "");
+    if (id === "crossroads") return "";
+    return id; // MandatoryContent entry name
+  }
+  function nodeClick(objId: string) {
+    if (!creatingRoad) {
+      // Start road creation
+      creatingRoad = true;
+      roadFromNodeId = objId;
+      return;
+    }
+    // Complete road creation
+    if (roadFromNodeId && roadFromNodeId !== objId) {
+      const fromType = nodeTypeFromId(roadFromNodeId);
+      const fromArg = nodeArgFromId(roadFromNodeId);
+      const toType = nodeTypeFromId(objId);
+      const toArg = nodeArgFromId(objId);
+      // Use the road mutation
+      editor.addRoadBetween(
+        { type: fromType, args: fromArg ? [fromArg] : [] },
+        { type: toType, args: toArg ? [toArg] : [] },
+        roadType
+      );
+    }
+    creatingRoad = false;
+    roadFromNodeId = null;
+  }
+  function cancelRoadCreation() {
+    creatingRoad = false;
+    roadFromNodeId = null;
+  }
+  function roadEndpointPos(targetId: string): { x: number; y: number } | null {
+    const obj = selectedZone.zoneObjects.find((o) => o.id === targetId);
+    if (obj) return { x: obj.x, y: obj.y };
+    return null;
+  }
+  function roadPath(road: typeof selectedZone.zoneRoads[number]): string {
+    const from = roadEndpointPos(road.fromId);
+    const to = roadEndpointPos(road.toId);
+    if (!from || !to) return "";
+    return `M ${from.x.toFixed(2)} ${from.y.toFixed(2)} L ${to.x.toFixed(2)} ${to.y.toFixed(2)}`;
+  }
 </script>
 <div class="workspace">
   <div class="workspace-tabs" role="tablist" aria-label="Workspace mode">
@@ -233,23 +291,66 @@
           <button class="button button-secondary" onclick={() => editor.addDefaultRoadToSelectedZone()}>Add road</button>
         </div>
       </div>
-      <p class="conditional-note">Road lines are parsed from zone.roads[] targets: crossroads, main objects, connections, and mandatory content.</p>
+      <p class="conditional-note">
+        {#if creatingRoad}
+          Click a target node to complete the road. <button class="button button-sm" onclick={cancelRoadCreation}>Cancel</button>
+        {:else}
+          Click a node to start creating a road. Roads connect zone objects.
+        {/if}
+      </p>
       <div class="zone-stage">
         <div class="stage-grid"></div>
-        <!-- TODO: zone object nodes and roads -->
+        <!-- SVG layer for roads -->
+        <svg class="stage-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+          {#each selectedZone.zoneRoads as road (road.id)}
+            {@const path = roadPath(road)}
+            {#if path}
+              <path class="zone-road-line" class:is-stone={road.type === "Stone"} d={path} />
+            {/if}
+          {/each}
+          <!-- Draft road start marker -->
+          {#if creatingRoad && roadFromNodeId}
+            {@const fromPos = roadEndpointPos(roadFromNodeId)}
+            {#if fromPos}
+              <circle class="road-draft-start" cx={fromPos.x} cy={fromPos.y} r="2" />
+            {/if}
+          {/if}
+        </svg>
+        <!-- Zone object nodes -->
+        {#each selectedZone.zoneObjects as obj (obj.id)}
+          {@const isMain = obj.id.startsWith("main:")}
+          {@const isConnection = obj.id.startsWith("connection:")}
+          {@const isCrossroads = obj.id === "crossroads"}
+          {@const isRoadTarget = creatingRoad && roadFromNodeId === obj.id}
+          <button
+            type="button"
+            class="zone-node"
+            class:is-main={isMain}
+            class:is-connection={isConnection}
+            class:is-crossroads={isCrossroads}
+            class:is-road-source={isRoadTarget}
+            style="left:{obj.x}%;top:{obj.y}%"
+            onclick={() => nodeClick(obj.id)}
+            title="{obj.type}: {obj.label}"
+          >
+            <span class="node-icon">{isMain ? "🏰" : isConnection ? "🚪" : isCrossroads ? "╬" : "📦"}</span>
+            <span class="node-label">{obj.label}</span>
+            {#if obj.detail}<span class="node-detail">{obj.detail}</span>{/if}
+          </button>
+        {/each}
       </div>
-      <div class="zone-internals-summary">
-        <div>
-          <strong>Main objects</strong>
-          <span>{selectedZone.zoneObjects.filter((o) => o.id.startsWith("main:")).map((o) => `${o.index}: ${o.type}`).join(" / ") || "none"}</span>
-        </div>
-        <div>
+      <!-- Controls and summary -->
+      <div class="zone-controls">
+        <label class="road-type-selector">
+          <span>Road type</span>
+          <select class="input-sm" bind:value={roadType}>
+            <option value="Stone">Stone</option>
+            <option value="Dirt">Dirt</option>
+          </select>
+        </label>
+        <div class="zone-roads-summary">
           <strong>Roads</strong>
-          <span>{selectedZone.zoneRoads.map((r) => `${r.type}: ${r.fromId} -> ${r.toId}`).join(" / ") || "none"}</span>
-        </div>
-        <div>
-          <strong>Edit</strong>
-          <span>Use Inspector > Objects or Inspector > Roads for properties.</span>
+          <span>{selectedZone.zoneRoads.map((r) => `${r.type}: ${r.fromId}→${r.toId}`).join(" / ") || "none"}</span>
         </div>
       </div>
     </section>
@@ -382,5 +483,64 @@
   .stage-node span {
     font-size: 0.5625rem;
     color: var(--color-muted);
+  }
+  /* Zone edit: nodes, roads, controls */
+  .zone-node {
+    position: absolute;
+    z-index: 2;
+    transform: translate(-50%, -50%);
+    display: flex; flex-direction: column; align-items: center;
+    gap: 1px;
+    padding: 4px 6px;
+    border: var(--line) solid var(--color-line-strong);
+    background: var(--color-panel);
+    cursor: pointer;
+    font: inherit; color: inherit;
+    min-width: 2rem;
+    text-align: center;
+    transition: box-shadow 0.1s;
+  }
+  .zone-node:hover { background: var(--color-panel-2); box-shadow: 0 0 0 2px var(--color-focus); }
+  .zone-node.is-main { border-left: 3px solid #c90; }
+  .zone-node.is-connection { border-left: 3px solid #5af; }
+  .zone-node.is-crossroads { border-left: 3px solid #8a8; }
+  .zone-node.is-road-source { box-shadow: 0 0 0 3px var(--color-accent); background: var(--color-active); }
+  .node-icon { font-size: 0.75rem; line-height: 1; }
+  .node-label { font-family: var(--font-mono); font-size: 0.5rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 5rem; }
+  .node-detail { font-size: 0.4375rem; color: var(--color-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 5rem; }
+  .zone-road-line {
+    fill: none;
+    stroke: #888;
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+    pointer-events: none;
+    stroke-dasharray: 4 2;
+  }
+  .zone-road-line.is-stone {
+    stroke: #bbb;
+    stroke-width: 3;
+    stroke-dasharray: none;
+  }
+  .road-draft-start {
+    fill: var(--color-accent);
+    pointer-events: none;
+  }
+  .zone-controls {
+    display: flex; align-items: center; gap: var(--space-3);
+    padding: var(--space-2);
+    border-top: var(--line) solid var(--color-line);
+    background: var(--color-panel-2);
+    font-size: 0.625rem;
+  }
+  .road-type-selector { display: flex; align-items: center; gap: var(--space-1); }
+  .road-type-selector span { color: var(--color-muted); font-size: 0.5625rem; }
+  .zone-roads-summary { display: flex; align-items: center; gap: var(--space-1); }
+  .zone-roads-summary strong { font-size: 0.5625rem; }
+  .zone-roads-summary span { font-family: var(--font-mono); font-size: 0.5rem; color: var(--color-muted); }
+  .button-sm { font-size: 0.5625rem; padding: 1px var(--space-1); }
+  .input-sm {
+    font-size: 0.625rem; padding: 2px var(--space-1);
+    border: var(--line) solid var(--color-line);
+    background: var(--color-panel); color: inherit; font-family: inherit;
   }
 </style>

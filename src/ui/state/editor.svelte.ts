@@ -33,6 +33,7 @@ import {
   addConnectionBetweenZones,
   addMainObjectToSelectedZone,
   addDefaultRoadToSelectedZone,
+  addRoadBetweenInSession,
   moveZoneInSession,
   moveZoneObjectInSession,
   updateSelectedZoneInSession,
@@ -277,6 +278,10 @@ class EditorState {
   addRoad() {
     this.session = addDefaultRoadToSelectedZone(this.session);
     this.workspaceTab = "zoneEdit";
+    this.scheduleAutosave();
+  }
+  addRoadBetween(from: { type: string; args: readonly string[] }, to: { type: string; args: readonly string[] }, roadType: string) {
+    this.session = addRoadBetweenInSession(this.session, from, to, roadType);
     this.scheduleAutosave();
   }
   updateRoad(roadIndex: number, draft: import("./editorSession.js").RoadUpdateDraft) {

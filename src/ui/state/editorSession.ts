@@ -530,6 +530,33 @@ export function addDefaultRoadToSelectedZone(session: EditorSession): EditorSess
     label: `Add road in ${zoneName}`,
   });
 }
+export function addRoadBetweenInSession(
+  session: EditorSession,
+  from: { type: string; args: readonly string[] },
+  to: { type: string; args: readonly string[] },
+  roadType: string,
+): EditorSession {
+  const zoneName = session.selectedZoneName;
+  if (!zoneName) return setSessionMessage(session, "No selected zone for road.");
+  const fromConfig = toRoadTargetConfig(from);
+  const toConfig = toRoadTargetConfig(to);
+  if (!fromConfig || !toConfig) return setSessionMessage(session, "Road targets need a target type.");
+  return applyAction(session, {
+    action: {
+      type: "road.add",
+      input: {
+        variantIndex: session.selectedVariantIndex,
+        zone: { zoneName },
+        road: {
+          type: roadType as import("../../core/rmg/enums.js").RoadType,
+          from: fromConfig,
+          to: toConfig,
+        },
+      },
+    },
+    label: `Add road in ${zoneName}`,
+  });
+}
 
 export function updateSelectedZoneRoadInSession(session: EditorSession, draft: RoadUpdateDraft): EditorSession {
   const zoneName = session.selectedZoneName;
