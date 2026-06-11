@@ -16,3 +16,4 @@ GameEngineMapGenerator/
 # OS/editor noise
 .DS_Store
 *.swp
+.svelte-doctor/*

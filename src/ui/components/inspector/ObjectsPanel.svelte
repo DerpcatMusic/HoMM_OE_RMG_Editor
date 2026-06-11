@@ -2,6 +2,7 @@
   import { editor } from "../../state/editor.svelte.js";
   import { MAIN_OBJECT_TYPES, MAIN_OBJECT_PLACEMENTS, PLAYER_REFS, FACTION_RULE_TYPES } from "../../../core/rmg/enums.js";
   import type { MainObjectUpdateDraft } from "../../state/editorSession.js";
+  import GuardFields from "../svelte/GuardFields.svelte";
 
   let zone = $derived(editor.selectedZone);
   let objects = $derived(zone.zoneObjects.filter((o) => o.id.startsWith("main:")));
@@ -175,34 +176,15 @@
         <!-- Guards -->
         <div class="editor-section">
           <h4 class="section-title">Guards</h4>
-          <div class="field-row">
-            <label class="field narrow">
-              <span class="field-label">Chance</span>
-              <input type="number" class="input-xs" bind:value={editGuardChance}
-                onchange={apply} step="0.01" min="0" max="1" placeholder="0-1" />
-            </label>
-            <label class="field narrow">
-              <span class="field-label">Value</span>
-              <input type="number" class="input-xs" bind:value={editGuardValue}
-                onchange={apply} step="1" min="0" placeholder="0" />
-            </label>
-          </div>
-          <div class="field-row">
-            <label class="field narrow">
-              <span class="field-label">Weekly +</span>
-              <input type="number" class="input-xs" bind:value={editGuardWeeklyIncrement}
-                onchange={apply} step="1" min="0" placeholder="0" />
-            </label>
-            <label class="field narrow">
-              <span class="field-label">Random</span>
-              <input type="number" class="input-xs" bind:value={editGuardRandomization}
-                onchange={apply} step="0.01" min="0" max="1" placeholder="0-1" />
-            </label>
-          </div>
-          <label class="field checkbox">
-            <input type="checkbox" bind:checked={editRemoveGuardIfHasOwner} onchange={apply} />
-            <span class="field-label">Remove guard if has owner</span>
-          </label>
+          <GuardFields
+            showObjectFields={true}
+            bind:guardWeeklyIncrement={editGuardWeeklyIncrement}
+            bind:guardRandomization={editGuardRandomization}
+            bind:guardChance={editGuardChance}
+            bind:guardValue={editGuardValue}
+            bind:removeGuardIfHasOwner={editRemoveGuardIfHasOwner}
+            onchange={apply}
+          />
         </div>
 
         <!-- Faction -->
@@ -322,8 +304,6 @@
   .field.checkbox { display: flex; align-items: center; gap: var(--space-1); flex-direction: row; }
   .field.checkbox input { margin: 0; }
   .field-label { font-size: 0.5625rem; color: var(--color-muted); }
-  .field-row { display: flex; gap: var(--space-2); }
-  .field.narrow { flex: 1; }
   .input-sm {
     font-size: 0.625rem; padding: 2px var(--space-1);
     border: var(--line) solid var(--color-line);
@@ -334,6 +314,11 @@
     border: var(--line) solid var(--color-line);
     background: var(--color-panel); color: inherit; font-family: var(--font-mono);
     width: 100%;
+    min-width: 0;
+  }
+  .input-xs[type="number"] {
+    width: fit-content;
+    min-width: 3ch;
   }
   .button-icon { border: 0; background: transparent; cursor: pointer; font-size: 0.75rem; padding: 2px; color: var(--color-muted); line-height: 1; }
   .button-icon:hover { color: var(--color-text); }

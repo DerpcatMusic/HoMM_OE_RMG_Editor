@@ -5,6 +5,9 @@
   "type": "module",
   "scripts": {
     "check": "tsc --noEmit",
+    "doctor": "svelte-doctor check .",
+    "doctor:pr": "svelte-doctor pr-check .",
+    "doctor:quick": "svelte-doctor quick .",
     "test": "npm run test:mutations && npm run test:editor-schema && npm run test:editor-actions && npm run test:ui-session",
     "test:mutations": "bun run src/cli/mutation-invariants.ts",
     "test:editor-schema": "bun run src/cli/editor-schema-invariants.ts",
@@ -29,10 +32,12 @@
     "css-tree": "^3.2.1",
     "playwright-core": "^1.60.0",
     "svelte": "^5.56.3",
+    "svelte-doctor": "^0.2.9",
     "typescript": "^5.8.3",
     "vite": "^8.0.16"
   },
   "dependencies": {
+    "bits-ui": "^2.18.1",
     "effect": "^3.21.3"
   }
 }

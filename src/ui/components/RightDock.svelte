@@ -1,9 +1,21 @@
 <script lang="ts">
-  import { editor } from "../state/editor.svelte.js";
+  import { Tabs } from "bits-ui";
+  import { editor, type RightDockTab } from "../state/editor.svelte.js";
   import Inspector from "./Inspector.svelte";
   import ContentBrowser from "./ContentBrowser.svelte";
+
+  function setRightDockTab(value: string) {
+    editor.rightDockTab = value as RightDockTab;
+  }
 </script>
-<aside class="right-dock" aria-label="Right tools">
+<Tabs.Root
+  class="right-dock"
+  value={editor.rightDockTab}
+  onValueChange={setRightDockTab}
+  orientation="vertical"
+  activationMode="manual"
+  aria-label="Right tools"
+>
   <div class="right-dock-panel">
     {#if editor.rightDockTab === "browser"}
       <ContentBrowser />
@@ -11,34 +23,28 @@
       <Inspector />
     {/if}
   </div>
-  <div class="right-dock-rail" role="tablist" aria-orientation="vertical" aria-label="Right tool panels">
-    <button
+  <Tabs.List class="right-dock-rail" aria-label="Right tool panels">
+    <Tabs.Trigger
       class="right-dock-tab"
-      class:is-active={editor.rightDockTab === "inspector"}
-      role="tab"
-      aria-selected={editor.rightDockTab === "inspector"}
+      value="inspector"
       title="Inspector"
-      onclick={() => editor.rightDockTab = "inspector"}
     >
       <span class="material-symbols-outlined">tune</span>
       <span class="right-dock-tab-label">Inspector</span>
-    </button>
-    <button
+    </Tabs.Trigger>
+    <Tabs.Trigger
       class="right-dock-tab"
-      class:is-active={editor.rightDockTab === "browser"}
-      role="tab"
-      aria-selected={editor.rightDockTab === "browser"}
+      value="browser"
       title="Browser"
-      onclick={() => editor.rightDockTab = "browser"}
     >
       <span class="material-symbols-outlined">manage_search</span>
       <span class="right-dock-tab-label">Browser</span>
-    </button>
-  </div>
-</aside>
+    </Tabs.Trigger>
+  </Tabs.List>
+</Tabs.Root>
 
 <style>
-  .right-dock {
+  :global(.right-dock) {
     display: grid;
     grid-template-columns: minmax(0, 1fr) var(--rail-width);
     border-left: var(--line-strong) solid var(--color-line-strong);
@@ -49,14 +55,14 @@
     grid-row: 1;
     overflow: hidden;
   }
-  .right-dock-rail {
+  :global(.right-dock-rail) {
     min-height: 0;
     display: grid;
     align-content: start;
     border-left: var(--line-strong) solid var(--color-line-strong);
     background: var(--color-panel-2);
   }
-  .right-dock-tab {
+  :global(.right-dock-tab) {
     min-width: 0;
     min-height: 3.5rem;
     display: grid;
@@ -69,12 +75,12 @@
     color: var(--color-ink);
     cursor: pointer;
   }
-  .right-dock-tab:hover { background: var(--color-panel-2); }
-  .right-dock-tab.is-active {
+  :global(.right-dock-tab:hover) { background: var(--color-panel-2); }
+  :global(.right-dock-tab[data-state="active"]) {
     background: var(--color-active);
     box-shadow: inset calc(var(--line-strong) * -1) 0 0 var(--color-line-strong);
   }
-  .right-dock-tab-label {
+  :global(.right-dock-tab-label) {
     writing-mode: vertical-rl;
     transform: rotate(180deg);
     font-size: 0.6875rem;

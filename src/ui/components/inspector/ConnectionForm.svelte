@@ -1,7 +1,8 @@
 <script lang="ts">
   import { editor } from "../../state/editor.svelte.js";
-  import { CONNECTION_TYPES, GATE_PLACEMENTS, GUARD_REACTIONS } from "../../../core/rmg/enums.js";
+  import { CONNECTION_TYPES, GATE_PLACEMENTS } from "../../../core/rmg/enums.js";
   import type { ConnectionUpdateDraft } from "../../state/editorSession.js";
+  import GuardFields from "../svelte/GuardFields.svelte";
 
   let conn = $derived(editor.selectedConnection);
   let zones = $derived(editor.zones);
@@ -112,35 +113,16 @@
 
     <section class="form-section">
       <h3 class="section-title">Guards</h3>
-      <label class="field">
-        <span class="field-label">Guard zone</span>
-        <select bind:value={guardZone} onchange={apply}>
-          <option value="">None</option>
-          {#each zones as z}<option value={z.label}>{z.label}</option>{/each}
-        </select>
-      </label>
-      <label class="field">
-        <span class="field-label">Guard value</span>
-        <input type="number" bind:value={guardValue} onchange={apply} min="0" />
-      </label>
-      <label class="field">
-        <span class="field-label">Weekly +</span>
-        <input type="number" bind:value={guardWeeklyIncrement} onchange={apply} min="0" />
-      </label>
-      <label class="field">
-        <span class="field-label">Reaction</span>
-        <select bind:value={guardReaction} onchange={apply}>
-          {#each GUARD_REACTIONS as r}<option value={r}>{r}</option>{/each}
-        </select>
-      </label>
-      <label class="field">
-        <span class="field-label">Escape</span>
-        <input type="checkbox" bind:checked={guardEscape} onchange={apply} />
-      </label>
-      <label class="field">
-        <span class="field-label">Randomization</span>
-        <input type="number" bind:value={guardRandomization} onchange={apply} min="0" max="100" />
-      </label>
+      <GuardFields
+        showConnectionFields={true}
+        bind:guardWeeklyIncrement={guardWeeklyIncrement}
+        bind:guardRandomization={guardRandomization}
+        bind:guardValue={guardValue}
+        bind:guardZone={guardZone}
+        bind:guardReaction={guardReaction}
+        bind:guardEscape={guardEscape}
+        onchange={apply}
+      />
     </section>
 
     <section class="form-section">
@@ -182,7 +164,7 @@
   }
   .field {
     display: grid;
-    grid-template-columns: 6rem 1fr;
+    grid-template-columns: auto 1fr;
     align-items: center;
     gap: var(--space-2);
     font-size: 0.6875rem;
@@ -192,6 +174,7 @@
     font-size: 0.625rem;
     text-transform: uppercase;
     letter-spacing: 0.04em;
+    white-space: nowrap;
   }
   .field-value {
     font-family: var(--font-mono);
@@ -204,6 +187,17 @@
     background: var(--color-panel);
     font: inherit;
     font-size: 0.6875rem;
+  }
+  .field input[type="number"] {
+    width: fit-content;
+    min-width: 3ch;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .field input[type="text"],
+  .field select {
+    width: 100%;
+    min-width: 0;
   }
   .field input[type="checkbox"] {
     width: 1rem;

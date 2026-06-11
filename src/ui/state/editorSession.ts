@@ -12,6 +12,7 @@ import {
 import type { ConnectionType, GameMode, GatePlacement, GuardReaction, MainObjectPlacement, MainObjectType, PlayerRef, RoadTargetType, RoadType } from "../../core/rmg/enums.js";
 import { PLAYER_REFS } from "../../core/rmg/enums.js";
 import type { ContentWeight, FactionRule, MainObject, RmgTemplate, RoadTargetConfig, Zone } from "../../core/rmg/rmgTypes.js";
+import type { WinConditionPresetId } from "../../core/rmg/winConditions.js";
 import { createDefaultConnection, createDefaultZone } from "../../core/mutations/defaultObjects.js";
 import {
   createLayoutStorageKey,
@@ -96,6 +97,7 @@ export interface GlobalSettingsDraft {
   gameMode: string;
   sizeX: number;
   displayWinCondition: string;
+  winConditionPreset?: WinConditionPresetId;
   sizeZ: number;
   heroCountMin: number;
   heroCountMax: number;
@@ -1186,6 +1188,25 @@ export function updateGlobalSettingsInSession(session: EditorSession, draft: Glo
         lostStartHero: true,
       }
     : draft;
+  const winConditions = {
+    classic: effectiveDraft.classic,
+    desertion: effectiveDraft.desertion,
+    ...(effectiveDraft.desertionDay !== undefined ? { desertionDay: effectiveDraft.desertionDay } : {}),
+    ...(effectiveDraft.desertionValue !== undefined ? { desertionValue: effectiveDraft.desertionValue } : {}),
+    heroLighting: effectiveDraft.heroLighting,
+    ...(effectiveDraft.heroLightingDay !== undefined ? { heroLightingDay: effectiveDraft.heroLightingDay } : {}),
+    lostStartCity: effectiveDraft.lostStartCity,
+    ...(effectiveDraft.lostStartCityDay !== undefined ? { lostStartCityDay: effectiveDraft.lostStartCityDay } : {}),
+    lostStartHero: effectiveDraft.lostStartHero,
+    gladiatorArena: effectiveDraft.gladiatorArena,
+    ...(effectiveDraft.gladiatorArenaDaysDelayStart !== undefined ? { gladiatorArenaDaysDelayStart: effectiveDraft.gladiatorArenaDaysDelayStart } : {}),
+    ...(effectiveDraft.gladiatorArenaCountDay !== undefined ? { gladiatorArenaCountDay: effectiveDraft.gladiatorArenaCountDay } : {}),
+    ...(effectiveDraft.championSelectRule.trim().length > 0 ? { championSelectRule: effectiveDraft.championSelectRule.trim() } : {}),
+    cityHold: effectiveDraft.cityHold,
+    ...(effectiveDraft.cityHoldDays !== undefined ? { cityHoldDays: effectiveDraft.cityHoldDays } : {}),
+    tournament: effectiveDraft.tournament,
+    ...(effectiveDraft.tournamentPointsToWin !== undefined ? { tournamentPointsToWin: effectiveDraft.tournamentPointsToWin } : {}),
+  };
   return applyAction(session, {
     action: {
       type: "template.update",
@@ -1195,6 +1216,7 @@ export function updateGlobalSettingsInSession(session: EditorSession, draft: Glo
         sizeX: effectiveDraft.sizeX,
         displayWinCondition: effectiveDraft.displayWinCondition.trim().length > 0 ? effectiveDraft.displayWinCondition : null,
         sizeZ: effectiveDraft.sizeZ,
+        ...(effectiveDraft.winConditionPreset !== undefined ? { winConditionPreset: effectiveDraft.winConditionPreset } : {}),
         gameRules: {
           heroCountMin: effectiveDraft.heroCountMin,
           heroCountMax: effectiveDraft.heroCountMax,
@@ -1208,25 +1230,11 @@ export function updateGlobalSettingsInSession(session: EditorSession, draft: Glo
           ...(effectiveDraft.factionLawsExpModifier !== undefined ? { factionLawsExpModifier: effectiveDraft.factionLawsExpModifier } : {}),
           ...(effectiveDraft.astrologyExpModifier !== undefined ? { astrologyExpModifier: effectiveDraft.astrologyExpModifier } : {}),
         },
-        winConditions: {
-          classic: effectiveDraft.classic,
-          desertion: effectiveDraft.desertion,
-          ...(effectiveDraft.desertionDay !== undefined ? { desertionDay: effectiveDraft.desertionDay } : {}),
-          ...(effectiveDraft.desertionValue !== undefined ? { desertionValue: effectiveDraft.desertionValue } : {}),
-          heroLighting: effectiveDraft.heroLighting,
-          ...(effectiveDraft.heroLightingDay !== undefined ? { heroLightingDay: effectiveDraft.heroLightingDay } : {}),
-          lostStartCity: effectiveDraft.lostStartCity,
-          ...(effectiveDraft.lostStartCityDay !== undefined ? { lostStartCityDay: effectiveDraft.lostStartCityDay } : {}),
-          lostStartHero: effectiveDraft.lostStartHero,
-          gladiatorArena: effectiveDraft.gladiatorArena,
-          ...(effectiveDraft.gladiatorArenaDaysDelayStart !== undefined ? { gladiatorArenaDaysDelayStart: effectiveDraft.gladiatorArenaDaysDelayStart } : {}),
-          ...(effectiveDraft.gladiatorArenaCountDay !== undefined ? { gladiatorArenaCountDay: effectiveDraft.gladiatorArenaCountDay } : {}),
-          ...(effectiveDraft.championSelectRule.trim().length > 0 ? { championSelectRule: effectiveDraft.championSelectRule.trim() } : {}),
-          cityHold: effectiveDraft.cityHold,
-          ...(effectiveDraft.cityHoldDays !== undefined ? { cityHoldDays: effectiveDraft.cityHoldDays } : {}),
-          tournament: effectiveDraft.tournament,
-          ...(effectiveDraft.tournamentPointsToWin !== undefined ? { tournamentPointsToWin: effectiveDraft.tournamentPointsToWin } : {}),
-        },
+        ...(effectiveDraft.winConditionPreset === undefined
+          ? { winConditions }
+          : effectiveDraft.gameMode === "SingleHero"
+            ? { winConditions: { lostStartHero: true } }
+            : {}),
       },
     },
     label: "Update global settings",
@@ -1767,6 +1775,90 @@ function sanitizeFileName(value: string): string {
   return sanitized.length > 0 ? sanitized : "untitled";
 }
 
+export function updateZoneLayoutInSession(
+  session: EditorSession,
+  layoutIndex: number,
+  settings: Record<string, unknown>,
+): EditorSession {
+  return applyAction(session, {
+    action: {
+      type: "zoneLayout.update",
+      input: {
+        layout: { layoutIndex },
+        settings,
+      },
+    },
+    label: "Update zone layout",
+  });
+}
+export function createLocalLayoutForZone(
+  session: EditorSession,
+  zoneName: string,
+): EditorSession {
+  const template = session.template;
+  const variant = template.variants?.[session.selectedVariantIndex];
+  const zone = variant?.zones?.find(z => z.name === zoneName);
+  if (!zone) return setSessionMessage(session, `Zone '${zoneName}' not found.`);
+
+  // Generate a unique layout name
+  const existingNames = new Set((template.zoneLayouts ?? []).map(l => l.name).filter(Boolean));
+  const baseName = zone.layout ? `${zone.layout}_local` : `layout_${zoneName.toLowerCase().replace(/\s+/g, "_")}`;
+  let layoutName = baseName;
+  let suffix = 2;
+  while (existingNames.has(layoutName)) {
+    layoutName = `${baseName}_${suffix++}`;
+  }
+
+  // Create the layout with sensible defaults
+  const defaultLayout = {
+    name: layoutName,
+    obstaclesFill: 0.4,
+    obstaclesFillVoid: 0.5,
+    lakesFill: 0,
+    minLakeArea: 20,
+    elevationClusterScale: 0.15,
+    elevationModes: [
+      { weight: 2, minElevatedFraction: 0.2, maxElevatedFraction: 0.4 },
+      { weight: 1, minElevatedFraction: 0.6, maxElevatedFraction: 0.8 },
+    ],
+    roadClusterArea: 70,
+    ambientPickupDistribution: {
+      repulsion: 1.0,
+      noise: 0.3,
+      roadAttraction: 0.5,
+      obstacleAttraction: 0.0,
+      groupSizeWeights: [4, 1, 1],
+    },
+  };
+
+  // Add the layout
+  let next = applyAction(session, {
+    action: {
+      type: "zoneLayout.add",
+      input: {
+        layout: JSON.parse(JSON.stringify(defaultLayout)),
+      },
+    },
+    label: `Create local layout '${layoutName}'`,
+  });
+  if (next.lastActionFailed) return next;
+
+  // Rewrite the zone's layout reference
+  next = applyAction(next, {
+    action: {
+      type: "field.update",
+      fieldId: "zone.layout",
+      value: layoutName,
+      selection: {
+        variantIndex: next.selectedVariantIndex,
+        zone: { zoneName },
+      },
+    },
+    label: `Assign layout '${layoutName}' to zone '${zoneName}'`,
+    selectedZoneName: zoneName,
+  });
+  return next;
+}
 function isTemplateObject(value: unknown): value is RmgTemplate {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }

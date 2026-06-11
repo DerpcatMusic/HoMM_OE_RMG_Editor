@@ -1,12 +1,8 @@
 <script lang="ts">
-  interface MenuItem {
-    label: string;
-    icon?: string;
-    onClick: () => void;
-  }
+  import type { ContextMenuItem } from "./contextMenu.svelte.js";
 
   interface Props {
-    items: MenuItem[];
+    items: ContextMenuItem[];
     x: number;
     y: number;
     onClose: () => void;
@@ -14,7 +10,7 @@
 
   let { items, x, y, onClose }: Props = $props();
 
-  function handleClick(item: MenuItem) {
+  function handleClick(item: ContextMenuItem) {
     item.onClick();
     onClose();
   }
@@ -31,11 +27,12 @@
   }
 
   $effect(() => {
-    requestAnimationFrame(() => {
+    const frame = requestAnimationFrame(() => {
       document.addEventListener('pointerdown', handlePointerDown);
       document.addEventListener('keydown', handleKeydown);
     });
     return () => {
+      cancelAnimationFrame(frame);
       document.removeEventListener('pointerdown', handlePointerDown);
       document.removeEventListener('keydown', handleKeydown);
     };
@@ -43,7 +40,7 @@
 </script>
 
 <div class="context-menu" style="left:{x}px;top:{y}px;">
-  {#each items as item}
+  {#each items as item (item.label)}
     <button type="button" class="context-menu-item" onclick={() => handleClick(item)}>
       {#if item.icon}
         <span class="material-symbols-outlined" aria-hidden="true">{item.icon}</span>

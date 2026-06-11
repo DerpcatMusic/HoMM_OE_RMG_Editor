@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { Tabs } from "bits-ui";
   import { editor, type InspectorTab } from "../state/editor.svelte.js";
   import ZoneForm from "./inspector/ZoneForm.svelte";
   import ConnectionForm from "./inspector/ConnectionForm.svelte";
@@ -29,28 +30,29 @@
       default: return editor.selectedZone.label;
     }
   });
+
+  function setInspectorTab(value: string) {
+    editor.inspectorTab = value as InspectorTab;
+  }
 </script>
 
-<div class="inspector">
+<Tabs.Root class="inspector" value={editor.inspectorTab} onValueChange={setInspectorTab} activationMode="manual">
   <div class="inspector-header">
     <h2>Inspector</h2>
     <strong class="inspector-title">{title}</strong>
   </div>
-  <div class="inspector-tabs" role="tablist" aria-label="Inspector tabs">
+  <Tabs.List class="inspector-tabs" aria-label="Inspector tabs">
     {#each TABS as tab (tab.value)}
-      <button
+      <Tabs.Trigger
         class="tab-button"
-        class:is-active={editor.inspectorTab === tab.value}
-        role="tab"
-        aria-selected={editor.inspectorTab === tab.value}
+        value={tab.value}
         title={tab.label}
         aria-label={tab.label}
-        onclick={() => editor.inspectorTab = tab.value}
       >
         <span class="material-symbols-outlined tab-icon" aria-hidden="true">{tab.icon}</span>
-      </button>
+      </Tabs.Trigger>
     {/each}
-  </div>
+  </Tabs.List>
   <div class="inspector-body">
     {#if editor.inspectorTab === "zone"}
       <ZoneForm />
@@ -70,10 +72,10 @@
       <ValidationPanel />
     {/if}
   </div>
-</div>
+</Tabs.Root>
 
 <style>
-  .inspector {
+  :global(.inspector) {
     min-height: 0;
     display: grid;
     grid-template-rows: auto auto minmax(0, 1fr);
@@ -97,14 +99,14 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .inspector-tabs {
+  :global(.inspector-tabs) {
     display: flex;
     border-bottom: var(--line-strong) solid var(--color-line-strong);
     overflow-x: auto;
     scrollbar-width: none;
   }
-  .inspector-tabs::-webkit-scrollbar { display: none; }
-  .tab-button {
+  :global(.inspector-tabs::-webkit-scrollbar) { display: none; }
+  :global(.inspector .tab-button) {
     min-width: 2.25rem;
     height: 2rem;
     display: grid;
@@ -115,13 +117,13 @@
     color: var(--color-muted);
     cursor: pointer;
   }
-  .tab-button:hover { background: var(--color-panel-2); color: var(--color-ink); }
-  .tab-button.is-active {
+  :global(.inspector .tab-button:hover) { background: var(--color-panel-2); color: var(--color-ink); }
+  :global(.inspector .tab-button[data-state="active"]) {
     background: var(--color-active);
     color: var(--color-ink);
     box-shadow: inset 0 calc(var(--line-strong) * -1) 0 var(--color-line-strong);
   }
-  .tab-icon { font-size: 1rem; }
+  :global(.inspector .tab-icon) { font-size: 1rem; }
   .inspector-body {
     align-content: start;
     min-height: 0;

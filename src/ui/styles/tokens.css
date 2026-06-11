@@ -14,6 +14,7 @@
   --color-line-strong: oklch(0.20 0 0);
   --color-active: oklch(0.90 0 0);
   --color-focus: oklch(0.52 0.12 245);
+  --color-accent: var(--color-focus);
 
   /* connection types */
   --color-connection-portal: oklch(0.55 0.22 305);

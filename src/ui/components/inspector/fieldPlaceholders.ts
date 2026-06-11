@@ -29,11 +29,11 @@ export const FIELD_PLACEHOLDERS: Record<string, string> = {
   "zf-crossroads": "0.0–1.0 (e.g. 0.5)",
   "zf-diplomacy": "-1.0–1.0 (e.g. 0)",
 
-  // --- Zone form: guard settings ---
+  // --- Zone form: guard settings (percentage fields show as %, e.g. 15 means 15%) ---
   "zf-guard-cutoff": "500–2500 (e.g. 1500)",
-  "zf-guard-multiplier": "0.5–2.0 (e.g. 1.6)",
-  "zf-guard-random": "0.0–0.2 (e.g. 0.05)",
-  "zf-guard-weekly": "0.0–0.2 (e.g. 0.05)",
+  "zf-guard-multiplier": "Multiplicative % (e.g. 160)",
+  "zf-guard-random": "Multiplicative % (e.g. 5)",
+  "zf-guard-weekly": "Multiplicative % (e.g. 15)",
   "zf-reaction-weights": "6 weights, e.g. 6 2 1 0 0 0",
 
   // --- Zone form: content budgets ---
@@ -48,15 +48,16 @@ export const FIELD_PLACEHOLDERS: Record<string, string> = {
   "zf-mandatory": "e.g. random_resource_gold_large",
   "zf-count-limits": "e.g. random_building_town 4",
 
-  // --- Connection form ---
-  "cf-guard-cutoff": "e.g. 1500",
-  "cf-guard-multiplier": "e.g. 1.2",
-  "cf-guard-random": "e.g. 0.05",
-  "cf-guard-weekly": "e.g. 0.05",
+  // --- Connection form (percentage fields show as %) ---
+  "cf-guard-value": "e.g. 5000",
+  "cf-guard-weekly": "Multiplicative % (e.g. 15)",
+  "cf-guard-random": "Multiplicative % (e.g. 5)",
 
-  // --- Object form ---
+  // --- Object form (percentage fields show as %) ---
   "of-guard-value": "e.g. 5000",
-  "of-guard-multiplier": "e.g. 1.0",
+  "of-guard-chance": "Multiplicative % (e.g. 100)",
+  "of-guard-weekly": "Multiplicative % (e.g. 10)",
+  "of-guard-random": "Multiplicative % (e.g. 5)",
 
   // --- Pool form ---
   "pf-pool-id": "e.g. template_pool_guarded_treasure",

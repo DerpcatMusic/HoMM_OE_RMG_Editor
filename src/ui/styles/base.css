@@ -34,6 +34,10 @@ select,
 textarea {
   font: inherit;
 }
+::placeholder {
+  color: oklch(0.62 0 0);
+  opacity: 1;
+}
 
 button {
   color: inherit;

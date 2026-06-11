@@ -75,6 +75,8 @@ import {
   setZoneMandatoryPresetsInSession,
   setZoneCountLimitPresetsInSession,
   removeLocalPoolFromSession,
+  updateZoneLayoutInSession,
+  createLocalLayoutForZone,
   serializeSessionTemplate,
   getSessionSaveFileName,
   setBundledCoreArchiveCatalogSummary,
@@ -90,6 +92,7 @@ import {
 export type InspectorTab = "zone" | "connection" | "objects" | "content" | "pools" | "roads" | "raw" | "validation";
 export type WorkspaceTab = "canvas" | "zoneEdit";
 export type RightDockTab = "inspector" | "browser";
+export type SidebarTab = "settings" | "generation";
 export interface SidebarSectionFlex {
   settings: number;
   zones: number;
@@ -128,6 +131,7 @@ class EditorState {
   inspectorTab: InspectorTab = $state("zone");
   workspaceTab: WorkspaceTab = $state("canvas");
   rightDockTab: RightDockTab = $state("inspector");
+  sidebarTab: SidebarTab = $state("settings");
   activeContentPoolName: string = $state("");
   activePoolSource: "template-local" | "core" | "" = $state("");
   activeMandatoryContentPresetName: string = $state("");
@@ -182,13 +186,24 @@ class EditorState {
   }
 
   get catalogOptions(): ShellCatalogOptions {
+    const corePools = this.session.coreArchive?.catalogSummary?.contentPoolOptions ?? [];
+    const localPools = (this.session.template.contentPools ?? [])
+      .map(p => ({ id: p.name ?? "", label: p.name ?? "", source: "template-local" as const, detail: "Local pool" }))
+      .filter(p => p.id);
+    const allPools = [...localPools, ...corePools];
+
+    // For guarded/unguarded/resource, also include local pools so they appear in pickers
+    const coreGuarded = this.session.coreArchive?.catalogSummary?.guardedContentPoolOptions ?? [];
+    const coreUnguarded = this.session.coreArchive?.catalogSummary?.unguardedContentPoolOptions ?? [];
+    const coreResource = this.session.coreArchive?.catalogSummary?.resourceContentPoolOptions ?? [];
+
     return {
       biomes: this.session.coreArchive?.catalogSummary?.biomeOptions ?? [],
       factions: this.session.coreArchive?.catalogSummary?.factionOptions ?? [],
-      contentPools: this.session.coreArchive?.catalogSummary?.contentPoolOptions ?? [],
-      guardedContentPools: this.session.coreArchive?.catalogSummary?.guardedContentPoolOptions ?? [],
-      unguardedContentPools: this.session.coreArchive?.catalogSummary?.unguardedContentPoolOptions ?? [],
-      resourceContentPools: this.session.coreArchive?.catalogSummary?.resourceContentPoolOptions ?? [],
+      contentPools: allPools,
+      guardedContentPools: [...localPools, ...coreGuarded],
+      unguardedContentPools: [...localPools, ...coreUnguarded],
+      resourceContentPools: [...localPools, ...coreResource],
       rmgContent: this.session.coreArchive?.catalogSummary?.rmgContentOptions ?? [],
     };
   }
@@ -508,6 +523,15 @@ class EditorState {
   }
   removeLocalPool(poolName: string) {
     this.session = removeLocalPoolFromSession(this.session, poolName);
+    this.scheduleAutosave();
+  }
+  // --- Zone layout management ---
+  updateZoneLayout(layoutIndex: number, settings: Record<string, unknown>) {
+    this.session = updateZoneLayoutInSession(this.session, layoutIndex, settings);
+    this.scheduleAutosave();
+  }
+  createLocalLayoutForZone(zoneName: string) {
+    this.session = createLocalLayoutForZone(this.session, zoneName);
     this.scheduleAutosave();
   }
 

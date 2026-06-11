@@ -1,10 +1,12 @@
 <script lang="ts">
   import { editor } from "../../state/editor.svelte.js";
-import { FIELD_PLACEHOLDERS } from "./fieldPlaceholders.js";
-const ph = FIELD_PLACEHOLDERS;
-  import { BIOME_RULE_TYPES, GUARD_REACTIONS } from "../../../core/rmg/enums.js";
+  import { FIELD_PLACEHOLDERS } from "./fieldPlaceholders.js";
+  const ph = FIELD_PLACEHOLDERS;
+  import { BIOME_RULE_TYPES } from "../../../core/rmg/enums.js";
   import { buildZoneDraft, applyZoneClipboard } from "../../state/clipboard.js";
   import type { ZoneUpdateDraft } from "../../state/editorSession.js";
+  import GuardFields from "../svelte/GuardFields.svelte";
+  import NumberField from "../ui/NumberField.svelte";
 
   let zone = $derived(editor.selectedZone);
   let zones = $derived(editor.zones);
@@ -186,7 +188,7 @@ const ph = FIELD_PLACEHOLDERS;
     </label>
     <label class="control-row">
       <span>Size</span>
-      <input type="number" bind:value={size} onchange={apply} min="1" max="10" step="0.1" placeholder={ph["zf-size"]} />
+      <NumberField bind:value={size} oncommit={apply} min={1} max={10} step={0.1} placeholder={ph["zf-size"]} allowEmpty={false} />
     </label>
     <label class="control-row">
       <span>Layout</span>
@@ -194,11 +196,11 @@ const ph = FIELD_PLACEHOLDERS;
     </label>
     <label class="control-row">
       <span>Crossroads pos</span>
-      <input type="number" value={crossroadsPosition ?? ""} onchange={(e) => { crossroadsPosition = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["zf-crossroads"]} step="0.01" />
+      <NumberField bind:value={crossroadsPosition} oncommit={apply} placeholder={ph["zf-crossroads"]} step={0.01} />
     </label>
     <label class="control-row">
       <span>Diplomacy mod</span>
-      <input type="number" value={diplomacyModifier ?? ""} onchange={(e) => { diplomacyModifier = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["zf-diplomacy"]} step="0.01" />
+      <NumberField bind:value={diplomacyModifier} oncommit={apply} placeholder={ph["zf-diplomacy"]} step={0.01} />
     </label>
 
     <!-- Biome rules -->
@@ -209,7 +211,7 @@ const ph = FIELD_PLACEHOLDERS;
       <span>Zone biome type</span>
       <select bind:value={zoneBiomeType} onchange={apply}>
         <option value="">None</option>
-        {#each BIOME_RULE_TYPES as t}<option value={t}>{t}</option>{/each}
+        {#each BIOME_RULE_TYPES as t (t)}<option value={t}>{t}</option>{/each}
       </select>
     </label>
     {#if zoneBiomeType === "FromList"}
@@ -222,10 +224,10 @@ const ph = FIELD_PLACEHOLDERS;
             zoneBiomeArgs = buildBiomeArgs(selected, exclusions);
             apply();
           }}>
-          {#each catalogOptions.biomes as b}
+          {#each catalogOptions.biomes as b (b.id)}
             <option value={b.id} selected={biomeFromListCandidates(zoneBiomeArgs).includes(b.id)}>{b.label}</option>
           {/each}
-          {#each biomeFromListCandidates(zoneBiomeArgs).filter((id) => !catalogOptions.biomes.some((b) => b.id === id)) as orphan}
+          {#each biomeFromListCandidates(zoneBiomeArgs).filter((id) => !catalogOptions.biomes.some((b) => b.id === id)) as orphan (orphan)}
             <option value={orphan} selected>{orphan} (not in catalog)</option>
           {/each}
         </select>
@@ -238,7 +240,7 @@ const ph = FIELD_PLACEHOLDERS;
             const exclusions = parseStringList(e.currentTarget.value).map((s) => s.startsWith("differentFrom:") ? s : `differentFrom:${s}`);
             zoneBiomeArgs = buildBiomeArgs(candidates, exclusions);
             apply();
-          }} />
+          }}></textarea>
       </label>
       <p class="control-note">Rolls terrain biome from selected candidates, excluding any differentFrom references. Empty candidates mean any biome.</p>
     {:else if zoneBiomeType === "MatchZone"}
@@ -246,7 +248,7 @@ const ph = FIELD_PLACEHOLDERS;
         <span>Match zone</span>
         <select value={zoneBiomeArgs[0] ?? ""} onchange={(e) => { zoneBiomeArgs = e.currentTarget.value ? [e.currentTarget.value] : []; apply(); }}>
           <option value="">no arg: roll random biome</option>
-          {#each zones as z}<option value={z.label}>{z.label}</option>{/each}
+          {#each zones as z (z.id)}<option value={z.label}>{z.label}</option>{/each}
         </select>
       </label>
       <p class="control-note">Copies biome from the selected zone. No args rolls a random biome.</p>
@@ -255,21 +257,21 @@ const ph = FIELD_PLACEHOLDERS;
         <span>Main object index</span>
         <select value={zoneBiomeArgs[0] ?? ""} onchange={(e) => { zoneBiomeArgs = e.currentTarget.value ? [e.currentTarget.value, zoneBiomeArgs[1] ?? ""].filter(Boolean) : []; apply(); }}>
           <option value="">—</option>
-          {#each mainObjectOptionsForZone(zone) as o}<option value={o.value}>{o.label}</option>{/each}
+          {#each mainObjectOptionsForZone(zone) as o (o.value)}<option value={o.value}>{o.label}</option>{/each}
         </select>
       </label>
       <label class="control-row">
         <span>Optional zone</span>
         <select value={zoneBiomeArgs[1] ?? ""} onchange={(e) => { zoneBiomeArgs = zoneBiomeArgs[0] ? [zoneBiomeArgs[0], e.currentTarget.value].filter(Boolean) : []; apply(); }}>
           <option value="">current zone ({zone.label})</option>
-          {#each zones as z}<option value={z.label}>{z.label}</option>{/each}
+          {#each zones as z (z.id)}<option value={z.label}>{z.label}</option>{/each}
         </select>
       </label>
       <p class="control-note">Uses the faction-derived biome of the selected main object. Optional zone defaults to current zone.</p>
     {:else if zoneBiomeType}
       <label class="control-row stack">
         <span>Zone biome args</span>
-        <textarea rows="3" value={zoneBiomeArgs.join("\n")} onchange={(e) => { zoneBiomeArgs = parseStringList(e.currentTarget.value); apply(); }} />
+        <textarea rows="3" value={zoneBiomeArgs.join("\n")} onchange={(e) => { zoneBiomeArgs = parseStringList(e.currentTarget.value); apply(); }}></textarea>
       </label>
     {/if}
 
@@ -277,7 +279,7 @@ const ph = FIELD_PLACEHOLDERS;
       <span>Content biome type</span>
       <select bind:value={contentBiomeType} onchange={apply}>
         <option value="">None</option>
-        {#each BIOME_RULE_TYPES as t}<option value={t}>{t}</option>{/each}
+        {#each BIOME_RULE_TYPES as t (t)}<option value={t}>{t}</option>{/each}
       </select>
     </label>
     {#if contentBiomeType === "FromList"}
@@ -290,7 +292,7 @@ const ph = FIELD_PLACEHOLDERS;
             contentBiomeArgs = buildBiomeArgs(selected, exclusions);
             apply();
           }}>
-          {#each catalogOptions.biomes as b}
+          {#each catalogOptions.biomes as b (b.id)}
             <option value={b.id} selected={biomeFromListCandidates(contentBiomeArgs).includes(b.id)}>{b.label}</option>
           {/each}
         </select>
@@ -303,14 +305,14 @@ const ph = FIELD_PLACEHOLDERS;
             const exclusions = parseStringList(e.currentTarget.value).map((s) => s.startsWith("differentFrom:") ? s : `differentFrom:${s}`);
             contentBiomeArgs = buildBiomeArgs(candidates, exclusions);
             apply();
-          }} />
+          }}></textarea>
       </label>
     {:else if contentBiomeType === "MatchZone"}
       <label class="control-row">
         <span>Match zone</span>
         <select value={contentBiomeArgs[0] ?? ""} onchange={(e) => { contentBiomeArgs = e.currentTarget.value ? [e.currentTarget.value] : []; apply(); }}>
           <option value="">no arg: match current zone</option>
-          {#each zones as z}<option value={z.label}>{z.label}</option>{/each}
+          {#each zones as z (z.id)}<option value={z.label}>{z.label}</option>{/each}
         </select>
       </label>
     {:else if contentBiomeType === "MatchMainObject"}
@@ -318,20 +320,20 @@ const ph = FIELD_PLACEHOLDERS;
         <span>Main object index</span>
         <select value={contentBiomeArgs[0] ?? ""} onchange={(e) => { contentBiomeArgs = e.currentTarget.value ? [e.currentTarget.value, contentBiomeArgs[1] ?? ""].filter(Boolean) : []; apply(); }}>
           <option value="">—</option>
-          {#each mainObjectOptionsForZone(zone) as o}<option value={o.value}>{o.label}</option>{/each}
+          {#each mainObjectOptionsForZone(zone) as o (o.value)}<option value={o.value}>{o.label}</option>{/each}
         </select>
       </label>
       <label class="control-row">
         <span>Optional zone</span>
         <select value={contentBiomeArgs[1] ?? ""} onchange={(e) => { contentBiomeArgs = contentBiomeArgs[0] ? [contentBiomeArgs[0], e.currentTarget.value].filter(Boolean) : []; apply(); }}>
           <option value="">current zone ({zone.label})</option>
-          {#each zones as z}<option value={z.label}>{z.label}</option>{/each}
+          {#each zones as z (z.id)}<option value={z.label}>{z.label}</option>{/each}
         </select>
       </label>
     {:else if contentBiomeType}
       <label class="control-row stack">
         <span>Content biome args</span>
-        <textarea rows="3" value={contentBiomeArgs.join("\n")} onchange={(e) => { contentBiomeArgs = parseStringList(e.currentTarget.value); apply(); }} />
+        <textarea rows="3" value={contentBiomeArgs.join("\n")} onchange={(e) => { contentBiomeArgs = parseStringList(e.currentTarget.value); apply(); }}></textarea>
       </label>
     {/if}
 
@@ -339,7 +341,7 @@ const ph = FIELD_PLACEHOLDERS;
       <span>Meta biome type</span>
       <select bind:value={metaObjectsBiomeType} onchange={apply}>
         <option value="">None</option>
-        {#each BIOME_RULE_TYPES as t}<option value={t}>{t}</option>{/each}
+        {#each BIOME_RULE_TYPES as t (t)}<option value={t}>{t}</option>{/each}
       </select>
     </label>
     {#if metaObjectsBiomeType === "FromList"}
@@ -352,7 +354,7 @@ const ph = FIELD_PLACEHOLDERS;
             metaObjectsBiomeArgs = buildBiomeArgs(selected, exclusions);
             apply();
           }}>
-          {#each catalogOptions.biomes as b}
+          {#each catalogOptions.biomes as b (b.id)}
             <option value={b.id} selected={biomeFromListCandidates(metaObjectsBiomeArgs).includes(b.id)}>{b.label}</option>
           {/each}
         </select>
@@ -365,14 +367,14 @@ const ph = FIELD_PLACEHOLDERS;
             const exclusions = parseStringList(e.currentTarget.value).map((s) => s.startsWith("differentFrom:") ? s : `differentFrom:${s}`);
             metaObjectsBiomeArgs = buildBiomeArgs(candidates, exclusions);
             apply();
-          }} />
+          }}></textarea>
       </label>
     {:else if metaObjectsBiomeType === "MatchZone"}
       <label class="control-row">
         <span>Match zone</span>
         <select value={metaObjectsBiomeArgs[0] ?? ""} onchange={(e) => { metaObjectsBiomeArgs = e.currentTarget.value ? [e.currentTarget.value] : []; apply(); }}>
           <option value="">no arg: match current zone</option>
-          {#each zones as z}<option value={z.label}>{z.label}</option>{/each}
+          {#each zones as z (z.id)}<option value={z.label}>{z.label}</option>{/each}
         </select>
       </label>
     {:else if metaObjectsBiomeType === "MatchMainObject"}
@@ -380,20 +382,20 @@ const ph = FIELD_PLACEHOLDERS;
         <span>Main object index</span>
         <select value={metaObjectsBiomeArgs[0] ?? ""} onchange={(e) => { metaObjectsBiomeArgs = e.currentTarget.value ? [e.currentTarget.value, metaObjectsBiomeArgs[1] ?? ""].filter(Boolean) : []; apply(); }}>
           <option value="">—</option>
-          {#each mainObjectOptionsForZone(zone) as o}<option value={o.value}>{o.label}</option>{/each}
+          {#each mainObjectOptionsForZone(zone) as o (o.value)}<option value={o.value}>{o.label}</option>{/each}
         </select>
       </label>
       <label class="control-row">
         <span>Optional zone</span>
         <select value={metaObjectsBiomeArgs[1] ?? ""} onchange={(e) => { metaObjectsBiomeArgs = metaObjectsBiomeArgs[0] ? [metaObjectsBiomeArgs[0], e.currentTarget.value].filter(Boolean) : []; apply(); }}>
           <option value="">current zone ({zone.label})</option>
-          {#each zones as z}<option value={z.label}>{z.label}</option>{/each}
+          {#each zones as z (z.id)}<option value={z.label}>{z.label}</option>{/each}
         </select>
       </label>
     {:else if metaObjectsBiomeType}
       <label class="control-row stack">
         <span>Meta biome args</span>
-        <textarea rows="3" value={metaObjectsBiomeArgs.join("\n")} onchange={(e) => { metaObjectsBiomeArgs = parseStringList(e.currentTarget.value); apply(); }} />
+        <textarea rows="3" value={metaObjectsBiomeArgs.join("\n")} onchange={(e) => { metaObjectsBiomeArgs = parseStringList(e.currentTarget.value); apply(); }}></textarea>
       </label>
     {/if}
 
@@ -401,27 +403,15 @@ const ph = FIELD_PLACEHOLDERS;
   </details>
   <details open class="form-section" id="guard-settings">
     <summary class="form-section-title">Guard settings</summary>
-    <label class="control-row">
-      <span>Guard cutoff</span>
-      <input type="number" value={guardCutoffValue ?? ""} onchange={(e) => { guardCutoffValue = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["zf-guard-cutoff"]} />
-    </label>
-    <label class="control-row">
-      <span>Guard multiplier</span>
-      <input type="number" value={guardMultiplier ?? ""} onchange={(e) => { guardMultiplier = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["zf-guard-multiplier"]} step="0.01" />
-    </label>
-    <label class="control-row">
-      <span>Guard random</span>
-      <input type="number" value={guardRandomization ?? ""} onchange={(e) => { guardRandomization = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["zf-guard-random"]} step="0.01" />
-    </label>
-    <label class="control-row">
-      <span>Guard weekly</span>
-      <input type="number" value={guardWeeklyIncrement ?? ""} onchange={(e) => { guardWeeklyIncrement = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["zf-guard-weekly"]} />
-    </label>
-    <label class="control-row stack">
-      <span>Reaction weights</span>
-      <textarea rows="2" value={guardReactionDistribution.join("\n")}
-        onchange={(e) => { guardReactionDistribution = parseNumberList(e.currentTarget.value) ?? []; apply(); }} />
-    </label>
+    <GuardFields
+      showZoneFields={true}
+      bind:guardCutoffValue={guardCutoffValue}
+      bind:guardMultiplier={guardMultiplier}
+      bind:guardRandomization={guardRandomization}
+      bind:guardWeeklyIncrement={guardWeeklyIncrement}
+      bind:guardReactionDistribution={guardReactionDistribution}
+      onchange={apply}
+    />
 
     <!-- Content budgets -->
   </details>
@@ -429,27 +419,27 @@ const ph = FIELD_PLACEHOLDERS;
     <summary class="form-section-title">Content budgets</summary>
     <label class="control-row">
       <span>Guarded value</span>
-      <input type="number" value={guardedContentValue ?? ""} onchange={(e) => { guardedContentValue = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["zf-guarded-value"]} />
+      <NumberField bind:value={guardedContentValue} oncommit={apply} placeholder={ph["zf-guarded-value"]} min={0} />
     </label>
     <label class="control-row">
       <span>Guarded per area</span>
-      <input type="number" value={guardedContentValuePerArea ?? ""} onchange={(e) => { guardedContentValuePerArea = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["zf-guarded-per-area"]} step="0.1" />
+      <NumberField bind:value={guardedContentValuePerArea} oncommit={apply} placeholder={ph["zf-guarded-per-area"]} min={0} step={0.1} />
     </label>
     <label class="control-row">
       <span>Unguarded value</span>
-      <input type="number" value={unguardedContentValue ?? ""} onchange={(e) => { unguardedContentValue = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["zf-unguarded-value"]} />
+      <NumberField bind:value={unguardedContentValue} oncommit={apply} placeholder={ph["zf-unguarded-value"]} min={0} />
     </label>
     <label class="control-row">
       <span>Unguarded per area</span>
-      <input type="number" value={unguardedContentValuePerArea ?? ""} onchange={(e) => { unguardedContentValuePerArea = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["zf-unguarded-per-area"]} step="0.1" />
+      <NumberField bind:value={unguardedContentValuePerArea} oncommit={apply} placeholder={ph["zf-unguarded-per-area"]} min={0} step={0.1} />
     </label>
     <label class="control-row">
       <span>Resources value</span>
-      <input type="number" value={resourcesValue ?? ""} onchange={(e) => { resourcesValue = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["zf-resources-value"]} />
+      <NumberField bind:value={resourcesValue} oncommit={apply} placeholder={ph["zf-resources-value"]} min={0} />
     </label>
     <label class="control-row">
       <span>Resources per area</span>
-      <input type="number" value={resourcesValuePerArea ?? ""} onchange={(e) => { resourcesValuePerArea = e.currentTarget.value === "" ? undefined : Number(e.currentTarget.value); apply(); }} placeholder={ph["zf-resources-per-area"]} step="0.1" />
+      <NumberField bind:value={resourcesValuePerArea} oncommit={apply} placeholder={ph["zf-resources-per-area"]} min={0} step={0.1} />
     </label>
 
     <!-- Pool and preset alternatives -->
@@ -462,14 +452,14 @@ const ph = FIELD_PLACEHOLDERS;
       <span>Guarded pools</span>
       <div class="multi-picker">
         <datalist id="guarded-pool-options">
-          {#each catalogOptions.guardedContentPools as p}<option value={p.id} label={p.label} />{/each}
+          {#each catalogOptions.guardedContentPools as p (p.id)}<option value={p.id} label={p.label}></option>{/each}
         </datalist>
         <div class="multi-picker-entry">
           <input type="search" list="guarded-pool-options" bind:value={guardedPoolInput} placeholder={ph["pf-pool-id"]} />
           <button class="button button-secondary" onclick={() => { guardedPools = addPool(guardedPools, guardedPoolInput); guardedPoolInput = ""; apply(); }}>Add</button>
         </div>
         <div class="picker-token-list">
-          {#each guardedPools as pool, i}
+          {#each guardedPools as pool, i (pool)}
             <button type="button" class="picker-token" onclick={() => { guardedPools = removePool(guardedPools, i); apply(); }} title="Remove {pool}">
               <strong>{pool}</strong>
               <span class="material-symbols-outlined picker-token-remove">close</span>
@@ -484,14 +474,14 @@ const ph = FIELD_PLACEHOLDERS;
       <span>Unguarded pools</span>
       <div class="multi-picker">
         <datalist id="unguarded-pool-options">
-          {#each catalogOptions.unguardedContentPools as p}<option value={p.id} label={p.label} />{/each}
+          {#each catalogOptions.unguardedContentPools as p (p.id)}<option value={p.id} label={p.label}></option>{/each}
         </datalist>
         <div class="multi-picker-entry">
           <input type="search" list="unguarded-pool-options" bind:value={unguardedPoolInput} placeholder={ph["pf-pool-id"]} />
           <button class="button button-secondary" onclick={() => { unguardedPools = addPool(unguardedPools, unguardedPoolInput); unguardedPoolInput = ""; apply(); }}>Add</button>
         </div>
         <div class="picker-token-list">
-          {#each unguardedPools as pool, i}
+          {#each unguardedPools as pool, i (pool)}
             <button type="button" class="picker-token" onclick={() => { unguardedPools = removePool(unguardedPools, i); apply(); }} title="Remove {pool}">
               <strong>{pool}</strong>
               <span class="material-symbols-outlined picker-token-remove">close</span>
@@ -506,14 +496,14 @@ const ph = FIELD_PLACEHOLDERS;
       <span>Resource pools</span>
       <div class="multi-picker">
         <datalist id="resources-pool-options">
-          {#each catalogOptions.resourceContentPools as p}<option value={p.id} label={p.label} />{/each}
+          {#each catalogOptions.resourceContentPools as p (p.id)}<option value={p.id} label={p.label}></option>{/each}
         </datalist>
         <div class="multi-picker-entry">
           <input type="search" list="resources-pool-options" bind:value={resourcesPoolInput} placeholder={ph["pf-pool-id"]} />
           <button class="button button-secondary" onclick={() => { resourcesPools = addPool(resourcesPools, resourcesPoolInput); resourcesPoolInput = ""; apply(); }}>Add</button>
         </div>
         <div class="picker-token-list">
-          {#each resourcesPools as pool, i}
+          {#each resourcesPools as pool, i (pool)}
             <button type="button" class="picker-token" onclick={() => { resourcesPools = removePool(resourcesPools, i); apply(); }} title="Remove {pool}">
               <strong>{pool}</strong>
               <span class="material-symbols-outlined picker-token-remove">close</span>
@@ -579,12 +569,12 @@ const ph = FIELD_PLACEHOLDERS;
     font-size: 1rem;
     transition: transform 0.15s;
   }
-  .form-section[open] > summary .form-section-title::after {
+  .form-section[open] > .form-section-title::after {
     transform: rotate(180deg);
   }
   .control-row {
     display: grid;
-    grid-template-columns: minmax(5rem, max-content) 1fr;
+    grid-template-columns: auto 1fr;
     align-items: center;
     gap: var(--space-2);
     padding: var(--space-1) var(--space-3);
@@ -620,12 +610,23 @@ const ph = FIELD_PLACEHOLDERS;
     font: inherit;
     font-size: 0.6875rem;
     color: var(--color-ink);
-    width: 100%;
+    width: fit-content;
+    min-width: 3ch;
+    max-width: 100%;
+    box-sizing: border-box;
   }
-  .control-row input[type="checkbox"] {
-    width: 1rem;
-    height: 1rem;
-    justify-self: start;
+  .control-row :global(.number-field) {
+    width: fit-content;
+    min-width: 3ch;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .control-row input[type="text"],
+  .control-row input[type="search"],
+  .control-row textarea,
+  .control-row select {
+    width: 100%;
+    min-width: 0;
   }
   .multi-select {
     min-height: 6rem;

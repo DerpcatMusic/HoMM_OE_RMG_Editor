@@ -2,6 +2,7 @@
   import { editor } from "../state/editor.svelte.js";
   import { PLAYER_COLORS } from "../data/shellData.js";
   import GlobalSettingsPanel from "./inspector/GlobalSettingsPanel.svelte";
+  import GenerationPanel from "./inspector/GenerationPanel.svelte";
   let zones = $derived(editor.zones);
   let players = $derived(editor.projection.players);
   let errors = $derived(editor.validationErrors);
@@ -38,11 +39,28 @@
     handle.addEventListener("pointerup", onUp);
   }
 </script>
-
 <aside class="sidebar" aria-label="Sidebar">
-  <div class="sidebar-section sidebar-settings" style="flex:{sectionFlex.settings}">
-    <GlobalSettingsPanel />
+  <div class="sidebar-tabs" role="tablist" aria-label="Sidebar tabs">
+    <button class="sidebar-tab" class:is-active={editor.sidebarTab === "settings"} role="tab"
+      aria-selected={editor.sidebarTab === "settings"} title="Settings"
+      onclick={() => editor.sidebarTab = "settings"}>
+      <span class="material-symbols-outlined sidebar-tab-icon">settings</span>
+    </button>
+    <button class="sidebar-tab" class:is-active={editor.sidebarTab === "generation"} role="tab"
+      aria-selected={editor.sidebarTab === "generation"} title="Generation"
+      onclick={() => editor.sidebarTab = "generation"}>
+      <span class="material-symbols-outlined sidebar-tab-icon">terrain</span>
+    </button>
   </div>
+  {#if editor.sidebarTab === "generation"}
+    <div class="sidebar-gen-body">
+      <GenerationPanel />
+    </div>
+  {:else}
+  <div class="sidebar-body">
+    <div class="sidebar-section sidebar-settings" style="flex:{sectionFlex.settings}">
+      <GlobalSettingsPanel />
+    </div>
   <div class="sidebar-divider" role="separator" aria-label="Resize sections" onpointerdown={(e) => startSectionResize(e, "settings", "zones")}></div>
   <div class="sidebar-section sidebar-zones" style="flex:{sectionFlex.zones}">
     <div class="sidebar-heading">
@@ -93,6 +111,8 @@
       {/each}
     </ul>
   </div>
+  </div>
+  {/if}
   <div class="sidebar-status-row">
     {#if errors.length > 0}
       <div class="validation-marquee is-invalid">
@@ -231,4 +251,41 @@
   }
   .sidebar-status { color: var(--color-muted); display: block; margin-top: 2px; }
   @keyframes pulse { 50% { opacity: 0.5; } }
+  .sidebar-tabs {
+    display: flex;
+    border-bottom: var(--line-strong) solid var(--color-line-strong);
+    flex-shrink: 0;
+  }
+  .sidebar-tab {
+    min-width: 2.25rem;
+    height: 2rem;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-right: var(--line) solid var(--color-line);
+    background: var(--color-panel);
+    color: var(--color-muted);
+    cursor: pointer;
+  }
+  .sidebar-tab:hover { background: var(--color-panel-2); color: var(--color-ink); }
+  .sidebar-tab.is-active {
+    background: var(--color-active);
+    color: var(--color-ink);
+    box-shadow: inset 0 calc(var(--line-strong) * -1) 0 var(--color-line-strong);
+  }
+  .sidebar-tab-icon { font-size: 1rem; }
+  .sidebar-body {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .sidebar-body .sidebar-section { min-height: 40px; }
+  .sidebar-gen-body {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    padding: var(--space-3);
+  }
 </style>
