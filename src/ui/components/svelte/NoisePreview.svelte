@@ -129,7 +129,7 @@
     gap: var(--space-2, 0.5rem);
   }
   .noise-label {
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
     color: var(--color-muted, #888);
     min-width: 3rem;
   }
@@ -142,7 +142,7 @@
     min-width: 0;
   }
   .noise-meta {
-    font-size: 0.5rem;
+    font-size: var(--font-size-xxs);
     color: var(--color-muted, #666);
     font-family: var(--font-mono, monospace);
     white-space: nowrap;

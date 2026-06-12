@@ -100,6 +100,7 @@ export interface ShellConnectionItem {
 
 export interface ShellZoneObjectItem {
   id: string;
+  kind: "main" | "connection" | "crossroads" | "mandatory" | "roadTarget";
   index?: number;
   label: string;
   type: string;
@@ -122,6 +123,9 @@ export interface ShellZoneObjectItem {
   removeGuardIfHasOwner?: boolean;
   buildingsConstructionSid?: string;
   buildingsBanSid?: string;
+  mandatoryEntryName?: string;
+  mandatorySid?: string;
+  mandatoryPresetNames?: readonly string[];
 }
 
 export interface ShellZoneRoadItem {
@@ -171,6 +175,9 @@ export interface ShellCatalogOptions {
 export interface ShellCatalogOption {
   id: string;
   label: string;
+  category?: string;
+  variantCount?: number;
+  sourcePaths?: readonly string[];
 }
 
 export const GENERAL_NAV_ITEMS: readonly GeneralNavItem[] = [

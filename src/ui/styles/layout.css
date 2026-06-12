@@ -79,7 +79,7 @@
     position: absolute;
     top: 2px;
     right: 4px;
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
   }
 
   .shell-sidebar .nav-item {
@@ -87,7 +87,7 @@
   }
 
   .shell-sidebar .nav-item-icon {
-    font-size: 1.375rem;
+    font-size: var(--font-size-2xl);
   }
 
   .shell-sidebar .sidebar-title,

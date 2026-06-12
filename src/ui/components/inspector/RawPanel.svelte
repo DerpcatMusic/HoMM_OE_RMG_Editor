@@ -24,7 +24,7 @@
   .raw-panel { min-height: 0; }
   .raw-json {
     font-family: var(--font-mono);
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
     white-space: pre-wrap;
     word-break: break-all;
     margin: 0;

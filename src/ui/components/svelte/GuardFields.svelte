@@ -245,13 +245,13 @@
   }
 
   .gf-label {
-    font-size: 0.6875rem;
+    font-size: var(--font-size-sm);
     color: var(--color-muted, #888);
     white-space: nowrap;
   }
 
   .gf-hint {
-    font-size: 0.5625rem;
+    font-size: var(--font-size-xxs);
     color: var(--color-muted, #666);
     line-height: 1.3;
     grid-column: 1 / -1;
@@ -260,7 +260,7 @@
   .gf-input,
   .gf-select {
     font-family: var(--font-mono, monospace);
-    font-size: 0.75rem;
+    font-size: var(--font-size-sm);
     background: var(--color-panel, #1a1a1a);
     color: var(--color-ink, #eee);
     border: var(--line, 1px) solid var(--color-line, #333);
@@ -280,7 +280,7 @@
     min-width: 0;
   }
   .gf-input::placeholder {
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
   }
 
   .gf-input:focus,
@@ -292,7 +292,7 @@
 
   .gf-textarea {
     font-family: var(--font-mono, monospace);
-    font-size: 0.6875rem;
+    font-size: var(--font-size-sm);
     background: var(--color-panel, #1a1a1a);
     color: var(--color-ink, #eee);
     border: var(--line, 1px) solid var(--color-line, #333);
@@ -309,6 +309,6 @@
   }
 
   .gf-checkbox .gf-label {
-    font-size: 0.6875rem;
+    font-size: var(--font-size-sm);
   }
 </style>

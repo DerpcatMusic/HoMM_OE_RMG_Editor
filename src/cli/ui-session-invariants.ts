@@ -11,9 +11,12 @@ import {
   createInitialEditorSession,
   moveZoneInSession,
   moveZoneObjectInSession,
+  pasteZoneClipboardIntoSelectedZone,
+  reassignZoneOwner,
   redoSession,
   removeSelectedZoneFromSession,
   serializeSessionTemplate,
+  selectZone,
   undoSession,
   updateSelectedConnectionInSession,
   updateGlobalSettingsInSession,
@@ -21,6 +24,7 @@ import {
   updateSelectedZoneRoadInSession,
   updateSelectedZoneInSession,
 } from "../ui/state/editorSession.js";
+import { copyZone, getClipboard } from "../ui/state/clipboard.js";
 
 function graphZone(name: string, index: number, role: GraphLayoutZoneInput["role"] = "neutral"): GraphLayoutZoneInput {
   return { name, index, role, size: 1 };
@@ -411,6 +415,158 @@ assert.equal(
 
 assert.doesNotThrow(() => JSON.parse(serializeSessionTemplate(session)) as unknown);
 assert.equal(session.dirty, true);
+
+let pasteSession = createInitialEditorSession();
+const pasteVariant = pasteSession.template.variants?.[0];
+const pasteSourceZone = pasteVariant?.zones?.find((zone) => zone.name === "Spawn-A");
+assert.ok(pasteVariant);
+assert.ok(pasteSourceZone);
+pasteSession.template.mandatoryContent = [
+  {
+    name: "Spawn-A_mandatory",
+    content: [
+      {
+        name: "gold_mine",
+        sid: "mine_gold",
+        isMine: true,
+        owner: "Player1",
+      },
+    ],
+  },
+];
+pasteSourceZone.mandatoryContent = ["Spawn-A_mandatory"];
+pasteSourceZone.roads = [
+  {
+    type: "Stone",
+    from: { type: "MainObject", args: ["0"] },
+    to: { type: "MandatoryContent", args: ["gold_mine"] },
+  },
+  {
+    type: "Dirt",
+    from: { type: "MandatoryContent", args: ["gold_mine"] },
+    to: { type: "Connection", args: ["Spawn-A-Center"] },
+  },
+];
+copyZone(pasteSourceZone, {
+  mandatoryPresets: pasteSession.template.mandatoryContent,
+  zoneObjectPositions: {
+    "main:0": { x: 20, y: 30 },
+    "mandatory:gold_mine": { x: 56.5, y: 42.25 },
+    "connection:Spawn-A-Center": { x: 80, y: 50 },
+  },
+});
+const copiedZoneEntry = getClipboard();
+assert.ok(copiedZoneEntry?.kind === "zone");
+pasteSession = selectZone(pasteSession, "Spawn-B");
+pasteSession = pasteZoneClipboardIntoSelectedZone(pasteSession, copiedZoneEntry.data);
+const pastedZone = pasteSession.template.variants?.[0]?.zones?.find((zone) => zone.name === "Spawn-B");
+assert.equal(pastedZone?.mainObjects?.[0]?.spawn, "Player2");
+assert.equal(pastedZone?.mandatoryContent?.length, 1);
+assert.notEqual(pastedZone?.mandatoryContent?.[0], "Spawn-A_mandatory");
+const pastedPreset = pasteSession.template.mandatoryContent?.find((preset) => preset.name === pastedZone?.mandatoryContent?.[0]);
+assert.equal(pastedPreset?.content?.[0]?.name, "gold_mine");
+assert.equal(pastedPreset?.content?.[0]?.owner, "Player2");
+assert.equal(pastedZone?.roads?.length, 2);
+assert.deepEqual(pastedZone?.roads?.[0]?.to, { type: "MandatoryContent", args: ["gold_mine"] });
+assert.deepEqual(pastedZone?.roads?.[1]?.to, { type: "Connection", args: ["Spawn-B-Center"] });
+assert.deepEqual(pasteSession.zoneObjectPositions["Spawn-B"]?.["mandatory:gold_mine"], { x: 56.5, y: 42.25 });
+assert.deepEqual(pasteSession.zoneObjectPositions["Spawn-B"]?.["connection:Spawn-B-Center"], { x: 80, y: 50 });
+
+let fallbackPasteSession = createInitialEditorSession();
+const fallbackVariant = fallbackPasteSession.template.variants?.[0];
+const fallbackSourceZone = fallbackVariant?.zones?.find((zone) => zone.name === "Spawn-A");
+assert.ok(fallbackVariant);
+assert.ok(fallbackSourceZone);
+fallbackPasteSession.template.mandatoryContent = [
+  {
+    name: "Spawn-A_fallback_mandatory",
+    content: [
+      {
+        name: "crystal_mine",
+        sid: "mine_crystals",
+        isMine: true,
+        owner: "Player1",
+      },
+      {
+        name: "enemy_cache",
+        sid: "object_enemy_cache",
+        owner: "Player3",
+      },
+    ],
+  },
+];
+fallbackSourceZone.mandatoryContent = ["Spawn-A_fallback_mandatory"];
+copyZone(fallbackSourceZone);
+const fallbackCopiedZoneEntry = getClipboard();
+assert.ok(fallbackCopiedZoneEntry?.kind === "zone");
+fallbackPasteSession = selectZone(fallbackPasteSession, "Spawn-B");
+fallbackPasteSession = pasteZoneClipboardIntoSelectedZone(fallbackPasteSession, fallbackCopiedZoneEntry.data);
+const fallbackPastedZone = fallbackPasteSession.template.variants?.[0]?.zones?.find((zone) => zone.name === "Spawn-B");
+assert.equal(fallbackPastedZone?.mandatoryContent?.length, 1);
+assert.notEqual(fallbackPastedZone?.mandatoryContent?.[0], "Spawn-A_fallback_mandatory");
+const fallbackPastedPreset = fallbackPasteSession.template.mandatoryContent?.find((preset) => preset.name === fallbackPastedZone?.mandatoryContent?.[0]);
+assert.equal(fallbackPastedPreset?.content?.[0]?.owner, "Player2");
+assert.equal(fallbackPastedPreset?.content?.[1]?.owner, "Player3");
+
+let ownerOnlyPasteSession = createInitialEditorSession();
+const ownerOnlyVariant = ownerOnlyPasteSession.template.variants?.[0];
+const ownerOnlySourceZone = ownerOnlyVariant?.zones?.find((zone) => zone.name === "Spawn-A");
+const ownerOnlyTargetZone = ownerOnlyVariant?.zones?.find((zone) => zone.name === "Spawn-B");
+assert.ok(ownerOnlySourceZone);
+assert.ok(ownerOnlyTargetZone);
+ownerOnlySourceZone.mainObjects = [{ type: "City", owner: "Player1", placement: "Uniform" }];
+ownerOnlyTargetZone.mainObjects = [{ type: "City", owner: "Player2", placement: "Uniform" }];
+ownerOnlyPasteSession.template.mandatoryContent = [
+  {
+    name: "Spawn-A_owner_mandatory",
+    content: [
+      {
+        name: "gold_mine",
+        sid: "mine_gold",
+        isMine: true,
+        owner: "Player1",
+      },
+    ],
+  },
+];
+ownerOnlySourceZone.mandatoryContent = ["Spawn-A_owner_mandatory"];
+copyZone(ownerOnlySourceZone, { mandatoryPresets: ownerOnlyPasteSession.template.mandatoryContent });
+const ownerOnlyCopiedZoneEntry = getClipboard();
+assert.ok(ownerOnlyCopiedZoneEntry?.kind === "zone");
+ownerOnlyPasteSession = selectZone(ownerOnlyPasteSession, "Spawn-B");
+ownerOnlyPasteSession = pasteZoneClipboardIntoSelectedZone(ownerOnlyPasteSession, ownerOnlyCopiedZoneEntry.data);
+const ownerOnlyPastedZone = ownerOnlyPasteSession.template.variants?.[0]?.zones?.find((zone) => zone.name === "Spawn-B");
+const ownerOnlyPastedPreset = ownerOnlyPasteSession.template.mandatoryContent?.find((preset) => preset.name === ownerOnlyPastedZone?.mandatoryContent?.[0]);
+assert.equal(ownerOnlyPastedZone?.mainObjects?.[0]?.owner, "Player2");
+assert.equal(ownerOnlyPastedPreset?.content?.[0]?.owner, "Player2");
+
+let reassignOwnerSession = createInitialEditorSession();
+const reassignOwnerVariant = reassignOwnerSession.template.variants?.[0];
+const reassignOwnerZone = reassignOwnerVariant?.zones?.find((zone) => zone.name === "Spawn-A");
+assert.ok(reassignOwnerZone);
+reassignOwnerSession.template.mandatoryContent = [
+  {
+    name: "Spawn-A_reassign_mandatory",
+    content: [
+      {
+        name: "gold_mine",
+        sid: "mine_gold",
+        isMine: true,
+        owner: "Player1",
+      },
+      {
+        name: "third_player_cache",
+        sid: "object_third_player_cache",
+        owner: "Player3",
+      },
+    ],
+  },
+];
+reassignOwnerZone.mandatoryContent = ["Spawn-A_reassign_mandatory"];
+reassignOwnerSession = reassignZoneOwner(reassignOwnerSession, "Spawn-A", "Player2");
+const reassignedPreset = reassignOwnerSession.template.mandatoryContent?.find((preset) => preset.name === "Spawn-A_reassign_mandatory");
+assert.equal(reassignedPreset?.content?.[0]?.owner, "Player2");
+assert.equal(reassignedPreset?.content?.[1]?.owner, "Player3");
 
 console.log(
   `ui-session invariants: zones=${session.template.variants?.[0]?.zones?.length ?? 0}, connections=${session.template.variants?.[0]?.connections?.length ?? 0}`,

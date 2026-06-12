@@ -233,7 +233,7 @@
   .gen-panel {
     display: grid;
     gap: var(--space-2);
-    font-size: 0.6875rem;
+    font-size: var(--font-size-sm);
   }
   .gen-zone-info {
     display: flex;
@@ -244,12 +244,12 @@
     margin-bottom: var(--space-2);
   }
   .gen-zone-name {
-    font-size: 0.75rem;
+    font-size: var(--font-size-sm);
     font-weight: 600;
     color: var(--color-ink);
   }
   .gen-zone-layout {
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
     font-family: var(--font-mono);
     color: var(--color-muted);
   }
@@ -258,7 +258,7 @@
   .gen-zone-layout.is-missing { color: var(--color-state-invalid); }
   .gen-empty {
     color: var(--color-muted);
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
     padding: var(--space-2);
     text-align: center;
   }
@@ -267,7 +267,7 @@
     background: var(--color-panel-2);
   }
   .gen-section-title {
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
     text-transform: uppercase;
     letter-spacing: 0.04em;
     color: var(--color-muted);
@@ -291,7 +291,7 @@
     background: var(--color-panel);
     color: var(--color-accent);
     cursor: pointer;
-    font-size: 0.75rem;
+    font-size: var(--font-size-sm);
     line-height: 1;
     padding: 0;
   }
@@ -308,19 +308,19 @@
     gap: var(--space-2);
   }
   .gen-label {
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
     color: var(--color-muted);
     white-space: nowrap;
   }
   .gen-hint {
-    font-size: 0.5625rem;
+    font-size: var(--font-size-xxs);
     color: var(--color-muted);
     grid-column: 1 / -1;
     margin: 0;
   }
   .gen-input {
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    font-size: var(--font-size-sm);
     min-height: 1.5rem;
     padding: 2px var(--space-1);
     border: var(--line) solid var(--color-line);
@@ -358,7 +358,7 @@
     background: var(--color-panel);
     color: var(--color-danger, #c55);
     cursor: pointer;
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
     line-height: 1;
     padding: 0;
     margin-top: 2px;

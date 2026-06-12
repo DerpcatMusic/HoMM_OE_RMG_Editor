@@ -34,6 +34,8 @@ interface RmgContentEntry {
   name?: string;
   tag?: string;
   metaType?: string;
+  variantCount?: number;
+  sourcePaths?: string[];
 }
 export function getBundledCatalogSummary(): CoreArchiveCatalogSummary {
   const pools = contentPoolsJson as CatalogFile<ContentPoolEntry>;
@@ -61,14 +63,16 @@ export function getBundledCatalogSummary(): CoreArchiveCatalogSummary {
     guardedContentPoolOptions: contentPoolOptions.filter(isGuardedContentPoolOption),
     unguardedContentPoolOptions: contentPoolOptions.filter(isUnguardedContentPoolOption),
     resourceContentPoolOptions: contentPoolOptions.filter(isResourceContentPoolOption),
-    rmgContentOptions: rmgContent.entries.map((content) => ({
-      id: content.sid,
-      label: [
-        content.name ? `${content.name} (${content.sid})` : content.sid,
-        content.tag,
-        content.metaType,
-      ].filter(Boolean).join(" / "),
-    })),
+    rmgContentOptions: rmgContent.entries.map((content) => {
+      const category = [content.tag, content.metaType].filter(Boolean).join(" / ");
+      return {
+        id: content.sid,
+        label: content.name ? `${content.name} (${content.sid})` : content.sid,
+        ...(category ? { category } : {}),
+        ...(content.variantCount !== undefined ? { variantCount: content.variantCount } : {}),
+        ...(content.sourcePaths ? { sourcePaths: content.sourcePaths } : {}),
+      };
+    }),
     biomeOptions: biomes.entries.map((biome) => ({
       id: biome.id,
       label: biome.faction ? `${biome.id} (${biome.faction})` : biome.id,

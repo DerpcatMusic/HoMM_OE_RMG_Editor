@@ -112,7 +112,7 @@
   }
 
   .pf-label {
-    font-size: 0.6875rem;
+    font-size: var(--font-size-sm);
     color: var(--color-muted, #888);
     white-space: nowrap;
   }
@@ -132,7 +132,7 @@
     padding-right: 1.75rem;
     box-sizing: border-box;
     font-family: var(--font-mono, monospace);
-    font-size: 0.75rem;
+    font-size: var(--font-size-sm);
     background: var(--color-panel, #1a1a1a);
     color: var(--color-ink, #eee);
     border: var(--line, 1px) solid var(--color-line, #333);
@@ -142,7 +142,7 @@
   }
 
   .pf-input::placeholder {
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
   }
 
   .pf-input:focus {
@@ -154,14 +154,14 @@
     position: absolute;
     right: 0.4rem;
     pointer-events: none;
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
     color: var(--color-muted, #666);
     font-family: var(--font-mono, monospace);
     user-select: none;
   }
 
   .pf-hint {
-    font-size: 0.5625rem;
+    font-size: var(--font-size-xxs);
     color: var(--color-muted, #666);
     line-height: 1.3;
   }

@@ -6,216 +6,53 @@ import {
   canUndo,
   createTransactionHistory,
   redo,
-  type TransactionHistory,
   undo,
 } from "../../core/mutations/transactionManager.js";
 import type { ConnectionType, GameMode, GatePlacement, GuardReaction, MainObjectPlacement, MainObjectType, PlayerRef, RoadTargetType, RoadType } from "../../core/rmg/enums.js";
 import { PLAYER_REFS } from "../../core/rmg/enums.js";
-import type { ContentWeight, FactionRule, MainObject, RmgTemplate, RoadTargetConfig, Zone } from "../../core/rmg/rmgTypes.js";
-import type { WinConditionPresetId } from "../../core/rmg/winConditions.js";
+import type { FactionRule, MainObject, MandatoryContent, RmgTemplate, RoadTargetConfig, Zone } from "../../core/rmg/rmgTypes.js";
 import { createDefaultConnection, createDefaultZone } from "../../core/mutations/defaultObjects.js";
 import {
   createLayoutStorageKey,
   loadEditorLayout,
   saveEditorLayout,
 } from "./editorLayoutPersistence.js";
+import { asPlayerRef, inferZonePlayerOwner } from "./editorSessionOwners.js";
+import { pasteZoneClipboardIntoSelectedZone } from "./editorSessionPaste.js";
+import type {
+  CanvasPosition,
+  ContentPoolCreateDraft,
+  ContentPoolGroupCreateDraft,
+  ContentPoolGroupUpdateDraft,
+  CoreArchiveCatalogSummary,
+  EditorSession,
+  GlobalSettingsDraft,
+  MainObjectUpdateDraft,
+  MandatoryContentCreateDraft,
+  RoadUpdateDraft,
+  ZoneUpdateDraft,
+  ConnectionUpdateDraft,
+} from "./editorSessionTypes.js";
 
-export interface CanvasPosition {
-  x: number;
-  y: number;
-}
+export { pasteZoneClipboardIntoSelectedZone } from "./editorSessionPaste.js";
 
-export interface EditorLayoutState {
-  canvasPositions: Record<string, CanvasPosition>;
-  zoneObjectPositions: Record<string, Record<string, CanvasPosition>>;
-}
-
-export interface CoreArchiveRef {
-  name: string;
-  size: number;
-  lastModified: number;
-  catalogSummary?: CoreArchiveCatalogSummary;
-  source?: "bundled" | "uploaded";
-  contentPoolIndex?: Map<string, import("../../core/rmg/rmgTypes.js").ContentPoolConfig>;
-  contentListIndex?: Map<string, import("../../core/rmg/rmgTypes.js").ContentList>;
-}
-
-export interface CoreArchiveCatalogSummary {
-  contentPools: number;
-  contentLists: number;
-  factions: number;
-  biomes: number;
-  heroes: number;
-  magics: number;
-  units: number;
-  rmgContent: number;
-  biomeOptions: readonly CoreCatalogOption[];
-  factionOptions: readonly CoreCatalogOption[];
-  contentPoolOptions: readonly CoreCatalogOption[];
-  guardedContentPoolOptions: readonly CoreCatalogOption[];
-  unguardedContentPoolOptions: readonly CoreCatalogOption[];
-  resourceContentPoolOptions: readonly CoreCatalogOption[];
-  rmgContentOptions: readonly CoreCatalogOption[];
-}
-
-export interface CoreCatalogOption {
-  id: string;
-  label: string;
-}
-
-export interface ZoneUpdateDraft {
-  name: string;
-  size: number;
-  layout: string;
-  zoneBiomeType: string;
-  zoneBiomeArgs: readonly string[];
-  contentBiomeType: string;
-  contentBiomeArgs: readonly string[];
-  metaObjectsBiomeType: string;
-  metaObjectsBiomeArgs: readonly string[];
-  crossroadsPosition: number | undefined;
-  diplomacyModifier: number | undefined;
-  guardCutoffValue: number | undefined;
-  guardMultiplier: number | undefined;
-  guardRandomization: number | undefined;
-  guardWeeklyIncrement: number | undefined;
-  guardReactionDistribution: readonly number[] | undefined;
-  guardedContentValue: number | undefined;
-  guardedContentValuePerArea: number | undefined;
-  unguardedContentValue: number | undefined;
-  unguardedContentValuePerArea: number | undefined;
-  resourcesValue: number | undefined;
-  resourcesValuePerArea: number | undefined;
-  guardedPools: readonly string[];
-  unguardedPools: readonly string[];
-  resourcesPools: readonly string[];
-  mandatoryContent: readonly string[];
-  contentCountLimits: readonly string[];
-}
-
-export interface GlobalSettingsDraft {
-  gameMode: string;
-  sizeX: number;
-  displayWinCondition: string;
-  winConditionPreset?: WinConditionPresetId;
-  sizeZ: number;
-  heroCountMin: number;
-  heroCountMax: number;
-  heroCountIncrement: number;
-  heroHireBan: boolean;
-  encounterHoles: boolean;
-  disableFactionLaws: boolean;
-  disableMagicGuild: boolean;
-  disableMagicCustomLearning: boolean;
-  tournamentRules: boolean;
-  factionLawsExpModifier: number | undefined;
-  astrologyExpModifier: number | undefined;
-  classic: boolean;
-  desertion: boolean;
-  desertionDay: number | undefined;
-  desertionValue: number | undefined;
-  heroLighting: boolean;
-  heroLightingDay: number | undefined;
-  lostStartCity: boolean;
-  lostStartCityDay: number | undefined;
-  lostStartHero: boolean;
-  gladiatorArena: boolean;
-  gladiatorArenaDaysDelayStart: number | undefined;
-  gladiatorArenaCountDay: number | undefined;
-  championSelectRule: string;
-  cityHold: boolean;
-  cityHoldDays: number | undefined;
-  tournament: boolean;
-  tournamentPointsToWin: number | undefined;
-}
-
-export interface ConnectionUpdateDraft {
-  originalName: string;
-  name: string;
-  from: string;
-  to: string;
-  connectionType: string;
-  length: number | undefined;
-  portalFromEnabled: boolean;
-  portalToEnabled: boolean;
-  guardZone: string;
-  guardValue: number | undefined;
-  guardWeeklyIncrement: number | undefined;
-  guardReaction: string;
-  guardEscape: boolean;
-  gatePlacement: string;
-  road: boolean;
-  simTurnSquad: boolean;
-  guardRandomization: number | undefined;
-}
-
-export interface RoadUpdateDraft {
-  roadIndex: number;
-  type: string;
-  from: {
-    type: string;
-    args: readonly string[];
-  };
-  to: {
-    type: string;
-    args: readonly string[];
-  };
-}
-
-export interface MainObjectUpdateDraft {
-  objectIndex: number;
-  type: string;
-  spawn: string;
-  owner: string;
-  isKeyObject: boolean;
-  holdCityWinCon: boolean;
-  placement: string;
-  placementArgs: readonly string[];
-  factionType: string;
-  factionArgs: readonly string[];
-  enableWeeklyUnitIncrement: boolean;
-  initialUnitIncrement: number | undefined;
-  guardChance: number | undefined;
-  guardValue: number | undefined;
-  guardWeeklyIncrement: number | undefined;
-  guardRandomization: number | undefined;
-  removeGuardIfHasOwner: boolean;
-  buildingsConstructionSid: string;
-  buildingsBanSid: string;
-}
-
-export interface ContentPoolCreateDraft {
-  name: string;
-}
-
-export interface ContentPoolGroupCreateDraft {
-  poolIndex: number;
-}
-
-export interface ContentPoolGroupUpdateDraft {
-  poolIndex: number;
-  groupIndex: number;
-  weight: number | undefined;
-  includeLists: readonly string[];
-  content: readonly ContentWeight[];
-}
-
-export interface EditorSession {
-  template: RmgTemplate;
-  history: TransactionHistory;
-  sourceFileName: string | undefined;
-  coreArchive: CoreArchiveRef | undefined;
-  dirty: boolean;
-  lastMessage: string;
-  lastActionFailed: boolean;
-  selectedVariantIndex: number;
-  selectedZoneName: string | undefined;
-  selectedConnectionName: string | undefined;
-  layoutStorageKey: string;
-  canvasPositions: Record<string, CanvasPosition>;
-  zoneObjectPositions: Record<string, Record<string, CanvasPosition>>;
-  focusedPlayer: string | undefined;
-}
+export type {
+  CanvasPosition,
+  ContentPoolCreateDraft,
+  ContentPoolGroupCreateDraft,
+  ContentPoolGroupUpdateDraft,
+  CoreArchiveCatalogSummary,
+  CoreArchiveRef,
+  CoreCatalogOption,
+  EditorLayoutState,
+  EditorSession,
+  GlobalSettingsDraft,
+  MainObjectUpdateDraft,
+  MandatoryContentCreateDraft,
+  RoadUpdateDraft,
+  ZoneUpdateDraft,
+  ConnectionUpdateDraft,
+} from "./editorSessionTypes.js";
 
 export function createInitialEditorSession(): EditorSession {
   const template = createMinimalPlayableTemplate({
@@ -477,26 +314,127 @@ export function addConnectionBetweenZones(session: EditorSession, from: string, 
   });
 }
 
-export function addMainObjectToSelectedZone(session: EditorSession): EditorSession {
+export function addMainObjectToSelectedZone(session: EditorSession, type: MainObjectType = "City"): EditorSession {
   const zoneName = session.selectedZoneName;
   if (!zoneName) {
     return setSessionMessage(session, "No selected zone for main object.");
   }
+  const mainObject: import("../../core/mutations/defaultObjects.js").DefaultMainObjectOptions = {
+    type,
+    placement: "Uniform",
+    ...(type === "Spawn" ? { spawn: "Player1" } : {}),
+  };
   return applyAction(session, {
     action: {
       type: "mainObject.add",
       input: {
         variantIndex: session.selectedVariantIndex,
         zone: { zoneName },
-        mainObject: {
-          type: "City",
-          placement: "Uniform",
-        },
+        mainObject,
       },
     },
-    label: `Add main object to ${zoneName}`,
+    label: `Add ${type} to ${zoneName}`,
   });
 }
+
+export function addMandatoryContentToSelectedZone(
+  session: EditorSession,
+  draft: MandatoryContentCreateDraft,
+): EditorSession {
+  const zoneName = session.selectedZoneName;
+  if (!zoneName) {
+    return setSessionMessage(session, "No selected zone for mandatory content.");
+  }
+  const sid = draft.sid.trim();
+  const entryName = draft.name.trim();
+  if (!sid) {
+    return setSessionMessage(session, "Mandatory content SID cannot be empty.");
+  }
+  if (!entryName) {
+    return setSessionMessage(session, "Mandatory content entry name cannot be empty.");
+  }
+  const zone = getZoneByName(session, zoneName);
+  if (!zone) {
+    return setSessionMessage(session, `Zone '${zoneName}' not found.`);
+  }
+  if (getZoneMandatoryEntryNames(session, zone).includes(entryName)) {
+    return setSessionMessage(session, `Mandatory content entry '${entryName}' already exists in ${zoneName}.`);
+  }
+
+  const entry: MandatoryContent = { name: entryName, sid, ...(draft.isMine ? { isMine: true } : {}) };
+  const presetNames = uniqueStrings(zone.mandatoryContent ?? []);
+  if (presetNames.length === 0) {
+    const presetName = nextUniqueName(
+      getMandatoryPresetNames(session),
+      `${sanitizeIdentifier(zoneName)}_mandatory`,
+    );
+    let next = applyAction(session, {
+      action: {
+        type: "mandatoryContentPreset.add",
+        input: {
+          preset: { name: presetName, content: [entry] },
+        },
+      },
+      label: `Add mandatory content preset "${presetName}"`,
+    });
+    if (next.lastActionFailed) return next;
+    next = applyAction(next, {
+      action: {
+        type: "zone.setMandatoryContentPresets",
+        input: {
+          variantIndex: next.selectedVariantIndex,
+          zone: { zoneName },
+          presetIds: [presetName],
+        },
+      },
+      label: `Assign mandatory preset to ${zoneName}`,
+      selectedZoneName: zoneName,
+    });
+    if (next.lastActionFailed) return next;
+    return {
+      ...next,
+      lastMessage: `Added mandatory content '${entryName}' (${sid}) to ${zoneName}.`,
+      lastActionFailed: false,
+    };
+  }
+
+  let next = session;
+  for (const presetName of presetNames) {
+    const presetIndex = findMandatoryPresetIndex(next, presetName);
+    if (presetIndex === -1) {
+      next = applyAction(next, {
+        action: {
+          type: "mandatoryContentPreset.add",
+          input: {
+            preset: { name: presetName, content: [entry] },
+          },
+        },
+        label: `Create missing mandatory preset "${presetName}"`,
+      });
+    } else {
+      const preset = next.template.mandatoryContent?.[presetIndex];
+      const content = [...(preset?.content ?? []), entry];
+      next = applyAction(next, {
+        action: {
+          type: "mandatoryContentPreset.update",
+          input: {
+            preset: { presetIndex },
+            settings: { content },
+          },
+        },
+        label: `Add mandatory content to "${presetName}"`,
+      });
+    }
+    if (next.lastActionFailed) return next;
+  }
+
+  return {
+    ...next,
+    lastMessage: `Added mandatory content '${entryName}' (${sid}) to ${zoneName}.`,
+    lastActionFailed: false,
+  };
+}
+
 export function removeMainObjectFromSession(session: EditorSession, objectIndex: number): EditorSession {
   const zoneName = session.selectedZoneName;
   if (!zoneName) return setSessionMessage(session, "No selected zone for main object removal.");
@@ -1084,6 +1022,10 @@ export function updateSelectedZoneInSession(session: EditorSession, draft: ZoneU
   return next;
 }
 
+function cloneValue<T>(value: T): T {
+  return value === undefined ? value : JSON.parse(JSON.stringify(value)) as T;
+}
+
 function compactNumberRecord<T extends string>(input: Record<T, number | undefined>): Partial<Record<T, number>> {
   const result: Partial<Record<T, number>> = {};
   for (const [key, value] of Object.entries(input) as Array<[T, number | undefined]>) {
@@ -1173,6 +1115,24 @@ export function updateTemplateGameMode(session: EditorSession, gameMode: string)
       value: gameMode,
     },
     label: `Set game mode ${gameMode}`,
+  });
+}
+
+export function updateTemplateNameInSession(session: EditorSession, name: string): EditorSession {
+  const nextName = name.trim();
+  if (!nextName) {
+    return setSessionMessage(session, "Template name cannot be empty.");
+  }
+  if (session.template.name === nextName) {
+    return session;
+  }
+  return applyAction(session, {
+    action: {
+      type: "field.update",
+      fieldId: "template.name",
+      value: nextName,
+    },
+    label: `Rename template to ${nextName}`,
   });
 }
 
@@ -1402,6 +1362,9 @@ export function updateConnectionTypeByName(session: EditorSession, connectionNam
 export function reassignZoneOwner(session: EditorSession, zoneName: string, newOwner: string): EditorSession {
   const variant = session.template.variants?.[session.selectedVariantIndex];
   if (!variant) return session;
+  const sourceZone = variant.zones?.find((zone) => zone.name === zoneName);
+  const oldOwner = sourceZone ? inferZonePlayerOwner(sourceZone) : undefined;
+  const newOwnerRef = asPlayerRef(newOwner);
   let nextSession = session;
   for (const zone of variant.zones ?? []) {
     if (zone.name !== zoneName) continue;
@@ -1425,7 +1388,48 @@ export function reassignZoneOwner(session: EditorSession, zoneName: string, newO
       });
     }
   }
+  if (oldOwner) {
+    nextSession = reassignZoneMandatoryOwners(nextSession, zoneName, oldOwner, newOwnerRef);
+  }
   return nextSession;
+}
+
+function reassignZoneMandatoryOwners(
+  session: EditorSession,
+  zoneName: string,
+  oldOwner: PlayerRef,
+  newOwner: PlayerRef | undefined,
+): EditorSession {
+  const zone = getZoneByName(session, zoneName);
+  if (!zone) return session;
+  let next = session;
+  for (const presetName of uniqueStrings(zone.mandatoryContent ?? [])) {
+    const presetIndex = findMandatoryPresetIndex(next, presetName);
+    if (presetIndex < 0) continue;
+    const preset = next.template.mandatoryContent?.[presetIndex];
+    let changed = false;
+    const content = (preset?.content ?? []).map((entry) => {
+      if (entry.owner !== oldOwner) return entry;
+      changed = true;
+      const nextEntry = cloneValue(entry);
+      if (newOwner) nextEntry.owner = newOwner;
+      else delete nextEntry.owner;
+      return nextEntry;
+    });
+    if (!changed) continue;
+    next = applyAction(next, {
+      action: {
+        type: "mandatoryContentPreset.update",
+        input: {
+          preset: { presetIndex },
+          settings: { content },
+        },
+      },
+      label: `Reassign mandatory content in ${zoneName}`,
+    });
+    if (next.lastActionFailed) return next;
+  }
+  return next;
 }
 
 export function computePlayerValidationErrors(template: RmgTemplate, variantIndex: number): string[] {
@@ -1754,6 +1758,41 @@ function getConnectionNames(session: EditorSession): string[] {
     .filter((name): name is string => Boolean(name));
 }
 
+function getMandatoryPresetNames(session: EditorSession): string[] {
+  return (session.template.mandatoryContent ?? [])
+    .map((preset) => preset.name)
+    .filter((name): name is string => Boolean(name));
+}
+
+function findMandatoryPresetIndex(session: EditorSession, presetName: string): number {
+  return (session.template.mandatoryContent ?? []).findIndex((preset) => preset.name === presetName);
+}
+
+function getZoneMandatoryEntryNames(session: EditorSession, zone: Zone): string[] {
+  const presetNames = new Set(uniqueStrings(zone.mandatoryContent ?? []));
+  const names: string[] = [];
+  for (const preset of session.template.mandatoryContent ?? []) {
+    if (!preset.name || !presetNames.has(preset.name)) continue;
+    for (const entry of preset.content ?? []) {
+      const name = entry.name ?? entry.sid;
+      if (name) names.push(name);
+    }
+  }
+  return names;
+}
+
+function uniqueStrings(values: readonly string[]): string[] {
+  const seen = new Set<string>();
+  const result: string[] = [];
+  for (const value of values) {
+    const trimmed = value.trim();
+    if (!trimmed || seen.has(trimmed)) continue;
+    seen.add(trimmed);
+    result.push(trimmed);
+  }
+  return result;
+}
+
 function selectFirstZoneName(template: RmgTemplate, variantIndex: number): string | undefined {
   return template.variants?.[variantIndex]?.zones?.find((zone) => zone.name)?.name;
 }
@@ -1773,6 +1812,11 @@ function nextUniqueName(existingNames: readonly string[], baseName: string): str
 function sanitizeFileName(value: string): string {
   const sanitized = value.trim().replace(/[^a-zA-Z0-9._-]+/g, "_").replace(/^_+|_+$/g, "");
   return sanitized.length > 0 ? sanitized : "untitled";
+}
+
+function sanitizeIdentifier(value: string): string {
+  const sanitized = value.trim().replace(/[^a-zA-Z0-9._-]+/g, "_").replace(/^_+|_+$/g, "");
+  return sanitized.length > 0 ? sanitized : "zone";
 }
 
 export function updateZoneLayoutInSession(

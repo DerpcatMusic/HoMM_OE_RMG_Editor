@@ -269,14 +269,14 @@
   }
   .stage-node strong {
     font-family: var(--font-mono);
-    font-size: 0.8125rem;
+    font-size: var(--font-size-m);
     font-weight: 600;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
   .stage-node span {
-    font-size: 0.5625rem;
+    font-size: var(--font-size-xxs);
     color: var(--color-muted);
   }
 </style>

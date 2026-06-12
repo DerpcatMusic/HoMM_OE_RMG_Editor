@@ -89,9 +89,9 @@
     padding: var(--space-1) var(--space-3);
     border-bottom: var(--line) solid var(--color-line);
   }
-  .inspector-header h2 { font-size: 0.8125rem; font-weight: 500; margin: 0; }
+  .inspector-header h2 { font-size: var(--font-size-m); font-weight: 500; margin: 0; }
   .inspector-title {
-    font-size: 0.8125rem;
+    font-size: var(--font-size-m);
     font-weight: 400;
     color: var(--color-muted);
     font-family: var(--font-mono);
@@ -123,7 +123,7 @@
     color: var(--color-ink);
     box-shadow: inset 0 calc(var(--line-strong) * -1) 0 var(--color-line-strong);
   }
-  :global(.inspector .tab-icon) { font-size: 1rem; }
+  :global(.inspector .tab-icon) { font-size: var(--font-size-m); }
   .inspector-body {
     align-content: start;
     min-height: 0;
@@ -133,7 +133,7 @@
   .material-symbols-outlined {
     font-family: var(--font-icon);
     font-weight: 400;
-    font-size: 1.25rem;
+    font-size: var(--font-size-xl);
     line-height: 1;
   }
 </style>

@@ -150,10 +150,10 @@
     display: grid;
     gap: var(--space-3);
   }
-  .placeholder { color: var(--color-muted); font-size: 0.75rem; }
+  .placeholder { color: var(--color-muted); font-size: var(--font-size-sm); }
   .form-section { display: grid; gap: var(--space-2); }
   .section-title {
-    font-size: 0.6875rem;
+    font-size: var(--font-size-sm);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.06em;
@@ -167,18 +167,18 @@
     grid-template-columns: auto 1fr;
     align-items: center;
     gap: var(--space-2);
-    font-size: 0.6875rem;
+    font-size: var(--font-size-sm);
   }
   .field-label {
     color: var(--color-muted);
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
     text-transform: uppercase;
     letter-spacing: 0.04em;
     white-space: nowrap;
   }
   .field-value {
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    font-size: var(--font-size-sm);
   }
   .field input, .field select {
     height: 1.5rem;
@@ -186,7 +186,7 @@
     border: var(--line) solid var(--color-line);
     background: var(--color-panel);
     font: inherit;
-    font-size: 0.6875rem;
+    font-size: var(--font-size-sm);
   }
   .field input[type="number"] {
     width: fit-content;

@@ -83,7 +83,7 @@
   :global(.right-dock-tab-label) {
     writing-mode: vertical-rl;
     transform: rotate(180deg);
-    font-size: 0.6875rem;
+    font-size: var(--font-size-sm);
     letter-spacing: 0.04em;
   }
   .right-dock-panel {
@@ -94,7 +94,7 @@
   .material-symbols-outlined {
     font-family: var(--font-icon);
     font-weight: 400;
-    font-size: 1.25rem;
+    font-size: var(--font-size-xl);
     line-height: 1;
   }
 </style>

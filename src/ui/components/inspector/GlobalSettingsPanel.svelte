@@ -274,7 +274,7 @@
     padding: var(--space-1) var(--space-3);
     border-bottom: var(--line) solid var(--color-line);
     background: var(--color-panel-2);
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--color-muted);
@@ -291,7 +291,7 @@
     gap: var(--space-2);
     padding: var(--space-1) var(--space-3);
     border-bottom: var(--line) solid var(--color-line);
-    font-size: 0.6875rem;
+    font-size: var(--font-size-sm);
   }
   .setting-row--stacked {
     align-items: start;
@@ -325,7 +325,7 @@
   }
   .icon-toggle .material-symbols-outlined {
     font-family: var(--font-icon);
-    font-size: 0.875rem;
+    font-size: var(--font-size-m);
     line-height: 1;
   }
   .setting-stack {
@@ -335,12 +335,12 @@
   }
   .setting-help {
     color: var(--color-muted);
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
     line-height: 1.25;
   }
   .setting-row label {
     color: var(--color-muted);
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
     text-transform: uppercase;
     letter-spacing: 0.04em;
     overflow: hidden;
@@ -354,7 +354,7 @@
     border: var(--line) solid var(--color-line);
     background: var(--color-panel);
     font: inherit;
-    font-size: 0.6875rem;
+    font-size: var(--font-size-sm);
     color: var(--color-ink);
   }
   .setting-row :global(.number-field) {
@@ -369,7 +369,7 @@
     min-width: 0;
   }
   .setting-row input::placeholder {
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
   }
   .setting-row input[type="checkbox"] {
     width: 1rem;

@@ -32,10 +32,10 @@
 
 <style>
   .content-panel { display: grid; gap: var(--space-3); }
-  .placeholder { color: var(--color-muted); font-size: 0.75rem; }
+  .placeholder { color: var(--color-muted); font-size: var(--font-size-sm); }
   .form-section { display: grid; gap: var(--space-1); }
   .section-title {
-    font-size: 0.6875rem;
+    font-size: var(--font-size-sm);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.06em;
@@ -44,5 +44,5 @@
     padding-bottom: var(--space-1);
     border-bottom: var(--line) solid var(--color-line);
   }
-  .content-item { font-size: 0.6875rem; margin: 0; font-family: var(--font-mono); }
+  .content-item { font-size: var(--font-size-sm); margin: 0; font-family: var(--font-mono); }
 </style>

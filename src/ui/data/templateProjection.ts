@@ -161,7 +161,10 @@ function applyZoneObjectPositions(
   positions: Readonly<Record<string, { x: number; y: number }>>,
 ): ShellZoneObjectItem[] {
   return objects.map((object) => {
-    const position = positions[object.id];
+    const legacyMandatoryId = object.id.startsWith("mandatory:")
+      ? `mc:${object.id.replace("mandatory:", "")}`
+      : "";
+    const position = positions[object.id] ?? (legacyMandatoryId ? positions[legacyMandatoryId] : undefined);
     return position ? { ...object, x: position.x, y: position.y } : object;
   });
 }
@@ -220,11 +223,18 @@ function projectZoneObjects(zone: Zone, zoneName: string, variant: Variant | und
       if (!preset.name || !zonePresetNames.has(preset.name)) continue;
       for (const entry of preset.content ?? []) {
         const entryName = entry.name ?? entry.sid ?? `mc_${mcIndex}`;
-        const id = `mc:${entryName}`;
-        if (!extras.has(id)) {
+        const id = `mandatory:${entryName}`;
+        const existing = extras.get(id);
+        if (existing) {
+          extras.set(id, {
+            ...existing,
+            mandatoryPresetNames: [...new Set([...(existing.mandatoryPresetNames ?? []), preset.name])],
+          });
+        } else {
           const angle = (Math.PI * 2 * mcIndex) / Math.max(1, (preset.content ?? []).length) - Math.PI / 2;
           extras.set(id, {
             id,
+            kind: "mandatory",
             label: entry.name ?? entry.sid ?? `Entry ${mcIndex}`,
             type: "MandatoryContent",
             detail: entry.sid ?? "",
@@ -232,6 +242,9 @@ function projectZoneObjects(zone: Zone, zoneName: string, variant: Variant | und
             y: clampInternalPercent(45 + Math.sin(angle) * 30),
             placementArgs: [],
             faction: { type: "", args: [] },
+            mandatoryEntryName: entryName,
+            mandatoryPresetNames: [preset.name],
+            ...(entry.sid !== undefined ? { mandatorySid: entry.sid } : {}),
           });
         }
         mcIndex++;
@@ -250,6 +263,7 @@ function projectMainObject(mainObject: MainObject, index: number, objectCount: n
   const angle = objectCount <= 1 ? 0 : (Math.PI * 2 * index) / objectCount - Math.PI / 2;
   return {
     id: `main:${index}`,
+    kind: "main",
     index,
     label: `${mainObject.type ?? "MainObject"} ${index}`,
     type: mainObject.type ?? "MainObject",
@@ -279,6 +293,7 @@ function projectConnectionAnchor(connection: Connection, index: number, connecti
   const y = connectionCount <= 1 ? 48 : 18 + (index * 64) / Math.max(1, connectionCount - 1);
   return {
     id: `connection:${connection.name ?? index}`,
+    kind: "connection",
     label: connection.name ?? `Connection ${index + 1}`,
     type: "Connection",
     detail: `${connection.from ?? "?"} -> ${connection.to ?? "?"} / ${connection.connectionType ?? "Default"}`,
@@ -321,6 +336,11 @@ function ensureRoadTargetObject(target: RoadTargetConfig | undefined, extras: Ma
   }
   extras.set(id, {
     id,
+    kind: target?.type === "Crossroads"
+      ? "crossroads"
+      : target?.type === "MandatoryContent"
+        ? "mandatory"
+        : "roadTarget",
     label: roadTargetLabel(target),
     type: target?.type ?? "RoadTarget",
     detail: target?.args?.join(", ") ?? "",
@@ -328,6 +348,10 @@ function ensureRoadTargetObject(target: RoadTargetConfig | undefined, extras: Ma
     y: id.startsWith("crossroads") ? 52 : 72,
     placementArgs: [],
     faction: { type: "", args: [] },
+    ...(target?.type === "MandatoryContent" ? {
+      mandatoryEntryName: target?.args?.[0] ?? "",
+      mandatorySid: target?.args?.[0] ?? "",
+    } : {}),
   });
 }
 
@@ -343,6 +367,9 @@ function roadTargetId(target: RoadTargetConfig | undefined): string {
   }
   if (target.type === "Crossroads") {
     return "crossroads";
+  }
+  if (target.type === "MandatoryContent") {
+    return `mandatory:${target.args?.[0] ?? ""}`;
   }
   return `${target.type}:${target.args?.[0] ?? "0"}`;
 }

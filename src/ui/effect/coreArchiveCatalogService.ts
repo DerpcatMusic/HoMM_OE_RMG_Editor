@@ -51,14 +51,16 @@ export function parseCoreArchiveCatalogSummaryEffect(
         guardedContentPoolOptions: contentPoolOptions.filter(isGuardedContentPoolOption),
         unguardedContentPoolOptions: contentPoolOptions.filter(isUnguardedContentPoolOption),
         resourceContentPoolOptions: contentPoolOptions.filter(isResourceContentPoolOption),
-        rmgContentOptions: rmgContent.entries.map((content) => ({
-          id: content.sid,
-          label: [
-            content.name ? `${content.name} (${content.sid})` : content.sid,
-            content.tag,
-            content.metaType,
-          ].filter(Boolean).join(" / "),
-        })),
+        rmgContentOptions: rmgContent.entries.map((content) => {
+          const category = [content.tag, content.metaType].filter(Boolean).join(" / ");
+          return {
+            id: content.sid,
+            label: content.name ? `${content.name} (${content.sid})` : content.sid,
+            ...(category ? { category } : {}),
+            variantCount: content.variantCount,
+            sourcePaths: content.sourcePaths,
+          };
+        }),
         biomeOptions: catalogs.biomes.map((biome) => ({
           id: biome.id,
           label: biome.faction ? `${biome.id} (${biome.faction})` : biome.id,

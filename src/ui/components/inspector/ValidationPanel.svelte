@@ -18,12 +18,12 @@
 
 <style>
   .validation-panel { display: grid; gap: var(--space-2); }
-  .valid { color: var(--color-role-connector); font-size: 0.75rem; }
+  .valid { color: var(--color-role-connector); font-size: var(--font-size-sm); }
   .error-list { list-style: none; margin: 0; padding: 0; }
   .error-item {
     padding: var(--space-1) 0;
     border-bottom: var(--line) solid var(--color-line);
     color: var(--color-state-invalid);
-    font-size: 0.6875rem;
+    font-size: var(--font-size-sm);
   }
 </style>

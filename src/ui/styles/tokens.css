@@ -5,6 +5,15 @@
   --font-mono: "JetBrains Mono", "Berkeley Mono", "SFMono-Regular", monospace;
   --font-icon: "Material Symbols Outlined", var(--font-mono);
 
+  --font-size-xxs: 0.5625rem;
+  --font-size-xs: 0.625rem;
+  --font-size-sm: 0.75rem;
+  --font-size-m: 1rem;
+  --font-size-l: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.375rem;
+  --font-size-display: 3rem;
+
   --color-bg: oklch(0.985 0 0);
   --color-panel: oklch(1 0 0);
   --color-panel-2: oklch(0.955 0 0);

@@ -82,6 +82,6 @@
   .ui-button-sm {
     min-height: 1.375rem;
     padding: 1px var(--space-1);
-    font-size: 0.5625rem;
+    font-size: var(--font-size-xxs);
   }
 </style>

@@ -83,10 +83,10 @@
   }
   .tab-icon {
     font-family: var(--font-icon);
-    font-size: 1rem;
+    font-size: var(--font-size-m);
     line-height: 1;
   }
   .tab-label {
-    font-size: 0.75rem;
+    font-size: var(--font-size-sm);
   }
 </style>

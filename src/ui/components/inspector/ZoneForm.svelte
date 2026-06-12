@@ -3,7 +3,6 @@
   import { FIELD_PLACEHOLDERS } from "./fieldPlaceholders.js";
   const ph = FIELD_PLACEHOLDERS;
   import { BIOME_RULE_TYPES } from "../../../core/rmg/enums.js";
-  import { buildZoneDraft, applyZoneClipboard } from "../../state/clipboard.js";
   import type { ZoneUpdateDraft } from "../../state/editorSession.js";
   import GuardFields from "../svelte/GuardFields.svelte";
   import NumberField from "../ui/NumberField.svelte";
@@ -115,8 +114,7 @@
   }
 
   function paste() {
-    const draft = applyZoneClipboard(buildDraft());
-    editor.applyZoneChanges(draft);
+    editor.pasteOntoSelectedZone();
   }
 
   function parseStringList(value: string): string[] {
@@ -513,21 +511,21 @@
       </div>
     </div>
     <div class="form-notice">
-      <span class="material-symbols-outlined" style="font-size:0.875rem">open_in_new</span>
+      <span class="material-symbols-outlined" style="font-size: var(--font-size-m)">open_in_new</span>
       <span>Mandatory presets & count limits are edited in the <strong>Pools</strong> tab.</span>
     </div>
 
 
   </details>
     <div class="form-actions">
-      <button class="button button-secondary" onclick={paste}>Paste settings</button>
+      <button class="button button-secondary" onclick={paste}>Paste copied zone</button>
     </div>
   </div>
 {/if}
 
 
 <style>
-  .placeholder { color: var(--color-muted); font-size: 0.75rem; padding: var(--space-3); }
+  .placeholder { color: var(--color-muted); font-size: var(--font-size-sm); padding: var(--space-3); }
   .zone-form { display: grid; gap: 0; overflow-y: auto; }
   .form-actions-bar {
     display: flex;
@@ -553,7 +551,7 @@
     padding: var(--space-2) var(--space-3);
     border-bottom: var(--line) solid var(--color-line);
     background: var(--color-panel-2);
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--color-muted);
@@ -566,7 +564,7 @@
   .form-section-title::after {
     content: "expand_more";
     font-family: var(--font-icon);
-    font-size: 1rem;
+    font-size: var(--font-size-m);
     transition: transform 0.15s;
   }
   .form-section[open] > .form-section-title::after {
@@ -579,7 +577,7 @@
     gap: var(--space-2);
     padding: var(--space-1) var(--space-3);
     border-bottom: var(--line) solid var(--color-line);
-    font-size: 0.6875rem;
+    font-size: var(--font-size-sm);
   }
   .control-row.stack {
     grid-template-columns: 1fr;
@@ -587,13 +585,13 @@
   }
   .control-row.stack > span:first-child {
     color: var(--color-muted);
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
     text-transform: uppercase;
     letter-spacing: 0.04em;
   }
   .control-row > span:first-child {
     color: var(--color-muted);
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
     text-transform: uppercase;
     letter-spacing: 0.04em;
     overflow: hidden;
@@ -608,7 +606,7 @@
     border: var(--line) solid var(--color-line);
     background: var(--color-panel);
     font: inherit;
-    font-size: 0.6875rem;
+    font-size: var(--font-size-sm);
     color: var(--color-ink);
     width: fit-content;
     min-width: 3ch;
@@ -635,7 +633,7 @@
     padding: var(--space-1) var(--space-3);
     margin: 0;
     color: var(--color-muted);
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
     border-bottom: var(--line) solid var(--color-line);
   }
   .multi-picker { display: grid; gap: var(--space-1); }
@@ -650,12 +648,12 @@
     background: var(--color-panel-2);
     border: var(--line) solid var(--color-line);
     font: inherit;
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
     cursor: pointer;
   }
   .picker-token:hover { background: var(--color-line); }
   .picker-token strong { font-family: var(--font-mono); }
-  .picker-token-remove { font-size: 0.75rem; opacity: 0.6; }
+  .picker-token-remove { font-size: var(--font-size-sm); opacity: 0.6; }
   .form-actions {
     display: flex;
     gap: var(--space-2);
@@ -669,7 +667,7 @@
     border: var(--line) solid var(--color-line-strong);
     background: var(--color-panel);
     font: inherit;
-    font-size: 0.6875rem;
+    font-size: var(--font-size-sm);
     cursor: pointer;
     color: var(--color-ink);
   }
@@ -677,7 +675,7 @@
   .form-notice {
     display: flex; align-items: center; gap: var(--space-1);
     padding: var(--space-1) var(--space-3);
-    font-size: 0.625rem; color: var(--color-muted);
+    font-size: var(--font-size-xs); color: var(--color-muted);
     background: var(--color-panel-2);
     border-top: var(--line) solid var(--color-line);
   }

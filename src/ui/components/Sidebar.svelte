@@ -167,14 +167,14 @@
     z-index: 1;
   }
   .sidebar-heading h2 {
-    font-size: 0.6875rem;
+    font-size: var(--font-size-sm);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     margin: 0;
   }
   .sidebar-count {
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
     color: var(--color-muted);
     font-family: var(--font-mono);
   }
@@ -185,7 +185,7 @@
     border: var(--line) solid var(--color-line);
     background: var(--color-panel);
     font: inherit;
-    font-size: 0.75rem;
+    font-size: var(--font-size-sm);
     cursor: pointer;
     display: grid;
     place-items: center;
@@ -206,7 +206,7 @@
     border-bottom: var(--line) solid var(--color-line);
     background: var(--color-panel);
     font: inherit;
-    font-size: 0.75rem;
+    font-size: var(--font-size-sm);
     cursor: pointer;
     text-align: left;
   }
@@ -214,7 +214,7 @@
   .nav-item.is-selected { background: var(--color-active); }
   .nav-item.is-focused { box-shadow: inset 3px 0 0 var(--color-focus); }
   .nav-item-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .nav-item-count { font-family: var(--font-mono); font-size: 0.625rem; color: var(--color-muted); }
+  .nav-item-count { font-family: var(--font-mono); font-size: var(--font-size-xs); color: var(--color-muted); }
   .zone-color {
     width: 4px;
     align-self: stretch;
@@ -233,7 +233,7 @@
     border: 0;
     background: none;
     font: inherit;
-    font-size: 0.875rem;
+    font-size: var(--font-size-m);
     cursor: pointer;
     color: var(--color-muted);
     padding: 0 var(--space-1);
@@ -242,7 +242,7 @@
   .sidebar-status-row {
     border-top: var(--line-strong) solid var(--color-line-strong);
     padding: var(--space-1) var(--space-3);
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
   }
   .validation-marquee.is-valid { color: var(--color-role-connector); }
   .validation-marquee.is-invalid {
@@ -273,7 +273,7 @@
     color: var(--color-ink);
     box-shadow: inset 0 calc(var(--line-strong) * -1) 0 var(--color-line-strong);
   }
-  .sidebar-tab-icon { font-size: 1rem; }
+  .sidebar-tab-icon { font-size: var(--font-size-m); }
   .sidebar-body {
     flex: 1;
     min-height: 0;

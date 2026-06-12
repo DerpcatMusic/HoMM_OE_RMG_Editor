@@ -16,6 +16,7 @@
   let connections = $derived(editor.connections);
   let session = $derived(editor.session);
   let roads = $derived(zone.zoneRoads ?? []);
+  let activeRoadIndex = $derived(editor.activeRoadIndex);
   let mainObjects = $derived(zone.zoneObjects.filter((object) => object.id.startsWith("main:")));
   let touchingConnections = $derived(
     connections.filter((connection) => connection.type !== "Proximity" && (connection.from === zone.label || connection.to === zone.label)),
@@ -109,9 +110,22 @@
   });
 
   let editingRoad = $state<number | null>(null);
+  let lastSyncedRoadIndex = $state<number | null>(null);
   let editType = $state<RoadType>("Stone");
   let editFromKey = $state("");
   let editToKey = $state("");
+
+  $effect(() => {
+    const index = activeRoadIndex;
+    if (index === lastSyncedRoadIndex) return;
+    lastSyncedRoadIndex = index;
+    const road = roads.find((item) => item.index === index);
+    if (road) {
+      syncEditFromRoad(road);
+    } else if (index < 0) {
+      editingRoad = null;
+    }
+  });
 
   function serializeTarget(type: RoadTargetType, args: readonly string[]) {
     return JSON.stringify({ type, args: [...args] });
@@ -165,15 +179,21 @@
     }
   }
 
-  function startEdit(road: ShellZoneRoadItem) {
+  function syncEditFromRoad(road: ShellZoneRoadItem) {
     editingRoad = road.index;
     editType = (road.type === "Dirt" || road.type === "Stone" ? road.type : "Stone") as RoadType;
     editFromKey = targetKey(road.fromTarget);
     editToKey = targetKey(road.toTarget);
   }
 
+  function startEdit(road: ShellZoneRoadItem) {
+    syncEditFromRoad(road);
+    editor.selectRoad(road.index);
+  }
+
   function cancelEdit() {
     editingRoad = null;
+    editor.clearRoadSelection();
   }
 
   function saveEdit() {
@@ -187,6 +207,7 @@
       to,
     });
     editingRoad = null;
+    editor.clearRoadSelection();
   }
 
   function swapEndpoints() {
@@ -273,7 +294,7 @@
         {#each roads as road (road.id)}
           {@const from = optionForTarget(road.fromTarget)}
           {@const to = optionForTarget(road.toTarget)}
-          <li class="road-row" class:is-editing={editingRoad === road.index}>
+          <li class="road-row" class:is-editing={editingRoad === road.index} class:is-active={activeRoadIndex === road.index}>
             {#if editingRoad === road.index}
               <div class="route-editor">
                 <select class="road-kind" bind:value={editType} aria-label="Road type">
@@ -341,7 +362,7 @@
   }
   .placeholder {
     color: var(--color-muted);
-    font-size: 0.75rem;
+    font-size: var(--font-size-sm);
     margin: 0;
   }
   .road-header {
@@ -352,12 +373,12 @@
   }
   .road-header h3 {
     margin: 0;
-    font-size: 0.8125rem;
+    font-size: var(--font-size-m);
     font-weight: 600;
   }
   .road-header span {
     color: var(--color-muted);
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
     font-family: var(--font-mono);
   }
   .icon-command {
@@ -385,7 +406,7 @@
   }
   .material-symbols-outlined {
     font-family: var(--font-icon);
-    font-size: 1rem;
+    font-size: var(--font-size-m);
     line-height: 1;
   }
   .road-warnings {
@@ -396,7 +417,7 @@
     padding: 2px var(--space-1);
     border: var(--line) solid color-mix(in srgb, var(--color-state-invalid) 55%, var(--color-line));
     color: var(--color-state-invalid);
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
   }
   .road-presets {
     display: grid;
@@ -414,7 +435,7 @@
     background: var(--color-panel);
     color: var(--color-ink);
     font: inherit;
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
     cursor: pointer;
   }
   .road-presets button:hover {
@@ -439,6 +460,10 @@
     border-color: var(--color-line-strong);
     background: var(--color-panel-2);
   }
+  .road-row.is-active:not(.is-editing) {
+    border-color: var(--color-accent);
+    background: var(--color-active);
+  }
   .route-summary {
     min-width: 0;
     display: grid;
@@ -459,7 +484,7 @@
   .route-type {
     padding: 1px var(--space-1);
     border: var(--line) solid var(--color-line);
-    font-size: 0.5625rem;
+    font-size: var(--font-size-xxs);
     font-family: var(--font-mono);
   }
   .route-type[data-road-type="Stone"] {
@@ -480,13 +505,13 @@
     white-space: nowrap;
   }
   .endpoint strong {
-    font-size: 0.6875rem;
+    font-size: var(--font-size-sm);
     font-weight: 600;
   }
   .endpoint small {
     grid-column: 2;
     color: var(--color-muted);
-    font-size: 0.5625rem;
+    font-size: var(--font-size-xxs);
   }
   .route-arrow {
     color: var(--color-muted);
@@ -505,7 +530,7 @@
     background: var(--color-panel);
     color: var(--color-ink);
     font: inherit;
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
   }
   .road-kind {
     font-family: var(--font-mono);
@@ -524,7 +549,7 @@
   }
   .road-help p {
     margin: 0;
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
     line-height: 1.35;
   }
 </style>

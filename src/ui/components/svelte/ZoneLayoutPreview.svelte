@@ -187,7 +187,7 @@
     flex-wrap: wrap;
     gap: var(--space-2);
     color: var(--color-muted);
-    font-size: 0.5625rem;
+    font-size: var(--font-size-xxs);
     line-height: 1;
   }
   .preview-legend span {

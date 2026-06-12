@@ -351,7 +351,7 @@
   }
   .number-field-scrub .material-symbols-outlined {
     font-family: var(--font-icon);
-    font-size: 0.875rem;
+    font-size: var(--font-size-m);
     line-height: 1;
   }
   .number-field-value {
@@ -362,14 +362,14 @@
     justify-content: space-between;
     gap: var(--space-1);
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    font-size: var(--font-size-sm);
     font-variant-numeric: tabular-nums;
     z-index: 2;
     pointer-events: none;
   }
   .number-field-value small {
     color: var(--color-muted);
-    font-size: 0.5625rem;
+    font-size: var(--font-size-xxs);
     text-transform: uppercase;
   }
   .number-field-input {
@@ -382,7 +382,7 @@
     color: inherit;
     font: inherit;
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    font-size: var(--font-size-sm);
     outline: none;
   }
   .number-field-gradient {
@@ -418,7 +418,7 @@
     background: var(--color-ink);
     color: var(--color-panel);
     font-family: var(--font-mono);
-    font-size: 0.625rem;
+    font-size: var(--font-size-xs);
     white-space: nowrap;
     pointer-events: none;
   }

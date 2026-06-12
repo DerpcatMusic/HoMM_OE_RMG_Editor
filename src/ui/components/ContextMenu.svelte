@@ -69,7 +69,7 @@
     border-bottom: var(--line) solid var(--color-line);
     background: var(--color-panel);
     font: inherit;
-    font-size: 0.75rem;
+    font-size: var(--font-size-sm);
     color: var(--color-ink);
     cursor: pointer;
     text-align: left;
@@ -78,7 +78,7 @@
   .context-menu-item:hover { background: var(--color-panel-2); }
   .context-menu-item .material-symbols-outlined {
     font-family: var(--font-icon);
-    font-size: 1rem;
+    font-size: var(--font-size-m);
     opacity: 0.7;
   }
 </style>

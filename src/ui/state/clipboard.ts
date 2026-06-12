@@ -1,13 +1,19 @@
-import type { Zone, Connection } from "../../core/rmg/rmgTypes.js";
-import type { ZoneUpdateDraft, ConnectionUpdateDraft } from "./editorSession.js";
+import type { Connection, MainObject, MandatoryContentPreset, RoadConfig, Zone } from "../../core/rmg/rmgTypes.js";
+import type { CanvasPosition, ConnectionUpdateDraft } from "./editorSession.js";
 
 export type ClipboardEntry =
   | { kind: "zone"; data: ZoneClipboardData }
   | { kind: "connection"; data: ConnectionClipboardData };
 
 export interface ZoneClipboardData {
+  sourceZoneName: string;
+  zone: Zone;
   size: number | undefined;
   layout: string | undefined;
+  mainObjects: readonly MainObject[];
+  roads: readonly RoadConfig[];
+  mandatoryPresetDefinitions: readonly MandatoryContentPreset[];
+  zoneObjectPositions: Readonly<Record<string, CanvasPosition>>;
   zoneBiomeType: string;
   zoneBiomeArgs: readonly string[];
   contentBiomeType: string;
@@ -34,6 +40,11 @@ export interface ZoneClipboardData {
   contentCountLimits: readonly string[];
 }
 
+export interface CopyZoneOptions {
+  mandatoryPresets?: readonly MandatoryContentPreset[];
+  zoneObjectPositions?: Readonly<Record<string, CanvasPosition>>;
+}
+
 export interface ConnectionClipboardData {
   connectionType: string;
   length: number | undefined;
@@ -57,12 +68,22 @@ export function getClipboard(): ClipboardEntry | undefined {
   return clipboard;
 }
 
-export function copyZone(zone: Zone): void {
+export function copyZone(zone: Zone, options: CopyZoneOptions = {}): void {
+  const mandatoryPresetNames = new Set(zone.mandatoryContent ?? []);
+  const mandatoryPresetDefinitions = (options.mandatoryPresets ?? [])
+    .filter((preset) => preset.name !== undefined && mandatoryPresetNames.has(preset.name))
+    .map((preset) => cloneValue(preset));
   clipboard = {
     kind: "zone",
     data: {
+      sourceZoneName: zone.name ?? "",
+      zone: cloneValue(zone),
       size: zone.size,
       layout: zone.layout,
+      mainObjects: cloneValue(zone.mainObjects ?? []),
+      roads: cloneValue(zone.roads ?? []),
+      mandatoryPresetDefinitions,
+      zoneObjectPositions: cloneValue(options.zoneObjectPositions ?? {}),
       zoneBiomeType: zone.zoneBiome?.type ?? "",
       zoneBiomeArgs: zone.zoneBiome?.args ?? [],
       contentBiomeType: zone.contentBiome?.type ?? "",
@@ -113,40 +134,6 @@ export function copyConnection(connection: Connection): void {
   };
 }
 
-export function applyZoneClipboard(target: ZoneUpdateDraft): ZoneUpdateDraft {
-  if (clipboard?.kind !== "zone") return target;
-  const src = clipboard.data;
-  return {
-    ...target,
-    size: src.size ?? target.size,
-    layout: src.layout ?? target.layout,
-    zoneBiomeType: src.zoneBiomeType,
-    zoneBiomeArgs: src.zoneBiomeArgs,
-    contentBiomeType: src.contentBiomeType,
-    contentBiomeArgs: src.contentBiomeArgs,
-    metaObjectsBiomeType: src.metaObjectsBiomeType,
-    metaObjectsBiomeArgs: src.metaObjectsBiomeArgs,
-    crossroadsPosition: src.crossroadsPosition,
-    diplomacyModifier: src.diplomacyModifier,
-    guardCutoffValue: src.guardCutoffValue,
-    guardMultiplier: src.guardMultiplier,
-    guardRandomization: src.guardRandomization,
-    guardWeeklyIncrement: src.guardWeeklyIncrement,
-    guardReactionDistribution: src.guardReactionDistribution,
-    guardedContentValue: src.guardedContentValue,
-    guardedContentValuePerArea: src.guardedContentValuePerArea,
-    unguardedContentValue: src.unguardedContentValue,
-    unguardedContentValuePerArea: src.unguardedContentValuePerArea,
-    resourcesValue: src.resourcesValue,
-    resourcesValuePerArea: src.resourcesValuePerArea,
-    guardedPools: src.guardedPools,
-    unguardedPools: src.unguardedPools,
-    resourcesPools: src.resourcesPools,
-    mandatoryContent: src.mandatoryContent,
-    contentCountLimits: src.contentCountLimits,
-  };
-}
-
 export function applyConnectionClipboard(target: ConnectionUpdateDraft): ConnectionUpdateDraft {
   if (clipboard?.kind !== "connection") return target;
   const src = clipboard.data;
@@ -165,38 +152,6 @@ export function applyConnectionClipboard(target: ConnectionUpdateDraft): Connect
     road: src.road,
     simTurnSquad: src.simTurnSquad,
     guardRandomization: src.guardRandomization,
-  };
-}
-
-export function buildZoneDraft(zone: Zone, zoneName: string): ZoneUpdateDraft {
-  return {
-    name: zoneName,
-    size: zone.size ?? 1,
-    layout: zone.layout ?? "",
-    zoneBiomeType: zone.zoneBiome?.type ?? "",
-    zoneBiomeArgs: zone.zoneBiome?.args ?? [],
-    contentBiomeType: zone.contentBiome?.type ?? "",
-    contentBiomeArgs: zone.contentBiome?.args ?? [],
-    metaObjectsBiomeType: zone.metaObjectsBiome?.type ?? "",
-    metaObjectsBiomeArgs: zone.metaObjectsBiome?.args ?? [],
-    crossroadsPosition: zone.crossroadsPosition,
-    diplomacyModifier: zone.diplomacyModifier,
-    guardCutoffValue: zone.guardCutoffValue,
-    guardMultiplier: zone.guardMultiplier,
-    guardRandomization: zone.guardRandomization,
-    guardWeeklyIncrement: zone.guardWeeklyIncrement,
-    guardReactionDistribution: zone.guardReactionDistribution,
-    guardedContentValue: zone.guardedContentValue,
-    guardedContentValuePerArea: zone.guardedContentValuePerArea,
-    unguardedContentValue: zone.unguardedContentValue,
-    unguardedContentValuePerArea: zone.unguardedContentValuePerArea,
-    resourcesValue: zone.resourcesValue,
-    resourcesValuePerArea: zone.resourcesValuePerArea,
-    guardedPools: zone.guardedContentPool ?? [],
-    unguardedPools: zone.unguardedContentPool ?? [],
-    resourcesPools: zone.resourcesContentPool ?? [],
-    mandatoryContent: zone.mandatoryContent ?? [],
-    contentCountLimits: zone.contentCountLimits ?? [],
   };
 }
 
@@ -220,4 +175,8 @@ export function buildConnectionDraft(connection: Connection, connectionName: str
     simTurnSquad: connection.simTurnSquad ?? false,
     guardRandomization: connection.guardRandomization,
   };
+}
+
+function cloneValue<T>(value: T): T {
+  return value === undefined ? value : JSON.parse(JSON.stringify(value)) as T;
 }

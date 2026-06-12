@@ -1,8 +1,9 @@
 import type { RmgTemplate } from "../../core/rmg/rmgTypes.js";
-import type { ShellMetrics, ShellZoneItem, ShellConnectionItem, ShellPlayerItem, ShellCatalogOptions, ShellZoneObjectItem } from "../data/shellData.js";
+import type { ShellMetrics, ShellZoneItem, ShellConnectionItem, ShellPlayerItem, ShellCatalogOptions } from "../data/shellData.js";
 import { getShellSections, getSectionFields, getShellMetrics } from "../data/shellData.js";
+import { isMineRoutedContent } from "../data/rmgContentSemantics.js";
 import { projectTemplateToShellData } from "../data/templateProjection.js";
-import type { PlayerRef } from "../../core/rmg/enums.js";
+import type { MainObjectType, PlayerRef } from "../../core/rmg/enums.js";
 import {
   loadTemplateAutosave,
   saveTemplateAutosave,
@@ -32,6 +33,7 @@ import {
   addConnectionFromSelectedZone,
   addConnectionBetweenZones,
   addMainObjectToSelectedZone,
+  addMandatoryContentToSelectedZone as addMandatoryContentObjectToSelectedZone,
   removeMainObjectFromSession,
   addDefaultRoadToSelectedZone,
   addRoadBetweenInSession,
@@ -43,6 +45,7 @@ import {
   updateSelectedZoneRoadInSession,
   removeZoneRoadInSession,
   updateGlobalSettingsInSession,
+  updateTemplateNameInSession,
   updateTemplateGameMode,
   addPlayerToSession,
   removePlayerFromSession,
@@ -77,6 +80,7 @@ import {
   removeLocalPoolFromSession,
   updateZoneLayoutInSession,
   createLocalLayoutForZone,
+  pasteZoneClipboardIntoSelectedZone,
   serializeSessionTemplate,
   getSessionSaveFileName,
   setBundledCoreArchiveCatalogSummary,
@@ -84,10 +88,9 @@ import {
 import {
   copyZone,
   copyConnection,
-  applyZoneClipboard,
   applyConnectionClipboard,
-  buildZoneDraft,
   buildConnectionDraft,
+  getClipboard,
 } from "./clipboard.js";
 export type InspectorTab = "zone" | "connection" | "objects" | "content" | "pools" | "roads" | "raw" | "validation";
 export type WorkspaceTab = "canvas" | "zoneEdit";
@@ -124,6 +127,11 @@ const EMPTY_ZONE: ShellZoneItem = {
   zoneRoads: [],
 };
 
+function sanitizeMandatoryEntryName(value: string): string {
+  const sanitized = value.trim().replace(/[^a-zA-Z0-9._-]+/g, "_").replace(/^_+|_+$/g, "");
+  return sanitized.length > 0 ? sanitized : "mandatory_content";
+}
+
 
 
 class EditorState {
@@ -135,7 +143,9 @@ class EditorState {
   activeContentPoolName: string = $state("");
   activePoolSource: "template-local" | "core" | "" = $state("");
   activeMandatoryContentPresetName: string = $state("");
+  activeMandatoryContentName: string = $state("");
   activeObjectIndex: number = $state(-1);
+  activeRoadIndex: number = $state(-1);
   sidebarSections: SidebarSectionFlex = $state({ settings: 6, zones: 2.5, players: 1.5 });
   focusedPlayer: string | undefined = $state(undefined);
 
@@ -230,6 +240,12 @@ class EditorState {
     return Boolean(this.session.coreArchive);
   }
 
+  get activeZoneObjectId(): string {
+    if (this.activeObjectIndex >= 0) return `main:${this.activeObjectIndex}`;
+    if (this.activeMandatoryContentName) return `mandatory:${this.activeMandatoryContentName}`;
+    return "";
+  }
+
   get dirty(): boolean {
     return this.session.dirty;
   }
@@ -247,6 +263,9 @@ class EditorState {
     this.session = selectZone(this.session, zoneName);
     this.inspectorTab = "zone";
     this.rightDockTab = "inspector";
+    this.activeObjectIndex = -1;
+    this.activeMandatoryContentName = "";
+    this.activeRoadIndex = -1;
     this.scheduleAutosave();
   }
 
@@ -254,6 +273,7 @@ class EditorState {
     this.session = selectConnection(this.session, connectionId);
     this.inspectorTab = "connection";
     this.rightDockTab = "inspector";
+    this.activeRoadIndex = -1;
     this.scheduleAutosave();
   }
 
@@ -287,16 +307,62 @@ class EditorState {
     this.scheduleAutosave();
   }
 
-  addMainObject() {
-    this.session = addMainObjectToSelectedZone(this.session);
-    this.workspaceTab = "zoneEdit";
-    this.inspectorTab = "objects";
-    this.rightDockTab = "inspector";
+  addMainObject(type: MainObjectType = "City", position?: CanvasPosition) {
+    const zoneName = this.session.selectedZoneName;
+    const objectIndex = this.selectedZone.mainObjectCount;
+    this.session = addMainObjectToSelectedZone(this.session, type);
+    if (!this.session.lastActionFailed) {
+      const addMessage = this.session.lastMessage;
+      if (zoneName && position) {
+        this.session = moveZoneObjectInSession(this.session, zoneName, `main:${objectIndex}`, position);
+        this.session = { ...this.session, lastMessage: addMessage, lastActionFailed: false };
+      }
+      this.activeObjectIndex = objectIndex;
+      this.activeMandatoryContentName = "";
+      this.activeRoadIndex = -1;
+      this.workspaceTab = "zoneEdit";
+      this.inspectorTab = "objects";
+      this.rightDockTab = "inspector";
+    }
+    this.scheduleAutosave();
+  }
+  addMandatoryContentToSelectedZone(contentSid: string, position?: CanvasPosition) {
+    const entryName = this.nextMandatoryContentEntryName(contentSid);
+    const zoneName = this.session.selectedZoneName;
+    const catalogObject = this.catalogOptions.rmgContent.find((object) => object.id === contentSid);
+    this.session = addMandatoryContentObjectToSelectedZone(this.session, {
+      sid: contentSid,
+      name: entryName,
+      isMine: isMineRoutedContent(catalogObject, contentSid),
+    });
+    if (!this.session.lastActionFailed) {
+      const addMessage = this.session.lastMessage;
+      if (zoneName && position) {
+        this.session = moveZoneObjectInSession(this.session, zoneName, `mandatory:${entryName}`, position);
+        this.session = { ...this.session, lastMessage: addMessage, lastActionFailed: false };
+      }
+      this.activeObjectIndex = -1;
+      this.activeMandatoryContentName = entryName;
+      this.activeRoadIndex = -1;
+      this.workspaceTab = "zoneEdit";
+      this.inspectorTab = "objects";
+      this.rightDockTab = "inspector";
+    }
     this.scheduleAutosave();
   }
   selectObject(index: number) {
     this.activeObjectIndex = index;
+    this.activeMandatoryContentName = "";
+    this.activeRoadIndex = -1;
     this.inspectorTab = "objects";
+    this.rightDockTab = "inspector";
+  }
+  selectMandatoryContent(entryName: string) {
+    this.activeMandatoryContentName = entryName;
+    this.activeObjectIndex = -1;
+    this.activeRoadIndex = -1;
+    this.inspectorTab = "objects";
+    this.rightDockTab = "inspector";
   }
   updateMainObject(draft: import("./editorSession.js").MainObjectUpdateDraft) {
     this.session = updateSelectedZoneMainObjectInSession(this.session, draft);
@@ -308,14 +374,56 @@ class EditorState {
     this.scheduleAutosave();
   }
 
+  nextMandatoryContentEntryName(contentSid: string): string {
+    const baseName = sanitizeMandatoryEntryName(contentSid);
+    const existingNames = new Set(
+      this.selectedZone.zoneObjects
+        .filter((object) => object.id.startsWith("mandatory:"))
+        .map((object) => object.id.replace("mandatory:", ""))
+        .filter(Boolean),
+    );
+    if (!existingNames.has(baseName)) return baseName;
+    let suffix = 2;
+    while (existingNames.has(`${baseName}_${suffix}`)) {
+      suffix += 1;
+    }
+    return `${baseName}_${suffix}`;
+  }
+
   addRoad() {
+    const roadIndex = this.selectedZone.roadCount;
     this.session = addDefaultRoadToSelectedZone(this.session);
-    this.workspaceTab = "zoneEdit";
+    if (!this.session.lastActionFailed) {
+      this.activeRoadIndex = roadIndex;
+      this.activeObjectIndex = -1;
+      this.activeMandatoryContentName = "";
+      this.workspaceTab = "zoneEdit";
+      this.inspectorTab = "roads";
+      this.rightDockTab = "inspector";
+    }
     this.scheduleAutosave();
   }
   addRoadBetween(from: { type: string; args: readonly string[] }, to: { type: string; args: readonly string[] }, roadType: string) {
+    const roadIndex = this.selectedZone.roadCount;
     this.session = addRoadBetweenInSession(this.session, from, to, roadType);
+    if (!this.session.lastActionFailed) {
+      this.activeRoadIndex = roadIndex;
+      this.activeObjectIndex = -1;
+      this.activeMandatoryContentName = "";
+      this.inspectorTab = "roads";
+      this.rightDockTab = "inspector";
+    }
     this.scheduleAutosave();
+  }
+  selectRoad(index: number) {
+    this.activeRoadIndex = index;
+    this.activeObjectIndex = -1;
+    this.activeMandatoryContentName = "";
+    this.inspectorTab = "roads";
+    this.rightDockTab = "inspector";
+  }
+  clearRoadSelection() {
+    this.activeRoadIndex = -1;
   }
   updateRoad(roadIndex: number, draft: import("./editorSession.js").RoadUpdateDraft) {
     this.session = updateSelectedZoneRoadInSession(this.session, { ...draft, roadIndex });
@@ -323,6 +431,7 @@ class EditorState {
   }
   removeRoad(roadIndex: number) {
     this.session = removeZoneRoadInSession(this.session, roadIndex);
+    if (this.activeRoadIndex === roadIndex) this.activeRoadIndex = -1;
     this.scheduleAutosave();
   }
 
@@ -350,6 +459,13 @@ class EditorState {
   applyGlobalSettings(draft: GlobalSettingsDraft) {
     this.session = updateGlobalSettingsInSession(this.session, draft);
     this.scheduleAutosave();
+  }
+
+  renameTemplate(name: string) {
+    this.session = updateTemplateNameInSession(this.session, name);
+    if (!this.session.lastActionFailed) {
+      this.scheduleAutosave();
+    }
   }
 
   deleteZone(zoneName: string) {
@@ -543,8 +659,13 @@ class EditorState {
     if (!variant || !zoneName) return;
     const zone = variant.zones?.find((z) => z.name === zoneName);
     if (zone) {
-      copyZone(zone);
-      this.setStatusMessage(`Copied zone "${zoneName}" settings`);
+      copyZone(zone, {
+        mandatoryPresets: this.session.template.mandatoryContent ?? [],
+        zoneObjectPositions: Object.fromEntries(
+          this.selectedZone.zoneObjects.map((object) => [object.id, { x: object.x, y: object.y }]),
+        ),
+      });
+      this.setStatusMessage(`Copied zone "${zoneName}" structure`);
     }
   }
 
@@ -560,13 +681,16 @@ class EditorState {
   }
 
   pasteOntoSelectedZone() {
-    const variant = this.session.template.variants?.[this.session.selectedVariantIndex];
-    const zoneName = this.session.selectedZoneName;
-    if (!variant || !zoneName) return;
-    const zone = variant.zones?.find((z) => z.name === zoneName);
-    if (zone) {
-      const draft = applyZoneClipboard(buildZoneDraft(zone, zoneName));
-      this.session = updateSelectedZoneInSession(this.session, draft);
+    const entry = getClipboard();
+    if (entry?.kind === "zone") {
+      this.session = pasteZoneClipboardIntoSelectedZone(this.session, entry.data);
+      if (!this.session.lastActionFailed) {
+        this.activeObjectIndex = -1;
+        this.activeMandatoryContentName = "";
+        this.activeRoadIndex = -1;
+        this.inspectorTab = "zone";
+        this.rightDockTab = "inspector";
+      }
       this.scheduleAutosave();
     }
   }
@@ -590,6 +714,10 @@ class EditorState {
     this.session = { ...newSession, coreArchive: this.session.coreArchive };
     this.activeContentPoolName = "";
     this.activePoolSource = "";
+    this.activeObjectIndex = -1;
+    this.activeMandatoryContentName = "";
+    this.activeMandatoryContentPresetName = "";
+    this.activeRoadIndex = -1;
     this.workspaceTab = "canvas";
     this.inspectorTab = "zone";
     this.rightDockTab = "inspector";
@@ -603,6 +731,10 @@ class EditorState {
         this.session = nextSession;
         this.activeContentPoolName = "";
         this.activePoolSource = "";
+        this.activeObjectIndex = -1;
+        this.activeMandatoryContentName = "";
+        this.activeMandatoryContentPresetName = "";
+        this.activeRoadIndex = -1;
         this.workspaceTab = "canvas";
         this.inspectorTab = "zone";
         this.rightDockTab = "inspector";

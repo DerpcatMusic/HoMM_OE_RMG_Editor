@@ -46,6 +46,7 @@ Reusable component families are deliberately small:
 - Tabs: shared tab button primitive
 - Value rows: label/value table rows
 - Navigation rows
+- Object identity rows: compact icon/type, label, and optional detail in `ObjectIdentity.svelte`
 - Canvas nodes and connection lines
 - Dotted draft connection line for `Ctrl` + drag
 - Zone-internal object nodes and road lines
