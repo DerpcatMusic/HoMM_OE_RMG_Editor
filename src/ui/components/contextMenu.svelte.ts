@@ -1,6 +1,7 @@
 export interface ContextMenuItem {
   label: string;
   icon?: string;
+  variant?: "default" | "danger";
   onClick: () => void;
 }
 

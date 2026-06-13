@@ -149,4 +149,37 @@
   .header-btn:hover { background: var(--color-panel-2); }
   .header-btn:disabled { opacity: 0.4; cursor: default; }
   .header-sep { width: var(--line); height: 1rem; background: var(--color-line); }
+
+  @media (max-width: 720px) {
+    .shell-header {
+      grid-template-columns: 1fr;
+    }
+    .header-left,
+    .header-center,
+    .header-right {
+      min-height: 2rem;
+      padding: 0 var(--space-2);
+      border-right: 0;
+      border-left: 0;
+      border-bottom: var(--line) solid var(--color-line);
+    }
+    .header-right {
+      flex-wrap: wrap;
+      align-content: center;
+      gap: var(--space-1);
+      padding-block: var(--space-1);
+    }
+    .header-template-field {
+      min-width: 0;
+      max-width: none;
+      flex: 1;
+    }
+    .header-btn {
+      height: 1.5rem;
+      flex: 0 0 auto;
+    }
+    .header-sep {
+      display: none;
+    }
+  }
 </style>

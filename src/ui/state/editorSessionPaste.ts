@@ -4,6 +4,7 @@ import { pushTransaction } from "../../core/mutations/transactionManager.js";
 import type { PlayerRef } from "../../core/rmg/enums.js";
 import type {
   Connection,
+  ContentCountLimitPreset,
   FactionRule,
   MainObject,
   MandatoryContent,
@@ -50,11 +51,13 @@ export function pasteZoneClipboardIntoSelectedZone(
   const changes: MutationChange[] = [];
   const copiedZone = cloneValue(sourceZone);
   const ownerRemap = buildPastedZoneOwnerRemap(sourceZone, nextTargetZone);
-  const connectionNameMap = buildIncidentConnectionNameMap(
-    session.template,
+  const connectionNameMap = buildOrCloneIncidentConnectionNameMap(
+    template,
     session.selectedVariantIndex,
+    clipboardData,
     sourceZoneName,
     targetZoneName,
+    changes,
   );
   const mandatoryPresetNameMap = cloneMandatoryPresetsForPastedZone(
     template,
@@ -63,6 +66,13 @@ export function pasteZoneClipboardIntoSelectedZone(
     targetZoneName,
     ownerRemap,
     connectionNameMap,
+    changes,
+  );
+  const contentCountLimitPresetNameMap = cloneCountLimitPresetsForPastedZone(
+    template,
+    clipboardData,
+    sourceZoneName,
+    targetZoneName,
     changes,
   );
 
@@ -78,6 +88,10 @@ export function pasteZoneClipboardIntoSelectedZone(
   copiedZone.mandatoryContent = remapMandatoryPresetRefs(
     copiedZone.mandatoryContent ?? clipboardData.mandatoryContent,
     mandatoryPresetNameMap,
+  );
+  copiedZone.contentCountLimits = remapMandatoryPresetRefs(
+    copiedZone.contentCountLimits ?? clipboardData.contentCountLimits,
+    contentCountLimitPresetNameMap,
   );
   copiedZone.roads = remapCopiedRoads(
     copiedZone.roads ?? clipboardData.roads,
@@ -172,6 +186,53 @@ function cloneMandatoryPresetsForPastedZone(
       before: undefined,
       after: cloneValue(nextPreset),
       reason: "mandatory preset cloned for pasted zone",
+    });
+  }
+
+  return presetNameMap;
+}
+
+function cloneCountLimitPresetsForPastedZone(
+  template: RmgTemplate,
+  clipboardData: ZoneClipboardData,
+  sourceZoneName: string,
+  targetZoneName: string,
+  changes: MutationChange[],
+): Map<string, string> {
+  const presetRefs = clipboardData.zone.contentCountLimits ?? clipboardData.contentCountLimits;
+  const sourcePresetsByName = new Map<string, ContentCountLimitPreset>();
+  const presetNameMap = new Map<string, string>();
+  const templatePresets = template.contentCountLimits ?? [];
+  template.contentCountLimits = templatePresets;
+  for (const preset of templatePresets) {
+    if (preset.name) {
+      sourcePresetsByName.set(preset.name, preset);
+    }
+  }
+  for (const preset of clipboardData.contentCountLimitPresetDefinitions) {
+    if (preset.name) {
+      sourcePresetsByName.set(preset.name, preset);
+    }
+  }
+  const existingNames = new Set(templatePresets.map((preset) => preset.name).filter((name): name is string => Boolean(name)));
+
+  for (const presetRef of presetRefs) {
+    const sourcePreset = sourcePresetsByName.get(presetRef);
+    if (!sourcePreset) {
+      continue;
+    }
+    const nextPreset = cloneValue(sourcePreset);
+    const nextName = nextPastedMandatoryPresetName(presetRef, sourceZoneName, targetZoneName, existingNames);
+    nextPreset.name = nextName;
+    const insertIndex = templatePresets.length;
+    templatePresets.push(nextPreset);
+    presetNameMap.set(presetRef, nextName);
+    existingNames.add(nextName);
+    changes.push({
+      path: `$.contentCountLimits[${insertIndex}]`,
+      before: undefined,
+      after: cloneValue(nextPreset),
+      reason: "count limit preset cloned for pasted zone",
     });
   }
 
@@ -344,36 +405,94 @@ function remapZoneObjectPositions(
   return next;
 }
 
-function buildIncidentConnectionNameMap(
+function buildOrCloneIncidentConnectionNameMap(
   template: RmgTemplate,
   variantIndex: number,
+  clipboardData: ZoneClipboardData,
   sourceZoneName: string,
   targetZoneName: string,
+  changes: MutationChange[],
 ): Map<string, string> {
   const variant = template.variants?.[variantIndex];
-  const sourceConnections = incidentRoadConnectionNames(variant?.connections ?? [], sourceZoneName);
-  const targetConnections = incidentRoadConnectionNames(variant?.connections ?? [], targetZoneName);
+  const connections = variant?.connections ?? [];
+  if (variant) {
+    variant.connections = connections;
+  }
+  const sourceConnections = incidentRoadConnections(
+    clipboardData.incidentConnections.length > 0 ? clipboardData.incidentConnections : connections,
+    sourceZoneName,
+  );
+  const targetConnections = incidentRoadConnections(connections, targetZoneName);
+  const existingNames = new Set(connections.map((connection) => connection.name).filter((name): name is string => Boolean(name)));
   const map = new Map<string, string>();
-  sourceConnections.forEach((connectionName, index) => {
-    const targetConnectionName = targetConnections[index];
-    if (targetConnectionName) {
-      map.set(connectionName, targetConnectionName);
+  const clonedConnections: Connection[] = [];
+
+  sourceConnections.forEach((sourceConnection, index) => {
+    if (!sourceConnection.name) return;
+    const targetConnection = targetConnections[index];
+    if (targetConnection?.name) {
+      map.set(sourceConnection.name, targetConnection.name);
+      return;
     }
+    const clonedConnection = cloneValue(sourceConnection);
+    const clonedName = nextPastedConnectionName(sourceConnection.name, sourceZoneName, targetZoneName, existingNames);
+    clonedConnection.name = clonedName;
+    if (clonedConnection.from === sourceZoneName) clonedConnection.from = targetZoneName;
+    if (clonedConnection.to === sourceZoneName) clonedConnection.to = targetZoneName;
+    map.set(sourceConnection.name, clonedName);
+    existingNames.add(clonedName);
+    clonedConnections.push(clonedConnection);
   });
+
+  for (const connection of clonedConnections) {
+    remapConnectionPlacementRules(connection, map);
+    const insertIndex = connections.length;
+    connections.push(connection);
+    changes.push({
+      path: `$.variants[${variantIndex}].connections[${insertIndex}]`,
+      before: undefined,
+      after: cloneValue(connection),
+      reason: "incident connection cloned for pasted zone",
+    });
+  }
+
   return map;
 }
 
-function incidentRoadConnectionNames(
+function incidentRoadConnections(
   connections: readonly Connection[],
   zoneName: string,
-): string[] {
+): Connection[] {
   return connections
     .filter((connection) =>
       connection.name &&
       connection.connectionType !== "Proximity" &&
       (connection.from === zoneName || connection.to === zoneName)
-    )
-    .map((connection) => connection.name as string);
+    );
+}
+
+function remapConnectionPlacementRules(
+  connection: Connection,
+  connectionNameMap: ReadonlyMap<string, string>,
+): void {
+  if (connection.portalPlacementRulesFrom) {
+    connection.portalPlacementRulesFrom = connection.portalPlacementRulesFrom.map((rule) => remapPlacementRule(rule, connectionNameMap));
+  }
+  if (connection.portalPlacementRulesTo) {
+    connection.portalPlacementRulesTo = connection.portalPlacementRulesTo.map((rule) => remapPlacementRule(rule, connectionNameMap));
+  }
+}
+
+function nextPastedConnectionName(
+  sourceConnectionName: string,
+  sourceZoneName: string,
+  targetZoneName: string,
+  existingNames: Set<string>,
+): string {
+  const baseName = sourceConnectionName.includes(sourceZoneName)
+    ? sourceConnectionName.split(sourceZoneName).join(targetZoneName)
+    : `${targetZoneName}_${sourceConnectionName}`;
+  return nextUniqueName([...existingNames], baseName);
 }
 
 interface PastedZoneOwnerRemap {

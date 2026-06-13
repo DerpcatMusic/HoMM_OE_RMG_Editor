@@ -26,7 +26,6 @@
   // Win conditions
   let currentWinPreset = $derived.by(() => WIN_CONDITION_PRESETS.find((preset) => preset.displaySid === template.displayWinCondition) ?? null);
   let winConditionPresetId = $derived(currentWinPreset?.id ?? "custom");
-  let winFlagsLocked = $derived(currentWinPreset !== null);
   let classic = $derived(winCon.classic ?? true);
   let desertion = $derived(winCon.desertion ?? false);
   let desertionDay = $derived(winCon.desertionDay);
@@ -44,6 +43,7 @@
   let cityHoldDays = $derived(winCon.cityHoldDays);
   let tournament = $derived(winCon.tournament ?? false);
   let tournamentPointsToWin = $derived(winCon.tournamentPointsToWin);
+  let usesArenaSchedule = $derived(gladiatorArena || tournament);
   let mapSizeLinked = $state(true);
 
   function buildGlobalSettingsDraft(winConditionPreset?: WinConditionPresetId) {
@@ -105,7 +105,7 @@
   }
 </script>
 <div class="global-settings">
-  <h3 class="section-heading">Game</h3>
+  <h3 class="section-heading">Template setup</h3>
   <div class="setting-row">
     <label for="gs-mode">Mode</label>
     <select id="gs-mode" bind:value={gameMode} onchange={() => { onSingleHeroChange(); apply(); }}>
@@ -125,11 +125,7 @@
           <option value={preset.id}>{preset.name}</option>
         {/each}
       </select>
-      {#if currentWinPreset}
-        <span class="setting-help">{currentWinPreset.displaySid}: preset owns the generator flags below.</span>
-      {:else}
-        <span class="setting-help">Custom condition. Generator flags below are editable.</span>
-      {/if}
+      <span class="setting-help">{currentWinPreset ? `${currentWinPreset.displaySid}: ${currentWinPreset.description}` : "Custom display SID. Edit parameters below."}</span>
     </div>
   </div>
   <div class="setting-row">
@@ -150,119 +146,122 @@
       <NumberField id="gs-sizez" bind:value={sizeZ} oncommit={() => applySize("z")} min={32} max={512} step={16} allowEmpty={false} title="Map height" />
     </div>
   </div>
-  <div class="setting-row">
-    <label for="gs-hero-min">Hero min</label>
-    <NumberField id="gs-hero-min" bind:value={heroCountMin} oncommit={apply} min={1} max={8} allowEmpty={false} disabled={gameMode === "SingleHero"} />
-  </div>
-  <div class="setting-row">
-    <label for="gs-hero-max">Hero max</label>
-    <NumberField id="gs-hero-max" bind:value={heroCountMax} oncommit={apply} min={1} max={8} allowEmpty={false} disabled={gameMode === "SingleHero"} />
-  </div>
-  <div class="setting-row">
-    <label for="gs-hero-step">Hero step</label>
-    <NumberField id="gs-hero-step" bind:value={heroCountIncrement} oncommit={apply} min={1} max={8} allowEmpty={false} disabled={gameMode === "SingleHero"} />
-  </div>
-  <div class="setting-row">
-    <label for="gs-hero-ban">Hero hire ban</label>
-    <input id="gs-hero-ban" type="checkbox" bind:checked={heroHireBan} onchange={apply} disabled={gameMode === "SingleHero"} />
-  </div>
-  <div class="setting-row">
-    <label for="gs-enc-holes">Encounter holes</label>
-    <input id="gs-enc-holes" type="checkbox" bind:checked={encounterHoles} onchange={apply} disabled={gameMode === "SingleHero"} />
-  </div>
-  <div class="setting-row">
-    <label for="gs-no-laws">No faction laws</label>
-    <input id="gs-no-laws" type="checkbox" bind:checked={disableFactionLaws} onchange={apply} />
-  </div>
-  <div class="setting-row">
-    <label for="gs-no-magic">No magic guild</label>
-    <input id="gs-no-magic" type="checkbox" bind:checked={disableMagicGuild} onchange={apply} />
-  </div>
-  <div class="setting-row">
-    <label for="gs-no-learn">No magic learn</label>
-    <input id="gs-no-learn" type="checkbox" bind:checked={disableMagicCustomLearning} onchange={apply} />
-  </div>
-  <div class="setting-row">
-    <label for="gs-tourn-rules">Tournament battle rules</label>
-    <input id="gs-tourn-rules" type="checkbox" bind:checked={tournamentRules} onchange={apply} />
-  </div>
-  <div class="setting-row">
-    <label for="gs-faction-exp">Faction exp mod</label>
-    <NumberField id="gs-faction-exp" bind:value={factionLawsExpModifier} oncommit={apply} placeholder={ph["gs-faction-exp"]} step={0.1} />
-  </div>
-  <div class="setting-row">
-    <label for="gs-astro-exp">Astrology exp mod</label>
-    <NumberField id="gs-astro-exp" bind:value={astrologyExpModifier} oncommit={apply} placeholder={ph["gs-astro-exp"]} step={0.1} />
-  </div>
-  <h3 class="section-heading">Generator flags</h3>
-  <div class="setting-row" class:is-disabled={winFlagsLocked}>
-    <label for="gs-classic">Classic flag</label>
-    <input id="gs-classic" type="checkbox" bind:checked={classic} onchange={apply} disabled={winFlagsLocked} />
-  </div>
-  <div class="setting-row" class:is-disabled={winFlagsLocked}>
-    <label for="gs-desertion">Desertion</label>
-    <input id="gs-desertion" type="checkbox" bind:checked={desertion} onchange={apply} disabled={winFlagsLocked} />
-  </div>
-  <div class="setting-row" class:is-disabled={winFlagsLocked || !desertion}>
-    <label for="gs-desert-day">Desertion day</label>
-    <NumberField id="gs-desert-day" bind:value={desertionDay} oncommit={apply} placeholder={ph["gs-desert-day"]} disabled={winFlagsLocked || !desertion} />
-  </div>
-  <div class="setting-row" class:is-disabled={winFlagsLocked || !desertion}>
-    <label for="gs-desert-val">Desertion value</label>
-    <NumberField id="gs-desert-val" bind:value={desertionValue} oncommit={apply} placeholder={ph["gs-desert-val"]} disabled={winFlagsLocked || !desertion} />
-  </div>
-  <div class="setting-row" class:is-disabled={winFlagsLocked}>
-    <label for="gs-hero-light">Hero lighting</label>
-    <input id="gs-hero-light" type="checkbox" bind:checked={heroLighting} onchange={apply} disabled={winFlagsLocked} />
-  </div>
-  <div class="setting-row" class:is-disabled={winFlagsLocked || !heroLighting}>
-    <label for="gs-hero-light-day">Lighting day</label>
-    <NumberField id="gs-hero-light-day" bind:value={heroLightingDay} oncommit={apply} placeholder={ph["gs-hero-light-day"]} disabled={winFlagsLocked || !heroLighting} />
-  </div>
-  <div class="setting-row" class:is-disabled={winFlagsLocked}>
-    <label for="gs-lost-city">Lost start city</label>
-    <input id="gs-lost-city" type="checkbox" bind:checked={lostStartCity} onchange={apply} disabled={winFlagsLocked} />
-  </div>
-  <div class="setting-row" class:is-disabled={winFlagsLocked || !lostStartCity}>
-    <label for="gs-lost-city-day">Lost city day</label>
-    <NumberField id="gs-lost-city-day" bind:value={lostStartCityDay} oncommit={apply} placeholder={ph["gs-lost-city-day"]} disabled={winFlagsLocked || !lostStartCity} />
-  </div>
-  <div class="setting-row" class:is-disabled={winFlagsLocked || gameMode === "SingleHero"}>
-    <label for="gs-lost-hero">Lost start hero</label>
-    <input id="gs-lost-hero" type="checkbox" bind:checked={lostStartHero} onchange={apply} disabled={winFlagsLocked || gameMode === "SingleHero"} />
-  </div>
-  <div class="setting-row" class:is-disabled={winFlagsLocked}>
-    <label for="gs-glad">Final battle arena</label>
-    <input id="gs-glad" type="checkbox" bind:checked={gladiatorArena} onchange={apply} disabled={winFlagsLocked} />
-  </div>
-  <div class="setting-row" class:is-disabled={winFlagsLocked || !gladiatorArena}>
-    <label for="gs-glad-delay">Gladiator delay</label>
-    <NumberField id="gs-glad-delay" bind:value={gladiatorArenaDaysDelayStart} oncommit={apply} placeholder={ph["gs-glad-delay"]} disabled={winFlagsLocked || !gladiatorArena} />
-  </div>
-  <div class="setting-row" class:is-disabled={winFlagsLocked || !gladiatorArena}>
-    <label for="gs-glad-count">Gladiator days</label>
-    <NumberField id="gs-glad-count" bind:value={gladiatorArenaCountDay} oncommit={apply} placeholder={ph["gs-glad-count"]} disabled={winFlagsLocked || !gladiatorArena} />
-  </div>
-  <div class="setting-row" class:is-disabled={winFlagsLocked || (!gladiatorArena && !tournament)}>
-    <label for="gs-champ">Champion rule</label>
-    <input id="gs-champ" type="text" value={championSelectRule} onchange={(e) => { championSelectRule = e.currentTarget.value; apply(); }} placeholder={ph["gs-champ"]} disabled={winFlagsLocked || (!gladiatorArena && !tournament)} />
-  </div>
-  <div class="setting-row" class:is-disabled={winFlagsLocked}>
-    <label for="gs-city-hold">City hold flag</label>
-    <input id="gs-city-hold" type="checkbox" bind:checked={cityHold} onchange={apply} disabled={winFlagsLocked} />
-  </div>
-  <div class="setting-row" class:is-disabled={winFlagsLocked || !cityHold}>
-    <label for="gs-city-hold-days">City hold days</label>
-    <NumberField id="gs-city-hold-days" bind:value={cityHoldDays} oncommit={apply} placeholder={ph["gs-city-hold-days"]} disabled={winFlagsLocked || !cityHold} />
-  </div>
-  <div class="setting-row" class:is-disabled={winFlagsLocked}>
-    <label for="gs-tournament">Tournament flag</label>
-    <input id="gs-tournament" type="checkbox" bind:checked={tournament} onchange={apply} disabled={winFlagsLocked} />
-  </div>
-  <div class="setting-row" class:is-disabled={winFlagsLocked || !tournament}>
-    <label for="gs-tourn-pts">Tournament points</label>
-    <NumberField id="gs-tourn-pts" bind:value={tournamentPointsToWin} oncommit={apply} placeholder={ph["gs-tourn-pts"]} disabled={winFlagsLocked || !tournament} />
-  </div>
+
+  <details class="settings-group editor-section">
+    <summary>Hero rules</summary>
+    <div class="setting-row">
+      <label for="gs-hero-min">Hero min</label>
+      <NumberField id="gs-hero-min" bind:value={heroCountMin} oncommit={apply} min={1} max={8} allowEmpty={false} disabled={gameMode === "SingleHero"} />
+    </div>
+    <div class="setting-row">
+      <label for="gs-hero-max">Hero max</label>
+      <NumberField id="gs-hero-max" bind:value={heroCountMax} oncommit={apply} min={1} max={8} allowEmpty={false} disabled={gameMode === "SingleHero"} />
+    </div>
+    <div class="setting-row">
+      <label for="gs-hero-step">Hero step</label>
+      <NumberField id="gs-hero-step" bind:value={heroCountIncrement} oncommit={apply} min={1} max={8} allowEmpty={false} disabled={gameMode === "SingleHero"} />
+    </div>
+    <div class="setting-row">
+      <label for="gs-hero-ban">Hero hire ban</label>
+      <input id="gs-hero-ban" type="checkbox" bind:checked={heroHireBan} onchange={apply} disabled={gameMode === "SingleHero"} />
+    </div>
+    <div class="setting-row">
+      <label for="gs-enc-holes">Encounter holes</label>
+      <input id="gs-enc-holes" type="checkbox" bind:checked={encounterHoles} onchange={apply} disabled={gameMode === "SingleHero"} />
+    </div>
+  </details>
+
+  <details class="settings-group editor-section">
+    <summary>Game rule switches</summary>
+    <div class="setting-row">
+      <label for="gs-no-laws">No faction laws</label>
+      <input id="gs-no-laws" type="checkbox" bind:checked={disableFactionLaws} onchange={apply} />
+    </div>
+    <div class="setting-row">
+      <label for="gs-no-magic">No magic guild</label>
+      <input id="gs-no-magic" type="checkbox" bind:checked={disableMagicGuild} onchange={apply} />
+    </div>
+    <div class="setting-row">
+      <label for="gs-no-learn">No magic learn</label>
+      <input id="gs-no-learn" type="checkbox" bind:checked={disableMagicCustomLearning} onchange={apply} />
+    </div>
+    <div class="setting-row">
+      <label for="gs-tourn-rules">Tournament battle rules</label>
+      <input id="gs-tourn-rules" type="checkbox" bind:checked={tournamentRules} onchange={apply} />
+    </div>
+    <div class="setting-row">
+      <label for="gs-faction-exp">Faction exp mod</label>
+      <NumberField id="gs-faction-exp" bind:value={factionLawsExpModifier} oncommit={apply} placeholder={ph["gs-faction-exp"]} step={0.1} />
+    </div>
+    <div class="setting-row">
+      <label for="gs-astro-exp">Astrology exp mod</label>
+      <NumberField id="gs-astro-exp" bind:value={astrologyExpModifier} oncommit={apply} placeholder={ph["gs-astro-exp"]} step={0.1} />
+    </div>
+  </details>
+
+  <details class="settings-group editor-section">
+    <summary>Victory parameters</summary>
+    <div class="setting-row">
+      <span class="setting-row-label">Preset flags</span>
+      <span class="setting-readout">{currentWinPreset?.name ?? "Custom"} sets the primary victory type.</span>
+    </div>
+    <div class="setting-row">
+      <label for="gs-desertion">Desertion</label>
+      <input id="gs-desertion" type="checkbox" bind:checked={desertion} onchange={apply} />
+    </div>
+    {#if desertion}
+      <div class="setting-row">
+        <label for="gs-desert-day">Desertion day</label>
+        <NumberField id="gs-desert-day" bind:value={desertionDay} oncommit={apply} placeholder={ph["gs-desert-day"]} />
+      </div>
+      <div class="setting-row">
+        <label for="gs-desert-val">Desertion value</label>
+        <NumberField id="gs-desert-val" bind:value={desertionValue} oncommit={apply} placeholder={ph["gs-desert-val"]} />
+      </div>
+    {/if}
+    <div class="setting-row">
+      <label for="gs-hero-light">Hero lighting</label>
+      <input id="gs-hero-light" type="checkbox" bind:checked={heroLighting} onchange={apply} />
+    </div>
+    {#if heroLighting}
+      <div class="setting-row">
+        <label for="gs-hero-light-day">Lighting day</label>
+        <NumberField id="gs-hero-light-day" bind:value={heroLightingDay} oncommit={apply} placeholder={ph["gs-hero-light-day"]} />
+      </div>
+    {/if}
+    {#if lostStartCity}
+      <div class="setting-row">
+        <label for="gs-lost-city-day">Capital day</label>
+        <NumberField id="gs-lost-city-day" bind:value={lostStartCityDay} oncommit={apply} placeholder={ph["gs-lost-city-day"]} />
+      </div>
+    {/if}
+    {#if usesArenaSchedule}
+      <div class="setting-row">
+        <label for="gs-glad-delay">Arena delay</label>
+        <NumberField id="gs-glad-delay" bind:value={gladiatorArenaDaysDelayStart} oncommit={apply} placeholder={ph["gs-glad-delay"]} />
+      </div>
+      <div class="setting-row">
+        <label for="gs-glad-count">Arena days</label>
+        <NumberField id="gs-glad-count" bind:value={gladiatorArenaCountDay} oncommit={apply} placeholder={ph["gs-glad-count"]} />
+      </div>
+      <div class="setting-row">
+        <label for="gs-champ">Champion rule</label>
+        <input id="gs-champ" type="text" value={championSelectRule} onchange={(e) => { championSelectRule = e.currentTarget.value; apply(); }} placeholder={ph["gs-champ"]} />
+      </div>
+    {/if}
+    {#if cityHold}
+      <div class="setting-row">
+        <label for="gs-city-hold-days">City hold days</label>
+        <NumberField id="gs-city-hold-days" bind:value={cityHoldDays} oncommit={apply} placeholder={ph["gs-city-hold-days"]} />
+      </div>
+    {/if}
+    {#if tournament}
+      <div class="setting-row">
+        <label for="gs-tourn-pts">Tournament points</label>
+        <NumberField id="gs-tourn-pts" bind:value={tournamentPointsToWin} oncommit={apply} placeholder={ph["gs-tourn-pts"]} />
+      </div>
+    {/if}
+  </details>
 </div>
 <style>
   .global-settings {
@@ -295,10 +294,6 @@
   }
   .setting-row--stacked {
     align-items: start;
-  }
-  .setting-row.is-disabled {
-    background: var(--color-panel-2);
-    opacity: 0.62;
   }
   .size-control {
     display: flex;
@@ -338,7 +333,16 @@
     font-size: var(--font-size-xs);
     line-height: 1.25;
   }
-  .setting-row label {
+  .setting-readout {
+    min-width: 0;
+    color: var(--color-muted);
+    font-size: var(--font-size-sm);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .setting-row label,
+  .setting-row-label {
     color: var(--color-muted);
     font-size: var(--font-size-xs);
     text-transform: uppercase;

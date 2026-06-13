@@ -27,7 +27,7 @@
 .shell-body {
   min-height: 0;
   display: grid;
-  grid-template-columns: var(--sidebar-width) var(--resize-handle-width) minmax(24rem, 1fr) var(--resize-handle-width) var(--inspector-width);
+  grid-template-columns: var(--sidebar-width) var(--resize-handle-width) minmax(18rem, 1fr) var(--resize-handle-width) minmax(28rem, var(--inspector-width));
   grid-template-rows: minmax(0, 1fr);
   overflow: hidden;
 }

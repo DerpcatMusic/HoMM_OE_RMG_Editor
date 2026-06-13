@@ -113,8 +113,8 @@
     </div>
 
     <!-- Terrain -->
-    <details open class="gen-section">
-      <summary class="gen-section-title">Terrain</summary>
+    <details open class="gen-section editor-section">
+      <summary class="gen-section-title editor-section-title">Terrain</summary>
       <div class="gen-fields">
         <label class="gen-field">
           <span class="gen-label">Obstacles fill</span>
@@ -144,8 +144,8 @@
     </details>
 
     <!-- Border noise preview -->
-    <details open class="gen-section">
-      <summary class="gen-section-title">Border noise</summary>
+    <details open class="gen-section editor-section">
+      <summary class="gen-section-title editor-section-title">Border noise</summary>
       <div class="gen-noise-previews">
         <NoisePreview
           label="Obstacles"
@@ -161,8 +161,8 @@
     </details>
 
     <!-- Elevation Modes -->
-    <details open class="gen-section">
-      <summary class="gen-section-title">
+    <details open class="gen-section editor-section">
+      <summary class="gen-section-title editor-section-title">
         Elevation modes ({elevModes.length})
         <button class="gen-add-btn" onclick={(e) => { e.preventDefault(); e.stopPropagation(); addElevMode(); }} title="Add elevation mode">+</button>
       </summary>
@@ -192,8 +192,8 @@
     </details>
 
     <!-- Ambient Pickup Distribution -->
-    <details open class="gen-section">
-      <summary class="gen-section-title">Ambient pickups</summary>
+    <details open class="gen-section editor-section">
+      <summary class="gen-section-title editor-section-title">Ambient pickups</summary>
       <div class="gen-fields">
         <label class="gen-field">
           <span class="gen-label">Repulsion</span>
@@ -262,23 +262,6 @@
     padding: var(--space-2);
     text-align: center;
   }
-  .gen-section {
-    border: var(--line) solid var(--color-line);
-    background: var(--color-panel-2);
-  }
-  .gen-section-title {
-    font-size: var(--font-size-xs);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--color-muted);
-    padding: var(--space-1) var(--space-2);
-    cursor: pointer;
-    user-select: none;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .gen-section-title:hover { color: var(--color-ink); }
   .gen-preview-band {
     padding: var(--space-2);
     border: var(--line) solid var(--color-line);

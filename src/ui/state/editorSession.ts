@@ -5,12 +5,15 @@ import {
   canRedo,
   canUndo,
   createTransactionHistory,
+  pushTransaction,
   redo,
   undo,
 } from "../../core/mutations/transactionManager.js";
+import { cloneTemplate } from "../../core/mutations/cloneTemplate.js";
+import type { MutationChange, MutationResult } from "../../core/mutations/mutationTypes.js";
 import type { ConnectionType, GameMode, GatePlacement, GuardReaction, MainObjectPlacement, MainObjectType, PlayerRef, RoadTargetType, RoadType } from "../../core/rmg/enums.js";
 import { PLAYER_REFS } from "../../core/rmg/enums.js";
-import type { FactionRule, MainObject, MandatoryContent, RmgTemplate, RoadTargetConfig, Zone } from "../../core/rmg/rmgTypes.js";
+import type { Connection, ContentCountLimitPreset, ContentPoolConfig, FactionRule, MainObject, MandatoryContent, MandatoryContentPreset, PlacementRule, RmgTemplate, RoadTargetConfig, Zone } from "../../core/rmg/rmgTypes.js";
 import { createDefaultConnection, createDefaultZone } from "../../core/mutations/defaultObjects.js";
 import {
   createLayoutStorageKey,
@@ -230,6 +233,96 @@ export function addZoneToSession(session: EditorSession): EditorSession {
   });
 }
 
+export function duplicateZoneByName(
+  session: EditorSession,
+  sourceZoneName: string,
+  sourceCanvasPosition?: CanvasPosition,
+): EditorSession {
+  const variant = session.template.variants?.[session.selectedVariantIndex];
+  const sourceZoneIndex = variant?.zones?.findIndex((zone) => zone.name === sourceZoneName) ?? -1;
+  if (!variant || sourceZoneIndex < 0) {
+    return setSessionMessage(session, `Zone '${sourceZoneName}' not found.`);
+  }
+
+  const targetZoneName = nextUniqueName(getZoneNames(session), `${sourceZoneName}-copy`);
+  const template = cloneTemplate(session.template);
+  const nextVariant = template.variants?.[session.selectedVariantIndex];
+  const zones = nextVariant?.zones;
+  if (!nextVariant || !zones?.[sourceZoneIndex]) {
+    return setSessionMessage(session, `Zone '${sourceZoneName}' not found.`);
+  }
+
+  const changes: MutationChange[] = [];
+  const connectionNameMap = cloneIncidentConnectionsForDuplicatedZone(
+    nextVariant,
+    session.selectedVariantIndex,
+    sourceZoneName,
+    targetZoneName,
+    changes,
+  );
+  const clonedZone = cloneValue(zones[sourceZoneIndex]);
+  clonedZone.name = targetZoneName;
+  remapDuplicatedZoneReferences(clonedZone, sourceZoneName, targetZoneName, connectionNameMap);
+  const mandatoryPresetNameMap = cloneMandatoryPresetsForDuplicatedZone(
+    template,
+    clonedZone.mandatoryContent ?? [],
+    sourceZoneName,
+    targetZoneName,
+    connectionNameMap,
+    changes,
+  );
+  if (clonedZone.mandatoryContent || mandatoryPresetNameMap.size > 0) {
+    clonedZone.mandatoryContent = remapStringRefs(clonedZone.mandatoryContent ?? [], mandatoryPresetNameMap);
+  }
+  const countLimitPresetNameMap = cloneCountLimitPresetsForDuplicatedZone(
+    template,
+    clonedZone.contentCountLimits ?? [],
+    sourceZoneName,
+    targetZoneName,
+    changes,
+  );
+  if (clonedZone.contentCountLimits || countLimitPresetNameMap.size > 0) {
+    clonedZone.contentCountLimits = remapStringRefs(clonedZone.contentCountLimits ?? [], countLimitPresetNameMap);
+  }
+
+  const insertIndex = sourceZoneIndex + 1;
+  zones.splice(insertIndex, 0, clonedZone);
+  changes.push({
+    path: `$.variants[${session.selectedVariantIndex}].zones[${insertIndex}]`,
+    before: undefined,
+    after: cloneValue(clonedZone),
+    reason: "zone duplicated",
+  });
+
+  const result: MutationResult<RmgTemplate> = {
+    value: template,
+    changes,
+    diagnostics: [],
+    ok: true,
+  };
+  const sourcePosition = sourceCanvasPosition ?? session.canvasPositions[sourceZoneName] ?? { x: 46, y: 42 };
+  const next: EditorSession = {
+    ...session,
+    template,
+    history: pushTransaction(session.history, `Duplicate ${sourceZoneName}`, session.template, result),
+    dirty: true,
+    selectedZoneName: targetZoneName,
+    selectedConnectionName: undefined,
+    canvasPositions: {
+      ...session.canvasPositions,
+      [targetZoneName]: offsetCanvasPosition(sourcePosition),
+    },
+    zoneObjectPositions: {
+      ...session.zoneObjectPositions,
+      [targetZoneName]: remapZoneObjectPositionIds(session.zoneObjectPositions[sourceZoneName] ?? {}, connectionNameMap),
+    },
+    lastMessage: `Duplicated ${sourceZoneName} as ${targetZoneName}.`,
+    lastActionFailed: false,
+  };
+  persistLayout(next);
+  return next;
+}
+
 export function removeSelectedZoneFromSession(session: EditorSession): EditorSession {
   const selectedZoneName = session.selectedZoneName;
   if (!selectedZoneName) {
@@ -363,19 +456,16 @@ export function addMandatoryContentToSelectedZone(
 
   const entry: MandatoryContent = { name: entryName, sid, ...(draft.isMine ? { isMine: true } : {}) };
   const presetNames = uniqueStrings(zone.mandatoryContent ?? []);
-  if (presetNames.length === 0) {
-    const presetName = nextUniqueName(
-      getMandatoryPresetNames(session),
-      `${sanitizeIdentifier(zoneName)}_mandatory`,
-    );
+  const localPresetName = findOrCreateZoneLocalMandatoryPresetName(session, zoneName, presetNames);
+  if (!presetNames.includes(localPresetName)) {
     let next = applyAction(session, {
       action: {
         type: "mandatoryContentPreset.add",
         input: {
-          preset: { name: presetName, content: [entry] },
+          preset: { name: localPresetName, content: [entry] },
         },
       },
-      label: `Add mandatory content preset "${presetName}"`,
+      label: `Add mandatory content preset "${localPresetName}"`,
     });
     if (next.lastActionFailed) return next;
     next = applyAction(next, {
@@ -384,7 +474,7 @@ export function addMandatoryContentToSelectedZone(
         input: {
           variantIndex: next.selectedVariantIndex,
           zone: { zoneName },
-          presetIds: [presetName],
+          presetIds: [...presetNames, localPresetName],
         },
       },
       label: `Assign mandatory preset to ${zoneName}`,
@@ -398,35 +488,23 @@ export function addMandatoryContentToSelectedZone(
     };
   }
 
-  let next = session;
-  for (const presetName of presetNames) {
-    const presetIndex = findMandatoryPresetIndex(next, presetName);
-    if (presetIndex === -1) {
-      next = applyAction(next, {
-        action: {
-          type: "mandatoryContentPreset.add",
-          input: {
-            preset: { name: presetName, content: [entry] },
-          },
-        },
-        label: `Create missing mandatory preset "${presetName}"`,
-      });
-    } else {
-      const preset = next.template.mandatoryContent?.[presetIndex];
-      const content = [...(preset?.content ?? []), entry];
-      next = applyAction(next, {
-        action: {
-          type: "mandatoryContentPreset.update",
-          input: {
-            preset: { presetIndex },
-            settings: { content },
-          },
-        },
-        label: `Add mandatory content to "${presetName}"`,
-      });
-    }
-    if (next.lastActionFailed) return next;
+  const presetIndex = findMandatoryPresetIndex(session, localPresetName);
+  if (presetIndex === -1) {
+    return setSessionMessage(session, `Mandatory content preset '${localPresetName}' not found.`);
   }
+  const preset = session.template.mandatoryContent?.[presetIndex];
+  const content = [...(preset?.content ?? []), entry];
+  const next = applyAction(session, {
+    action: {
+      type: "mandatoryContentPreset.update",
+      input: {
+        preset: { presetIndex },
+        settings: { content },
+      },
+    },
+    label: `Add mandatory content to "${localPresetName}"`,
+  });
+  if (next.lastActionFailed) return next;
 
   return {
     ...next,
@@ -608,17 +686,31 @@ export function addLocalContentPoolToSession(session: EditorSession, draft: Cont
   if (!name) {
     return setSessionMessage(session, "Content pool name cannot be empty.");
   }
+  const pool: ContentPoolConfig = draft.pool ? JSON.parse(JSON.stringify({ ...draft.pool, name })) : {
+    name,
+    groups: [{ weight: 100, content: [] }],
+  };
   return applyAction(session, {
     action: {
       type: "contentPool.add",
       input: {
-        pool: {
-          name,
-          groups: [{ weight: 100, content: [] }],
-        },
+        pool,
       },
     },
     label: `Add content pool ${name}`,
+  });
+}
+
+export function localizeCorePoolForEditing(session: EditorSession, corePoolName: string): EditorSession {
+  const existingLocalIndex = (session.template.contentPools ?? []).findIndex((pool) => pool.name === corePoolName);
+  if (existingLocalIndex !== -1) return session;
+  const sourcePool = session.coreArchive?.contentPoolIndex?.get(corePoolName);
+  if (!sourcePool) {
+    return setSessionMessage(session, `Core pool '${corePoolName}' not found.`);
+  }
+  return addLocalContentPoolToSession(session, {
+    name: corePoolName,
+    pool: sourcePool,
   });
 }
 
@@ -680,10 +772,11 @@ export function cloneCorePoolToLocalAndRewriteZone(
   }
   const pools = session.template.contentPools ?? [];
   const existingNames = new Set(pools.map((p) => p.name).filter(Boolean));
-  let localName = `${corePoolName}_local`;
+  const templateName = sanitizeNamePart(session.template.name ?? "rmg_template");
+  let localName = `${corePoolName}_${templateName}`;
   let suffix = 2;
   while (existingNames.has(localName)) {
-    localName = `${corePoolName}_local${suffix++}`;
+    localName = `${corePoolName}_${templateName}_${suffix++}`;
   }
   // Clone the pool to local via contentPool.add action
   let next = applyAction(session, {
@@ -720,6 +813,11 @@ export function cloneCorePoolToLocalAndRewriteZone(
     selectedZoneName: zoneName,
   });
   return next;
+}
+
+function sanitizeNamePart(value: string): string {
+  const sanitized = value.trim().replace(/[^A-Za-z0-9_]+/g, "_").replace(/^_+|_+$/g, "");
+  return sanitized || "rmg_template";
 }
 
 export function addContentToPoolGroupInSession(
@@ -1024,6 +1122,278 @@ export function updateSelectedZoneInSession(session: EditorSession, draft: ZoneU
 
 function cloneValue<T>(value: T): T {
   return value === undefined ? value : JSON.parse(JSON.stringify(value)) as T;
+}
+
+function cloneIncidentConnectionsForDuplicatedZone(
+  variant: NonNullable<RmgTemplate["variants"]>[number],
+  variantIndex: number,
+  sourceZoneName: string,
+  targetZoneName: string,
+  changes: MutationChange[],
+): Map<string, string> {
+  const connections = variant.connections ?? [];
+  variant.connections = connections;
+  const sourceConnections = connections.filter((connection) =>
+    connection.name &&
+    (connection.from === sourceZoneName || connection.to === sourceZoneName)
+  );
+  const existingNames = new Set(connections.map((connection) => connection.name).filter((name): name is string => Boolean(name)));
+  const connectionNameMap = new Map<string, string>();
+  const clonedConnections: Connection[] = [];
+
+  for (const connection of sourceConnections) {
+    if (!connection.name) continue;
+    const clonedConnection = cloneValue(connection);
+    const clonedName = nextDuplicatedReferenceName(connection.name, sourceZoneName, targetZoneName, existingNames);
+    clonedConnection.name = clonedName;
+    if (clonedConnection.from === sourceZoneName) clonedConnection.from = targetZoneName;
+    if (clonedConnection.to === sourceZoneName) clonedConnection.to = targetZoneName;
+    connectionNameMap.set(connection.name, clonedName);
+    existingNames.add(clonedName);
+    clonedConnections.push(clonedConnection);
+  }
+
+  for (const connection of clonedConnections) {
+    remapPlacementRulesConnectionRefs(connection.portalPlacementRulesFrom, connectionNameMap);
+    remapPlacementRulesConnectionRefs(connection.portalPlacementRulesTo, connectionNameMap);
+    const insertIndex = connections.length;
+    connections.push(connection);
+    changes.push({
+      path: `$.variants[${variantIndex}].connections[${insertIndex}]`,
+      before: undefined,
+      after: cloneValue(connection),
+      reason: "incident connection duplicated",
+    });
+  }
+
+  return connectionNameMap;
+}
+
+function cloneMandatoryPresetsForDuplicatedZone(
+  template: RmgTemplate,
+  presetRefs: readonly string[],
+  sourceZoneName: string,
+  targetZoneName: string,
+  connectionNameMap: ReadonlyMap<string, string>,
+  changes: MutationChange[],
+): Map<string, string> {
+  const presets = template.mandatoryContent ?? [];
+  template.mandatoryContent = presets;
+  const existingNames = new Set(presets.map((preset) => preset.name).filter((name): name is string => Boolean(name)));
+  const presetNameMap = new Map<string, string>();
+
+  for (const presetRef of uniqueStrings(presetRefs)) {
+    const sourcePreset = presets.find((preset) => preset.name === presetRef);
+    if (!sourcePreset?.name) continue;
+    const clonedPreset: MandatoryContentPreset = cloneValue(sourcePreset);
+    const clonedName = nextDuplicatedReferenceName(sourcePreset.name, sourceZoneName, targetZoneName, existingNames);
+    clonedPreset.name = clonedName;
+    remapMandatoryPresetConnectionRefs(clonedPreset, connectionNameMap);
+    const insertIndex = presets.length;
+    presets.push(clonedPreset);
+    presetNameMap.set(sourcePreset.name, clonedName);
+    existingNames.add(clonedName);
+    changes.push({
+      path: `$.mandatoryContent[${insertIndex}]`,
+      before: undefined,
+      after: cloneValue(clonedPreset),
+      reason: "mandatory preset duplicated for zone",
+    });
+  }
+
+  return presetNameMap;
+}
+
+function cloneCountLimitPresetsForDuplicatedZone(
+  template: RmgTemplate,
+  presetRefs: readonly string[],
+  sourceZoneName: string,
+  targetZoneName: string,
+  changes: MutationChange[],
+): Map<string, string> {
+  const presets = template.contentCountLimits ?? [];
+  template.contentCountLimits = presets;
+  const existingNames = new Set(presets.map((preset) => preset.name).filter((name): name is string => Boolean(name)));
+  const presetNameMap = new Map<string, string>();
+
+  for (const presetRef of uniqueStrings(presetRefs)) {
+    const sourcePreset = presets.find((preset) => preset.name === presetRef);
+    if (!sourcePreset?.name) continue;
+    const clonedPreset: ContentCountLimitPreset = cloneValue(sourcePreset);
+    const clonedName = nextDuplicatedReferenceName(sourcePreset.name, sourceZoneName, targetZoneName, existingNames);
+    clonedPreset.name = clonedName;
+    const insertIndex = presets.length;
+    presets.push(clonedPreset);
+    presetNameMap.set(sourcePreset.name, clonedName);
+    existingNames.add(clonedName);
+    changes.push({
+      path: `$.contentCountLimits[${insertIndex}]`,
+      before: undefined,
+      after: cloneValue(clonedPreset),
+      reason: "count limit preset duplicated for zone",
+    });
+  }
+
+  return presetNameMap;
+}
+
+function remapDuplicatedZoneReferences(
+  zone: Zone,
+  sourceZoneName: string,
+  targetZoneName: string,
+  connectionNameMap: ReadonlyMap<string, string>,
+): void {
+  remapBiomeRuleZoneRefs(zone.zoneBiome, sourceZoneName, targetZoneName);
+  remapBiomeRuleZoneRefs(zone.contentBiome, sourceZoneName, targetZoneName);
+  remapBiomeRuleZoneRefs(zone.metaObjectsBiome, sourceZoneName, targetZoneName);
+
+  for (const mainObject of zone.mainObjects ?? []) {
+    if (mainObject.placement === "NearZone") {
+      replaceArgValue(mainObject.placementArgs, 0, sourceZoneName, targetZoneName);
+    }
+    if (mainObject.placement === "Connection") {
+      remapFirstArgWithMap(mainObject.placementArgs, connectionNameMap);
+    }
+    remapFactionRuleZoneRefs(mainObject.faction, sourceZoneName, targetZoneName);
+  }
+
+  for (const road of zone.roads ?? []) {
+    remapRoadTargetConnectionRef(road.from, connectionNameMap);
+    remapRoadTargetConnectionRef(road.to, connectionNameMap);
+  }
+}
+
+function remapMandatoryPresetConnectionRefs(
+  preset: MandatoryContentPreset,
+  connectionNameMap: ReadonlyMap<string, string>,
+): void {
+  for (const entry of preset.content ?? []) {
+    remapPlacementRulesConnectionRefs(entry.rules, connectionNameMap);
+  }
+}
+
+function remapBiomeRuleZoneRefs(
+  rule: { type?: string; args?: string[] } | undefined,
+  sourceZoneName: string,
+  targetZoneName: string,
+): void {
+  if (!rule) return;
+  if (rule.type === "MatchZone") {
+    replaceArgValue(rule.args, 0, sourceZoneName, targetZoneName);
+  }
+  if (rule.type === "MatchMainObject") {
+    replaceArgValue(rule.args, 1, sourceZoneName, targetZoneName);
+  }
+  if (rule.type === "FromList") {
+    remapDifferentFromZoneArgs(rule.args, sourceZoneName, targetZoneName);
+  }
+}
+
+function remapFactionRuleZoneRefs(
+  rule: FactionRule | undefined,
+  sourceZoneName: string,
+  targetZoneName: string,
+): void {
+  if (!rule) return;
+  if (rule.type === "Match") {
+    replaceArgValue(rule.args, 1, sourceZoneName, targetZoneName);
+  }
+  if (rule.type === "FromList") {
+    remapDifferentFromZoneArgs(rule.args, sourceZoneName, targetZoneName);
+  }
+}
+
+function remapRoadTargetConnectionRef(
+  target: RoadTargetConfig | undefined,
+  connectionNameMap: ReadonlyMap<string, string>,
+): void {
+  if (target?.type !== "Connection") return;
+  remapFirstArgWithMap(target.args, connectionNameMap);
+}
+
+function remapPlacementRulesConnectionRefs(
+  rules: PlacementRule[] | undefined,
+  connectionNameMap: ReadonlyMap<string, string>,
+): void {
+  for (const rule of rules ?? []) {
+    if (rule.type === "Connection") {
+      remapFirstArgWithMap(rule.args, connectionNameMap);
+    }
+  }
+}
+
+function remapZoneObjectPositionIds(
+  positions: Readonly<Record<string, CanvasPosition>>,
+  connectionNameMap: ReadonlyMap<string, string>,
+): Record<string, CanvasPosition> {
+  const next: Record<string, CanvasPosition> = {};
+  for (const [objectId, position] of Object.entries(positions)) {
+    if (objectId.startsWith("connection:")) {
+      const sourceConnectionName = objectId.replace("connection:", "");
+      const targetConnectionName = connectionNameMap.get(sourceConnectionName);
+      if (targetConnectionName) {
+        next[`connection:${targetConnectionName}`] = clampCanvasPosition(position);
+      }
+      continue;
+    }
+    next[objectId] = clampCanvasPosition(position);
+  }
+  return next;
+}
+
+function remapStringRefs(refs: readonly string[], nameMap: ReadonlyMap<string, string>): string[] {
+  return refs.map((ref) => nameMap.get(ref) ?? ref);
+}
+
+function nextDuplicatedReferenceName(
+  sourceName: string,
+  sourceZoneName: string,
+  targetZoneName: string,
+  existingNames: ReadonlySet<string>,
+): string {
+  const baseName = sourceName.includes(sourceZoneName)
+    ? sourceName.split(sourceZoneName).join(targetZoneName)
+    : `${targetZoneName}_${sourceName}`;
+  return nextUniqueName([...existingNames], baseName);
+}
+
+function offsetCanvasPosition(position: CanvasPosition): CanvasPosition {
+  return clampCanvasPosition({ x: position.x + 7, y: position.y + 6 });
+}
+
+function remapFirstArgWithMap(args: string[] | undefined, nameMap: ReadonlyMap<string, string>): void {
+  if (!args?.[0]) return;
+  args[0] = nameMap.get(args[0]) ?? args[0];
+}
+
+function replaceArgValue(args: string[] | undefined, index: number, oldValue: string, newValue: string): void {
+  if (args?.[index] === oldValue) {
+    args[index] = newValue;
+  }
+}
+
+function remapDifferentFromZoneArgs(args: string[] | undefined, sourceZoneName: string, targetZoneName: string): void {
+  if (!args) return;
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index];
+    if (arg !== undefined) {
+      args[index] = remapDifferentFromZoneArg(arg, sourceZoneName, targetZoneName);
+    }
+  }
+}
+
+function remapDifferentFromZoneArg(arg: string, sourceZoneName: string, targetZoneName: string): string {
+  const parts = arg.trim().split(/\s+/u);
+  if (parts.length < 2 || parts[0] !== "differentFrom:") {
+    return arg;
+  }
+  for (const zoneTokenIndex of [2, 1]) {
+    if (parts[zoneTokenIndex] === sourceZoneName) {
+      parts[zoneTokenIndex] = targetZoneName;
+      return parts.join(" ");
+    }
+  }
+  return arg;
 }
 
 function compactNumberRecord<T extends string>(input: Record<T, number | undefined>): Partial<Record<T, number>> {
@@ -1363,9 +1733,11 @@ export function reassignZoneOwner(session: EditorSession, zoneName: string, newO
   const variant = session.template.variants?.[session.selectedVariantIndex];
   if (!variant) return session;
   const sourceZone = variant.zones?.find((zone) => zone.name === zoneName);
+  if (!sourceZone) return setSessionMessage(session, `Zone '${zoneName}' not found.`);
   const oldOwner = sourceZone ? inferZonePlayerOwner(sourceZone) : undefined;
   const newOwnerRef = asPlayerRef(newOwner);
   let nextSession = session;
+  let changedMainObject = false;
   for (const zone of variant.zones ?? []) {
     if (zone.name !== zoneName) continue;
     const mainObjects = zone.mainObjects ?? [];
@@ -1386,7 +1758,44 @@ export function reassignZoneOwner(session: EditorSession, zoneName: string, newO
         },
         label: `Reassign ${zoneName} to ${newOwner}`,
       });
+      changedMainObject = true;
     }
+  }
+  if (!changedMainObject && newOwnerRef) {
+    const firstObject = sourceZone.mainObjects?.[0];
+    if (firstObject) {
+      nextSession = applyAction(nextSession, {
+        action: {
+          type: "mainObject.update",
+          input: {
+            variantIndex: session.selectedVariantIndex,
+            zone: { zoneName },
+            mainObject: { mainObjectIndex: 0 },
+            settings: firstObject.type === "Spawn"
+              ? { spawn: newOwnerRef }
+              : { owner: newOwnerRef },
+          },
+        },
+        label: `Assign ${zoneName} to ${newOwnerRef}`,
+      });
+      changedMainObject = true;
+    } else {
+      nextSession = applyAction(nextSession, {
+        action: {
+          type: "mainObject.add",
+          input: {
+            variantIndex: session.selectedVariantIndex,
+            zone: { zoneName },
+            mainObject: { type: "Spawn", placement: "Uniform", spawn: newOwnerRef },
+          },
+        },
+        label: `Add ${newOwnerRef} spawn to ${zoneName}`,
+      });
+      changedMainObject = true;
+    }
+  }
+  if (!changedMainObject && newOwner === "Neutral") {
+    nextSession = setSessionMessage(nextSession, `${zoneName} is already neutral.`);
   }
   if (oldOwner) {
     nextSession = reassignZoneMandatoryOwners(nextSession, zoneName, oldOwner, newOwnerRef);
@@ -1768,13 +2177,24 @@ function findMandatoryPresetIndex(session: EditorSession, presetName: string): n
   return (session.template.mandatoryContent ?? []).findIndex((preset) => preset.name === presetName);
 }
 
+function findOrCreateZoneLocalMandatoryPresetName(session: EditorSession, zoneName: string, assignedPresetNames: readonly string[]): string {
+  const baseName = `${sanitizeIdentifier(zoneName)}_mandatory`;
+  const assigned = new Set(assignedPresetNames);
+  const existingLocal = getMandatoryPresetNames(session).find((name) =>
+    assigned.has(name) &&
+    (name === baseName || name.startsWith(`${baseName}-`) || name.startsWith(`${baseName}_local`))
+  );
+  if (existingLocal) return existingLocal;
+  return nextUniqueName(getMandatoryPresetNames(session), baseName);
+}
+
 function getZoneMandatoryEntryNames(session: EditorSession, zone: Zone): string[] {
   const presetNames = new Set(uniqueStrings(zone.mandatoryContent ?? []));
   const names: string[] = [];
   for (const preset of session.template.mandatoryContent ?? []) {
     if (!preset.name || !presetNames.has(preset.name)) continue;
     for (const entry of preset.content ?? []) {
-      const name = entry.name ?? entry.sid;
+      const name = entry.name;
       if (name) names.push(name);
     }
   }

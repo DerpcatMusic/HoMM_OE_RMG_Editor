@@ -1,5 +1,5 @@
 import type { TransactionHistory } from "../../core/mutations/transactionManager.js";
-import type { ContentWeight, RmgTemplate } from "../../core/rmg/rmgTypes.js";
+import type { ContentPoolConfig, ContentWeight, RmgTemplate } from "../../core/rmg/rmgTypes.js";
 import type { WinConditionPresetId } from "../../core/rmg/winConditions.js";
 
 export interface CanvasPosition {
@@ -177,6 +177,7 @@ export interface MandatoryContentCreateDraft {
 
 export interface ContentPoolCreateDraft {
   name: string;
+  pool?: ContentPoolConfig;
 }
 
 export interface ContentPoolGroupCreateDraft {

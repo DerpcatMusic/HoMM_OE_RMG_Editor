@@ -1,10 +1,10 @@
 <script lang="ts">
   import { Combobox, Dialog } from "bits-ui";
-  import { MAIN_OBJECT_TYPES, type MainObjectType } from "../../../core/rmg/enums.js";
+  import { CONNECTION_TYPES, MAIN_OBJECT_TYPES, type MainObjectType } from "../../../core/rmg/enums.js";
   import type { ShellCatalogOption, ShellZoneObjectItem, ShellZoneRoadItem } from "../../data/shellData.js";
   import { editor } from "../../state/editor.svelte.js";
   import ContextMenu from "../ContextMenu.svelte";
-  import { createContextMenuState } from "../contextMenu.svelte.js";
+  import { createContextMenuState, type ContextMenuItem } from "../contextMenu.svelte.js";
   import ObjectIdentity from "../ui/ObjectIdentity.svelte";
   import CanvasHitPath from "./CanvasHitPath.svelte";
   import CanvasSvgLayer from "./CanvasSvgLayer.svelte";
@@ -25,12 +25,14 @@
   let nodeConnDragging = $state(false);
   let nodeConnFromId = $state<string | null>(null);
   let nodeConnMousePos = $state<CanvasPoint>({ x: 0, y: 0 });
+  let roadSnapNodeId = $state<string | null>(null);
 
   const contextMenu = createContextMenuState();
   let ctxMenu = $derived(contextMenu.current);
   let activeZoneObjectId = $derived(editor.activeZoneObjectId);
   let catalogObjects = $derived(editor.catalogOptions.rmgContent);
   let mandatoryObjectCount = $derived(selectedZone.zoneObjects.filter(isMandatoryObject).length);
+  let connectionTargetCount = $derived(selectedZone.zoneObjects.filter((object) => object.kind === "connection").length);
 
   let addObjectDialogOpen = $state(false);
   let objectComboboxOpen = $state(false);
@@ -58,7 +60,8 @@
   function nodeTypeFromId(id: string): string {
     if (id.startsWith("main:")) return "MainObject";
     if (id.startsWith("connection:")) return "Connection";
-    if (id.startsWith("mandatory:") || id.startsWith("mc:")) return "MandatoryContent";
+    if (id.startsWith("mandatory-preset:")) return "MandatoryPreset";
+    if (id.startsWith("mandatory:") || id.startsWith("mandatory-preview:") || id.startsWith("mc:")) return "MandatoryContent";
     if (id === "crossroads") return "Crossroads";
     return "MandatoryContent";
   }
@@ -66,20 +69,31 @@
   function nodeArgFromId(id: string): string {
     if (id.startsWith("main:")) return id.replace("main:", "");
     if (id.startsWith("connection:")) return id.replace("connection:", "");
+    if (id.startsWith("mandatory-preset:")) return id.replace("mandatory-preset:", "");
     if (id.startsWith("mandatory:")) return id.replace("mandatory:", "");
+    if (id.startsWith("mandatory-preview:")) return "";
     if (id.startsWith("mc:")) return id.replace("mc:", "");
     if (id === "crossroads") return "";
     return id;
   }
 
   function isMandatoryObject(object: ShellZoneObjectItem): boolean {
-    return object.kind === "mandatory" || object.id.startsWith("mandatory:") || object.id.startsWith("mc:");
+    return object.kind === "mandatory" || object.id.startsWith("mandatory:") || object.id.startsWith("mandatory-preview:") || object.id.startsWith("mc:");
+  }
+
+  function isMandatoryPresetObject(object: ShellZoneObjectItem): boolean {
+    return object.kind === "mandatoryPreset" || object.id.startsWith("mandatory-preset:");
+  }
+
+  function isRoadTargetable(object: ShellZoneObjectItem): boolean {
+    return object.roadTargetable !== false;
   }
 
   function nodeIcon(object: ShellZoneObjectItem): string {
     if (object.kind === "main" || object.id.startsWith("main:")) return "castle";
     if (object.kind === "connection" || object.id.startsWith("connection:")) return "door_open";
     if (object.kind === "crossroads" || object.id === "crossroads") return "hub";
+    if (isMandatoryPresetObject(object)) return "inventory_2";
     if (isMandatoryObject(object)) return "location_on";
     return "category";
   }
@@ -88,7 +102,7 @@
     if (object.kind === "main" || object.id.startsWith("main:")) return "main";
     if (object.kind === "connection" || object.id.startsWith("connection:")) return "connection";
     if (object.kind === "crossroads" || object.id === "crossroads") return "crossroads";
-    if (isMandatoryObject(object)) return "mandatory";
+    if (isMandatoryObject(object) || isMandatoryPresetObject(object)) return "mandatory";
     return "neutral";
   }
 
@@ -164,8 +178,66 @@
     }
   }
 
+  function mainObjectTypeDraft(object: ShellZoneObjectItem, type: MainObjectType): import("../../state/editorSession.js").MainObjectUpdateDraft {
+    return {
+      objectIndex: object.index ?? Number(object.id.replace("main:", "")),
+      type,
+      spawn: object.spawn ?? "",
+      owner: object.owner ?? "",
+      isKeyObject: object.isKeyObject ?? false,
+      holdCityWinCon: object.holdCityWinCon ?? false,
+      placement: object.placement ?? "",
+      placementArgs: [...object.placementArgs],
+      factionType: object.faction.type,
+      factionArgs: [...object.faction.args],
+      enableWeeklyUnitIncrement: object.enableWeeklyUnitIncrement ?? false,
+      initialUnitIncrement: object.initialUnitIncrement,
+      guardChance: object.guardChance,
+      guardValue: object.guardValue,
+      guardWeeklyIncrement: object.guardWeeklyIncrement,
+      guardRandomization: object.guardRandomization,
+      removeGuardIfHasOwner: object.removeGuardIfHasOwner ?? false,
+      buildingsConstructionSid: object.buildingsConstructionSid ?? "",
+      buildingsBanSid: object.buildingsBanSid ?? "",
+    };
+  }
+
+  function canDeleteMandatoryEntry(object: ShellZoneObjectItem): boolean {
+    return isMandatoryObject(object) && ((object.mandatoryPresetNames?.length ?? 0) > 0) && (Boolean(object.mandatoryEntryName) || object.id.startsWith("mandatory-preview:"));
+  }
+
+  function openMandatoryEntryEditor(object: ShellZoneObjectItem) {
+    if (object.mandatoryEntryName) {
+      editor.selectMandatoryContent(object.mandatoryEntryName);
+      return;
+    }
+    editor.selectMandatoryContent(object.id);
+  }
+
+  function deleteMandatoryEntry(object: ShellZoneObjectItem) {
+    const previewIndex = object.id.startsWith("mandatory-preview:")
+      ? Number(object.id.slice(object.id.lastIndexOf(":") + 1))
+      : undefined;
+    for (const presetName of object.mandatoryPresetNames ?? []) {
+      const resolved = editor.resolveMandatoryContentPreset(presetName);
+      if (!resolved) continue;
+      const preset = editor.session.template.mandatoryContent?.[resolved.presetIndex];
+      const content = preset?.content ?? [];
+      const nextContent = Number.isInteger(previewIndex)
+        ? content.filter((_, index) => index !== previewIndex)
+        : content.filter((entry) => entry.name !== object.mandatoryEntryName);
+      if (nextContent.length !== content.length) {
+        editor.updateMandatoryContentPreset(resolved.presetIndex, nextContent);
+      }
+    }
+  }
+
   function zoneStageRect(event: PointerEvent) {
-    return (event.currentTarget as HTMLElement).closest(".zone-stage")!.getBoundingClientRect();
+    return zoneStageElement(event).getBoundingClientRect();
+  }
+
+  function zoneStageElement(event: PointerEvent): HTMLElement {
+    return (event.currentTarget as HTMLElement).closest(".zone-stage")!;
   }
 
   function nodePos(object: Pick<ShellZoneObjectItem, "id" | "x" | "y">) {
@@ -177,6 +249,38 @@
     const object = selectedZone.zoneObjects.find((item) => item.id === targetId);
     if (object) return nodePos(object);
     return null;
+  }
+
+  function nearestRoadTargetId(point: CanvasPoint, excludeId: string | null): string | null {
+    let closest: { id: string; distance: number } | null = null;
+    for (const object of selectedZone.zoneObjects) {
+      if (object.id === excludeId || !isRoadTargetable(object)) continue;
+      const pos = nodePos(object);
+      const dx = point.x - pos.x;
+      const dy = point.y - pos.y;
+      if (Math.abs(dx) > 9 || Math.abs(dy) > 7) continue;
+      const distance = dx * dx + dy * dy;
+      if (!closest || distance < closest.distance) closest = { id: object.id, distance };
+    }
+    return closest?.id ?? null;
+  }
+
+  function nodeIdAtPointer(event: PointerEvent, excludeId: string | null): string | null {
+    const exactNode = document
+      .elementsFromPoint(event.clientX, event.clientY)
+      .map((element) => element.closest?.(".zone-node") as HTMLElement | null)
+      .find((element) => {
+        const nodeId = element?.dataset.nodeId;
+        if (!nodeId || nodeId === excludeId) return false;
+        const object = selectedZone.zoneObjects.find((item) => item.id === nodeId);
+        return Boolean(object && isRoadTargetable(object));
+      });
+    if (exactNode?.dataset.nodeId) return exactNode.dataset.nodeId;
+
+    const stage = (event.currentTarget as HTMLElement).closest(".zone-stage");
+    if (!stage) return null;
+    const point = pointerPercent(event, stage.getBoundingClientRect());
+    return nearestRoadTargetId(point, excludeId);
   }
 
   function roadPath(road: ShellZoneRoadItem): string {
@@ -199,16 +303,20 @@
   function nodePointerDown(event: PointerEvent, object: ShellZoneObjectItem) {
     if (event.button !== 0) return;
     const point = pointerPercent(event, zoneStageRect(event));
+    (event.currentTarget as HTMLElement).setPointerCapture?.(event.pointerId);
 
     if (event.ctrlKey) {
+      if (!isRoadTargetable(object)) return;
       nodeConnDragging = true;
       nodeConnFromId = object.id;
       nodeConnMousePos = point;
+      roadSnapNodeId = null;
       event.preventDefault();
       return;
     }
 
     if (event.shiftKey) {
+      if (!isRoadTargetable(object)) return;
       nodeClick(object.id);
       event.preventDefault();
       return;
@@ -221,25 +329,53 @@
     event.preventDefault();
   }
 
+  function nodePointerMove(event: PointerEvent) {
+    if (!nodeDragging && !nodeConnDragging) return;
+    zoneStagePointerMove(event);
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
+  function nodePointerUp(event: PointerEvent) {
+    if (!nodeDragging && !nodeConnDragging) return;
+    zoneStagePointerUp(event);
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
   function nodeFocusInspector(object: ShellZoneObjectItem) {
     if (object.id.startsWith("main:")) {
       editor.selectObject(object.index ?? 0);
     } else if (object.id.startsWith("connection:") || object.id === "crossroads") {
       editor.setInspectorTab("roads");
+    } else if (isMandatoryPresetObject(object)) {
+      const presetName = object.mandatoryPresetNames?.[0] ?? nodeArgFromId(object.id);
+      if (presetName) {
+        editor.inspectMandatoryContentPreset(presetName);
+      } else {
+        editor.setInspectorTab("pools");
+      }
     } else if (isMandatoryObject(object)) {
-      editor.selectMandatoryContent(object.mandatoryEntryName ?? nodeArgFromId(object.id));
+      if (object.mandatoryEntryName) {
+        editor.selectMandatoryContent(object.mandatoryEntryName);
+      } else if ((object.mandatoryPresetNames?.length ?? 0) > 0) {
+        openMandatoryEntryEditor(object);
+      } else {
+        editor.setInspectorTab("objects");
+      }
     } else {
       editor.setInspectorTab("pools");
     }
   }
 
   function zoneStagePointerMove(event: PointerEvent) {
-    const point = pointerPercent(event, (event.currentTarget as HTMLElement).getBoundingClientRect());
+    const point = pointerPercent(event, zoneStageElement(event).getBoundingClientRect());
     if (nodeDragging && dragNodeId) {
       nodeDragPos = clampCanvasPoint({ x: point.x - nodeDragOffset.x, y: point.y - nodeDragOffset.y }, { minX: 5, maxX: 95, minY: 5, maxY: 95 });
     }
     if (nodeConnDragging) {
       nodeConnMousePos = point;
+      roadSnapNodeId = nearestRoadTargetId(point, nodeConnFromId);
     }
   }
 
@@ -258,23 +394,44 @@
     }
 
     if (nodeConnDragging && nodeConnFromId) {
-      const element = document.elementFromPoint(event.clientX, event.clientY)?.closest(".zone-node") as HTMLElement | null;
-      const targetId = element?.dataset.nodeId;
+      const targetId = roadSnapNodeId ?? nodeIdAtPointer(event, nodeConnFromId);
       if (targetId && targetId !== nodeConnFromId) {
         addRoadBetweenNodeIds(nodeConnFromId, targetId);
       }
       nodeConnDragging = false;
       nodeConnFromId = null;
+      roadSnapNodeId = null;
     }
   }
 
   function zoneStageDblClick(event: MouseEvent) {
     if ((event.target as Element).closest(".zone-node, .road-hit")) return;
-    const point = pointerPercent(event as PointerEvent, (event.currentTarget as HTMLElement).getBoundingClientRect());
+    const point = pointerPercent(event as PointerEvent, (event.currentTarget as HTMLElement).closest(".zone-stage")!.getBoundingClientRect());
     openAddMainObjectDialog(point);
   }
 
+  function contentSidFromDrop(event: DragEvent): string {
+    return event.dataTransfer?.getData("application/x-rmg-content-sid") || "";
+  }
+
+  function zoneStageDragOver(event: DragEvent) {
+    if (!contentSidFromDrop(event)) return;
+    event.preventDefault();
+    if (event.dataTransfer) event.dataTransfer.dropEffect = "copy";
+  }
+
+  function zoneStageDrop(event: DragEvent) {
+    const sid = contentSidFromDrop(event);
+    if (!sid) return;
+    event.preventDefault();
+    const stage = (event.currentTarget as HTMLElement).closest(".zone-stage")!;
+    const point = pointerPercent(event as PointerEvent, stage.getBoundingClientRect());
+    editor.addMandatoryContentToSelectedZone(sid, point);
+  }
+
   function nodeClick(objectId: string) {
+    const object = selectedZone.zoneObjects.find((item) => item.id === objectId);
+    if (!object || !isRoadTargetable(object)) return;
     if (!creatingRoad) {
       creatingRoad = true;
       roadFromNodeId = objectId;
@@ -290,6 +447,7 @@
   function cancelRoadCreation() {
     creatingRoad = false;
     roadFromNodeId = null;
+    roadSnapNodeId = null;
     editor.clearRoadSelection();
   }
 
@@ -299,15 +457,63 @@
 
   function nodeContextMenu(event: MouseEvent, object: ShellZoneObjectItem) {
     const isMain = object.id.startsWith("main:");
+    const isConnection = object.id.startsWith("connection:");
     const isMandatory = isMandatoryObject(object);
+    const isMandatoryPreset = isMandatoryPresetObject(object);
     const targetId = object.id;
     const objectIndex = object.index ?? Number(object.id.replace("main:", ""));
-    const mandatoryName = object.mandatoryEntryName ?? nodeArgFromId(object.id);
-    contextMenu.open(event, [
-      { label: "Start road from here", icon: "route", onClick: () => { creatingRoad = true; roadFromNodeId = targetId; } },
-      ...(isMandatory && mandatoryName ? [{ label: "Inspect mandatory content", icon: "location_on", onClick: () => editor.selectMandatoryContent(mandatoryName) }] : []),
-      ...(isMain && Number.isInteger(objectIndex) ? [{ label: "Remove main object", icon: "delete", onClick: () => editor.removeMainObject(objectIndex) }] : []),
-    ]);
+    const mandatoryName = object.mandatoryEntryName ?? "";
+    const connectionName = isConnection ? nodeArgFromId(object.id) : "";
+    const mandatoryPresetName = isMandatoryPreset ? object.mandatoryPresetNames?.[0] ?? nodeArgFromId(object.id) : "";
+    const items: ContextMenuItem[] = [
+      ...(isRoadTargetable(object)
+        ? [{
+            label: "Start road from here",
+            icon: "route",
+            onClick: () => {
+              creatingRoad = true;
+              roadFromNodeId = targetId;
+            },
+          }]
+        : []),
+      ...(isMandatory && mandatoryName
+        ? [{ label: "Change mandatory entry", icon: "edit", onClick: () => openMandatoryEntryEditor(object) }]
+        : []),
+      ...(isMandatory && !mandatoryName && (object.mandatoryPresetNames?.length ?? 0) > 0
+        ? [{ label: "Change preset row", icon: "edit", onClick: () => openMandatoryEntryEditor(object) }]
+        : []),
+      ...(mandatoryPresetName
+        ? [{ label: "Open mandatory preset", icon: "inventory_2", onClick: () => editor.inspectMandatoryContentPreset(mandatoryPresetName) }]
+        : []),
+      ...(isMain && Number.isInteger(objectIndex)
+        ? MAIN_OBJECT_TYPES
+            .filter((type) => type !== object.type)
+            .map((type) => ({
+              label: `Change to ${type}`,
+              icon: "swap_horiz",
+              onClick: () => editor.updateMainObject(mainObjectTypeDraft(object, type)),
+            }))
+        : []),
+      ...(isConnection && connectionName
+        ? CONNECTION_TYPES
+            .filter((type) => type !== object.connectionType && type !== "Proximity")
+            .map((type) => ({
+              label: `Change connection to ${type}`,
+              icon: "swap_horiz",
+              onClick: () => editor.changeConnectionType(connectionName, type),
+            }))
+        : []),
+      ...(isConnection && connectionName
+        ? [{ label: "Delete connection", icon: "delete", variant: "danger" as const, onClick: () => editor.deleteConnection(connectionName) }]
+        : []),
+      ...(canDeleteMandatoryEntry(object)
+        ? [{ label: "Delete mandatory entry", icon: "delete", variant: "danger" as const, onClick: () => deleteMandatoryEntry(object) }]
+        : []),
+      ...(isMain && Number.isInteger(objectIndex)
+        ? [{ label: "Delete main object", icon: "delete", variant: "danger" as const, onClick: () => editor.removeMainObject(objectIndex) }]
+        : []),
+    ];
+    contextMenu.open(event, items);
   }
 
   function zoneStageContextMenu(event: MouseEvent) {
@@ -323,9 +529,9 @@
   function roadContextMenu(event: MouseEvent, road: ShellZoneRoadItem) {
     editor.selectRoad(road.index);
     contextMenu.open(event, [
-      { label: `Delete road (${road.type})`, icon: "delete", onClick: () => editor.removeRoad(road.index) },
       { label: "Change to Stone", icon: "swap_horiz", onClick: () => editor.updateRoad(road.index, { roadIndex: road.index, type: "Stone", from: road.fromTarget, to: road.toTarget }) },
       { label: "Change to Dirt", icon: "swap_horiz", onClick: () => editor.updateRoad(road.index, { roadIndex: road.index, type: "Dirt", from: road.fromTarget, to: road.toTarget }) },
+      { label: `Delete road (${road.type})`, icon: "delete", variant: "danger", onClick: () => editor.removeRoad(road.index) },
     ]);
   }
 
@@ -350,7 +556,7 @@
   <div class="workspace-bar">
     <div>
       <h2>{selectedZone.label} internals</h2>
-      <span>Main objects {selectedZone.mainObjectCount} / mandatory {mandatoryObjectCount} / roads {selectedZone.roadCount}</span>
+      <span>Main objects {selectedZone.mainObjectCount} / mandatory {mandatoryObjectCount} / exits {connectionTargetCount} / roads {selectedZone.roadCount}</span>
     </div>
     <div class="bar-actions">
       <button class="button button-secondary" onclick={() => openAddMainObjectDialog()}>Add main object</button>
@@ -361,9 +567,9 @@
     {#if creatingRoad}
       Click a target node to complete the road. <button class="button button-sm" onclick={cancelRoadCreation}>Cancel (Esc)</button>
     {:else if nodeConnDragging}
-      Release on a target node to create a road.
+      Release near a highlighted target node to create a road.
     {:else}
-      Drag to move. Ctrl+drag to connect. Shift+click for two-click road. Double-click empty to choose a main object.
+      Drag to move. Ctrl+drag between nodes to create a road. Shift+click for two-click road. Double-click empty to choose a main object.
     {/if}
   </p>
   <!-- svelte-ignore a11y_no_noninteractive_tabindex, a11y_no_noninteractive_element_interactions -->
@@ -371,6 +577,8 @@
     class="zone-stage"
     onpointermove={zoneStagePointerMove}
     onpointerup={zoneStagePointerUp}
+    ondragover={zoneStageDragOver}
+    ondrop={zoneStageDrop}
     ondblclick={zoneStageDblClick}
     onkeydown={zoneStageKeydown}
     oncontextmenu={zoneStageContextMenu}
@@ -402,8 +610,9 @@
       {/each}
       {#if nodeConnDragging && nodeConnFromId}
         {@const fromPos = roadEndpointPos(nodeConnFromId)}
+        {@const snapPos = roadSnapNodeId ? roadEndpointPos(roadSnapNodeId) : null}
         {#if fromPos}
-          <line class="conn-draft" x1={fromPos.x} y1={fromPos.y} x2={nodeConnMousePos.x} y2={nodeConnMousePos.y} />
+          <line class="conn-draft" x1={fromPos.x} y1={fromPos.y} x2={snapPos?.x ?? nodeConnMousePos.x} y2={snapPos?.y ?? nodeConnMousePos.y} />
         {/if}
       {/if}
       {#if creatingRoad && roadFromNodeId}
@@ -418,7 +627,9 @@
       {@const isConnection = object.id.startsWith("connection:")}
       {@const isCrossroads = object.id === "crossroads"}
       {@const isMandatory = isMandatoryObject(object)}
+      {@const isMandatoryPreset = isMandatoryPresetObject(object)}
       {@const isRoadSource = creatingRoad && roadFromNodeId === object.id}
+      {@const isRoadSnap = nodeConnDragging && roadSnapNodeId === object.id}
       {@const isSelected = activeZoneObjectId === object.id}
       {@const point = nodePos(object)}
       <button
@@ -428,11 +639,16 @@
         class:is-connection={isConnection}
         class:is-crossroads={isCrossroads}
         class:is-mandatory={isMandatory}
+        class:is-mandatory-preset={isMandatoryPreset}
         class:is-road-source={isRoadSource}
+        class:is-road-snap={isRoadSnap}
+        class:is-road-target-disabled={!isRoadTargetable(object)}
         class:is-selected={isSelected}
         data-node-id={object.id}
         style="left:{point.x}%;top:{point.y}%"
         onpointerdown={(event) => nodePointerDown(event, object)}
+        onpointermove={nodePointerMove}
+        onpointerup={nodePointerUp}
         oncontextmenu={(event) => nodeContextMenu(event, object)}
         title="{object.type}: {object.label}"
       >
@@ -595,15 +811,15 @@
     transform: translate(-50%, -50%);
     display: inline-flex;
     align-items: center;
-    padding: 2px 4px;
+    padding: var(--space-1) var(--space-2);
     border: var(--line) solid var(--color-line-strong);
     background: var(--color-panel);
     cursor: grab;
     font: inherit;
     color: inherit;
-    min-width: 1.375rem;
-    min-height: 1.25rem;
-    max-width: 6rem;
+    min-width: 2rem;
+    min-height: 1.75rem;
+    max-width: 9rem;
     text-align: center;
     transition: background 0.12s, outline-color 0.12s;
     touch-action: none;
@@ -614,8 +830,22 @@
   .zone-node.is-connection { border-color: var(--color-connection-default); }
   .zone-node.is-crossroads { border-color: var(--color-role-connector); }
   .zone-node.is-mandatory { border-color: oklch(0.50 0.13 185); }
+  .zone-node.is-mandatory-preset {
+    border-color: oklch(0.50 0.13 185);
+    max-width: 14rem;
+    padding-inline: var(--space-3);
+  }
   .zone-node.is-selected { outline: var(--line-strong) solid var(--color-focus); outline-offset: 2px; background: var(--color-active); }
-  .zone-node.is-road-source { outline: var(--line-strong) solid var(--color-accent); outline-offset: 2px; background: var(--color-active); }
+  .zone-node.is-road-source,
+  .zone-node.is-road-snap {
+    outline: var(--line-strong) solid var(--color-accent);
+    outline-offset: 0.25rem;
+    background: var(--color-active);
+  }
+  .zone-node.is-road-target-disabled {
+    opacity: 0.68;
+    cursor: default;
+  }
   :global(.zone-road-line) {
     fill: none;
     stroke: #888;

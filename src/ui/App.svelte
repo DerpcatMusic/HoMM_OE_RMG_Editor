@@ -8,7 +8,7 @@
   import ResizeHandle from "./components/ResizeHandle.svelte";
 
   let sidebarWidth = $state(224);
-  let inspectorWidth = $state(352);
+  let inspectorWidth = $state(448);
 
   // Keyboard shortcuts: undo/redo, copy/paste
   function onkeydown(e: KeyboardEvent) {
@@ -71,7 +71,7 @@
   .shell-body {
     min-height: 0;
     display: grid;
-    grid-template-columns: var(--sidebar-width) var(--resize-handle-width) minmax(24rem, 1fr) var(--resize-handle-width) var(--inspector-width);
+    grid-template-columns: var(--sidebar-width) var(--resize-handle-width) minmax(18rem, 1fr) var(--resize-handle-width) minmax(28rem, var(--inspector-width));
     grid-template-rows: minmax(0, 1fr);
     overflow: hidden;
   }

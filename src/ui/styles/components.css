@@ -373,15 +373,19 @@
 }
 
 .inspector-tabs {
-  overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-width: thin;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  overflow: hidden;
 }
 
 .inspector-tabs .tab-button {
-  flex: 1 1 0;
+  min-width: 0;
   white-space: nowrap;
   justify-content: center;
+}
+
+.inspector-tabs .tab-button:nth-child(2n) {
+  border-right: 0;
 }
 
 .tab-button {
@@ -770,6 +774,19 @@
   max-width: 100%;
   box-sizing: border-box;
 }
+
+input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .control-row input[type="text"],
 .control-row input[type="search"],
 .control-row select,
@@ -934,6 +951,69 @@
   padding: 0 var(--space-3) var(--space-3);
 }
 
+.editor-section {
+  border-bottom: var(--line-strong) solid var(--color-line-strong);
+  background: var(--color-panel);
+}
+
+.editor-section + .editor-section {
+  margin-top: 0;
+}
+
+.editor-section > summary,
+.editor-section-title {
+  min-height: 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-3);
+  border-bottom: var(--line) solid var(--color-line);
+  background: var(--color-panel);
+  color: var(--color-ink);
+  cursor: pointer;
+  user-select: none;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  line-height: 1.2;
+  list-style: none;
+}
+
+.editor-section > summary::-webkit-details-marker {
+  display: none;
+}
+
+.editor-section > summary:hover,
+.editor-section-title:hover {
+  background: var(--color-panel-2);
+}
+
+.editor-section > summary:focus-visible,
+.editor-section-title:focus-visible {
+  outline: var(--line-strong) solid var(--color-focus);
+  outline-offset: -2px;
+}
+
+.editor-section > summary::after,
+.editor-section-title::after {
+  content: "+";
+  margin-left: auto;
+  color: var(--color-muted);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.editor-section[open] > summary,
+.editor-section[open] > .editor-section-title {
+  background: var(--color-active);
+  border-bottom-color: var(--color-line-strong);
+}
+
+.editor-section[open] > summary::after,
+.editor-section[open] > .editor-section-title::after {
+  content: "-";
+}
+
 .conditional-section {
   display: grid;
 }
@@ -1023,31 +1103,36 @@ textarea.text-input {
 
 .right-dock {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) var(--rail-width);
+  grid-template-rows: auto minmax(0, 1fr);
   border-left: var(--line-strong) solid var(--color-line-strong);
   background: var(--color-panel);
 }
 
-.right-dock-rail {
-  min-height: 0;
-  display: grid;
-  align-content: start;
-  border-left: var(--line-strong) solid var(--color-line-strong);
+.right-dock-tabs {
+  min-width: 0;
+  display: flex;
+  border-bottom: var(--line-strong) solid var(--color-line-strong);
   background: var(--color-panel-2);
 }
 
 .right-dock-tab {
   min-width: 0;
-  min-height: 3.5rem;
-  display: grid;
-  place-items: center;
-  gap: 2px;
-  padding: var(--space-1) 0;
+  min-height: 2rem;
+  flex: 1 1 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: 0 var(--space-2);
   border: 0;
-  border-bottom: var(--line) solid var(--color-line-strong);
+  border-right: var(--line) solid var(--color-line-strong);
   background: var(--color-panel);
   color: var(--color-ink);
   cursor: pointer;
+}
+
+.right-dock-tab:last-child {
+  border-right: 0;
 }
 
 .right-dock-tab:hover {
@@ -1057,7 +1142,7 @@ textarea.text-input {
 .right-dock-tab.is-active,
 .right-dock-tab[data-state="active"] {
   background: var(--color-active);
-  box-shadow: inset calc(var(--line-strong) * -1) 0 0 var(--color-line-strong);
+  box-shadow: inset 0 calc(var(--line-strong) * -1) 0 var(--color-line-strong);
 }
 
 .material-symbols-outlined {
@@ -1075,10 +1160,7 @@ textarea.text-input {
 }
 
 .right-dock-tab-label {
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
   font-size: var(--font-size-sm);
-  letter-spacing: 0.04em;
 }
 
 .right-dock-panel {
@@ -1235,14 +1317,12 @@ textarea.text-input {
   }
 
   .right-dock {
-    grid-template-columns: 1fr;
     grid-template-rows: auto minmax(0, 1fr);
   }
 
-  .right-dock-rail {
+  .right-dock-tabs {
     grid-row: 1;
     display: flex;
-    border-left: 0;
     border-bottom: var(--line-strong) solid var(--color-line-strong);
   }
 
@@ -1251,17 +1331,37 @@ textarea.text-input {
   }
 
   .right-dock-tab {
-    min-height: 2.5rem;
-    min-width: 6rem;
-    grid-auto-flow: column;
+    min-height: 2rem;
+    min-width: 0;
     padding: 0 var(--space-2);
-    border-bottom: 0;
     border-right: var(--line) solid var(--color-line-strong);
   }
 
-  .right-dock-tab-label {
-    writing-mode: horizontal-tb;
-    transform: none;
+  .workspace-bar {
+    min-height: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: stretch;
+    padding: 0;
+  }
+
+  .workspace-bar > div:first-child {
+    padding: var(--space-1) var(--space-3);
+    border-bottom: var(--line) solid var(--color-line);
+  }
+
+  .bar-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .bar-actions .button {
+    min-width: 0;
+    min-height: 2rem;
+    justify-content: center;
+    padding: 0 var(--space-1);
+    white-space: normal;
+    line-height: 1.1;
   }
 
   .zone-internals-summary {
@@ -1290,26 +1390,20 @@ textarea.text-input {
   flex-shrink: 0;
   display: grid;
   gap: var(--space-1);
-  padding: var(--space-2) var(--space-3);
+  padding: var(--space-1) var(--space-3);
   border-top: var(--line-strong) solid var(--color-line-strong);
-  font-size: var(--font-size-m);
+  font-size: var(--font-size-sm);
   font-weight: 500;
 }
 
 .validation-marquee.is-valid {
-  background: oklch(0.95 0.06 150);
-  color: oklch(0.30 0.10 150);
+  background: var(--color-panel);
+  color: var(--color-muted);
 }
 
 .validation-marquee.is-invalid {
-  background: oklch(0.92 0.08 25);
+  background: oklch(0.96 0.035 25);
   color: oklch(0.35 0.14 25);
-  animation: marquee-pulse 2s ease-in-out infinite;
-}
-
-@keyframes marquee-pulse {
-  0%, 100% { background: oklch(0.92 0.08 25); }
-  50% { background: oklch(0.88 0.10 25); }
 }
 
 /* player color coding */

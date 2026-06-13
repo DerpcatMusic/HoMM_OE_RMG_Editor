@@ -4,8 +4,6 @@
   import ZoneForm from "./inspector/ZoneForm.svelte";
   import ConnectionForm from "./inspector/ConnectionForm.svelte";
   import ObjectsPanel from "./inspector/ObjectsPanel.svelte";
-  import ContentPanel from "./inspector/ContentPanel.svelte";
-  import PoolsPanel from "./inspector/PoolsPanel.svelte";
   import RoadsPanel from "./inspector/RoadsPanel.svelte";
   import RawPanel from "./inspector/RawPanel.svelte";
   import ValidationPanel from "./inspector/ValidationPanel.svelte";
@@ -14,11 +12,10 @@
     { label: "Zone", value: "zone", icon: "target" },
     { label: "Connection", value: "connection", icon: "cable" },
     { label: "Objects", value: "objects", icon: "category" },
-    { label: "Content", value: "content", icon: "inventory_2" },
-    { label: "Pools", value: "pools", icon: "database" },
     { label: "Roads", value: "roads", icon: "route" },
-    { label: "Raw", value: "raw", icon: "data_object" },
-    { label: "Validation", value: "validation", icon: "verified" },
+    { label: "Pools", value: "pools", icon: "database" },
+    { label: "Checks", value: "validation", icon: "verified" },
+    { label: "JSON", value: "raw", icon: "data_object" },
   ];
 
   let title = $derived.by(() => {
@@ -33,6 +30,13 @@
 
   function setInspectorTab(value: string) {
     editor.inspectorTab = value as InspectorTab;
+    if (value === "pools") {
+      editor.setWorkspaceTab("poolEdit");
+    }
+  }
+
+  function openPoolWorkspace() {
+    editor.setWorkspaceTab("poolEdit");
   }
 </script>
 
@@ -50,6 +54,7 @@
         aria-label={tab.label}
       >
         <span class="material-symbols-outlined tab-icon" aria-hidden="true">{tab.icon}</span>
+        <span class="tab-label">{tab.label}</span>
       </Tabs.Trigger>
     {/each}
   </Tabs.List>
@@ -60,10 +65,19 @@
       <ConnectionForm />
     {:else if editor.inspectorTab === "objects"}
       <ObjectsPanel />
-    {:else if editor.inspectorTab === "content"}
-      <ContentPanel />
     {:else if editor.inspectorTab === "pools"}
-      <PoolsPanel />
+      <section class="inspector-launcher">
+        <button class="button button-secondary" onclick={openPoolWorkspace}>
+          <span class="material-symbols-outlined tab-icon" aria-hidden="true">open_in_full</span>
+          <span>Open pool editor</span>
+        </button>
+        <div class="launcher-grid">
+          <div><strong>{editor.selectedZone.guardedPools.length}</strong><span>Guarded</span></div>
+          <div><strong>{editor.selectedZone.unguardedPools.length}</strong><span>Unguarded</span></div>
+          <div><strong>{editor.selectedZone.resourcesPools.length}</strong><span>Resources</span></div>
+          <div><strong>{editor.selectedZone.mandatoryContent.length}</strong><span>Mandatory</span></div>
+        </div>
+      </section>
     {:else if editor.inspectorTab === "roads"}
       <RoadsPanel />
     {:else if editor.inspectorTab === "raw"}
@@ -100,23 +114,28 @@
     white-space: nowrap;
   }
   :global(.inspector-tabs) {
-    display: flex;
-    border-bottom: var(--line-strong) solid var(--color-line-strong);
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  :global(.inspector-tabs::-webkit-scrollbar) { display: none; }
-  :global(.inspector .tab-button) {
-    min-width: 2.25rem;
-    height: 2rem;
     display: grid;
-    place-items: center;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-bottom: var(--line-strong) solid var(--color-line-strong);
+    overflow: hidden;
+  }
+  :global(.inspector .tab-button) {
+    min-width: 0;
+    height: 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-1);
+    padding: 0 var(--space-1);
     border: 0;
     border-right: var(--line) solid var(--color-line);
+    border-bottom: var(--line) solid var(--color-line);
     background: var(--color-panel);
     color: var(--color-muted);
     cursor: pointer;
+    font: inherit;
   }
+  :global(.inspector .tab-button:nth-child(2n)) { border-right: 0; }
   :global(.inspector .tab-button:hover) { background: var(--color-panel-2); color: var(--color-ink); }
   :global(.inspector .tab-button[data-state="active"]) {
     background: var(--color-active);
@@ -124,11 +143,48 @@
     box-shadow: inset 0 calc(var(--line-strong) * -1) 0 var(--color-line-strong);
   }
   :global(.inspector .tab-icon) { font-size: var(--font-size-m); }
+  :global(.inspector .tab-label) {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: var(--font-size-xs);
+  }
   .inspector-body {
     align-content: start;
     min-height: 0;
     overflow: auto;
     padding: var(--space-3);
+  }
+  .inspector-launcher {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .inspector-launcher .button {
+    min-height: 2rem;
+    justify-content: center;
+  }
+  .launcher-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border: var(--line) solid var(--color-line);
+  }
+  .launcher-grid div {
+    display: grid;
+    gap: var(--line);
+    padding: var(--space-2);
+    border-right: var(--line) solid var(--color-line);
+    border-bottom: var(--line) solid var(--color-line);
+  }
+  .launcher-grid div:nth-child(2n) { border-right: 0; }
+  .launcher-grid div:nth-last-child(-n + 2) { border-bottom: 0; }
+  .launcher-grid strong {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-l);
+  }
+  .launcher-grid span {
+    color: var(--color-muted);
+    font-size: var(--font-size-xs);
   }
   .material-symbols-outlined {
     font-family: var(--font-icon);

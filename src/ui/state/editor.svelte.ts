@@ -51,6 +51,7 @@ import {
   removePlayerFromSession,
   focusPlayer,
   reassignZoneOwner,
+  duplicateZoneByName,
   deleteZoneByName,
   deleteConnectionByName,
   updateConnectionTypeByName,
@@ -62,6 +63,7 @@ import {
   setSessionStatusMessage,
   computePlayerValidationErrors,
   addLocalContentPoolToSession,
+  localizeCorePoolForEditing,
   addContentPoolGroupToSession,
   updateContentPoolGroupInSession,
   cloneCorePoolToLocalAndRewriteZone,
@@ -92,8 +94,8 @@ import {
   buildConnectionDraft,
   getClipboard,
 } from "./clipboard.js";
-export type InspectorTab = "zone" | "connection" | "objects" | "content" | "pools" | "roads" | "raw" | "validation";
-export type WorkspaceTab = "canvas" | "zoneEdit";
+export type InspectorTab = "zone" | "connection" | "objects" | "pools" | "roads" | "raw" | "validation";
+export type WorkspaceTab = "canvas" | "zoneEdit" | "poolEdit";
 export type RightDockTab = "inspector" | "browser";
 export type SidebarTab = "settings" | "generation";
 export interface SidebarSectionFlex {
@@ -242,7 +244,9 @@ class EditorState {
 
   get activeZoneObjectId(): string {
     if (this.activeObjectIndex >= 0) return `main:${this.activeObjectIndex}`;
+    if (this.activeMandatoryContentName.startsWith("mandatory-preview:")) return this.activeMandatoryContentName;
     if (this.activeMandatoryContentName) return `mandatory:${this.activeMandatoryContentName}`;
+    if (this.activeMandatoryContentPresetName) return `mandatory-preset:${this.activeMandatoryContentPresetName}`;
     return "";
   }
 
@@ -473,6 +477,22 @@ class EditorState {
     this.scheduleAutosave();
   }
 
+  duplicateZone(zoneName: string) {
+    const zone = this.zones.find((item) => item.label === zoneName);
+    this.session = duplicateZoneByName(
+      this.session,
+      zoneName,
+      zone ? { x: zone.x, y: zone.y } : undefined,
+    );
+    this.activeObjectIndex = -1;
+    this.activeMandatoryContentName = "";
+    this.activeRoadIndex = -1;
+    this.workspaceTab = "canvas";
+    this.inspectorTab = "zone";
+    this.rightDockTab = "inspector";
+    this.scheduleAutosave();
+  }
+
   deleteConnection(connectionName: string) {
     this.session = deleteConnectionByName(this.session, connectionName);
     this.scheduleAutosave();
@@ -527,6 +547,9 @@ class EditorState {
   inspectPool(poolName: string, source: "template-local" | "core") {
     this.activeContentPoolName = poolName;
     this.activePoolSource = source;
+    this.activeMandatoryContentPresetName = "";
+    this.workspaceTab = "poolEdit";
+    this.rightDockTab = "inspector";
   }
 
   clearPoolInspection() {
@@ -536,11 +559,11 @@ class EditorState {
 
   cloneCorePoolToEdit(corePoolName: string, zoneField: "guardedContentPool" | "unguardedContentPool" | "resourcesContentPool") {
     this.session = cloneCorePoolToLocalAndRewriteZone(this.session, corePoolName, zoneField);
-    // Find the new local name and inspect it
-    const localPools = this.session.template.contentPools ?? [];
-    const localPool = localPools.find((p) => p.name?.startsWith(corePoolName) && p.name?.includes("_local"));
-    if (localPool?.name) {
-      this.activeContentPoolName = localPool.name;
+    const zoneName = this.session.selectedZoneName;
+    const zone = this.session.template.variants?.[this.session.selectedVariantIndex]?.zones?.find((item) => item.name === zoneName);
+    const rewritten = ((zone?.[zoneField] ?? []) as string[]).find((name) => name !== corePoolName && name.startsWith(`${corePoolName}_`));
+    if (rewritten) {
+      this.activeContentPoolName = rewritten;
       this.activePoolSource = "template-local";
     }
     this.scheduleAutosave();
@@ -598,6 +621,14 @@ class EditorState {
   // --- Mandatory content preset management ---
   inspectMandatoryContentPreset(name: string) {
     this.activeMandatoryContentPresetName = name;
+    this.activeContentPoolName = "";
+    this.activePoolSource = "";
+    this.activeMandatoryContentName = "";
+    this.activeObjectIndex = -1;
+    this.activeRoadIndex = -1;
+    this.workspaceTab = "poolEdit";
+    this.inspectorTab = "pools";
+    this.rightDockTab = "inspector";
   }
   clearMandatoryContentInspection() {
     this.activeMandatoryContentPresetName = "";
@@ -637,6 +668,10 @@ class EditorState {
     this.session = addLocalContentPoolToSession(this.session, { name });
     this.scheduleAutosave();
   }
+  localizeCorePoolForEditing(poolName: string) {
+    this.session = localizeCorePoolForEditing(this.session, poolName);
+    this.scheduleAutosave();
+  }
   removeLocalPool(poolName: string) {
     this.session = removeLocalPoolFromSession(this.session, poolName);
     this.scheduleAutosave();
@@ -661,6 +696,10 @@ class EditorState {
     if (zone) {
       copyZone(zone, {
         mandatoryPresets: this.session.template.mandatoryContent ?? [],
+        contentCountLimitPresets: this.session.template.contentCountLimits ?? [],
+        incidentConnections: (variant.connections ?? []).filter((connection) =>
+          connection.from === zoneName || connection.to === zoneName
+        ),
         zoneObjectPositions: Object.fromEntries(
           this.selectedZone.zoneObjects.map((object) => [object.id, { x: object.x, y: object.y }]),
         ),

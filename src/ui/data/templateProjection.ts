@@ -212,18 +212,52 @@ function clampPercent(value: number): number {
 }
 function projectZoneObjects(zone: Zone, zoneName: string, variant: Variant | undefined, mandatoryContentPresets?: readonly import("../../core/rmg/rmgTypes.js").MandatoryContentPreset[]): ShellZoneObjectItem[] {
   const objects = (zone.mainObjects ?? []).map((mainObject, index, allObjects) => projectMainObject(mainObject, index, allObjects.length));
-  const incidentConnections = (variant?.connections ?? []).filter((connection) => connection.from === zoneName || connection.to === zoneName);
+  const incidentConnections = (variant?.connections ?? []).filter((connection) =>
+    connection.name &&
+    connection.connectionType !== "Proximity" &&
+    (connection.from === zoneName || connection.to === zoneName)
+  );
   const connectionObjects = incidentConnections.map((connection, index, allConnections) => projectConnectionAnchor(connection, index, allConnections.length));
   const extras = new Map<string, ShellZoneObjectItem>();
-  // Add mandatory content entries from zone's referenced presets
   const zonePresetNames = new Set(zone.mandatoryContent ?? []);
+  const roadTargetNames = new Set((zone.roads ?? [])
+    .flatMap((road) => [road.from, road.to])
+    .filter((target): target is RoadTargetConfig => target?.type === "MandatoryContent")
+    .map((target) => target.args?.[0]?.trim() ?? "")
+    .filter(Boolean));
   if (mandatoryContentPresets) {
     let mcIndex = 0;
+    let presetIndex = 0;
     for (const preset of mandatoryContentPresets) {
       if (!preset.name || !zonePresetNames.has(preset.name)) continue;
-      for (const entry of preset.content ?? []) {
-        const entryName = entry.name ?? entry.sid ?? `mc_${mcIndex}`;
-        const id = `mandatory:${entryName}`;
+      const isManualPreset = isZoneLocalMandatoryPreset(preset.name, zoneName);
+      if (!isManualPreset) {
+        const presetId = `mandatory-preset:${preset.name}`;
+        extras.set(presetId, {
+          id: presetId,
+          kind: "mandatoryPreset",
+          label: preset.name,
+          type: "Mandatory preset",
+          detail: `${(preset.content ?? []).length} entries`,
+          x: 24,
+          y: clampInternalPercent(24 + presetIndex * 8),
+          placementArgs: [],
+          faction: { type: "", args: [] },
+          mandatoryPresetNames: [preset.name],
+          roadTargetable: false,
+        });
+        presetIndex++;
+      }
+      for (const [entryIndex, entry] of (preset.content ?? []).entries()) {
+        const targetableName = entry.name?.trim() || "";
+        const shouldProjectEntry = isManualPreset || (targetableName && roadTargetNames.has(targetableName));
+        if (!shouldProjectEntry) {
+          mcIndex++;
+          continue;
+        }
+        const id = targetableName
+          ? `mandatory:${targetableName}`
+          : `mandatory-preview:${preset.name}:${entryIndex}`;
         const existing = extras.get(id);
         if (existing) {
           extras.set(id, {
@@ -235,16 +269,17 @@ function projectZoneObjects(zone: Zone, zoneName: string, variant: Variant | und
           extras.set(id, {
             id,
             kind: "mandatory",
-            label: entry.name ?? entry.sid ?? `Entry ${mcIndex}`,
+            label: mandatoryEntryLabel(entry, mcIndex),
             type: "MandatoryContent",
-            detail: entry.sid ?? "",
+            detail: mandatoryEntryDetail(entry, Boolean(targetableName)),
             x: clampInternalPercent(42 + Math.cos(angle) * 30),
             y: clampInternalPercent(45 + Math.sin(angle) * 30),
             placementArgs: [],
             faction: { type: "", args: [] },
-            mandatoryEntryName: entryName,
+            ...(targetableName ? { mandatoryEntryName: targetableName } : {}),
             mandatoryPresetNames: [preset.name],
             ...(entry.sid !== undefined ? { mandatorySid: entry.sid } : {}),
+            roadTargetable: Boolean(targetableName),
           });
         }
         mcIndex++;
@@ -297,6 +332,7 @@ function projectConnectionAnchor(connection: Connection, index: number, connecti
     label: connection.name ?? `Connection ${index + 1}`,
     type: "Connection",
     detail: `${connection.from ?? "?"} -> ${connection.to ?? "?"} / ${connection.connectionType ?? "Default"}`,
+    connectionType: connection.connectionType ?? "Default",
     x: 78,
     y: clampInternalPercent(y),
     placementArgs: [],
@@ -379,6 +415,33 @@ function roadTargetLabel(target: RoadTargetConfig | undefined): string {
     return "Unknown";
   }
   return target.args?.[0] ? `${target.type} ${target.args[0]}` : target.type;
+}
+
+function mandatoryEntryLabel(entry: import("../../core/rmg/rmgTypes.js").MandatoryContent, index: number): string {
+  if (entry.name) return entry.name;
+  if (entry.sid) return entry.sid;
+  if ((entry.includeLists ?? []).length > 0) return `List ${entry.includeLists?.[0] ?? index + 1}`;
+  if ((entry.content ?? []).length > 0) return `Inline content ${index + 1}`;
+  return `Random mandatory ${index + 1}`;
+}
+
+function mandatoryEntryDetail(entry: import("../../core/rmg/rmgTypes.js").MandatoryContent, roadTargetable: boolean): string {
+  const parts: string[] = [];
+  if (entry.sid) parts.push("direct SID");
+  if ((entry.includeLists ?? []).length > 0) parts.push(`${entry.includeLists?.length ?? 0} list(s)`);
+  if ((entry.content ?? []).length > 0) parts.push(`${entry.content?.length ?? 0} inline item(s)`);
+  if (!roadTargetable) parts.push("unnamed, not a road target");
+  return parts.join(" / ");
+}
+
+function isZoneLocalMandatoryPreset(presetName: string, zoneName: string): boolean {
+  const base = `${sanitizeIdentifier(zoneName)}_mandatory`;
+  return presetName === base || presetName.startsWith(`${base}-`) || presetName.startsWith(`${base}_local`);
+}
+
+function sanitizeIdentifier(value: string): string {
+  const sanitized = value.trim().replace(/[^a-zA-Z0-9._-]+/g, "_").replace(/^_+|_+$/g, "");
+  return sanitized.length > 0 ? sanitized : "zone";
 }
 
 function clampInternalPercent(value: number): number {

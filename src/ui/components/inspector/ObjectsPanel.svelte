@@ -21,7 +21,7 @@
   let session = $derived(editor.session);
   let catalogObjects = $derived(editor.catalogOptions.rmgContent);
   let mainObjects = $derived(zone.zoneObjects.filter((o) => o.id.startsWith("main:")));
-  let mandatoryObjects = $derived(zone.zoneObjects.filter((o) => o.id.startsWith("mandatory:") || o.id.startsWith("mc:")));
+  let mandatoryObjects = $derived(zone.zoneObjects.filter((o) => o.id.startsWith("mandatory:") || o.id.startsWith("mandatory-preview:") || o.id.startsWith("mc:")));
   let activeIndex = $derived(editor.activeObjectIndex);
   let activeMandatoryName = $derived(editor.activeMandatoryContentName);
   let activeObj = $derived(mainObjects.find((o) => o.index === activeIndex));
@@ -30,10 +30,16 @@
     if (!activeMandatoryName) return [];
     const presetNames = new Set(zone.mandatoryContent ?? []);
     const entries: MandatoryEntryRef[] = [];
+    const preview = parseMandatoryPreviewId(activeMandatoryName);
     for (const [presetIndex, preset] of (session.template.mandatoryContent ?? []).entries()) {
       if (!preset.name || !presetNames.has(preset.name)) continue;
+      if (preview && preview.presetName === preset.name) {
+        const entry = preset.content?.[preview.entryIndex];
+        if (entry) entries.push({ presetName: preset.name, presetIndex, entryIndex: preview.entryIndex, entry });
+        continue;
+      }
       for (const [entryIndex, entry] of (preset.content ?? []).entries()) {
-        if ((entry.name ?? entry.sid) === activeMandatoryName) {
+        if (entry.name === activeMandatoryName) {
           entries.push({ presetName: preset.name, presetIndex, entryIndex, entry });
         }
       }
@@ -183,6 +189,17 @@
     updateMandatoryEntries((entry) => ({ ...entry, sid }));
   }
 
+  function updateMandatoryName(value: string) {
+    const name = parseOptionalString(value);
+    const ref = activeMandatoryEntry;
+    updateMandatoryEntries((entry) => ({ ...entry, name }));
+    if (name) {
+      editor.selectMandatoryContent(name);
+    } else if (ref) {
+      editor.selectMandatoryContent(`mandatory-preview:${ref.presetName}:${ref.entryIndex}`);
+    }
+  }
+
   function mandatoryOwnerSelectValue(): string {
     const owner = activeMandatoryContent?.owner ?? "";
     return owner && owner === activeZoneOwner ? ZONE_OWNER_VALUE : owner;
@@ -193,6 +210,10 @@
   }
 
   function setMandatoryFlag(field: "designatedEncounter" | "soloEncounter" | "isGuarded" | "isMine", checked: boolean) {
+    if (field === "isGuarded") {
+      updateMandatoryField(field, checked ? undefined : false);
+      return;
+    }
     updateMandatoryField(field, checked ? true : undefined);
   }
 
@@ -206,8 +227,29 @@
 
   function mandatoryObjectName(objectId: string): string {
     if (objectId.startsWith("mandatory:")) return objectId.replace("mandatory:", "");
+    if (objectId.startsWith("mandatory-preview:")) return objectId;
     if (objectId.startsWith("mc:")) return objectId.replace("mc:", "");
     return objectId;
+  }
+
+  function parseMandatoryPreviewId(value: string): { presetName: string; entryIndex: number } | undefined {
+    if (!value.startsWith("mandatory-preview:")) return undefined;
+    const raw = value.replace("mandatory-preview:", "");
+    const splitIndex = raw.lastIndexOf(":");
+    if (splitIndex <= 0) return undefined;
+    const entryIndex = Number(raw.slice(splitIndex + 1));
+    if (!Number.isInteger(entryIndex) || entryIndex < 0) return undefined;
+    return { presetName: raw.slice(0, splitIndex), entryIndex };
+  }
+
+  function activeMandatoryTitle(): string {
+    return activeMandatoryName.startsWith("mandatory-preview:") ? "Mandatory preset row" : "Mandatory content";
+  }
+
+  function activeMandatorySubtitle(): string {
+    const ref = activeMandatoryEntry;
+    if (ref) return `${ref.presetName} / E${ref.entryIndex}`;
+    return activeMandatoryName;
   }
 
   function targetUsesMandatoryEntry(target: { type: string; args: readonly string[] }, entryName: string): boolean {
@@ -364,11 +406,22 @@
     {:else if activeMandatoryName}
       <div class="object-editor mandatory-editor">
         <div class="editor-header">
-          <span class="editor-title">Mandatory content</span>
-          <span class="editor-subtitle">{activeMandatoryName}</span>
+          <span class="editor-title">{activeMandatoryTitle()}</span>
+          <span class="editor-subtitle">{activeMandatorySubtitle()}</span>
         </div>
 
         <div class="mandatory-focus-form">
+          <label class="field field-large">
+            <span class="field-label">Entry name</span>
+            <input
+              type="text"
+              class="input-lg sid-input"
+              value={activeMandatoryContent?.name ?? ""}
+              onchange={(event) => updateMandatoryName(event.currentTarget.value)}
+              placeholder="required for roads and placement rules"
+            />
+          </label>
+
           <label class="field field-large">
             <span class="field-label">Object SID</span>
             <input
@@ -422,12 +475,12 @@
             <label class="toggle-card">
               <input
                 type="checkbox"
-                checked={!!activeMandatoryContent?.isGuarded}
+                checked={activeMandatoryContent?.isGuarded !== false}
                 onchange={(event) => setMandatoryFlag("isGuarded", event.currentTarget.checked)}
               />
               <span>
                 <strong>Guarded slot</strong>
-                <small>Uses guarded encounter routing.</small>
+                <small>Uses guarded encounter routing. Omitted means guarded.</small>
               </span>
             </label>
 
@@ -525,21 +578,22 @@
           </ul>
         {/if}
 
-        {#if mandatoryObjects.length > 0}
-          <h4 class="list-title">Mandatory content</h4>
-          <ul class="object-list">
-            {#each mandatoryObjects as obj (obj.id)}
-              {@const entryName = obj.mandatoryEntryName ?? mandatoryObjectName(obj.id)}
-              {@const isActive = entryName === activeMandatoryName}
-              <li class="object-item mandatory-item" class:is-active={isActive}>
-                <button class="obj-btn" onclick={() => editor.selectMandatoryContent(entryName)}>
-                  <ObjectIdentity
-                    icon="location_on"
-                    label={obj.label}
-                    detail={obj.detail}
-                    meta="Mandatory"
-                    tone="mandatory"
-                  />
+	        {#if mandatoryObjects.length > 0}
+	          <h4 class="list-title">Mandatory content</h4>
+	          <ul class="object-list">
+	            {#each mandatoryObjects as obj (obj.id)}
+	              {@const entryName = obj.mandatoryEntryName ?? mandatoryObjectName(obj.id)}
+	              {@const isActive = entryName === activeMandatoryName}
+	              {@const isPreview = obj.id.startsWith("mandatory-preview:")}
+	              <li class="object-item mandatory-item" class:is-active={isActive}>
+	                <button class="obj-btn" onclick={() => editor.selectMandatoryContent(entryName)}>
+	                  <ObjectIdentity
+	                    icon="location_on"
+	                    label={obj.label}
+	                    detail={obj.detail}
+	                    meta={isPreview ? "Preset row" : "Mandatory"}
+	                    tone="mandatory"
+	                  />
                 </button>
               </li>
             {/each}

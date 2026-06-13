@@ -45,11 +45,13 @@
       aria-selected={editor.sidebarTab === "settings"} title="Settings"
       onclick={() => editor.sidebarTab = "settings"}>
       <span class="material-symbols-outlined sidebar-tab-icon">settings</span>
+      <span class="sidebar-tab-label">Settings</span>
     </button>
     <button class="sidebar-tab" class:is-active={editor.sidebarTab === "generation"} role="tab"
       aria-selected={editor.sidebarTab === "generation"} title="Generation"
       onclick={() => editor.sidebarTab = "generation"}>
       <span class="material-symbols-outlined sidebar-tab-icon">terrain</span>
+      <span class="sidebar-tab-label">Generation</span>
     </button>
   </div>
   {#if editor.sidebarTab === "generation"}
@@ -116,7 +118,7 @@
   <div class="sidebar-status-row">
     {#if errors.length > 0}
       <div class="validation-marquee is-invalid">
-        {#each errors as error}
+        {#each errors as error (error)}
           <span>{error}</span>
         {/each}
       </div>
@@ -244,29 +246,31 @@
     padding: var(--space-1) var(--space-3);
     font-size: var(--font-size-xs);
   }
-  .validation-marquee.is-valid { color: var(--color-role-connector); }
+  .validation-marquee.is-valid { color: var(--color-muted); }
   .validation-marquee.is-invalid {
     color: var(--color-state-invalid);
-    animation: pulse 1.5s ease-in-out infinite;
   }
   .sidebar-status { color: var(--color-muted); display: block; margin-top: 2px; }
-  @keyframes pulse { 50% { opacity: 0.5; } }
   .sidebar-tabs {
     display: flex;
     border-bottom: var(--line-strong) solid var(--color-line-strong);
     flex-shrink: 0;
   }
   .sidebar-tab {
-    min-width: 2.25rem;
+    min-width: 0;
+    flex: 1 1 0;
     height: 2rem;
-    display: grid;
-    place-items: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-1);
     border: 0;
     border-right: var(--line) solid var(--color-line);
     background: var(--color-panel);
     color: var(--color-muted);
     cursor: pointer;
   }
+  .sidebar-tab:last-child { border-right: 0; }
   .sidebar-tab:hover { background: var(--color-panel-2); color: var(--color-ink); }
   .sidebar-tab.is-active {
     background: var(--color-active);
@@ -274,6 +278,13 @@
     box-shadow: inset 0 calc(var(--line-strong) * -1) 0 var(--color-line-strong);
   }
   .sidebar-tab-icon { font-size: var(--font-size-m); }
+  .sidebar-tab-label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: var(--font-size-sm);
+  }
   .sidebar-body {
     flex: 1;
     min-height: 0;

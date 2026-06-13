@@ -44,37 +44,34 @@
   let unguardedPoolInput = $state("");
   let resourcesPoolInput = $state("");
 
-  // Sync form state when zone changes
-  let lastZoneId = $state("");
+  // Sync form state when the selected zone projection changes. Paste can update
+  // the same zone id, so this must not key only on zone.id.
   $effect(() => {
-    if (zone.id !== lastZoneId) {
-      lastZoneId = zone.id;
-      name = zone.label;
-      size = zone.size;
-      layout = zone.layout ?? "";
-      zoneBiomeType = zone.zoneBiome?.type ?? "";
-      zoneBiomeArgs = [...(zone.zoneBiome?.args ?? [])];
-      contentBiomeType = zone.contentBiome?.type ?? "";
-      contentBiomeArgs = [...(zone.contentBiome?.args ?? [])];
-      metaObjectsBiomeType = zone.metaObjectsBiome?.type ?? "";
-      metaObjectsBiomeArgs = [...(zone.metaObjectsBiome?.args ?? [])];
-      crossroadsPosition = zone.crossroadsPosition;
-      diplomacyModifier = zone.diplomacyModifier;
-      guardCutoffValue = zone.guardCutoffValue;
-      guardMultiplier = zone.guardMultiplier;
-      guardRandomization = zone.guardRandomization;
-      guardWeeklyIncrement = zone.guardWeeklyIncrement;
-      guardReactionDistribution = zone.guardReactionDistribution ?? [];
-      guardedContentValue = zone.guardedContentValue;
-      guardedContentValuePerArea = zone.guardedContentValuePerArea;
-      unguardedContentValue = zone.unguardedContentValue;
-      unguardedContentValuePerArea = zone.unguardedContentValuePerArea;
-      resourcesValue = zone.resourcesValue;
-      resourcesValuePerArea = zone.resourcesValuePerArea;
-      guardedPools = [...(zone.guardedPools ?? [])];
-      unguardedPools = [...(zone.unguardedPools ?? [])];
-      resourcesPools = [...(zone.resourcesPools ?? [])];
-    }
+    name = zone.label;
+    size = zone.size;
+    layout = zone.layout ?? "";
+    zoneBiomeType = zone.zoneBiome?.type ?? "";
+    zoneBiomeArgs = [...(zone.zoneBiome?.args ?? [])];
+    contentBiomeType = zone.contentBiome?.type ?? "";
+    contentBiomeArgs = [...(zone.contentBiome?.args ?? [])];
+    metaObjectsBiomeType = zone.metaObjectsBiome?.type ?? "";
+    metaObjectsBiomeArgs = [...(zone.metaObjectsBiome?.args ?? [])];
+    crossroadsPosition = zone.crossroadsPosition;
+    diplomacyModifier = zone.diplomacyModifier;
+    guardCutoffValue = zone.guardCutoffValue;
+    guardMultiplier = zone.guardMultiplier;
+    guardRandomization = zone.guardRandomization;
+    guardWeeklyIncrement = zone.guardWeeklyIncrement;
+    guardReactionDistribution = zone.guardReactionDistribution ?? [];
+    guardedContentValue = zone.guardedContentValue;
+    guardedContentValuePerArea = zone.guardedContentValuePerArea;
+    unguardedContentValue = zone.unguardedContentValue;
+    unguardedContentValuePerArea = zone.unguardedContentValuePerArea;
+    resourcesValue = zone.resourcesValue;
+    resourcesValuePerArea = zone.resourcesValuePerArea;
+    guardedPools = [...(zone.guardedPools ?? [])];
+    unguardedPools = [...(zone.unguardedPools ?? [])];
+    resourcesPools = [...(zone.resourcesPools ?? [])];
   });
 
   function buildDraft(): ZoneUpdateDraft {
@@ -167,6 +164,12 @@
   function removePool(list: string[], index: number): string[] {
     return list.filter((_, i) => i !== index);
   }
+
+  function poolLabel(poolId: string, options: typeof catalogOptions.contentPools): string {
+    const option = options.find((entry) => entry.id === poolId);
+    if (!option || option.label === poolId) return "";
+    return option.label;
+  }
 </script>
 
 {#if zone.id === "__no_zone__"}
@@ -178,8 +181,8 @@
     </div>
 
     <!-- Identity and layout -->
-  <details open class="form-section" id="identity-and-layout">
-    <summary class="form-section-title">Identity and layout</summary>
+  <details open class="form-section editor-section" id="identity-and-layout">
+    <summary class="form-section-title editor-section-title">Identity and layout</summary>
     <label class="control-row">
       <span>Name</span>
       <input type="text" bind:value={name} onchange={apply} placeholder={ph["zf-name"]} />
@@ -203,8 +206,8 @@
 
     <!-- Biome rules -->
   </details>
-  <details open class="form-section" id="biome-rules">
-    <summary class="form-section-title">Biome rules</summary>
+  <details open class="form-section editor-section" id="biome-rules">
+    <summary class="form-section-title editor-section-title">Biome rules</summary>
     <label class="control-row">
       <span>Zone biome type</span>
       <select bind:value={zoneBiomeType} onchange={apply}>
@@ -399,8 +402,8 @@
 
     <!-- Guard settings -->
   </details>
-  <details open class="form-section" id="guard-settings">
-    <summary class="form-section-title">Guard settings</summary>
+  <details open class="form-section editor-section" id="guard-settings">
+    <summary class="form-section-title editor-section-title">Guard settings</summary>
     <GuardFields
       showZoneFields={true}
       bind:guardCutoffValue={guardCutoffValue}
@@ -413,8 +416,8 @@
 
     <!-- Content budgets -->
   </details>
-  <details open class="form-section" id="content-budgets">
-    <summary class="form-section-title">Content budgets</summary>
+  <details open class="form-section editor-section" id="content-budgets">
+    <summary class="form-section-title editor-section-title">Content budgets</summary>
     <label class="control-row">
       <span>Guarded value</span>
       <NumberField bind:value={guardedContentValue} oncommit={apply} placeholder={ph["zf-guarded-value"]} min={0} />
@@ -442,26 +445,33 @@
 
     <!-- Pool and preset alternatives -->
   </details>
-  <details open class="form-section" id="pool-and-preset-alternatives">
-    <summary class="form-section-title">Pool and preset alternatives</summary>
+  <details open class="form-section editor-section" id="pool-and-preset-alternatives">
+    <summary class="form-section-title editor-section-title">Pool and preset alternatives</summary>
 
     <!-- Guarded pools -->
     <div class="control-row stack">
-      <span>Guarded pools</span>
+      <span>Guarded pool alternatives</span>
       <div class="multi-picker">
         <datalist id="guarded-pool-options">
           {#each catalogOptions.guardedContentPools as p (p.id)}<option value={p.id} label={p.label}></option>{/each}
         </datalist>
         <div class="multi-picker-entry">
-          <input type="search" list="guarded-pool-options" bind:value={guardedPoolInput} placeholder={ph["pf-pool-id"]} />
+          <input type="search" list="guarded-pool-options" bind:value={guardedPoolInput} placeholder="Search guarded pool id" />
           <button class="button button-secondary" onclick={() => { guardedPools = addPool(guardedPools, guardedPoolInput); guardedPoolInput = ""; apply(); }}>Add</button>
         </div>
-        <div class="picker-token-list">
+        <div class="pool-alternative-list" aria-label="Guarded pool alternatives">
           {#each guardedPools as pool, i (pool)}
-            <button type="button" class="picker-token" onclick={() => { guardedPools = removePool(guardedPools, i); apply(); }} title="Remove {pool}">
-              <strong>{pool}</strong>
-              <span class="material-symbols-outlined picker-token-remove">close</span>
-            </button>
+            {@const label = poolLabel(pool, catalogOptions.guardedContentPools)}
+            <div class="pool-alternative">
+              <span class="pool-alternative-index">Alt {i + 1}</span>
+              <span class="pool-alternative-main">
+                <strong>{pool}</strong>
+                {#if label}<small>{label}</small>{/if}
+              </span>
+              <button type="button" class="pool-remove-button" onclick={() => { guardedPools = removePool(guardedPools, i); apply(); }} title="Remove {pool}" aria-label="Remove {pool}">
+                <span class="material-symbols-outlined" aria-hidden="true">close</span>
+              </button>
+            </div>
           {/each}
         </div>
       </div>
@@ -469,21 +479,28 @@
 
     <!-- Unguarded pools -->
     <div class="control-row stack">
-      <span>Unguarded pools</span>
+      <span>Unguarded pool alternatives</span>
       <div class="multi-picker">
         <datalist id="unguarded-pool-options">
           {#each catalogOptions.unguardedContentPools as p (p.id)}<option value={p.id} label={p.label}></option>{/each}
         </datalist>
         <div class="multi-picker-entry">
-          <input type="search" list="unguarded-pool-options" bind:value={unguardedPoolInput} placeholder={ph["pf-pool-id"]} />
+          <input type="search" list="unguarded-pool-options" bind:value={unguardedPoolInput} placeholder="Search unguarded pool id" />
           <button class="button button-secondary" onclick={() => { unguardedPools = addPool(unguardedPools, unguardedPoolInput); unguardedPoolInput = ""; apply(); }}>Add</button>
         </div>
-        <div class="picker-token-list">
+        <div class="pool-alternative-list" aria-label="Unguarded pool alternatives">
           {#each unguardedPools as pool, i (pool)}
-            <button type="button" class="picker-token" onclick={() => { unguardedPools = removePool(unguardedPools, i); apply(); }} title="Remove {pool}">
-              <strong>{pool}</strong>
-              <span class="material-symbols-outlined picker-token-remove">close</span>
-            </button>
+            {@const label = poolLabel(pool, catalogOptions.unguardedContentPools)}
+            <div class="pool-alternative">
+              <span class="pool-alternative-index">Alt {i + 1}</span>
+              <span class="pool-alternative-main">
+                <strong>{pool}</strong>
+                {#if label}<small>{label}</small>{/if}
+              </span>
+              <button type="button" class="pool-remove-button" onclick={() => { unguardedPools = removePool(unguardedPools, i); apply(); }} title="Remove {pool}" aria-label="Remove {pool}">
+                <span class="material-symbols-outlined" aria-hidden="true">close</span>
+              </button>
+            </div>
           {/each}
         </div>
       </div>
@@ -491,25 +508,33 @@
 
     <!-- Resource pools -->
     <div class="control-row stack">
-      <span>Resource pools</span>
+      <span>Resource pool alternatives</span>
       <div class="multi-picker">
         <datalist id="resources-pool-options">
           {#each catalogOptions.resourceContentPools as p (p.id)}<option value={p.id} label={p.label}></option>{/each}
         </datalist>
         <div class="multi-picker-entry">
-          <input type="search" list="resources-pool-options" bind:value={resourcesPoolInput} placeholder={ph["pf-pool-id"]} />
+          <input type="search" list="resources-pool-options" bind:value={resourcesPoolInput} placeholder="Search resource pool id" />
           <button class="button button-secondary" onclick={() => { resourcesPools = addPool(resourcesPools, resourcesPoolInput); resourcesPoolInput = ""; apply(); }}>Add</button>
         </div>
-        <div class="picker-token-list">
+        <div class="pool-alternative-list" aria-label="Resource pool alternatives">
           {#each resourcesPools as pool, i (pool)}
-            <button type="button" class="picker-token" onclick={() => { resourcesPools = removePool(resourcesPools, i); apply(); }} title="Remove {pool}">
-              <strong>{pool}</strong>
-              <span class="material-symbols-outlined picker-token-remove">close</span>
-            </button>
+            {@const label = poolLabel(pool, catalogOptions.resourceContentPools)}
+            <div class="pool-alternative">
+              <span class="pool-alternative-index">Alt {i + 1}</span>
+              <span class="pool-alternative-main">
+                <strong>{pool}</strong>
+                {#if label}<small>{label}</small>{/if}
+              </span>
+              <button type="button" class="pool-remove-button" onclick={() => { resourcesPools = removePool(resourcesPools, i); apply(); }} title="Remove {pool}" aria-label="Remove {pool}">
+                <span class="material-symbols-outlined" aria-hidden="true">close</span>
+              </button>
+            </div>
           {/each}
         </div>
       </div>
     </div>
+    <p class="control-note">Each field is a random alternative list. Generation selects one guarded pool, one unguarded pool, and one resource pool from this zone.</p>
     <div class="form-notice">
       <span class="material-symbols-outlined" style="font-size: var(--font-size-m)">open_in_new</span>
       <span>Mandatory presets & count limits are edited in the <strong>Pools</strong> tab.</span>
@@ -532,43 +557,6 @@
     gap: var(--space-2);
     padding: var(--space-2) var(--space-3);
     border-bottom: var(--line) solid var(--color-line);
-  }
-  .form-section {
-    border-bottom: var(--line) solid var(--color-line);
-  }
-  .form-section summary {
-    list-style: none;
-    cursor: pointer;
-    user-select: none;
-  }
-  .form-section summary::-webkit-details-marker {
-    display: none;
-  }
-  .form-section-title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--space-2) var(--space-3);
-    border-bottom: var(--line) solid var(--color-line);
-    background: var(--color-panel-2);
-    font-size: var(--font-size-xs);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--color-muted);
-    font-weight: 500;
-    margin: 0;
-    position: sticky;
-    top: 0;
-    z-index: 1;
-  }
-  .form-section-title::after {
-    content: "expand_more";
-    font-family: var(--font-icon);
-    font-size: var(--font-size-m);
-    transition: transform 0.15s;
-  }
-  .form-section[open] > .form-section-title::after {
-    transform: rotate(180deg);
   }
   .control-row {
     display: grid;
@@ -639,21 +627,70 @@
   .multi-picker { display: grid; gap: var(--space-1); }
   .multi-picker-entry { display: flex; gap: var(--space-1); }
   .multi-picker-entry input { flex: 1; }
-  .picker-token-list { display: flex; flex-wrap: wrap; gap: var(--space-1); }
-  .picker-token {
+  .pool-alternative-list {
+    display: grid;
+    gap: var(--space-1);
+  }
+  .pool-alternative {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: stretch;
+    border: var(--line) solid var(--color-line);
+    background: var(--color-panel);
+  }
+  .pool-alternative-index {
     display: inline-flex;
     align-items: center;
-    gap: 2px;
-    padding: 1px var(--space-1);
+    padding: 0 var(--space-2);
+    border-right: var(--line) solid var(--color-line);
     background: var(--color-panel-2);
-    border: var(--line) solid var(--color-line);
-    font: inherit;
+    color: var(--color-muted);
+    font-family: var(--font-mono);
     font-size: var(--font-size-xs);
-    cursor: pointer;
+    white-space: nowrap;
   }
-  .picker-token:hover { background: var(--color-line); }
-  .picker-token strong { font-family: var(--font-mono); }
-  .picker-token-remove { font-size: var(--font-size-sm); opacity: 0.6; }
+  .pool-alternative-main {
+    min-width: 0;
+    display: grid;
+    gap: 1px;
+    padding: var(--space-1) var(--space-2);
+  }
+  .pool-alternative-main strong,
+  .pool-alternative-main small {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .pool-alternative-main strong {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    color: var(--color-ink);
+  }
+  .pool-alternative-main small {
+    color: var(--color-muted);
+    font-size: var(--font-size-xs);
+  }
+  .pool-remove-button {
+    width: 1.75rem;
+    min-height: 100%;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-left: var(--line) solid var(--color-line);
+    background: var(--color-panel);
+    color: var(--color-muted);
+    cursor: pointer;
+    padding: 0;
+  }
+  .pool-remove-button:hover {
+    background: var(--color-panel-2);
+    color: var(--color-state-invalid);
+  }
+  .pool-remove-button .material-symbols-outlined {
+    font-size: var(--font-size-m);
+  }
   .form-actions {
     display: flex;
     gap: var(--space-2);

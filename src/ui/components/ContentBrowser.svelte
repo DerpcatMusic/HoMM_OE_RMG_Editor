@@ -34,7 +34,7 @@
   function buildEntries(opts: typeof catalogOptions): BrowserEntry[] {
     return [
       ...opts.rmgContent.map((e) => ({ id: e.id, label: e.label, scope: "content" as const, category: inferContentCategory(e), draggable: true })),
-      ...opts.contentPools.map((e) => ({ id: e.id, label: e.label, scope: "pools" as const, category: inferPoolCategory(e), draggable: false })),
+      ...opts.contentPools.map((e) => ({ id: e.id, label: e.label, scope: "pools" as const, category: inferPoolCategory(e), draggable: true })),
       ...opts.biomes.map((e) => ({ id: e.id, label: e.label, scope: "biomes" as const, category: "Biome", draggable: false })),
       ...opts.factions.map((e) => ({ id: e.id, label: e.label, scope: "factions" as const, category: "Faction", draggable: false })),
     ];
@@ -70,7 +70,11 @@
       return;
     }
     e.dataTransfer?.setData("text/plain", entry.id);
-    e.dataTransfer?.setData("application/x-rmg-content-sid", entry.id);
+    if (entry.scope === "content") {
+      e.dataTransfer?.setData("application/x-rmg-content-sid", entry.id);
+    } else if (entry.scope === "pools") {
+      e.dataTransfer?.setData("application/x-rmg-pool-id", entry.id);
+    }
     if (e.dataTransfer) e.dataTransfer.effectAllowed = "copy";
   }
 
@@ -101,7 +105,7 @@
     <div class="control-row">
       <span>Category</span>
       <select bind:value={category}>
-        {#each categories as c}
+        {#each categories as c (c)}
           <option value={c}>{c}</option>
         {/each}
       </select>

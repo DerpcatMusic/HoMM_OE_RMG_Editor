@@ -1,6 +1,11 @@
 <script lang="ts">
 
 
+  const MIN_SIDEBAR_WIDTH = 120;
+  const MAX_SIDEBAR_WIDTH = 400;
+  const MIN_INSPECTOR_WIDTH = 448;
+  const MAX_INSPECTOR_WIDTH = 720;
+
   let { panel, width = $bindable() }: { panel: "sidebar" | "inspector"; width: number } = $props();
 
   let dragging = $state(false);
@@ -19,9 +24,9 @@
     if (!dragging) return;
     const delta = e.clientX - startX;
     if (panel === "sidebar") {
-      width = Math.max(120, Math.min(400, startWidth + delta));
+      width = Math.max(MIN_SIDEBAR_WIDTH, Math.min(MAX_SIDEBAR_WIDTH, startWidth + delta));
     } else {
-      width = Math.max(200, Math.min(600, startWidth - delta));
+      width = Math.max(MIN_INSPECTOR_WIDTH, Math.min(MAX_INSPECTOR_WIDTH, startWidth - delta));
     }
   }
 
@@ -30,20 +35,20 @@
   }
 </script>
 
-<div
+<button
+  type="button"
   class="shell-resize-handle shell-resize-handle-{panel}"
-  role="separator"
-  tabindex="0"
-  aria-orientation="vertical"
   aria-label={panel === "sidebar" ? "Resize sidebar" : "Resize inspector"}
   onpointerdown={onpointerdown}
   onpointermove={onpointermove}
   onpointerup={onpointerup}
-></div>
+></button>
 
 <style>
   .shell-resize-handle {
     width: var(--resize-handle-width);
+    padding: 0;
+    border: 0;
     cursor: col-resize;
     background: var(--color-line);
     user-select: none;

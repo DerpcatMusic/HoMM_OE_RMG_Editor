@@ -1,4 +1,4 @@
-import type { Connection, MainObject, MandatoryContentPreset, RoadConfig, Zone } from "../../core/rmg/rmgTypes.js";
+import type { Connection, ContentCountLimitPreset, MainObject, MandatoryContentPreset, RoadConfig, Zone } from "../../core/rmg/rmgTypes.js";
 import type { CanvasPosition, ConnectionUpdateDraft } from "./editorSession.js";
 
 export type ClipboardEntry =
@@ -12,7 +12,9 @@ export interface ZoneClipboardData {
   layout: string | undefined;
   mainObjects: readonly MainObject[];
   roads: readonly RoadConfig[];
+  incidentConnections: readonly Connection[];
   mandatoryPresetDefinitions: readonly MandatoryContentPreset[];
+  contentCountLimitPresetDefinitions: readonly ContentCountLimitPreset[];
   zoneObjectPositions: Readonly<Record<string, CanvasPosition>>;
   zoneBiomeType: string;
   zoneBiomeArgs: readonly string[];
@@ -42,6 +44,8 @@ export interface ZoneClipboardData {
 
 export interface CopyZoneOptions {
   mandatoryPresets?: readonly MandatoryContentPreset[];
+  contentCountLimitPresets?: readonly ContentCountLimitPreset[];
+  incidentConnections?: readonly Connection[];
   zoneObjectPositions?: Readonly<Record<string, CanvasPosition>>;
 }
 
@@ -70,8 +74,12 @@ export function getClipboard(): ClipboardEntry | undefined {
 
 export function copyZone(zone: Zone, options: CopyZoneOptions = {}): void {
   const mandatoryPresetNames = new Set(zone.mandatoryContent ?? []);
+  const countLimitPresetNames = new Set(zone.contentCountLimits ?? []);
   const mandatoryPresetDefinitions = (options.mandatoryPresets ?? [])
     .filter((preset) => preset.name !== undefined && mandatoryPresetNames.has(preset.name))
+    .map((preset) => cloneValue(preset));
+  const contentCountLimitPresetDefinitions = (options.contentCountLimitPresets ?? [])
+    .filter((preset) => preset.name !== undefined && countLimitPresetNames.has(preset.name))
     .map((preset) => cloneValue(preset));
   clipboard = {
     kind: "zone",
@@ -82,7 +90,9 @@ export function copyZone(zone: Zone, options: CopyZoneOptions = {}): void {
       layout: zone.layout,
       mainObjects: cloneValue(zone.mainObjects ?? []),
       roads: cloneValue(zone.roads ?? []),
+      incidentConnections: cloneValue(options.incidentConnections ?? []),
       mandatoryPresetDefinitions,
+      contentCountLimitPresetDefinitions,
       zoneObjectPositions: cloneValue(options.zoneObjectPositions ?? {}),
       zoneBiomeType: zone.zoneBiome?.type ?? "",
       zoneBiomeArgs: zone.zoneBiome?.args ?? [],

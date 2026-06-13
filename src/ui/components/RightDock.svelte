@@ -12,10 +12,27 @@
   class="right-dock"
   value={editor.rightDockTab}
   onValueChange={setRightDockTab}
-  orientation="vertical"
   activationMode="manual"
   aria-label="Right tools"
 >
+  <Tabs.List class="right-dock-tabs" aria-label="Right tool panels">
+    <Tabs.Trigger
+      class="right-dock-tab"
+      value="inspector"
+      title="Inspector"
+    >
+      <span class="material-symbols-outlined" aria-hidden="true">tune</span>
+      <span class="right-dock-tab-label">Inspector</span>
+    </Tabs.Trigger>
+    <Tabs.Trigger
+      class="right-dock-tab"
+      value="browser"
+      title="Catalog"
+    >
+      <span class="material-symbols-outlined" aria-hidden="true">manage_search</span>
+      <span class="right-dock-tab-label">Catalog</span>
+    </Tabs.Trigger>
+  </Tabs.List>
   <div class="right-dock-panel">
     {#if editor.rightDockTab === "browser"}
       <ContentBrowser />
@@ -23,30 +40,12 @@
       <Inspector />
     {/if}
   </div>
-  <Tabs.List class="right-dock-rail" aria-label="Right tool panels">
-    <Tabs.Trigger
-      class="right-dock-tab"
-      value="inspector"
-      title="Inspector"
-    >
-      <span class="material-symbols-outlined">tune</span>
-      <span class="right-dock-tab-label">Inspector</span>
-    </Tabs.Trigger>
-    <Tabs.Trigger
-      class="right-dock-tab"
-      value="browser"
-      title="Browser"
-    >
-      <span class="material-symbols-outlined">manage_search</span>
-      <span class="right-dock-tab-label">Browser</span>
-    </Tabs.Trigger>
-  </Tabs.List>
 </Tabs.Root>
 
 <style>
   :global(.right-dock) {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) var(--rail-width);
+    grid-template-rows: auto minmax(0, 1fr);
     border-left: var(--line-strong) solid var(--color-line-strong);
     background: var(--color-panel);
     min-width: 0;
@@ -55,36 +54,35 @@
     grid-row: 1;
     overflow: hidden;
   }
-  :global(.right-dock-rail) {
-    min-height: 0;
-    display: grid;
-    align-content: start;
-    border-left: var(--line-strong) solid var(--color-line-strong);
+  :global(.right-dock-tabs) {
+    min-width: 0;
+    display: flex;
+    border-bottom: var(--line-strong) solid var(--color-line-strong);
     background: var(--color-panel-2);
   }
   :global(.right-dock-tab) {
     min-width: 0;
-    min-height: 3.5rem;
-    display: grid;
-    place-items: center;
-    gap: 2px;
-    padding: var(--space-1) 0;
+    min-height: 2rem;
+    flex: 1 1 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-1);
+    padding: 0 var(--space-2);
     border: 0;
-    border-bottom: var(--line) solid var(--color-line-strong);
+    border-right: var(--line) solid var(--color-line-strong);
     background: var(--color-panel);
     color: var(--color-ink);
     cursor: pointer;
   }
+  :global(.right-dock-tab:last-child) { border-right: 0; }
   :global(.right-dock-tab:hover) { background: var(--color-panel-2); }
   :global(.right-dock-tab[data-state="active"]) {
     background: var(--color-active);
-    box-shadow: inset calc(var(--line-strong) * -1) 0 0 var(--color-line-strong);
+    box-shadow: inset 0 calc(var(--line-strong) * -1) 0 var(--color-line-strong);
   }
   :global(.right-dock-tab-label) {
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
     font-size: var(--font-size-sm);
-    letter-spacing: 0.04em;
   }
   .right-dock-panel {
     min-width: 0;

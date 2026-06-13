@@ -9,6 +9,7 @@ import {
   canRedoSession,
   canUndoSession,
   createInitialEditorSession,
+  duplicateZoneByName,
   moveZoneInSession,
   moveZoneObjectInSession,
   pasteZoneClipboardIntoSelectedZone,
@@ -182,6 +183,38 @@ const roadProjection = projectTemplateToShellData(
 );
 assert.equal(roadProjection.selectedZone?.zoneRoads.length, 1);
 assert.equal(roadProjection.selectedZone?.zoneRoads[0]?.type, "Dirt");
+
+const roadTargetProjection = projectTemplateToShellData(
+  {
+    name: "Road Target Connection Probe",
+    variants: [
+      {
+        zones: [
+          {
+            name: "Road-Zone",
+            mainObjects: [{ type: "City" }],
+          },
+          { name: "Direct-Zone" },
+          { name: "Proximity-Zone" },
+          { name: "Unnamed-Zone" },
+        ],
+        connections: [
+          { name: "direct_exit", from: "Road-Zone", to: "Direct-Zone", connectionType: "Direct" },
+          { name: "proximity_link", from: "Road-Zone", to: "Proximity-Zone", connectionType: "Proximity" },
+          { from: "Road-Zone", to: "Unnamed-Zone", connectionType: "Default" },
+        ],
+      },
+    ],
+  },
+  0,
+  "Road-Zone",
+  undefined,
+);
+assert.deepEqual(
+  roadTargetProjection.selectedZone?.zoneObjects.filter((object) => object.kind === "connection").map((object) => object.label),
+  ["direct_exit"],
+  "zone-edit connection anchors only include named non-proximity road targets",
+);
 
 let session = createInitialEditorSession();
 const initialZoneCount = session.template.variants?.[0]?.zones?.length ?? 0;
@@ -434,7 +467,14 @@ pasteSession.template.mandatoryContent = [
     ],
   },
 ];
+pasteSession.template.contentCountLimits = [
+  {
+    name: "Spawn-A_limits",
+    limits: [{ sid: "mine_gold", maxCount: 1 }],
+  },
+];
 pasteSourceZone.mandatoryContent = ["Spawn-A_mandatory"];
+pasteSourceZone.contentCountLimits = ["Spawn-A_limits"];
 pasteSourceZone.roads = [
   {
     type: "Stone",
@@ -449,6 +489,10 @@ pasteSourceZone.roads = [
 ];
 copyZone(pasteSourceZone, {
   mandatoryPresets: pasteSession.template.mandatoryContent,
+  contentCountLimitPresets: pasteSession.template.contentCountLimits,
+  incidentConnections: (pasteVariant.connections ?? []).filter((connection) =>
+    connection.from === "Spawn-A" || connection.to === "Spawn-A"
+  ),
   zoneObjectPositions: {
     "main:0": { x: 20, y: 30 },
     "mandatory:gold_mine": { x: 56.5, y: 42.25 },
@@ -457,6 +501,9 @@ copyZone(pasteSourceZone, {
 });
 const copiedZoneEntry = getClipboard();
 assert.ok(copiedZoneEntry?.kind === "zone");
+pasteVariant.connections = (pasteVariant.connections ?? []).filter((connection) =>
+  connection.from !== "Spawn-B" && connection.to !== "Spawn-B"
+);
 pasteSession = selectZone(pasteSession, "Spawn-B");
 pasteSession = pasteZoneClipboardIntoSelectedZone(pasteSession, copiedZoneEntry.data);
 const pastedZone = pasteSession.template.variants?.[0]?.zones?.find((zone) => zone.name === "Spawn-B");
@@ -466,6 +513,13 @@ assert.notEqual(pastedZone?.mandatoryContent?.[0], "Spawn-A_mandatory");
 const pastedPreset = pasteSession.template.mandatoryContent?.find((preset) => preset.name === pastedZone?.mandatoryContent?.[0]);
 assert.equal(pastedPreset?.content?.[0]?.name, "gold_mine");
 assert.equal(pastedPreset?.content?.[0]?.owner, "Player2");
+assert.equal(pastedZone?.contentCountLimits?.length, 1);
+assert.notEqual(pastedZone?.contentCountLimits?.[0], "Spawn-A_limits");
+const pastedCountLimit = pasteSession.template.contentCountLimits?.find((preset) => preset.name === pastedZone?.contentCountLimits?.[0]);
+assert.equal(pastedCountLimit?.limits?.[0]?.maxCount, 1);
+const pastedConnection = pasteSession.template.variants?.[0]?.connections?.find((connection) => connection.name === "Spawn-B-Center");
+assert.equal(pastedConnection?.from, "Spawn-B");
+assert.equal(pastedConnection?.to, "Center");
 assert.equal(pastedZone?.roads?.length, 2);
 assert.deepEqual(pastedZone?.roads?.[0]?.to, { type: "MandatoryContent", args: ["gold_mine"] });
 assert.deepEqual(pastedZone?.roads?.[1]?.to, { type: "Connection", args: ["Spawn-B-Center"] });
@@ -539,6 +593,68 @@ const ownerOnlyPastedZone = ownerOnlyPasteSession.template.variants?.[0]?.zones?
 const ownerOnlyPastedPreset = ownerOnlyPasteSession.template.mandatoryContent?.find((preset) => preset.name === ownerOnlyPastedZone?.mandatoryContent?.[0]);
 assert.equal(ownerOnlyPastedZone?.mainObjects?.[0]?.owner, "Player2");
 assert.equal(ownerOnlyPastedPreset?.content?.[0]?.owner, "Player2");
+
+let duplicateZoneSession = createInitialEditorSession();
+const duplicateZoneVariant = duplicateZoneSession.template.variants?.[0];
+const duplicateSourceZone = duplicateZoneVariant?.zones?.find((zone) => zone.name === "Spawn-A");
+assert.ok(duplicateZoneVariant);
+assert.ok(duplicateSourceZone);
+duplicateZoneSession.template.mandatoryContent = [
+  {
+    name: "Spawn-A_duplicate_mandatory",
+    content: [
+      {
+        name: "gold_mine",
+        sid: "mine_gold",
+        isMine: true,
+        owner: "Player1",
+        rules: [{ type: "Connection", args: ["Spawn-A-Center"], targetMin: 1, targetMax: 1 }],
+      },
+    ],
+  },
+];
+duplicateZoneSession.template.contentCountLimits = [
+  {
+    name: "Spawn-A_duplicate_limits",
+    limits: [{ sid: "mine_gold", maxCount: 1 }],
+  },
+];
+duplicateSourceZone.mandatoryContent = ["Spawn-A_duplicate_mandatory"];
+duplicateSourceZone.contentCountLimits = ["Spawn-A_duplicate_limits"];
+duplicateSourceZone.roads = [
+  {
+    type: "Stone",
+    from: { type: "MainObject", args: ["0"] },
+    to: { type: "MandatoryContent", args: ["gold_mine"] },
+  },
+  {
+    type: "Dirt",
+    from: { type: "MandatoryContent", args: ["gold_mine"] },
+    to: { type: "Connection", args: ["Spawn-A-Center"] },
+  },
+];
+duplicateZoneSession = moveZoneObjectInSession(duplicateZoneSession, "Spawn-A", "mandatory:gold_mine", { x: 44, y: 55 });
+duplicateZoneSession = moveZoneObjectInSession(duplicateZoneSession, "Spawn-A", "connection:Spawn-A-Center", { x: 80, y: 50 });
+duplicateZoneSession = duplicateZoneByName(duplicateZoneSession, "Spawn-A", { x: 15, y: 20 });
+const duplicatedZone = duplicateZoneSession.template.variants?.[0]?.zones?.find((zone) => zone.name === "Spawn-A-copy");
+assert.ok(duplicatedZone);
+assert.equal(duplicatedZone.mainObjects?.[0]?.spawn, "Player1");
+assert.equal(duplicatedZone.mandatoryContent?.length, 1);
+assert.notEqual(duplicatedZone.mandatoryContent?.[0], "Spawn-A_duplicate_mandatory");
+const duplicatedMandatoryPreset = duplicateZoneSession.template.mandatoryContent?.find((preset) => preset.name === duplicatedZone.mandatoryContent?.[0]);
+assert.equal(duplicatedMandatoryPreset?.content?.[0]?.owner, "Player1");
+assert.deepEqual(duplicatedMandatoryPreset?.content?.[0]?.rules?.[0]?.args, ["Spawn-A-copy-Center"]);
+assert.equal(duplicatedZone.contentCountLimits?.length, 1);
+assert.notEqual(duplicatedZone.contentCountLimits?.[0], "Spawn-A_duplicate_limits");
+const duplicatedCountLimitPreset = duplicateZoneSession.template.contentCountLimits?.find((preset) => preset.name === duplicatedZone.contentCountLimits?.[0]);
+assert.equal(duplicatedCountLimitPreset?.limits?.[0]?.maxCount, 1);
+const duplicatedConnection = duplicateZoneSession.template.variants?.[0]?.connections?.find((connection) => connection.name === "Spawn-A-copy-Center");
+assert.equal(duplicatedConnection?.from, "Spawn-A-copy");
+assert.equal(duplicatedConnection?.to, "Center");
+assert.deepEqual(duplicatedZone.roads?.[1]?.to, { type: "Connection", args: ["Spawn-A-copy-Center"] });
+assert.deepEqual(duplicateZoneSession.canvasPositions["Spawn-A-copy"], { x: 22, y: 26 });
+assert.deepEqual(duplicateZoneSession.zoneObjectPositions["Spawn-A-copy"]?.["mandatory:gold_mine"], { x: 44, y: 55 });
+assert.deepEqual(duplicateZoneSession.zoneObjectPositions["Spawn-A-copy"]?.["connection:Spawn-A-copy-Center"], { x: 80, y: 50 });
 
 let reassignOwnerSession = createInitialEditorSession();
 const reassignOwnerVariant = reassignOwnerSession.template.variants?.[0];

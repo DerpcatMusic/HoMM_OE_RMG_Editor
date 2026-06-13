@@ -100,7 +100,7 @@ export interface ShellConnectionItem {
 
 export interface ShellZoneObjectItem {
   id: string;
-  kind: "main" | "connection" | "crossroads" | "mandatory" | "roadTarget";
+  kind: "main" | "connection" | "crossroads" | "mandatory" | "mandatoryPreset" | "roadTarget";
   index?: number;
   label: string;
   type: string;
@@ -126,6 +126,8 @@ export interface ShellZoneObjectItem {
   mandatoryEntryName?: string;
   mandatorySid?: string;
   mandatoryPresetNames?: readonly string[];
+  roadTargetable?: boolean;
+  connectionType?: string;
 }
 
 export interface ShellZoneRoadItem {

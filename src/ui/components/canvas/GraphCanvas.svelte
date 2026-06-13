@@ -22,23 +22,30 @@
   let connDragging = $state(false);
   let connFromZone = $state<string | null>(null);
   let connMousePos = $state<CanvasPoint>({ x: 0, y: 0 });
+  let connSnapZoneId = $state<string | null>(null);
 
   const contextMenu = createContextMenuState();
   let ctxMenu = $derived(contextMenu.current);
 
   function stageRect(event: PointerEvent) {
-    return (event.currentTarget as HTMLElement).closest(".map-stage")!.getBoundingClientRect();
+    return stageElement(event).getBoundingClientRect();
+  }
+
+  function stageElement(event: PointerEvent): HTMLElement {
+    return (event.currentTarget as HTMLElement).closest(".map-stage")!;
   }
 
   function zonePointerDown(event: PointerEvent, zone: ShellZoneItem) {
     if (event.button !== 0) return;
     const rect = stageRect(event);
     const point = pointerPercent(event, rect);
+    (event.currentTarget as HTMLElement).setPointerCapture?.(event.pointerId);
 
     if (event.ctrlKey) {
       connDragging = true;
       connFromZone = zone.label;
       connMousePos = point;
+      connSnapZoneId = null;
       event.preventDefault();
       return;
     }
@@ -51,16 +58,31 @@
     event.preventDefault();
   }
 
+  function zonePointerMove(event: PointerEvent) {
+    if (!dragging && !connDragging) return;
+    stagePointerMove(event);
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
+  function zonePointerUp(event: PointerEvent) {
+    if (!dragging && !connDragging) return;
+    stagePointerUp(event);
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
   function zoneContextMenu(event: MouseEvent, zone: ShellZoneItem) {
     contextMenu.open(event, [
       { label: "Select", icon: "target", onClick: () => editor.selectZoneByName(zone.label) },
+      { label: "Duplicate zone", icon: "content_copy", onClick: () => editor.duplicateZone(zone.label) },
       ...PLAYER_REFS.map((player) => ({
         label: `Assign ${player}`,
         icon: "person",
         onClick: () => editor.reassignOwner(zone.label, player),
       })),
       { label: "Assign Neutral", icon: "remove_circle_outline", onClick: () => editor.reassignOwner(zone.label, "Neutral") },
-      { label: "Delete zone", icon: "delete", onClick: () => editor.deleteZone(zone.label) },
+      { label: "Delete zone", icon: "delete", variant: "danger", onClick: () => editor.deleteZone(zone.label) },
     ]);
   }
 
@@ -72,17 +94,18 @@
         icon: "swap_horiz",
         onClick: () => editor.changeConnectionType(connection.id, type),
       })),
-      { label: "Delete connection", icon: "delete", onClick: () => editor.deleteConnection(connection.id) },
+      { label: "Delete connection", icon: "delete", variant: "danger", onClick: () => editor.deleteConnection(connection.id) },
     ]);
   }
 
   function stagePointerMove(event: PointerEvent) {
-    const point = pointerPercent(event, (event.currentTarget as HTMLElement).getBoundingClientRect());
+    const point = pointerPercent(event, stageElement(event).getBoundingClientRect());
     if (dragging && dragZone) {
       dragPos = clampCanvasPoint({ x: point.x - dragOffset.x, y: point.y - dragOffset.y }, { minX: 2, maxX: 88, minY: 2, maxY: 88 });
     }
     if (connDragging) {
       connMousePos = point;
+      connSnapZoneId = nearestZoneId(point, connFromZone);
     }
   }
 
@@ -94,12 +117,13 @@
     }
     if (connDragging && connFromZone) {
       const el = document.elementFromPoint(event.clientX, event.clientY)?.closest(".stage-node") as HTMLElement | null;
-      const targetId = el?.dataset.zoneId;
+      const targetId = connSnapZoneId ?? el?.dataset.zoneId;
       if (targetId && targetId !== connFromZone) {
         editor.addConnectionBetween(connFromZone, targetId);
       }
       connDragging = false;
       connFromZone = null;
+      connSnapZoneId = null;
     }
   }
 
@@ -115,6 +139,20 @@
 
   function zoneCenter(zone: ShellZoneItem) {
     return zonePos(zone);
+  }
+
+  function nearestZoneId(point: CanvasPoint, excludeId: string | null): string | null {
+    let closest: { id: string; distance: number } | null = null;
+    for (const zone of zones) {
+      if (zone.label === excludeId) continue;
+      const pos = zonePos(zone);
+      const dx = point.x - pos.x;
+      const dy = point.y - pos.y;
+      if (Math.abs(dx) > 10 || Math.abs(dy) > 8) continue;
+      const distance = dx * dx + dy * dy;
+      if (!closest || distance < closest.distance) closest = { id: zone.label, distance };
+    }
+    return closest?.id ?? null;
   }
 
   function connectionPath(connection: ShellConnectionItem) {
@@ -133,7 +171,7 @@
     </div>
     <div class="bar-actions">
       <button class="button button-secondary" onclick={() => editor.addZone()}>Add zone</button>
-      <button class="button button-secondary" onclick={() => editor.addConnection()}>Add connection</button>
+      <button class="button button-secondary" onclick={() => editor.addConnection()}>Connect zones</button>
     </div>
   </div>
   <div
@@ -145,7 +183,7 @@
       if ((event.target as HTMLElement).closest(".stage-node, .stage-link-hit")) return;
       contextMenu.open(event, [
         { label: "Add zone", icon: "add_circle", onClick: () => editor.addZone() },
-        { label: "Add connection", icon: "link", onClick: () => editor.addConnection() },
+        { label: "Connect zones", icon: "link", onClick: () => editor.addConnection() },
       ]);
     }}
     role="application"
@@ -172,9 +210,11 @@
       {/each}
       {#if connDragging && connFromZone}
         {@const from = zones.find((zone) => zone.label === connFromZone)}
+        {@const snap = connSnapZoneId ? zones.find((zone) => zone.label === connSnapZoneId) : undefined}
         {#if from}
           {@const center = zoneCenter(from)}
-          <line class="conn-draft" x1={center.x} y1={center.y} x2={connMousePos.x} y2={connMousePos.y} />
+          {@const snapCenter = snap ? zoneCenter(snap) : undefined}
+          <line class="conn-draft" x1={center.x} y1={center.y} x2={snapCenter?.x ?? connMousePos.x} y2={snapCenter?.y ?? connMousePos.y} />
         {/if}
       {/if}
     </CanvasSvgLayer>
@@ -182,17 +222,21 @@
       {@const ownerColor = zone.owner === "Neutral" ? "#666" : (PLAYER_COLORS[zone.owner] ?? "#888")}
       {@const isSelected = zone.id === selectedZone.id}
       {@const isFocused = focusedPlayer !== undefined && zone.owner === focusedPlayer}
+      {@const isConnSnap = connDragging && connSnapZoneId === zone.label}
       {@const point = zonePos(zone)}
       <button
         type="button"
         class="stage-node"
         class:is-selected={isSelected}
         class:is-focused={isFocused}
+        class:is-conn-snap={isConnSnap}
         data-zone-id={zone.label}
         data-zone-role={zone.role}
         data-focused-owner={isFocused}
         style="left:{point.x}%;top:{point.y}%;--zone-color:{ownerColor}"
         onpointerdown={(event) => zonePointerDown(event, zone)}
+        onpointermove={zonePointerMove}
+        onpointerup={zonePointerUp}
         oncontextmenu={(event) => zoneContextMenu(event, zone)}
       >
         <strong>{zone.label}</strong>
@@ -266,6 +310,12 @@
     outline-offset: 2px;
     box-shadow: 0 0 14px 2px var(--zone-color);
     z-index: 10;
+  }
+  .stage-node.is-conn-snap {
+    outline: var(--line-strong) solid var(--color-accent);
+    outline-offset: 0.25rem;
+    background: var(--color-active);
+    z-index: 11;
   }
   .stage-node strong {
     font-family: var(--font-mono);
