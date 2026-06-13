@@ -78,6 +78,7 @@
   .pool-workspace {
     block-size: 100%;
     min-block-size: 0;
+    grid-template-rows: minmax(0, 1fr);
     overflow: hidden;
     background: var(--color-panel);
   }

@@ -122,7 +122,7 @@
   const mandatoryColumns = ["Entry", "SID", "Weight", "Variant", "Biome", "Owner", "Flags", "Rule", "Args", "Target", "Min target", "Max target", "Rule weight", "Remove"] as const;
   const contentPoolColumns = ["Entry", "SID", "Weight", "Variant", "Biome", "Remove"] as const;
   const mandatoryColumnDefaults = ["max-content", "minmax(16rem, 1fr)", "max-content", "max-content", "max-content", "max-content", "max-content", "max-content", "minmax(10rem, 0.65fr)", "max-content", "max-content", "max-content", "max-content", "max-content"];
-  const contentPoolColumnDefaults = ["max-content", "minmax(16rem, 1fr)", "max-content", "max-content", "max-content", "max-content"];
+  const contentPoolColumnDefaults = ["4.5rem", "minmax(16rem, 1fr)", "7rem", "6rem", "8rem", "5rem"];
   let mandatoryColumnWidths = $state<(number | undefined)[]>([]);
   let contentPoolColumnWidths = $state<(number | undefined)[]>([]);
   $effect(() => {
@@ -1133,12 +1133,14 @@
                       <span></span>
                     {/each}
                   </div>
-                  {#each contentPoolColumns as column (column)}
-                    <div class="sheet-cell head" role="columnheader">
-                      <span>{column}</span>
-                      <button class="column-resize" type="button" aria-label="Resize {column} column" onpointerdown={(event) => startColumnResize(event, contentPoolColumns.indexOf(column), "pool")}></button>
-                    </div>
-                  {/each}
+                  {#if focusedGroupData === undefined}
+                    {#each contentPoolColumns as column (column)}
+                      <div class="sheet-cell head" role="columnheader">
+                        <span>{column}</span>
+                        <button class="column-resize" type="button" aria-label="Resize {column} column" onpointerdown={(event) => startColumnResize(event, contentPoolColumns.indexOf(column), "pool")}></button>
+                      </div>
+                    {/each}
+                  {/if}
 
                   {#each directContentRows as row (`direct-${row.groupIndex}-${row.contentIndex}`)}
                     <div class="sheet-cell id">G{row.groupIndex}.D{row.contentIndex}</div>
