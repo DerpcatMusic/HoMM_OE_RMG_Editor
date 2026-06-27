@@ -106,6 +106,26 @@
     return "neutral";
   }
 
+  function activeZoneOwner(): string {
+    return selectedZone.owner === "Neutral" ? "" : selectedZone.owner;
+  }
+
+  function objectOwnerValue(object: ShellZoneObjectItem): string {
+    return object.spawn || object.owner || "";
+  }
+
+  function objectOwnerMode(object: ShellZoneObjectItem): "none" | "zone" | "manual" {
+    const owner = objectOwnerValue(object);
+    if (!owner) return "none";
+    return activeZoneOwner() && owner === activeZoneOwner() ? "zone" : "manual";
+  }
+
+  function objectOwnerLabel(object: ShellZoneObjectItem): string {
+    const owner = objectOwnerValue(object);
+    if (!owner) return "owner: none";
+    return objectOwnerMode(object) === "zone" ? `owner: zoneOwner(${owner})` : `owner: ${owner}`;
+  }
+
   function openAddObjectDialog(point: CanvasPoint) {
     pendingSpawnPoint = clampCanvasPoint(point, { minX: 5, maxX: 95, minY: 5, maxY: 95 });
     objectSearch = "";
@@ -659,6 +679,7 @@
           tone={nodeTone(object)}
           variant="canvas"
         />
+        <span class="node-owner-badge" data-owner-mode={objectOwnerMode(object)}>{objectOwnerLabel(object)}</span>
       </button>
     {/each}
   </div>
@@ -809,8 +830,9 @@
     position: absolute;
     z-index: 2;
     transform: translate(-50%, -50%);
-    display: inline-flex;
+    display: grid;
     align-items: center;
+    gap: 2px;
     padding: var(--space-1) var(--space-2);
     border: var(--line) solid var(--color-line-strong);
     background: var(--color-panel);
@@ -819,7 +841,7 @@
     color: inherit;
     min-width: 2rem;
     min-height: 1.75rem;
-    max-width: 9rem;
+    max-width: 10.5rem;
     text-align: center;
     transition: background 0.12s, outline-color 0.12s;
     touch-action: none;
@@ -832,8 +854,29 @@
   .zone-node.is-mandatory { border-color: oklch(0.50 0.13 185); }
   .zone-node.is-mandatory-preset {
     border-color: oklch(0.50 0.13 185);
-    max-width: 14rem;
+    max-width: 15rem;
     padding-inline: var(--space-3);
+  }
+  .node-owner-badge {
+    min-width: 0;
+    max-width: 100%;
+    padding: 1px var(--space-1);
+    border: var(--line) solid var(--color-line);
+    background: var(--color-panel-2);
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xxs);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .node-owner-badge[data-owner-mode="zone"] {
+    border-color: var(--color-accent);
+    color: var(--color-ink);
+  }
+  .node-owner-badge[data-owner-mode="manual"] {
+    border-color: var(--color-state-uncertain);
+    color: var(--color-ink);
   }
   .zone-node.is-selected { outline: var(--line-strong) solid var(--color-focus); outline-offset: 2px; background: var(--color-active); }
   .zone-node.is-road-source,

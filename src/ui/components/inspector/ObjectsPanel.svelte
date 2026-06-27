@@ -16,6 +16,8 @@
   }
 
   const ZONE_OWNER_VALUE = "__zone_owner__";
+  const OWNER_NONE_VALUE = "__none__";
+  const OWNER_MANUAL_VALUE = "__manual__";
 
   let zone = $derived(editor.selectedZone);
   let session = $derived(editor.session);
@@ -70,6 +72,8 @@
   let editType = $state("City");
   let editSpawn = $state("");
   let editOwner = $state("");
+  let editOwnerMode = $state<typeof OWNER_NONE_VALUE | typeof ZONE_OWNER_VALUE | typeof OWNER_MANUAL_VALUE>(OWNER_NONE_VALUE);
+  let editManualOwner = $state("");
   let editIsKeyObject = $state(false);
   let editHoldCityWinCon = $state(false);
   let editPlacement = $state("Uniform");
@@ -97,6 +101,9 @@
     editType = obj.type || "City";
     editSpawn = obj.spawn ?? "";
     editOwner = obj.owner ?? "";
+    const currentOwner = mainObjectOwnerValue(obj);
+    editOwnerMode = ownerModeForValue(currentOwner);
+    editManualOwner = editOwnerMode === OWNER_MANUAL_VALUE ? currentOwner : "";
     editIsKeyObject = obj.isKeyObject ?? false;
     editHoldCityWinCon = obj.holdCityWinCon ?? false;
     editPlacement = obj.placement ?? "Uniform";
@@ -116,11 +123,16 @@
 
   function apply() {
     if (activeIndex < 0) return;
+    const nextOwner = selectedOwnerValue(editOwnerMode, editManualOwner);
+    const nextSpawn = editType === "Spawn" ? nextOwner : "";
+    const nextObjectOwner = editType === "Spawn" ? "" : nextOwner;
+    editSpawn = nextSpawn;
+    editOwner = nextObjectOwner;
     const draft: MainObjectUpdateDraft = {
       objectIndex: activeIndex,
       type: editType,
-      spawn: editSpawn,
-      owner: editOwner,
+      spawn: nextSpawn,
+      owner: nextObjectOwner,
       isKeyObject: editIsKeyObject,
       holdCityWinCon: editHoldCityWinCon,
       placement: editPlacement,
@@ -201,12 +213,21 @@
   }
 
   function mandatoryOwnerSelectValue(): string {
-    const owner = activeMandatoryContent?.owner ?? "";
-    return owner && owner === activeZoneOwner ? ZONE_OWNER_VALUE : owner;
+    return ownerModeForValue(activeMandatoryContent?.owner ?? "");
   }
 
   function updateMandatoryOwner(value: string) {
-    updateMandatoryField("owner", value === ZONE_OWNER_VALUE ? parseOptionalString(activeZoneOwner) : parseOptionalString(value));
+    if (value === OWNER_MANUAL_VALUE) {
+      const currentOwner = activeMandatoryContent?.owner ?? "";
+      const fallbackOwner = isPlayerRef(currentOwner) ? currentOwner : activeZoneOwner || PLAYER_REFS[0] || "";
+      updateMandatoryField("owner", parseOptionalString(fallbackOwner));
+      return;
+    }
+    updateMandatoryField("owner", parseOptionalString(selectedOwnerValue(value, "")));
+  }
+
+  function updateMandatoryManualOwner(value: string) {
+    updateMandatoryField("owner", parseOptionalString(value));
   }
 
   function setMandatoryFlag(field: "designatedEncounter" | "soloEncounter" | "isGuarded" | "isMine", checked: boolean) {
@@ -268,6 +289,40 @@
   function isPlayerRef(value: unknown): boolean {
     return typeof value === "string" && (PLAYER_REFS as readonly string[]).includes(value);
   }
+
+  function mainObjectOwnerValue(object: { spawn?: string; owner?: string } | undefined): string {
+    return object?.spawn || object?.owner || "";
+  }
+
+  function ownerModeForValue(value: string): typeof OWNER_NONE_VALUE | typeof ZONE_OWNER_VALUE | typeof OWNER_MANUAL_VALUE {
+    if (!value) return OWNER_NONE_VALUE;
+    return activeZoneOwner && value === activeZoneOwner ? ZONE_OWNER_VALUE : OWNER_MANUAL_VALUE;
+  }
+
+  function selectedOwnerValue(mode: string, manualOwner: string): string {
+    if (mode === ZONE_OWNER_VALUE) return activeZoneOwner;
+    if (mode === OWNER_MANUAL_VALUE) return manualOwner;
+    return "";
+  }
+
+  function setMainObjectOwnerMode(value: typeof OWNER_NONE_VALUE | typeof ZONE_OWNER_VALUE | typeof OWNER_MANUAL_VALUE) {
+    editOwnerMode = value;
+    if (value === OWNER_MANUAL_VALUE && !editManualOwner) {
+      editManualOwner = activeZoneOwner || PLAYER_REFS[0] || "";
+    }
+    apply();
+  }
+
+  function setManualMainObjectOwner(value: string) {
+    editManualOwner = value;
+    editOwnerMode = OWNER_MANUAL_VALUE;
+    apply();
+  }
+
+  function ownerLabel(value: string | undefined): string {
+    if (!value) return "None";
+    return activeZoneOwner && value === activeZoneOwner ? `Zone owner (${value})` : value;
+  }
 </script>
 
 <div class="objects-panel">
@@ -314,20 +369,31 @@
         <!-- Ownership -->
         <div class="editor-section">
           <h4 class="section-title">Ownership</h4>
+          <div class="owner-summary">
+            <span>Effective owner</span>
+            <strong>{ownerLabel(mainObjectOwnerValue(activeObj))}</strong>
+          </div>
           <label class="field">
-            <span class="field-label">Spawn</span>
-            <select class="input-sm" bind:value={editSpawn} onchange={apply}>
-              <option value="">None</option>
-              {#each PLAYER_REFS as p (p)}<option value={p}>{p}</option>{/each}
+            <span class="field-label">{editType === "Spawn" ? "Spawn owner" : "Object owner"}</span>
+            <select class="input-sm" value={editOwnerMode} onchange={(event) => setMainObjectOwnerMode(event.currentTarget.value as typeof editOwnerMode)}>
+              <option value={OWNER_NONE_VALUE}>None</option>
+              <option value={ZONE_OWNER_VALUE} disabled={!activeZoneOwner}>Zone owner{activeZoneOwner ? ` (${activeZoneOwner})` : ""}</option>
+              <option value={OWNER_MANUAL_VALUE}>Manual player</option>
             </select>
           </label>
-          <label class="field">
-            <span class="field-label">Owner</span>
-            <select class="input-sm" bind:value={editOwner} onchange={apply}>
-              <option value="">None</option>
-              {#each PLAYER_REFS as p (p)}<option value={p}>{p}</option>{/each}
-            </select>
-          </label>
+          {#if editOwnerMode === OWNER_MANUAL_VALUE}
+            <label class="field">
+              <span class="field-label">Manual owner</span>
+              <select class="input-sm" value={editManualOwner} onchange={(event) => setManualMainObjectOwner(event.currentTarget.value)}>
+                {#each PLAYER_REFS as p (p)}<option value={p}>{p}</option>{/each}
+              </select>
+            </label>
+          {/if}
+          <p class="field-note">
+            {editType === "Spawn"
+              ? "Writes mainObject.spawn. Zone-owner mode follows the selected zone owner."
+              : "Writes mainObject.owner. Zone-owner mode follows the selected zone owner."}
+          </p>
           <label class="field checkbox">
             <input type="checkbox" bind:checked={editIsKeyObject} onchange={apply} />
             <span class="field-label">Key object</span>
@@ -536,13 +602,21 @@
             <label class="field field-large">
               <span class="field-label">Owner</span>
               <select class="input-lg" value={mandatoryOwnerSelectValue()} onchange={(event) => updateMandatoryOwner(event.currentTarget.value)}>
-                <option value="">None</option>
+                <option value={OWNER_NONE_VALUE}>None</option>
                 <option value={ZONE_OWNER_VALUE} disabled={!activeZoneOwner}>Zone owner{activeZoneOwner ? ` (${activeZoneOwner})` : ""}</option>
-                {#each PLAYER_REFS as player (player)}
-                  <option value={player}>{player}</option>
-                {/each}
+                <option value={OWNER_MANUAL_VALUE}>Manual player</option>
               </select>
             </label>
+            {#if mandatoryOwnerSelectValue() === OWNER_MANUAL_VALUE}
+              <label class="field field-large">
+                <span class="field-label">Manual owner</span>
+                <select class="input-lg" value={activeMandatoryContent?.owner ?? ""} onchange={(event) => updateMandatoryManualOwner(event.currentTarget.value)}>
+                  {#each PLAYER_REFS as player (player)}
+                    <option value={player}>{player}</option>
+                  {/each}
+                </select>
+              </label>
+            {/if}
           {/if}
 
           {#if activeMandatoryEntries.length === 0}
@@ -563,6 +637,7 @@
           <ul class="object-list">
             {#each mainObjects as obj (obj.id)}
               {@const isActive = obj.index === activeIndex}
+              {@const objOwner = mainObjectOwnerValue(obj)}
               <li class="object-item" class:is-active={isActive}>
                 <button class="obj-btn" onclick={() => editor.selectObject(obj.index ?? 0)}>
                   <ObjectIdentity
@@ -571,6 +646,9 @@
                     meta={obj.type}
                     tone="main"
                   />
+                  <span class="owner-pill" data-owner-mode={ownerModeForValue(objOwner)}>
+                    owner: {ownerLabel(objOwner)}
+                  </span>
                 </button>
                 <button class="button-icon danger" onclick={() => editor.removeMainObject(obj.index ?? 0)} title="Remove">✕</button>
               </li>
@@ -585,6 +663,7 @@
 	              {@const entryName = obj.mandatoryEntryName ?? mandatoryObjectName(obj.id)}
 	              {@const isActive = entryName === activeMandatoryName}
 	              {@const isPreview = obj.id.startsWith("mandatory-preview:")}
+                {@const mandatoryOwner = obj.owner ?? ""}
 	              <li class="object-item mandatory-item" class:is-active={isActive}>
 	                <button class="obj-btn" onclick={() => editor.selectMandatoryContent(entryName)}>
 	                  <ObjectIdentity
@@ -594,6 +673,9 @@
 	                    meta={isPreview ? "Preset row" : "Mandatory"}
 	                    tone="mandatory"
 	                  />
+                    <span class="owner-pill" data-owner-mode={ownerModeForValue(mandatoryOwner)}>
+                      owner: {ownerLabel(mandatoryOwner)}
+                    </span>
                 </button>
               </li>
             {/each}
@@ -641,6 +723,27 @@
     cursor: pointer; text-align: left; color: inherit;
   }
   .obj-btn:hover { background: var(--color-panel-2); }
+  .owner-pill {
+    margin-left: auto;
+    max-width: 9rem;
+    padding: 1px var(--space-1);
+    border: var(--line) solid var(--color-line);
+    background: var(--color-panel-2);
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xxs);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .owner-pill[data-owner-mode="__zone_owner__"] {
+    border-color: var(--color-accent);
+    color: var(--color-ink);
+  }
+  .owner-pill[data-owner-mode="__manual__"] {
+    border-color: var(--color-state-uncertain);
+    color: var(--color-ink);
+  }
 
   /* Object editor */
   .object-editor {
@@ -671,11 +774,34 @@
     text-transform: uppercase; letter-spacing: 0.04em;
     color: var(--color-muted); margin: 0;
   }
+  .owner-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-2);
+    border: var(--line) solid var(--color-line);
+    background: var(--color-panel-2);
+    font-size: var(--font-size-xs);
+  }
+  .owner-summary span {
+    color: var(--color-muted);
+  }
+  .owner-summary strong {
+    font-family: var(--font-mono);
+    font-weight: 600;
+  }
   .field { display: grid; gap: 2px; }
   .field-large { gap: var(--space-1); }
   .field.checkbox { display: flex; align-items: center; gap: var(--space-1); flex-direction: row; }
   .field.checkbox input { margin: 0; }
   .field-label { font-size: var(--font-size-xxs); color: var(--color-muted); }
+  .field-note {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: var(--font-size-xs);
+    line-height: 1.25;
+  }
   .mandatory-focus-form {
     display: grid;
     gap: var(--space-2);

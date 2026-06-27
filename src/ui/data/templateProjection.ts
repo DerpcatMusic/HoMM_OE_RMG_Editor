@@ -279,6 +279,7 @@ function projectZoneObjects(zone: Zone, zoneName: string, variant: Variant | und
             ...(targetableName ? { mandatoryEntryName: targetableName } : {}),
             mandatoryPresetNames: [preset.name],
             ...(entry.sid !== undefined ? { mandatorySid: entry.sid } : {}),
+            ...(entry.owner !== undefined ? { owner: entry.owner } : {}),
             roadTargetable: Boolean(targetableName),
           });
         }
